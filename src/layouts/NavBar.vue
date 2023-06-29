@@ -8,8 +8,7 @@
         <v-icon large>mdi-account</v-icon>
         </v-app-bar>
     <NavDrawer />
-    </div>
-    
+    </div>   
 </template>
 
 <script>

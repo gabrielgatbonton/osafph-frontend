@@ -1,6 +1,13 @@
 <template>
     <div>
-        <v-navigation-drawer app color="grey lighten-3">
+        <v-navigation-drawer v-model="drawer" app color="grey lighten-4">
+            <v-container class="grey lighten-3">
+                <v-row justify="center">
+                    <v-col align-self="center" cols="auto">
+                        <div class="title py-1">OSAFPH IMAGE</div>
+                    </v-col>
+                </v-row>
+            </v-container>
             <v-list>
                 <v-list-item v-for="link in links" :key="link.text" router :to="link.route">
                     <v-list-item-icon>
@@ -18,12 +25,12 @@
 <script>
     export default {
         data: () => ({
-            drawer: true
+            drawer: true,
+            links: [
+            { icon: 'mdi-view-dashboard', text: 'Dashboard', route: '' },
+            { icon: 'mdi-folder', text: 'Citizens', route: '' },
+            { icon: 'mdi-account', text: 'Management', route: '' },
+            ]
         }),
-        links: [
-            { icon: 'mdi-view-dashboard', text: 'Home', route: '/' },
-            { icon: 'mdi-folder', text: 'Champions', route: '/champion' },
-            { icon: 'mdi-account', text: 'About us', route: '/about' },
-        ]
     }
 </script>
