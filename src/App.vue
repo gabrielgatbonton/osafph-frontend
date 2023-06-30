@@ -1,5 +1,6 @@
 <template>
   <v-app>
+     <NavComponents />
     <v-main>
       <router-view/>
     </v-main>
@@ -7,12 +8,14 @@
 </template>
 
 <script>
-
+import NavComponents from './layouts/NavComponents.vue';
 export default {
   name: 'App',
-
   data: () => ({
     //
   }),
+  components:{
+    NavComponents
+  }
 };
 </script>

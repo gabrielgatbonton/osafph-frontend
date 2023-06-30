@@ -1,26 +1,21 @@
 <template>
-    <div>
-        <v-app-bar color="grey lighten-3">
-        <v-app-bar-title>
-            OSAFPH
-        </v-app-bar-title>
-        <v-spacer></v-spacer>
-        <v-icon large>mdi-account</v-icon>
-        </v-app-bar>
+  <div>
+    <v-app-bar app flat color="grey lighten-3">
+      <v-app-bar-title> OSAFPH </v-app-bar-title>
+      <v-spacer></v-spacer>
+      <v-icon large>mdi-account</v-icon>
+    </v-app-bar>
     <NavDrawer />
-    </div>   
+  </div>
 </template>
 
 <script>
-import NavDrawer from '../layouts/NavDrawer.vue'
+import NavDrawer from "../layouts/NavDrawer.vue";
 export default {
-    components:{
-        NavDrawer
-    }
-    
-}
+  components: {
+    NavDrawer,
+  },
+};
 </script>
 
-<style>
-    
-</style>
+<style></style>

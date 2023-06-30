@@ -1,7 +1,5 @@
 <template>
-    <v-responsive>
-        <NavBar />
-    </v-responsive>
+    <NavBar />
 </template>
 
 <script>
