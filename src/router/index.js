@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import CitizensView from '../views/CitizensView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import ManagementView from '../views/ManagementView.vue'
+import RegisterView from '../views/RegisterView.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,11 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     // component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path: '/citizens/register',
+    name: 'register',
+    component: RegisterView,
   }
 ]
 
