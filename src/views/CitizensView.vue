@@ -19,7 +19,7 @@
       prepend-inner-icon="mdi-magnify"
       filled
     ></v-text-field> -->
-    <DataTable :headers="headers" :registrants="registrants" />
+    <DataTable :registrants="registrants" />
   </div>
 </template>
 
@@ -126,47 +126,6 @@ export default {
         },
       ],
     };
-  },
-  computed: {
-    headers() {
-      return [
-        {
-          text: "REGISTRANTS NO.",
-          align: "start",
-          sortable: false,
-          value: "registrants_no",
-        },
-        {
-          text: "FULL NAME",
-          value: "full_name",
-          // filter: (value) => {
-          //   if (!this.calories) return true;
-
-          //   return value < parseInt(this.calories);
-          // },
-        },
-        {
-          text: "SEX",
-          value: "sex",
-        },
-        {
-          text: "BIRTHDAY",
-          value: "birthday",
-        },
-        {
-          text: "BARANGAY",
-          value: "barangay",
-        },
-        {
-          text: "MUNICIPALITY",
-          value: "municipality",
-        },
-        {
-          text: "MCG CARES CARD",
-          value: "mcg_cares_card",
-        },
-      ];
-    },
   },
 };
 </script>
