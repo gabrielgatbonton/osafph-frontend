@@ -19,30 +19,17 @@
       prepend-inner-icon="mdi-magnify"
       filled
     ></v-text-field> -->
-
-    <v-data-table
-      :headers="headers"
-      :items="registrants"
-      item-key="name"
-      class="elevation-1"
-      :search="search"
-      :custom-filter="filterOnlyCapsText"
-    >
-      <template v-slot:top>
-        <v-text-field
-          v-model="search"
-          label="Search"
-          class="mx-4"
-          prepend-icon="mdi-magnify"
-        ></v-text-field>
-      </template>
-    </v-data-table>
+    <DataTable :headers="headers" :registrants="registrants" />
   </div>
 </template>
 
 <script>
+import DataTable from "@/components/Data-Table.vue";
 export default {
   name: "HomeView",
+  components: {
+    DataTable,
+  },
   data() {
     return {
       search: "",
@@ -54,7 +41,7 @@ export default {
           birthday: "JULY 5, 1985",
           barangay: "CAMACHILES",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-0C7DA33FC416",
@@ -63,7 +50,7 @@ export default {
           birthday: "OCTOBER 20, 1985",
           barangay: "MACAPAGAL VILLAGE",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-1075601DB71C",
@@ -72,7 +59,7 @@ export default {
           birthday: "JULY 23, 1987",
           barangay: "MABIGA",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-3B802323F49C",
@@ -81,7 +68,7 @@ export default {
           birthday: "AUGUST 3, 1991",
           barangay: "DAU",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-3EBC428538A5",
@@ -90,7 +77,7 @@ export default {
           birthday: "OCTOBER 7, 2000",
           barangay: "CAMACHILES",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-3B802323F49C",
@@ -99,7 +86,7 @@ export default {
           birthday: "AUGUST 3, 1991",
           barangay: "DAU",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-1075601DB71C",
@@ -108,7 +95,7 @@ export default {
           birthday: "JULY 23, 1987",
           barangay: "MABIGA",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-010B72A51C9A",
@@ -117,7 +104,7 @@ export default {
           birthday: "JULY 5, 1985",
           barangay: "CAMACHILES",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-010B72A51C9A",
@@ -126,7 +113,7 @@ export default {
           birthday: "JULY 5, 1985",
           barangay: "CAMACHILES",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
         {
           registrants_no: "21-H01-010B72A51C9A",
@@ -135,7 +122,7 @@ export default {
           birthday: "JULY 5, 1985",
           barangay: "CAMACHILES",
           municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED"
+          mcg_cares_card: "UNCLAIMED",
         },
       ],
     };
@@ -179,16 +166,6 @@ export default {
           value: "mcg_cares_card",
         },
       ];
-    },
-  },
-  methods: {
-    filterOnlyCapsText(value, search) {
-      return (
-        value != null &&
-        search != null &&
-        typeof value === "string" &&
-        value.toString().toLocaleLowerCase().indexOf(search) !== -1
-      );
     },
   },
 };
