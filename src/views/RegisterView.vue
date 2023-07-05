@@ -255,7 +255,7 @@ export default {
           middle_name: this.middle_name,
           suffix: this.suffix,
           sex: this.sex,
-          birthday: format(parseISO(this.birthday), "MMMM d, yyyy").toUpperCase(),
+          birthday: format(parseISO(this.birthday), "MMMM d, yyyy"),
           civil_status: this.civil_status,
           contact_number: this.contact_number,
           tin: this.tin,

@@ -19,15 +19,23 @@
       <tbody>
         <tr v-for="item in items" :key="item.registrants_no">
           <td>{{ item.registrants_no }}</td>
-          <td>{{ `${item.last_name}, ${item.first_name} ${item.middle_name} ${suffix ? ' ' + suffix : ''}` }}</td>
-          <td>{{ item.sex }}</td>
-          <td>{{ item.birthday }}</td>
-          <td>{{ item.barangay }}</td>
-          <td>{{ item.municipality }}</td>
+          <td>
+            {{
+              `${item.last_name.toUpperCase()}, ${item.first_name.toUpperCase()} ${item.middle_name.toUpperCase()} ${
+                suffix ? " " + suffix.toUpperCase() : ""
+              }`
+            }}
+          </td>
+          <td>{{ item.sex.toUpperCase() }}</td>
+          <td>{{ item.birthday.toUpperCase() }}</td>
+          <td>{{ item.barangay.toUpperCase() }}</td>
+          <td>{{ item.municipality.toUpperCase() }}</td>
           <td>{{ item.mcg_cares_card }}</td>
           <td>
             <!-- Icon button for options -->
-            <v-icon class="ml-n8" @click="showOptions(item)">mdi-dots-vertical</v-icon>
+            <v-icon class="ml-n8" @click="showOptions(item)"
+              >mdi-dots-vertical</v-icon
+            >
           </td>
         </tr>
       </tbody>
