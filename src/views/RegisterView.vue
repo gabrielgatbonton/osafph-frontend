@@ -9,7 +9,7 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <v-form>
+    <v-form ref="form">
       <v-container class="mx-auto mt-3 px-8">
         <v-row>
           <v-col cols="auto">
@@ -19,15 +19,26 @@
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12">
-            <v-select label="Category" :items="categories" placeholder="Choose..."></v-select>
+            <v-select
+              v-model="category"
+              label="Category"
+              :items="categories"
+              placeholder="Choose..."
+            ></v-select>
           </v-col>
         </v-row>
         <v-row class="mt-n6">
           <v-col cols="12" lg="6" md="6">
-            <v-text-field label="HUB Registrant Number"></v-text-field>
+            <v-text-field
+              v-model="hub_registrant_number"
+              label="HUB Registrant Number"
+            ></v-text-field>
           </v-col>
           <v-col cols="12" lg="6" md="6">
-            <v-text-field label="Passport Number"></v-text-field>
+            <v-text-field
+              v-model="passport_number"
+              label="Passport Number"
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-divider class="mx-auto my-3"></v-divider>
@@ -39,49 +50,94 @@
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="3">
-            <v-text-field label="Last Name"></v-text-field>
+            <v-text-field v-model="last_name" label="Last Name"></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-text-field label="First Name"></v-text-field>
+            <v-text-field
+              v-model="first_name"
+              label="First Name"
+            ></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-text-field label="Middle Name"></v-text-field>
+            <v-text-field
+              v-model="middle_name"
+              label="Middle Name"
+            ></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-combobox label="Category" :items="suffixes" placeholder="Choose..."></v-combobox>
+            <v-combobox
+              v-model="suffix"
+              label="Suffix"
+              :items="suffixes"
+              placeholder="Choose..."
+            ></v-combobox>
           </v-col>
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="3">
-            <v-menu max-width="290">
+            <v-menu
+              max-width="290"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+              v-model="menu"
+            >
               <template v-slot:activator="{ on, attrs }">
-                <v-text-field :value="formattedDate" v-on="on" v-bind="attrs" label="Birthday"></v-text-field>
+                <v-text-field
+                  :value="formattedDate"
+                  v-on="on"
+                  v-bind="attrs"
+                  label="Birthday"
+                  readonly
+                ></v-text-field>
               </template>
-              <v-date-picker reactive v-model="birthday"></v-date-picker>
+              <v-date-picker
+                v-model="birthday"
+                @input="menu = false"
+              ></v-date-picker>
             </v-menu>
           </v-col>
           <v-col cols="3">
-            <v-select label="Sex" :items="sex"></v-select>
+            <v-select v-model="sex" label="Sex" :items="sexes"></v-select>
           </v-col>
           <v-col cols="3">
-            <v-select label="Civil Status" :items="civil_status"></v-select>
+            <v-select
+              v-model="civil_status"
+              label="Civil Status"
+              :items="civil_statuses"
+            ></v-select>
           </v-col>
           <v-col cols="3">
-            <v-text-field label="Contact Number"></v-text-field>
+            <v-text-field
+              v-model="contact_number"
+              label="Contact Number"
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="3">
-            <v-text-field label="TIN"></v-text-field>
+            <v-text-field v-model="tin" label="TIN"></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-select label="Blood Type" :items="blood_type"></v-select>
+            <v-select
+              v-model="blood_type"
+              label="Blood Type"
+              :items="blood_types"
+            ></v-select>
           </v-col>
           <v-col cols="3">
-            <v-text-field label="Contact Person's Name"></v-text-field>
+            <v-text-field
+              v-model="contact_person_name"
+              label="Contact Person's Name"
+            ></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-text-field label="Contact Person's Number"></v-text-field>
+            <v-text-field
+              v-model="contact_person_number"
+              label="Contact Person's Number"
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-divider class="mx-auto my-3"></v-divider>
@@ -93,18 +149,36 @@
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12">
-            <v-text-field label="Unit/Building/House No./Purok/Street/Subdivision"></v-text-field>
+            <v-text-field
+              v-model="address"
+              label="Unit/Building/House No./Purok/Street/Subdivision"
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="4">
-            <v-select label="Province" :items="provinces"></v-select>
+            <v-select
+              v-model="province"
+              label="Province"
+              :items="provinces"
+            ></v-select>
           </v-col>
           <v-col cols="4">
-            <v-select label="Municipality" :items="municipalites"></v-select>
+            <v-select
+              v-model="municipality"
+              label="Municipality"
+              :items="municipalites"
+            ></v-select>
           </v-col>
           <v-col cols="4">
-            <v-select label="Barangay" :items="barangays"></v-select>
+            <v-select
+              v-model="barangay"
+              label="Barangay"
+              :items="barangays"
+            ></v-select>
+          </v-col>
+          <v-col cols="12">
+            <v-btn class="blue" :loading="loading" @click="submit">Save</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -113,10 +187,30 @@
 </template>
 
 <script>
-import format from 'date-fns/format'
-import parseISO from 'date-fns/parseISO'
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
+import { mapActions } from "vuex";
 export default {
   data: () => ({
+    category: "",
+    hub_registrant_number: "",
+    passport_number: "",
+    last_name: "",
+    first_name: "",
+    middle_name: "",
+    suffix: "",
+    birthday: null,
+    sex: "",
+    civil_status: "",
+    contact_number: "",
+    tin: "",
+    blood_type: "",
+    contact_person_name: "",
+    contact_person_number: "",
+    address: "",
+    province: "",
+    municipality: "",
+    barangay: "",
     categories: [
       "REST OF ADULT POPULATION (ROAP)",
       "FRONTLINE HEALTH SERVICES (A1)",
@@ -125,17 +219,62 @@ export default {
       "FRONTLINE PERSONNEL (A4)",
     ],
     suffixes: ["Sr.", "Jr.", "III", "IV", "V"],
-    sex: ["Male", "Female"],
-    civil_status: ["Single", "Married", "Divorced", "Widowed"],
-    blood_type: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
+    sexes: ["Male", "Female"],
+    civil_statuses: ["Single", "Married", "Divorced", "Widowed"],
+    blood_types: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
+    provinces: ["Pampanga", "Tarlac", "Nueva Ecija", "Bulacan"],
+    municipalites: ["Mabalacat", "Angeles City"],
+    barangays: ["Tabun", "San Francisco", "Atlu-Bola"],
     value: null,
-    birthday: null,
+    menu: false,
+    loading: false,
   }),
   computed: {
     formattedDate() {
-      return this.birthday ? format(parseISO(this.birthday), 'do MMM yyyy') : ''
-    }
-  }
+      return this.birthday
+        ? format(parseISO(this.birthday), "do MMM yyyy")
+        : "";
+    },
+  },
+  methods: {
+    ...mapActions("registrants", ["addRegistrant"]),
+    closeDatePicker() {
+      this.datePickerVisible = false;
+    },
+    async submit() {
+      try {
+        this.loading = true;
+        
+        // Prepare the data object to be sent in the POST request
+        const data = {
+          registrants_no: this.hub_registrant_number,
+          full_name: `${this.last_name}, ${this.first_name} ${this.middle_name} ${this.suffix}`,
+          sex: this.sex,
+          birthday: this.birthday,
+          barangay: this.barangay,
+          municipality: this.municipality,
+          mcg_cares_card: "UNCLAIMED",
+        };
+
+        // Make the POST request to the endpoint using Axios
+        const response = await this.$http.post(
+          "http://localhost:3000/registrants",
+          data
+        );
+
+        // Assuming the response contains the newly created registrant object
+        const registrant = response.data;
+
+        // Call the action to update the registrants' data in the Vuex store
+        this.addRegistrant(registrant);
+        this.loading = false;
+        // Optionally, you can navigate to a different route or perform other actions
+        // after successfully submitting the form and updating the store
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
+    },
+  },
 };
 </script>
 

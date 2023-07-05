@@ -8,7 +8,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn class="mr-3">Register</v-btn>
+          <v-btn class="mr-3" @click="toRegister">Register</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -19,12 +19,13 @@
       prepend-inner-icon="mdi-magnify"
       filled
     ></v-text-field> -->
-    <DataTable :registrants="registrants" />
+    <DataTable :registrants="allRegistrants" />
   </div>
 </template>
 
 <script>
 import DataTable from "@/components/Data-Table.vue";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "HomeView",
   components: {
@@ -33,99 +34,19 @@ export default {
   data() {
     return {
       search: "",
-      registrants: [
-        {
-          registrants_no: "21-H01-010B72A51C9A",
-          full_name: "PARAGAS, JOSEPHINE CHAN",
-          sex: "FEMALE",
-          birthday: "JULY 5, 1985",
-          barangay: "CAMACHILES",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-0C7DA33FC416",
-          full_name: "SANCHEZ, ELOISA BABADILLA",
-          sex: "FEMALE",
-          birthday: "OCTOBER 20, 1985",
-          barangay: "MACAPAGAL VILLAGE",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-1075601DB71C",
-          full_name: "PUNSALAN, MARCO CANLAS",
-          sex: "MALE",
-          birthday: "JULY 23, 1987",
-          barangay: "MABIGA",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-3B802323F49C",
-          full_name: "CALUB, KAYLA BIAG",
-          sex: "FEMALE",
-          birthday: "AUGUST 3, 1991",
-          barangay: "DAU",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-3EBC428538A5",
-          full_name: "SANGALANG, DANIELLA MARIE MALLARI",
-          sex: "FEMALE",
-          birthday: "OCTOBER 7, 2000",
-          barangay: "CAMACHILES",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-3B802323449C",
-          full_name: "CALUB, KAYLA BIAG",
-          sex: "FEMALE",
-          birthday: "AUGUST 3, 1991",
-          barangay: "DAU",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-10756043271C",
-          full_name: "PUNSALAN, MARCO CANLAS",
-          sex: "MALE",
-          birthday: "JULY 23, 1987",
-          barangay: "MABIGA",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-010B72A54329A",
-          full_name: "PARAGAS, JOSEPHINE CHAN",
-          sex: "FEMALE",
-          birthday: "JULY 5, 1985",
-          barangay: "CAMACHILES",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-010B76A31C9A",
-          full_name: "PARAGAS, JOSEPHINE CHAN",
-          sex: "FEMALE",
-          birthday: "JULY 5, 1985",
-          barangay: "CAMACHILES",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-        {
-          registrants_no: "21-H01-010B72232C9A",
-          full_name: "PARAGAS, JOSEPHINE CHAN",
-          sex: "FEMALE",
-          birthday: "JULY 5, 1985",
-          barangay: "CAMACHILES",
-          municipality: "	MABALACAT CITY",
-          mcg_cares_card: "UNCLAIMED",
-        },
-      ],
     };
+  },
+  methods: {
+    ...mapActions("registrants", ["fetchRegistrants"]),
+    toRegister() {
+      this.$router.push({ name: "register" });
+    },
+  },
+  computed: {
+    ...mapGetters("registrants", ["allRegistrants"]),
+  },
+  created() {
+    this.fetchRegistrants(); // Fetch registrants' data when the component is created
   },
 };
 </script>
