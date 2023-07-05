@@ -49,22 +49,22 @@
           </v-col>
         </v-row>
         <v-row class="mt-n3">
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field v-model="last_name" label="Last Name"></v-text-field>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field
               v-model="first_name"
               label="First Name"
             ></v-text-field>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field
               v-model="middle_name"
               label="Middle Name"
             ></v-text-field>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-combobox
               v-model="suffix"
               label="Suffix"
@@ -74,7 +74,7 @@
           </v-col>
         </v-row>
         <v-row class="mt-n3">
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-menu
               max-width="290"
               :close-on-content-click="false"
@@ -99,17 +99,17 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-select v-model="sex" label="Sex" :items="sexes"></v-select>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-select
               v-model="civil_status"
               label="Civil Status"
               :items="civil_statuses"
             ></v-select>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field
               v-model="contact_number"
               label="Contact Number"
@@ -117,23 +117,23 @@
           </v-col>
         </v-row>
         <v-row class="mt-n3">
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field v-model="tin" label="TIN"></v-text-field>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-select
               v-model="blood_type"
               label="Blood Type"
               :items="blood_types"
             ></v-select>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field
               v-model="contact_person_name"
               label="Contact Person's Name"
             ></v-text-field>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field
               v-model="contact_person_number"
               label="Contact Person's Number"
@@ -156,21 +156,21 @@
           </v-col>
         </v-row>
         <v-row class="mt-n3">
-          <v-col cols="4">
+          <v-col cols="12" lg="4" md="4">
             <v-select
               v-model="province"
               label="Province"
               :items="provinces"
             ></v-select>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" lg="4" md="4">
             <v-select
               v-model="municipality"
               label="Municipality"
               :items="municipalites"
             ></v-select>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" lg="4" md="4">
             <v-select
               v-model="barangay"
               label="Barangay"
@@ -178,7 +178,7 @@
             ></v-select>
           </v-col>
           <v-col cols="12">
-            <v-btn class="blue" :loading="loading" @click="submit">Save</v-btn>
+            <v-btn dark block class="blue" :loading="loading" @click="submit" max-width="1000">Save</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -291,5 +291,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
