@@ -19,7 +19,7 @@
       <tbody>
         <tr v-for="item in items" :key="item.registrants_no">
           <td>{{ item.registrants_no }}</td>
-          <td>{{ item.full_name }}</td>
+          <td>{{ `${item.last_name}, ${item.first_name} ${item.middle_name} ${suffix ? ' ' + suffix : ''}` }}</td>
           <td>{{ item.sex }}</td>
           <td>{{ item.birthday }}</td>
           <td>{{ item.barangay }}</td>

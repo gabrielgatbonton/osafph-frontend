@@ -232,7 +232,7 @@ export default {
   computed: {
     formattedDate() {
       return this.birthday
-        ? format(parseISO(this.birthday), "do MMM yyyy")
+        ? format(parseISO(this.birthday), "MMMM d, yyyy")
         : "";
     },
   },
@@ -247,10 +247,23 @@ export default {
         
         // Prepare the data object to be sent in the POST request
         const data = {
+          category: this.category,
           registrants_no: this.hub_registrant_number,
-          full_name: `${this.last_name}, ${this.first_name} ${this.middle_name} ${this.suffix}`,
+          passport_number: this.passport_number,
+          last_name: this.last_name,
+          first_name: this.first_name,
+          middle_name: this.middle_name,
+          suffix: this.suffix,
           sex: this.sex,
-          birthday: this.birthday,
+          birthday: format(parseISO(this.birthday), "MMMM d, yyyy").toUpperCase(),
+          civil_status: this.civil_status,
+          contact_number: this.contact_number,
+          tin: this.tin,
+          blood_type: this.blood_type,
+          contact_person_name: this.contact_person_name,
+          contact_person_number: this.contact_person_number,
+          address: this.address,
+          province: this.province,
           barangay: this.barangay,
           municipality: this.municipality,
           mcg_cares_card: "UNCLAIMED",
@@ -268,6 +281,7 @@ export default {
         // Call the action to update the registrants' data in the Vuex store
         this.addRegistrant(registrant);
         this.loading = false;
+        this.$router.push({ name: "citizens" });
         // Optionally, you can navigate to a different route or perform other actions
         // after successfully submitting the form and updating the store
       } catch (error) {
