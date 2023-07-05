@@ -19,11 +19,7 @@
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12">
-            <v-select
-              label="Category"
-              :items="categories"
-              placeholder="Choose..."
-            ></v-select>
+            <v-select label="Category" :items="categories" placeholder="Choose..."></v-select>
           </v-col>
         </v-row>
         <v-row class="mt-n6">
@@ -52,16 +48,17 @@
             <v-text-field label="Middle Name"></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-combobox
-              label="Category"
-              :items="suffixes"
-              placeholder="Choose..."
-            ></v-combobox>
+            <v-combobox label="Category" :items="suffixes" placeholder="Choose..."></v-combobox>
           </v-col>
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="3">
-            <v-text-field label="Birthday"></v-text-field>
+            <v-menu max-width="290">
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field :value="formattedDate" v-on="on" v-bind="attrs" label="Birthday"></v-text-field>
+              </template>
+              <v-date-picker reactive v-model="birthday"></v-date-picker>
+            </v-menu>
           </v-col>
           <v-col cols="3">
             <v-select label="Sex" :items="sex"></v-select>
@@ -107,7 +104,7 @@
             <v-select label="Municipality" :items="municipalites"></v-select>
           </v-col>
           <v-col cols="4">
-            <v-select label="Barangay" :items="baragays"></v-select>
+            <v-select label="Barangay" :items="barangays"></v-select>
           </v-col>
         </v-row>
       </v-container>
@@ -116,6 +113,8 @@
 </template>
 
 <script>
+import format from 'date-fns/format'
+import parseISO from 'date-fns/parseISO'
 export default {
   data: () => ({
     categories: [
@@ -130,7 +129,13 @@ export default {
     civil_status: ["Single", "Married", "Divorced", "Widowed"],
     blood_type: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
     value: null,
+    birthday: null,
   }),
+  computed: {
+    formattedDate() {
+      return this.birthday ? format(parseISO(this.birthday), 'do MMM yyyy') : ''
+    }
+  }
 };
 </script>
 

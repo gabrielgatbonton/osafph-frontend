@@ -80,7 +80,7 @@ export default {
           mcg_cares_card: "UNCLAIMED",
         },
         {
-          registrants_no: "21-H01-3B802323F49C",
+          registrants_no: "21-H01-3B802323449C",
           full_name: "CALUB, KAYLA BIAG",
           sex: "FEMALE",
           birthday: "AUGUST 3, 1991",
@@ -89,7 +89,7 @@ export default {
           mcg_cares_card: "UNCLAIMED",
         },
         {
-          registrants_no: "21-H01-1075601DB71C",
+          registrants_no: "21-H01-10756043271C",
           full_name: "PUNSALAN, MARCO CANLAS",
           sex: "MALE",
           birthday: "JULY 23, 1987",
@@ -98,7 +98,7 @@ export default {
           mcg_cares_card: "UNCLAIMED",
         },
         {
-          registrants_no: "21-H01-010B72A51C9A",
+          registrants_no: "21-H01-010B72A54329A",
           full_name: "PARAGAS, JOSEPHINE CHAN",
           sex: "FEMALE",
           birthday: "JULY 5, 1985",
@@ -107,7 +107,7 @@ export default {
           mcg_cares_card: "UNCLAIMED",
         },
         {
-          registrants_no: "21-H01-010B72A51C9A",
+          registrants_no: "21-H01-010B76A31C9A",
           full_name: "PARAGAS, JOSEPHINE CHAN",
           sex: "FEMALE",
           birthday: "JULY 5, 1985",
@@ -116,7 +116,7 @@ export default {
           mcg_cares_card: "UNCLAIMED",
         },
         {
-          registrants_no: "21-H01-010B72A51C9A",
+          registrants_no: "21-H01-010B72232C9A",
           full_name: "PARAGAS, JOSEPHINE CHAN",
           sex: "FEMALE",
           birthday: "JULY 5, 1985",

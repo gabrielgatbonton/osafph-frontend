@@ -66,11 +66,6 @@ export default {
         {
           text: "FULL NAME",
           value: "full_name",
-          // filter: (value) => {
-          //   if (!this.calories) return true;
-
-          //   return value < parseInt(this.calories);
-          // },
         },
         {
           text: "SEX",
