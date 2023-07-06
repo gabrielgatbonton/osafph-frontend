@@ -4,6 +4,7 @@ import CitizensView from '../views/CitizensView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import ManagementView from '../views/ManagementView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import ViewDetailsView from '../views/ViewDetailsView.vue'
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,11 @@ const routes = [
     path: '/citizens/register',
     name: 'register',
     component: RegisterView,
+  },
+  {
+    path: '/citizens/view',
+    name: 'view',
+    component: ViewDetailsView,
   }
 ]
 

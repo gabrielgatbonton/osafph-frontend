@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid class="table-title ma-2">
+    <v-container fluid class="ma-1">
       <v-row>
         <v-col cols="auto">
           <!-- <v-icon left>mdi-account-box-multiple</v-icon> -->
@@ -178,7 +178,7 @@
             ></v-select>
           </v-col>
           <v-col cols="12">
-            <v-btn dark block class="blue" :loading="loading" @click="submit" max-width="1000">Save</v-btn>
+            <v-btn dark block class="blue" :loading="loading" @click="submit">Save</v-btn>
           </v-col>
         </v-row>
       </v-container>

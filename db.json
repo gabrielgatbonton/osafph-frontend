@@ -129,6 +129,29 @@
       "barangay": "CAMACHILES",
       "municipality": "MABALACAT CITY",
       "mcg_cares_card": "UNCLAIMED"
+    },
+    {
+      "category": "REST OF ADULT POPULATION (ROAP)",
+      "registrants_no": "12s2d1fs848ff",
+      "passport_number": "N/A",
+      "last_name": "Camaddo",
+      "first_name": "Alexander John",
+      "middle_name": "Mosing",
+      "suffix": "",
+      "sex": "Male",
+      "birthday": "June 19, 2002",
+      "civil_status": "Single",
+      "contact_number": "09605607559",
+      "tin": "N/A",
+      "blood_type": "O+",
+      "contact_person_name": "Mama nang Alexander",
+      "contact_person_number": "09605607559",
+      "address": "Deca Homes Clark",
+      "province": "Pampanga",
+      "barangay": "San Francisco",
+      "municipality": "Angeles City",
+      "mcg_cares_card": "UNCLAIMED",
+      "id": 11
     }
   ]
 }
