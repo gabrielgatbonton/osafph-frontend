@@ -22,7 +22,7 @@
           <td>
             {{
               `${item.last_name.toUpperCase()}, ${item.first_name.toUpperCase()} ${item.middle_name.toUpperCase()} ${
-                suffix ? " " + suffix.toUpperCase() : ""
+                item.suffix ? " " + item.suffix.toUpperCase() : ""
               }`
             }}
           </td>
@@ -47,12 +47,19 @@
 export default {
   props: ["registrants"],
   methods: {
-    filterOnlyCapsText(value, search) {
+    filterOnlyCapsText(value, search, item) {
+      if (item.value === "full_name") {
+        const fullName = `${item.first_name} ${item.middle_name} ${
+          item.last_name
+        } ${item.suffix ? " " + item.suffix : ""}`.toLowerCase();
+        return fullName.includes(search.toLowerCase());
+      }
+
       return (
         value != null &&
         search != null &&
         typeof value === "string" &&
-        value.toString().toLocaleLowerCase().indexOf(search) !== -1
+        value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
     },
     // showOptions(item) {
@@ -73,7 +80,7 @@ export default {
         },
         {
           text: "FULL NAME",
-          value: "full_name",
+          value: "last_name",
         },
         {
           text: "SEX",
