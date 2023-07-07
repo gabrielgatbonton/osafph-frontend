@@ -5,6 +5,7 @@ import DashboardView from '../views/DashboardView.vue'
 import ManagementView from '../views/ManagementView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import ViewDetailsView from '../views/ViewDetailsView.vue'
+import ViewPrototype from '../views/ViewDetailsPrototype.vue'
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,11 @@ const routes = [
     path: '/citizens/view',
     name: 'view',
     component: ViewDetailsView,
+  },
+  {
+    path: '/citizens/prototype',
+    name: 'prototype',
+    component: ViewPrototype,
   }
 ]
 

@@ -98,7 +98,7 @@
             </v-row>
           </v-card>
         </v-col>
-        <v-col cols="8" class="mt-n3">
+        <v-col cols="8" class="mt-n1">
           <v-card>
             <v-card-title class="grey lighten-4"
               ><v-icon left>mdi-map-marker</v-icon>Address</v-card-title
@@ -121,6 +121,18 @@
                 </v-col>
               </v-row>
             </v-container>
+          </v-card>
+        </v-col>
+        <v-col cols="4" class="mt-n3">
+          <v-card>
+            <v-card-title class="grey lighten-4"
+              ><v-icon left>mdi-image</v-icon>CROP Image</v-card-title
+            >
+            <v-row justify="center" class="ma-2 pb-2">
+              <v-col align-self="center" cols="12">
+                <v-file-input clearable color="grey darken-1"></v-file-input>
+              </v-col>
+            </v-row>
           </v-card>
         </v-col>
       </v-row>
