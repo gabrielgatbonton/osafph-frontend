@@ -71,11 +71,7 @@
               </v-row>
               <v-divider class="ma-3"></v-divider>
               <div class="mx-4">Emergency Information</div>
-              <v-row
-                v-for="info in emergency"
-                :key="info.title"
-                no-gutters
-              >
+              <v-row v-for="info in emergency" :key="info.title" no-gutters>
                 <v-col cols="12" md="6">
                   <v-card-subtitle class="py-0">{{
                     info.title
@@ -97,11 +93,34 @@
             >
             <v-row justify="center" class="ma-2 pb-2">
               <v-col align-self="center" cols="12">
-                <v-btn dark block class="grey darken-1"
-                  >Vaccination Details</v-btn
-                >
+                <v-file-input clearable color="grey darken-1"></v-file-input>
               </v-col>
             </v-row>
+          </v-card>
+        </v-col>
+        <v-col cols="8" class="mt-n3">
+          <v-card>
+            <v-card-title class="grey lighten-4"
+              ><v-icon left>mdi-map-marker</v-icon>Address</v-card-title
+            >
+            <v-container fluid class="py-4">
+              <v-row
+                v-for="info in address"
+                :key="info.title"
+                no-gutters
+              >
+                <v-col cols="12" md="6">
+                  <v-card-subtitle class="py-0">{{
+                    info.title
+                  }}</v-card-subtitle>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-card-text class="font-weight-bold py-0">{{
+                    info.content
+                  }}</v-card-text>
+                </v-col>
+              </v-row>
+            </v-container>
           </v-card>
         </v-col>
       </v-row>
@@ -166,6 +185,24 @@ export default {
         content: "0939-938-1456",
       },
     ],
+    address: [
+      {
+        title: "Unit/Building/House No./Purok/Street/Subdivision",
+        content: "1234 Main St",
+      },
+      {
+        title: "Barangay",
+        content: "CAMACHILES",
+      },
+      {
+        title: "Municipality",
+        content: "MABALACAT CITY"
+      },
+      {
+        title: "Province",
+        content: "PAMPANGA"
+      }
+    ]
   }),
 };
 </script>
