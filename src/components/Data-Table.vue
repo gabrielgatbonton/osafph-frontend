@@ -1,19 +1,8 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="registrants"
-    item-key="name"
-    class="elevation-1"
-    :search="search"
-    :custom-filter="filterOnlyCapsText"
-  >
+  <v-data-table :headers="headers" :items="registrants" item-key="name" class="elevation-1" :search="search"
+    :custom-filter="filterOnlyCapsText">
     <template v-slot:top>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        class="mx-4"
-        prepend-icon="mdi-magnify"
-      ></v-text-field>
+      <v-text-field v-model="search" label="Search" class="mx-4" prepend-icon="mdi-magnify"></v-text-field>
     </template>
     <template v-slot:body="{ items }">
       <tbody>
@@ -21,8 +10,8 @@
           <td>{{ item.registrants_no }}</td>
           <td>
             {{
-              `${item.last_name.toUpperCase()}, ${item.first_name.toUpperCase()} ${item.middle_name.toUpperCase()} ${
-                item.suffix ? " " + item.suffix.toUpperCase() : ""
+              `${item.last_name.toUpperCase()}, ${item.first_name.toUpperCase()} ${item.middle_name.toUpperCase()}
+                        ${item.suffix ? " " + item.suffix.toUpperCase() : ""
               }`
             }}
           </td>
@@ -33,9 +22,17 @@
           <td>{{ item.mcg_cares_card }}</td>
           <td>
             <!-- Icon button for options -->
-            <v-icon class="ml-n8" @click="showOptions(item)"
-              >mdi-dots-vertical</v-icon
-            >
+            <v-menu left :offset-x="offset">
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon class="ml-n8" v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
+              </template>
+
+              <v-list>
+                <v-list-item v-for="(option, index) in options" :key="index">
+                  <v-list-item-title>{{ option.text }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </td>
         </tr>
       </tbody>
@@ -49,9 +46,8 @@ export default {
   methods: {
     filterOnlyCapsText(value, search, item) {
       if (item.value === "full_name") {
-        const fullName = `${item.first_name} ${item.middle_name} ${
-          item.last_name
-        } ${item.suffix ? " " + item.suffix : ""}`.toLowerCase();
+        const fullName = `${item.first_name} ${item.middle_name} ${item.last_name
+          } ${item.suffix ? " " + item.suffix : ""}`.toLowerCase();
         return fullName.includes(search.toLowerCase());
       }
 
@@ -68,6 +64,12 @@ export default {
   },
   data: () => ({
     search: "",
+    offset: true,
+    options: [
+      { icon: "mdi-view-agenda-outline", text: "VIEW DETAILS" },
+      { icon: "mdi-square-edit-outline", text: "EDIT" },
+      { icon: "mdi-delete-alert-outline", text: "DELETE" },
+    ],
   }),
   computed: {
     headers() {
