@@ -100,7 +100,7 @@
             </v-menu>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-select v-model="sex" label="Sex" :items="sexes"></v-select>
+            <v-select v-model="gender" label="Sex" :items="genders"></v-select>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
             <v-select
@@ -118,7 +118,7 @@
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-text-field v-model="tin" label="TIN"></v-text-field>
+            <v-text-field v-model="tin_number" label="TIN"></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
             <v-select
@@ -129,13 +129,13 @@
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field
-              v-model="contact_person_name"
+              v-model="emergency_name"
               label="Contact Person's Name"
             ></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
             <v-text-field
-              v-model="contact_person_number"
+              v-model="emergency_number"
               label="Contact Person's Number"
             ></v-text-field>
           </v-col>
@@ -178,7 +178,9 @@
             ></v-select>
           </v-col>
           <v-col cols="12">
-            <v-btn dark block class="blue" :loading="loading" @click="submit">Save</v-btn>
+            <v-btn dark block class="blue" :loading="loading" @click="submit"
+              >Save</v-btn
+            >
           </v-col>
         </v-row>
       </v-container>
@@ -200,13 +202,13 @@ export default {
     middle_name: "",
     suffix: "",
     birthday: null,
-    sex: "",
+    gender: "",
     civil_status: "",
     contact_number: "",
-    tin: "",
+    tin_number: "",
     blood_type: "",
-    contact_person_name: "",
-    contact_person_number: "",
+    emergency_name: "",
+    emergency_number: "",
     address: "",
     province: "",
     municipality: "",
@@ -219,12 +221,12 @@ export default {
       "FRONTLINE PERSONNEL (A4)",
     ],
     suffixes: ["Sr.", "Jr.", "III", "IV", "V"],
-    sexes: ["Male", "Female"],
+    genders: ["Male", "Female"],
     civil_statuses: ["Single", "Married", "Divorced", "Widowed"],
     blood_types: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
-    provinces: ["Pampanga", "Tarlac", "Nueva Ecija", "Bulacan"],
-    municipalites: ["Mabalacat", "Angeles City"],
-    barangays: ["Tabun", "San Francisco", "Atlu-Bola"],
+    provinces: ["PAMPANGA", "Tarlac", "Nueva Ecija", "Bulacan"],
+    municipalites: ["MABALACAT CITY", "Angeles City"],
+    barangays: ["DAU", "San Francisco", "Atlu-Bola"],
     value: null,
     menu: false,
     loading: false,
@@ -244,24 +246,24 @@ export default {
     async submit() {
       try {
         this.loading = true;
-        
+
         // Prepare the data object to be sent in the POST request
         const data = {
           category: this.category,
-          registrants_no: this.hub_registrant_number,
+          hub_registrant_number: this.hub_registrant_number,
           passport_number: this.passport_number,
           last_name: this.last_name,
           first_name: this.first_name,
           middle_name: this.middle_name,
           suffix: this.suffix,
-          sex: this.sex,
-          birthday: format(parseISO(this.birthday), "MMMM d, yyyy"),
+          gender: this.gender,
+          birthday: format(parseISO(this.birthday), "yyyy-MM-dd"), //MMMM d, yyyy
           civil_status: this.civil_status,
           contact_number: this.contact_number,
-          tin: this.tin,
+          tin_number: this.tin_number,
           blood_type: this.blood_type,
-          contact_person_name: this.contact_person_name,
-          contact_person_number: this.contact_person_number,
+          emergency_name: this.emergency_name,
+          emergency_number: this.emergency_number,
           address: this.address,
           province: this.province,
           barangay: this.barangay,
@@ -269,21 +271,12 @@ export default {
           mcg_cares_card: "UNCLAIMED",
         };
 
-        // Make the POST request to the endpoint using Axios
-        const response = await this.$http.post(
-          "http://localhost:3000/registrants",
-          data
-        );
+        // Dispatch the 'addRegistrant' action from the Vuex store
+        await this.$store.dispatch("registrants/addRegistrant", data);
 
         // Assuming the response contains the newly created registrant object
-        const registrant = response.data;
-
-        // Call the action to update the registrants' data in the Vuex store
-        this.addRegistrant(registrant);
         this.loading = false;
         this.$router.push({ name: "citizens" });
-        // Optionally, you can navigate to a different route or perform other actions
-        // after successfully submitting the form and updating the store
       } catch (error) {
         console.error("Error submitting form:", error);
       }

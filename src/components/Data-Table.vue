@@ -1,35 +1,56 @@
 <template>
-  <v-data-table :headers="headers" :items="registrants" item-key="name" class="elevation-1" :search="search"
-    :custom-filter="filterOnlyCapsText">
+  <v-data-table
+    :headers="headers"
+    :items="registrants"
+    item-key="name"
+    class="elevation-1"
+    :search="search"
+    :custom-filter="filterOnlyCapsText"
+  >
     <template v-slot:top>
-      <v-text-field v-model="search" label="Search" class="mx-4" prepend-icon="mdi-magnify"></v-text-field>
+      <v-text-field
+        v-model="search"
+        label="Search"
+        class="mx-4"
+        prepend-icon="mdi-magnify"
+      ></v-text-field>
     </template>
     <template v-slot:body="{ items }">
       <tbody>
-        <tr v-for="item in items" :key="item.registrants_no">
-          <td>{{ item.registrants_no }}</td>
+        <tr v-for="item in items" :key="item.hub_registrant_number">
+          <td>{{ item.hub_registrant_number }}</td>
           <td>
             {{
-              `${item.last_name.toUpperCase()}, ${item.first_name.toUpperCase()} ${item.middle_name.toUpperCase()}
-                        ${item.suffix ? " " + item.suffix.toUpperCase() : ""
-              }`
+              `${item.last_name}, ${item.first_name} ${
+                item.middle_name ? " " + item.middle_name : ""
+              }
+                        ${item.suffix ? " " + item.suffix : ""}`
             }}
           </td>
-          <td>{{ item.sex.toUpperCase() }}</td>
-          <td>{{ item.birthday.toUpperCase() }}</td>
-          <td>{{ item.barangay.toUpperCase() }}</td>
-          <td>{{ item.municipality.toUpperCase() }}</td>
+          <td>{{ item.gender }}</td>
+          <td>{{ item.birthday }}</td>
+          <td>{{ item.barangay }}</td>
+          <td>{{ item.municipality }}</td>
           <td>{{ item.mcg_cares_card }}</td>
           <td>
             <!-- Icon button for options -->
             <v-menu left :offset-x="offset">
               <template v-slot:activator="{ on, attrs }">
-                <v-icon class="ml-n8" v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
+                <v-icon class="ml-n8" v-bind="attrs" v-on="on"
+                  >mdi-dots-vertical</v-icon
+                >
               </template>
 
               <v-list dense>
-                <v-list-item v-for="(option, index) in getOptions(item)" :key="index" :to="option.route">
-                  <v-list-item-title><v-icon dense left>{{ option.icon }}</v-icon>{{ option.text }}</v-list-item-title>
+                <v-list-item
+                  v-for="(option, index) in getOptions(item)"
+                  :key="index"
+                  :to="option.route"
+                >
+                  <v-list-item-title
+                    ><v-icon dense left>{{ option.icon }}</v-icon
+                    >{{ option.text }}</v-list-item-title
+                  >
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -45,12 +66,11 @@ export default {
   props: ["registrants"],
   methods: {
     filterOnlyCapsText(value, search, item) {
-      if (item.value === "full_name") {
-        const fullName = `${item.first_name} ${item.middle_name} ${item.last_name
-          } ${item.suffix ? " " + item.suffix : ""}`.toLowerCase();
+      if (value === "full_name") {
+        const fullName =
+          `${item.first_name} ${item.middle_name} ${item.last_name}`.toLowerCase();
         return fullName.includes(search.toLowerCase());
       }
-
       return (
         value != null &&
         search != null &&
@@ -60,7 +80,11 @@ export default {
     },
     getOptions(item) {
       return [
-        { icon: "mdi-view-agenda-outline", text: "VIEW DETAILS", route: { name: "prototype", params: { id: item.id } } },
+        {
+          icon: "mdi-view-agenda-outline",
+          text: "VIEW DETAILS",
+          route: { name: "prototype", params: { id: item.id } },
+        },
         { icon: "mdi-square-edit-outline", text: "EDIT", route: "" },
         { icon: "mdi-delete-alert-outline", text: "DELETE", route: "" },
       ];
@@ -80,15 +104,15 @@ export default {
           text: "REGISTRANTS NO.",
           align: "start",
           sortable: false,
-          value: "registrants_no",
+          value: "hub_registrant_number",
         },
         {
           text: "FULL NAME",
           value: "last_name",
         },
         {
-          text: "SEX",
-          value: "sex",
+          text: "GENDER",
+          value: "gender",
         },
         {
           text: "BIRTHDAY",
@@ -112,6 +136,11 @@ export default {
           sortable: false,
         },
       ];
+    },
+  },
+  watch: {
+    registrants(value) {
+      console.log("watch:", value);
     },
   },
 };

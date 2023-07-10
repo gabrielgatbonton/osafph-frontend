@@ -48,6 +48,11 @@ export default {
   created() {
     this.fetchRegistrants(); // Fetch registrants' data when the component is created
   },
+  // watch:{
+  //   allRegistrants(value){
+  //     console.log("watch:", value)
+  //   }
+  // }
 };
 </script>
 
