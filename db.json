@@ -2,6 +2,7 @@
   "registrants": [
     {
       "id": 1,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-010B72A51C9A",
       "last_name": "PARAGAS",
       "first_name": "JOSEPHINE",
@@ -15,6 +16,7 @@
     },
     {
       "id": 2,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-0C7DA33FC416",
       "last_name": "SANCHEZ",
       "first_name": "ELOISA",
@@ -28,6 +30,7 @@
     },
     {
       "id": 3,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-1075601DB71C",
       "last_name": "PUNSALAN",
       "first_name": "MARCO",
@@ -41,6 +44,7 @@
     },
     {
       "id": 4,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-3B802323F49C",
       "last_name": "CALUB",
       "first_name": "KAYLA",
@@ -54,6 +58,7 @@
     },
     {
       "id": 5,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-3EBC428538A5",
       "last_name": "SANGALANG",
       "first_name": "DANIELLA MARIE",
@@ -67,6 +72,7 @@
     },
     {
       "id": 6,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-3B802323449C",
       "last_name": "CALUB",
       "first_name": "KAYLA",
@@ -80,6 +86,7 @@
     },
     {
       "id": 7,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-10756043271C",
       "last_name": "PUNSALAN",
       "first_name": "MARCO",
@@ -93,6 +100,7 @@
     },
     {
       "id": 8,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-010B72A54329A",
       "last_name": "PARAGAS",
       "first_name": "JOSEPHINE",
@@ -106,6 +114,7 @@
     },
     {
       "id": 9,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-010B76A31C9A",
       "last_name": "PARAGAS",
       "first_name": "JOSEPHINE",
@@ -119,6 +128,7 @@
     },
     {
       "id": 10,
+      "category": "REST OF ADULT POPULATION (ROAP)",
       "registrants_no": "21-H01-010B72232C9A",
       "last_name": "PARAGAS",
       "first_name": "JOSEPHINE",

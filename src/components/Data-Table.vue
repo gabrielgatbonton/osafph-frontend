@@ -27,9 +27,9 @@
                 <v-icon class="ml-n8" v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
               </template>
 
-              <v-list>
-                <v-list-item v-for="(option, index) in options" :key="index">
-                  <v-list-item-title>{{ option.text }}</v-list-item-title>
+              <v-list dense>
+                <v-list-item v-for="(option, index) in getOptions(item)" :key="index" :to="option.route">
+                  <v-list-item-title><v-icon dense left>{{ option.icon }}</v-icon>{{ option.text }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -58,6 +58,13 @@ export default {
         value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
     },
+    getOptions(item) {
+      return [
+        { icon: "mdi-view-agenda-outline", text: "VIEW DETAILS", route: { name: "prototype", params: { id: item.id } } },
+        { icon: "mdi-square-edit-outline", text: "EDIT", route: "" },
+        { icon: "mdi-delete-alert-outline", text: "DELETE", route: "" },
+      ];
+    },
     // showOptions(item) {
     //   // Handle the action for the selected item (item.actions)
     // },
@@ -65,11 +72,6 @@ export default {
   data: () => ({
     search: "",
     offset: true,
-    options: [
-      { icon: "mdi-view-agenda-outline", text: "VIEW DETAILS" },
-      { icon: "mdi-square-edit-outline", text: "EDIT" },
-      { icon: "mdi-delete-alert-outline", text: "DELETE" },
-    ],
   }),
   computed: {
     headers() {

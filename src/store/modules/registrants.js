@@ -21,10 +21,6 @@ const actions = {
       console.error("Error fetching registrants:", error);
     }
   },
-  async addRegistrant({ commit }, registrant) {
-    // Add the new registrant to the store
-    commit("ADD_REGISTRANT", registrant);
-  },
 };
 
 const mutations = {

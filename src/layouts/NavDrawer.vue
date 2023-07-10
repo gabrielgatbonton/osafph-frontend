@@ -20,7 +20,7 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-list>
+      <v-list nav dense>
         <v-list-item
           v-for="link in links"
           :key="link.text"

@@ -40,9 +40,10 @@ const routes = [
     component: ViewDetailsView,
   },
   {
-    path: '/citizens/prototype',
+    path: '/citizens/prototype/:id',
     name: 'prototype',
     component: ViewPrototype,
+    props: true,
   }
 ]
 
