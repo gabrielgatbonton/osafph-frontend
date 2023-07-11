@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <v-container fluid class="ma-1" v-if="registrant">
       <v-row>
         <v-col cols="auto">
@@ -140,12 +140,20 @@
                       <v-file-input
                         label="File input"
                         color="grey darken-1"
+                        ref="cropImageInput"
                         @change="handleCropImageUpload"
                         :append-icon="
                           selectedCropImage ? 'mdi-check' : 'mdi-upload'
                         "
                         :append-icon-cb="() => (selectedCropImage = '')"
                       ></v-file-input>
+                      <!-- <v-btn
+                        dark
+                        block
+                        class="grey darken-1"
+                        :loading="loading"
+                        >Submit</v-btn
+                      > -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -167,12 +175,20 @@
                       <v-file-input
                         label="File input"
                         color="grey darken-1"
+                        ref="imageInput"
                         @change="handleImageUpload"
                         :append-icon="
                           selectedImage ? 'mdi-check' : 'mdi-upload'
                         "
                         :append-icon-cb="() => (selectedImage = '')"
                       ></v-file-input>
+                      <!-- <v-btn
+                        dark
+                        block
+                        class="grey darken-1"
+                        :loading="loading"
+                        >Submit</v-btn
+                      > -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -194,12 +210,20 @@
                       <v-file-input
                         label="File input"
                         color="grey darken-1"
+                        ref="signatureInput"
                         @change="handleSignatureUpload"
                         :append-icon="
                           selectedSignature ? 'mdi-check' : 'mdi-upload'
                         "
                         :append-icon-cb="() => (selectedSignature = '')"
                       ></v-file-input>
+                      <!-- <v-btn
+                        dark
+                        block
+                        class="grey darken-1"
+                        :loading="loading"
+                        >Submit</v-btn
+                      > -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -212,9 +236,9 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <v-btn outlined block color="green" class="mb-2"
-                        >Claimed</v-btn
-                      >
+                      <v-btn outlined block @click="claimCard" :color="cardStatus.claimed ? 'green' : 'red'" class="mb-2">
+                        {{ cardStatus.claimed ? 'Claimed' : 'Unclaimed' }}
+                      </v-btn>
 
                       <v-btn dark block class="mb-2 grey darken-1"
                         ><v-icon left>mdi-smart-card-outline</v-icon
@@ -239,37 +263,77 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   data: () => ({
     registrant: null,
-    selectedImage: "", // Holds the selected image file
-    selectedCropImage: "", // Holds the selected crop image file
-    selectedSignature: "", // Holds the selected signature image file
+    selectedImage: null, // Holds the selected image file
+    selectedCropImage: null, // Holds the selected crop image file
+    selectedSignature: null, // Holds the selected signature image file
+    cardStatus: {
+      value: null,
+      claimed: false,
+    },
+    loading: false,
   }),
   methods: {
-    
     handleImageUpload(file) {
       // Handle the image upload
       // Here, you can perform any necessary logic, such as storing the file or processing it
       // In this example, we are simply updating the `selectedImage` data property with the uploaded file
       this.selectedImage = URL.createObjectURL(file);
+      this.submitImage(file, "image");
     },
     handleCropImageUpload(file) {
       // Handle the image upload for the crop image component
       this.selectedCropImage = URL.createObjectURL(file);
+      this.submitImage(file, "cropImage");
     },
     handleSignatureUpload(file) {
       // Handle the image upload for the signature component
       this.selectedSignature = URL.createObjectURL(file);
+      this.submitImage(file, "signature");
     },
     async fetchRegistrant() {
       const id = this.$route.params.id;
       try {
         await this.$store.dispatch("registrants/fetchRegistrantId", id);
+        this.cardStatus.value =
+          this.registrant.citizen.mcg_cares_card.toUpperCase();
       } catch (error) {
         console.error("Error fetching registrant:", error);
+      }
+    },
+    async submitImage(file, type) {
+      const id = this.$route.params.id;
+      try {
+        this.loading = true;
+
+        // Append the selected image files to the FormData object
+        const formData = new FormData();
+        formData.append(type, file);
+
+        await this.$store.dispatch("registrants/updateRegistrantFiles", {
+          id: id,
+          data: formData, // Pass the FormData object as the data
+        });
+        this.loading = false;
+      } catch (error) {
+        console.error("Error submitting image:", error);
+      }
+    },
+    async claimCard() {
+      try {
+        if (!this.cardStatus.claimed) {
+          // Perform the claim card action here
+          // ...
+          // Assuming the claim card action is successful, update the card status
+          this.cardStatus.claimed = true;
+          this.cardStatus.value = "CLAIMED";
+        }
+      } catch (error) {
+        console.error("Error claiming card:", error);
       }
     },
   },
@@ -278,8 +342,25 @@ export default {
   },
   watch: {
     getRegistrant(value) {
-      console.log("watch:", value)
+      const baseURL = "http://200.10.77.4/";
+      console.log("watch:", value);
       this.registrant = value;
+      this.selectedImage = this.registrant.citizen.citizen_file.image_url
+        ? baseURL + this.registrant.citizen.citizen_file.image_url
+        : null;
+      this.selectedSignature = this.registrant.citizen.citizen_file.e_signature
+        ? baseURL + this.registrant.citizen.citizen_file.e_signature
+        : null;
+      this.selectedCropImage = this.registrant.citizen.citizen_file
+        .crop_image_url
+        ? baseURL + this.registrant.citizen.citizen_file.crop_image_url
+        : null;
+      this.cardStatus = this.registrant.citizen.mcg_cares_card;
+    },
+    registrant() {
+      // const baseURL = "http://200.10.77.4/"
+      // console.log(baseURL+this.registrant.citizen.citizen_file.e_signature)
+      console.log("Watch", this.selectedImage);
     },
   },
   computed: {
@@ -300,7 +381,14 @@ export default {
       return [
         {
           title: "Full Name",
-          content: `${this.registrant.citizen.last_name.toUpperCase()}, ${this.registrant.citizen.first_name.toUpperCase()} ${this.registrant.citizen.middle_name.toUpperCase()} ${
+          content: `${this.registrant.citizen.last_name.toUpperCase()}, 
+          ${this.registrant.citizen.first_name.toUpperCase()} 
+          ${
+            this.registrant.citizen.middle_name.toUpperCase()
+              ? " " + this.registrant.citizen.middle_name.toUpperCase()
+              : ""
+          } 
+          ${
             this.registrant.citizen.suffix
               ? " " + this.registrant.citizen.suffix.toUpperCase()
               : ""
@@ -360,11 +448,14 @@ export default {
         },
         {
           title: "Municipality",
-          content: this.registrant.citizen.barangay.municipality.municipality_name,
+          content:
+            this.registrant.citizen.barangay.municipality.municipality_name,
         },
         {
           title: "Province",
-          content: this.registrant.citizen.barangay.municipality.province.province_name,
+          content:
+            this.registrant.citizen.barangay.municipality.province
+              .province_name,
         },
       ];
     },
