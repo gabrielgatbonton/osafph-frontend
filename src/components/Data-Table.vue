@@ -138,10 +138,10 @@ export default {
       ];
     },
   },
-  watch: {
-    registrants(value) {
-      console.log("watch:", value);
-    },
-  },
+  // watch: {
+  //   registrants(value) {
+  //     console.log("watch:", value);
+  //   },
+  // },
 };
 </script>

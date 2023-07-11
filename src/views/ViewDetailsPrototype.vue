@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-container fluid class="ma-1">
+  <div >
+    <v-container fluid class="ma-1" v-if="registrant">
       <v-row>
         <v-col cols="auto">
           <!-- <v-icon left>mdi-account-box-multiple</v-icon> -->
@@ -234,6 +234,7 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-skeleton-loader v-else class="ma-1" height="400"></v-skeleton-loader>
   </div>
 </template>
 
@@ -242,6 +243,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   data: () => ({
+    registrant: null,
     selectedImage: "", // Holds the selected image file
     selectedCropImage: "", // Holds the selected crop image file
     selectedSignature: "", // Holds the selected signature image file
@@ -271,26 +273,26 @@ export default {
       }
     },
   },
-  mounted() {
+  created() {
     this.fetchRegistrant();
-
   },
-  // watch: {
-  //   getRegistrant() {
-  //     this.registrant = this.getRegistrant
-  //   },
-  // },
+  watch: {
+    getRegistrant(value) {
+      console.log("watch:", value)
+      this.registrant = value;
+    },
+  },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
     categories() {
       return [
         {
           title: "Category of the Target Eligible Population",
-          content: this.getRegistrant.citizen.category.description,
+          content: this.registrant.citizen.category.description,
         },
         {
           title: "Hub Id Number",
-          content: this.getRegistrant.citizen.hub_registrant_number,
+          content: this.registrant.citizen.hub_registrant_number,
         },
       ];
     },
@@ -298,39 +300,39 @@ export default {
       return [
         {
           title: "Full Name",
-          content: `${this.getRegistrant.citizen.last_name.toUpperCase()}, ${this.getRegistrant.citizen.first_name.toUpperCase()} ${this.getRegistrant.citizen.middle_name.toUpperCase()} ${
-            this.getRegistrant.citizen.suffix
-              ? " " + this.getRegistrant.citizen.suffix.toUpperCase()
+          content: `${this.registrant.citizen.last_name.toUpperCase()}, ${this.registrant.citizen.first_name.toUpperCase()} ${this.registrant.citizen.middle_name.toUpperCase()} ${
+            this.registrant.citizen.suffix
+              ? " " + this.registrant.citizen.suffix.toUpperCase()
               : ""
           }`,
         },
         {
           title: "Date of Birth",
-          content: this.getRegistrant.citizen.birthday,
+          content: this.registrant.citizen.birthday,
         },
         {
           title: "Gender",
-          content: this.getRegistrant.citizen.gender,
+          content: this.registrant.citizen.gender,
         },
         {
           title: "Civil Status",
-          content: this.getRegistrant.citizen.civil_status,
+          content: this.registrant.citizen.civil_status,
         },
         {
           title: "Blood Type",
-          content: this.getRegistrant.citizen.blood_type,
+          content: this.registrant.citizen.blood_type,
         },
         {
           title: "Contact No",
-          content: this.getRegistrant.citizen.contact_number,
+          content: this.registrant.citizen.contact_number,
         },
         {
           title: "Tin No",
-          content: this.getRegistrant.citizen.tin_number,
+          content: this.registrant.citizen.tin_number,
         },
         {
           title: "Passport No",
-          content: this.getRegistrant.citizen.passport_number,
+          content: this.registrant.citizen.passport_number,
         },
       ];
     },
@@ -338,11 +340,11 @@ export default {
       return [
         {
           title: "Full Name",
-          content: this.getRegistrant.citizen.emergency_name,
+          content: this.registrant.citizen.emergency_name,
         },
         {
           title: "Contact No",
-          content: this.getRegistrant.citizen.emergency_number,
+          content: this.registrant.citizen.emergency_number,
         },
       ];
     },
@@ -350,19 +352,19 @@ export default {
       return [
         {
           title: "Unit/Building/House No./Purok/Street/Subdivision",
-          content: this.getRegistrant.citizen.address,
+          content: this.registrant.citizen.address,
         },
         {
           title: "Barangay",
-          content: this.getRegistrant.citizen.barangay.barangay_name,
+          content: this.registrant.citizen.barangay.barangay_name,
         },
         {
           title: "Municipality",
-          content: this.getRegistrant.citizen.barangay.municipality.municipality_name,
+          content: this.registrant.citizen.barangay.municipality.municipality_name,
         },
         {
           title: "Province",
-          content: this.getRegistrant.citizen.barangay.municipality.province.province_name,
+          content: this.registrant.citizen.barangay.municipality.province.province_name,
         },
       ];
     },
