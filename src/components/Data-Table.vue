@@ -83,7 +83,7 @@ export default {
         {
           icon: "mdi-view-agenda-outline",
           text: "VIEW DETAILS",
-          route: { name: "prototype", params: { id: item.id } },
+          route: { name: "details", params: { id: item.id } },
         },
         { icon: "mdi-square-edit-outline", text: "EDIT", route: "" },
         { icon: "mdi-delete-alert-outline", text: "DELETE", route: "" },

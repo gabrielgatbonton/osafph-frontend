@@ -4,7 +4,16 @@
       <v-row>
         <v-col cols="auto">
           <!-- <v-icon left>mdi-account-box-multiple</v-icon> -->
-          <span class="title">New Registrant</span>
+          <span class="title">Registrant Information</span>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="auto">
+          <v-btn
+            dark
+            class="blue mr-3"
+            :to="{ name: 'edit', params: { id: routeID } }"
+            ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
+          >
         </v-col>
       </v-row>
       <v-divider class="my-4"></v-divider>
@@ -116,7 +125,11 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <v-btn dark block class="grey darken-1"
+                      <v-btn
+                        :to="{ name: 'vaccination', params: { id: routeID } }"
+                        dark
+                        block
+                        class="grey darken-1"
                         >Vaccination Details</v-btn
                       >
                     </v-col>
@@ -236,8 +249,16 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <v-btn outlined block @click="claimCard" :color="cardStatus.claimed ? 'green' : 'red'" class="mb-2">
-                        {{ cardStatus.claimed ? 'Claimed' : 'Unclaimed' }}
+                      <v-btn
+                        outlined
+                        block
+                        :loading="loading"
+                        :disabled="disabledButton"
+                        @click="submitClaimStatus"
+                        :color="cardStatus.status ? 'green' : 'red'"
+                        class="mb-2"
+                      >
+                        {{ cardStatus.value }}
                       </v-btn>
 
                       <v-btn dark block class="mb-2 grey darken-1"
@@ -267,14 +288,16 @@ import { mapGetters } from "vuex";
 
 export default {
   data: () => ({
+    routeID: null,
     registrant: null,
     selectedImage: null, // Holds the selected image file
     selectedCropImage: null, // Holds the selected crop image file
     selectedSignature: null, // Holds the selected signature image file
     cardStatus: {
       value: null,
-      claimed: false,
+      status: false,
     },
+    disabledButton: false,
     loading: false,
   }),
   methods: {
@@ -299,8 +322,6 @@ export default {
       const id = this.$route.params.id;
       try {
         await this.$store.dispatch("registrants/fetchRegistrantId", id);
-        this.cardStatus.value =
-          this.registrant.citizen.mcg_cares_card.toUpperCase();
       } catch (error) {
         console.error("Error fetching registrant:", error);
       }
@@ -323,14 +344,22 @@ export default {
         console.error("Error submitting image:", error);
       }
     },
-    async claimCard() {
+    async submitClaimStatus() {
+      const id = this.$route.params.id;
       try {
-        if (!this.cardStatus.claimed) {
-          // Perform the claim card action here
-          // ...
-          // Assuming the claim card action is successful, update the card status
-          this.cardStatus.claimed = true;
+        this.loading = true;
+        if (this.cardStatus.status === false) {
+          this.cardStatus.status = true;
           this.cardStatus.value = "CLAIMED";
+          const data = {
+            mcg_cares_card: this.cardStatus.value,
+          };
+          await this.$store.dispatch("registrants/claimCard", {
+            id: id,
+            data: data,
+          });
+          this.disabledButton = true;
+          this.loading = false;
         }
       } catch (error) {
         console.error("Error claiming card:", error);
@@ -342,6 +371,7 @@ export default {
   },
   watch: {
     getRegistrant(value) {
+      const id = this.$route.params.id;
       const baseURL = "http://200.10.77.4/";
       console.log("watch:", value);
       this.registrant = value;
@@ -355,13 +385,14 @@ export default {
         .crop_image_url
         ? baseURL + this.registrant.citizen.citizen_file.crop_image_url
         : null;
-      this.cardStatus = this.registrant.citizen.mcg_cares_card;
+      this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
+      this.routeID = id;
     },
-    registrant() {
-      // const baseURL = "http://200.10.77.4/"
-      // console.log(baseURL+this.registrant.citizen.citizen_file.e_signature)
-      console.log("Watch", this.selectedImage);
-    },
+    // registrant() {
+    //   const baseURL = "http://200.10.77.4/"
+    //   console.log(baseURL+this.registrant.citizen.citizen_file.e_signature)
+    //   console.log("Watch", this.selectedImage);
+    // },
   },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),

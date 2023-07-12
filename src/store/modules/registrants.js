@@ -4,11 +4,13 @@ import axios from "axios";
 const state = {
   registrants: [],
   registrant: null,
+  vaccinationDetails: null,
 };
 
 const getters = {
   allRegistrants: (state) => state.registrants,
   getRegistrant: (state) => state.registrant,
+  getVaccineInformation: (state) => state.vaccinationDetails,
 };
 
 const actions = {
@@ -44,7 +46,7 @@ const actions = {
       console.error("Error fetching registrant:", error);
     }
   },
-  async updateRegistrantFiles({ commit }, {id, data}) {
+  async updateRegistrantFiles({ commit }, { id, data }) {
     try {
       const response = await axios.post(
         `http://200.10.77.4/api/citizens/${id}/files`,
@@ -54,6 +56,41 @@ const actions = {
       await commit("UPDATE_REGISTRANT_FILES", { id, files });
     } catch (error) {
       console.error("Error updating registrant files:", error);
+    }
+  },
+  async claimCard({ commit }, { id, data }) {
+    try {
+      const response = await axios.put(
+        `http://200.10.77.4/api/citizens/${id}/card`,
+        data
+      );
+      const claim = response.data;
+      await commit("UPDATE_CARD_STATUS", { id, claim });
+    } catch (error) {
+      console.error("Error requesting claim:", error);
+    }
+  },
+  async fetchVaccineInformation({ commit }, id) {
+    try {
+      const response = await axios.get(
+        `http://200.10.77.4/api/citizens/${id}/vaccine/`
+      );
+      const vaccineInformation = response.data;
+      commit("SET_VACCINATION_INFORMATION", vaccineInformation);
+    } catch (error) {
+      console.error("Error fetching vaccine information:", error);
+    }
+  },
+  async updateVaccineInformation({ commit }, { id, data }) {
+    try {
+      const response = await axios.put(
+        `http://200.10.77.4/api/citizens/${id}/vaccine/3`,
+        data
+      );
+      const updateVaccineInformation = response.data;
+      await commit("", {id, updateVaccineInformation})
+    } catch (error) {
+      console.error("Error requesting vaccination update:", error);
     }
   },
 };
@@ -78,6 +115,36 @@ const mutations = {
       };
     }
   },
+  UPDATE_CARD_STATUS(state, { id, claim }) {
+    const registrant = state.registrant;
+    if (registrant && registrant.id === id) {
+      registrant.citizen.mcg_cares_card = claim;
+    }
+  },
+  SET_VACCINATION_INFORMATION(state, vaccineInformation) {
+    state.vaccinationDetails = vaccineInformation;
+  },
+  UPDATE_VACCINATION_INFORMATION(state, {id, updateVaccineInformation}){
+    const vaccineInformation = state.vaccinationDetails;
+    if(vaccineInformation && vaccineInformation.citizen_id === id){
+      vaccineInformation.vaccinationStat = [
+        {
+          dose: updateVaccineInformation.dose,
+          vaccination_date: updateVaccineInformation.vaccination_date,
+          vaccine_name: updateVaccineInformation.vaccine_name,
+          lot_no: updateVaccineInformation.lot_no,
+          site_name: updateVaccineInformation.site_name
+        },
+        // {
+        //   dose: updateVaccineInformation.dose,
+        //   vaccination_date: updateVaccineInformation.vaccination_date,
+        //   vaccine_name: updateVaccineInformation.vaccine_name,
+        //   lot_no: updateVaccineInformation.lot_no,
+        //   site_name: updateVaccineInformation.site_name
+        // }
+      ]
+    }
+  }
 };
 
 export default {
