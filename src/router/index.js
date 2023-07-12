@@ -4,8 +4,8 @@ import CitizensView from '../views/CitizensView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import ManagementView from '../views/ManagementView.vue'
 import RegisterView from '../views/RegisterView.vue'
-import ViewDetailsView from '../views/ViewDetailsView.vue'
 import ViewPrototype from '../views/ViewDetailsPrototype.vue'
+import ViewVaccination from '../views/VaccinationDetailsView.vue'
 
 Vue.use(VueRouter)
 
@@ -35,15 +35,21 @@ const routes = [
     component: RegisterView,
   },
   {
-    path: '/citizens/view',
-    name: 'view',
-    component: ViewDetailsView,
+    path: '/citizens/edit/:id',
+    name: 'edit',
+    component: RegisterView
   },
   {
-    path: '/citizens/prototype/:id',
-    name: 'prototype',
+    path: '/citizens/details/:id',
+    name: 'details',
     component: ViewPrototype,
     props: true,
+  },
+  {
+    path: '/citizens/details/vaccination/:id',
+    name: 'vaccination',
+    component: ViewVaccination,
+    props: true
   }
 ]
 
