@@ -46,6 +46,18 @@ const actions = {
       console.error("Error fetching registrant:", error);
     }
   },
+  async updateRegistrant({ commit }, { id, data }) {
+    try {
+      const response = await axios.put(
+        `http://200.10.77.4/api/citizens/${id}`,
+        data
+      );
+      const updateRegistrant = response.data;
+      await commit("UPDATE_REGISTRANT", { id, updateRegistrant });
+    } catch (error) {
+      console.error("Error updating request to registrant vuex:", error);
+    }
+  },
   async updateRegistrantFiles({ commit }, { id, data }) {
     try {
       const response = await axios.post(
@@ -88,7 +100,7 @@ const actions = {
         data
       );
       const updateVaccineInformation = response.data;
-      await commit("", {id, updateVaccineInformation})
+      await commit("", { id, updateVaccineInformation });
     } catch (error) {
       console.error("Error requesting vaccination update:", error);
     }
@@ -104,6 +116,31 @@ const mutations = {
   },
   SET_REGISTRANT(state, registrant) {
     state.registrant = registrant;
+  },
+  UPDATE_REGISTRANT(state, { id, updateRegistrant }) {
+    const registrant = state.registrant;
+    if (registrant && registrant.id === id) {
+      registrant.citizen = {
+        hub_registrant_number: updateRegistrant.hub_registrant_number,
+        passport_number: updateRegistrant.passport_number,
+        last_name: updateRegistrant.last_name,
+        first_name: updateRegistrant.first_name,
+        middle_name: updateRegistrant.middle_name,
+        suffix: updateRegistrant.suffix,
+        gender: updateRegistrant.gender,
+        birthday: updateRegistrant.birthday,
+        civil_status: updateRegistrant.civil_status,
+        contact_number: updateRegistrant.contact_number,
+        tin_number: updateRegistrant.tin_number,
+        blood_type: updateRegistrant.blood_type,
+        emergency_name: updateRegistrant.emergency_name,
+        emergency_number: updateRegistrant.emergency_number,
+        address: updateRegistrant.address,
+        barangay: updateRegistrant.barangay,
+        municipality: updateRegistrant.municipality,
+        province: updateRegistrant.province,
+      };
+    }
   },
   UPDATE_REGISTRANT_FILES(state, { id, files }) {
     const registrant = state.registrant;
@@ -124,16 +161,16 @@ const mutations = {
   SET_VACCINATION_INFORMATION(state, vaccineInformation) {
     state.vaccinationDetails = vaccineInformation;
   },
-  UPDATE_VACCINATION_INFORMATION(state, {id, updateVaccineInformation}){
+  UPDATE_VACCINATION_INFORMATION(state, { id, updateVaccineInformation }) {
     const vaccineInformation = state.vaccinationDetails;
-    if(vaccineInformation && vaccineInformation.citizen_id === id){
+    if (vaccineInformation && vaccineInformation.citizen_id === id) {
       vaccineInformation.vaccinationStat = [
         {
           dose: updateVaccineInformation.dose,
           vaccination_date: updateVaccineInformation.vaccination_date,
           vaccine_name: updateVaccineInformation.vaccine_name,
           lot_no: updateVaccineInformation.lot_no,
-          site_name: updateVaccineInformation.site_name
+          site_name: updateVaccineInformation.site_name,
         },
         // {
         //   dose: updateVaccineInformation.dose,
@@ -142,9 +179,9 @@ const mutations = {
         //   lot_no: updateVaccineInformation.lot_no,
         //   site_name: updateVaccineInformation.site_name
         // }
-      ]
+      ];
     }
-  }
+  },
 };
 
 export default {

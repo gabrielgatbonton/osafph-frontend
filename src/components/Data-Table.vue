@@ -85,7 +85,11 @@ export default {
           text: "VIEW DETAILS",
           route: { name: "details", params: { id: item.id } },
         },
-        { icon: "mdi-square-edit-outline", text: "EDIT", route: "" },
+        {
+          icon: "mdi-square-edit-outline",
+          text: "EDIT",
+          route: { name: "edit", params: { id: item.id } },
+        },
         { icon: "mdi-delete-alert-outline", text: "DELETE", route: "" },
       ];
     },

@@ -19,7 +19,7 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-import FormFormat from '@/components/FormFormat .vue'
+import FormFormat from '@/components/FormFormat.vue'
 import { mapActions } from "vuex";
 export default {
   data: () => ({
