@@ -10,26 +10,15 @@
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12">
-            <v-select
-              v-model="data.category"
-              label="Category"
-              :items="categories"
-              placeholder="Choose..."
-            ></v-select>
+            <v-select v-model="data.category" label="Category" :items="categories" placeholder="Choose..."></v-select>
           </v-col>
         </v-row>
         <v-row class="mt-n6">
           <v-col cols="12" lg="6" md="6">
-            <v-text-field
-              v-model="data.hub_registrant_number"
-              label="HUB Registrant Number"
-            ></v-text-field>
+            <v-text-field v-model="data.hub_registrant_number" label="HUB Registrant Number"></v-text-field>
           </v-col>
           <v-col cols="12" lg="6" md="6">
-            <v-text-field
-              v-model="data.passport_number"
-              label="Passport Number"
-            ></v-text-field>
+            <v-text-field v-model="data.passport_number" label="Passport Number"></v-text-field>
           </v-col>
         </v-row>
         <v-divider class="mx-auto my-3"></v-divider>
@@ -44,67 +33,33 @@
             <v-text-field v-model="data.last_name" label="Last Name"></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-text-field
-              v-model="data.first_name"
-              label="First Name"
-            ></v-text-field>
+            <v-text-field v-model="data.first_name" label="First Name"></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-text-field
-              v-model="data.middle_name"
-              label="Middle Name"
-            ></v-text-field>
+            <v-text-field v-model="data.middle_name" label="Middle Name"></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-combobox
-              v-model="data.suffix"
-              label="Suffix"
-              :items="suffixes"
-              placeholder="Choose..."
-            ></v-combobox>
+            <v-combobox v-model="data.suffix" label="Suffix" :items="suffixes" placeholder="Choose..."></v-combobox>
           </v-col>
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-menu
-              max-width="290"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-              v-model="menu"
-            >
+            <v-menu max-width="290" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
+              offset-y min-width="auto" v-model="menu">
               <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :value="formattedDate"
-                  v-on="on"
-                  v-bind="attrs"
-                  label="Birthday"
-                  readonly
-                ></v-text-field>
+                <v-text-field :value="formattedDate" v-on="on" v-bind="attrs" label="Birthday" readonly></v-text-field>
               </template>
-              <v-date-picker
-                v-model="data.birthday"
-                @input="menu = false"
-              ></v-date-picker>
+              <v-date-picker v-model="data.birthday" @input="menu = false"></v-date-picker>
             </v-menu>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
             <v-select v-model="data.gender" label="Sex" :items="genders"></v-select>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-select
-              v-model="data.civil_status"
-              label="Civil Status"
-              :items="civil_statuses"
-            ></v-select>
+            <v-select v-model="data.civil_status" label="Civil Status" :items="civil_statuses"></v-select>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-text-field
-              v-model="data.contact_number"
-              label="Contact Number"
-            ></v-text-field>
+            <v-text-field v-model="data.contact_number" label="Contact Number"></v-text-field>
           </v-col>
         </v-row>
         <v-row class="mt-n3">
@@ -112,23 +67,13 @@
             <v-text-field v-model="data.tin_number" label="TIN"></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-select
-              v-model="data.blood_type"
-              label="Blood Type"
-              :items="blood_types"
-            ></v-select>
+            <v-select v-model="data.blood_type" label="Blood Type" :items="blood_types"></v-select>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-text-field
-              v-model="data.emergency_name"
-              label="Contact Person's Name"
-            ></v-text-field>
+            <v-text-field v-model="data.emergency_name" label="Contact Person's Name"></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
-            <v-text-field
-              v-model="data.emergency_number"
-              label="Contact Person's Number"
-            ></v-text-field>
+            <v-text-field v-model="data.emergency_number" label="Contact Person's Number"></v-text-field>
           </v-col>
         </v-row>
         <v-divider class="mx-auto my-3"></v-divider>
@@ -140,38 +85,21 @@
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12">
-            <v-text-field
-              v-model="data.address"
-              label="Unit/Building/House No./Purok/Street/Subdivision"
-            ></v-text-field>
+            <v-text-field v-model="data.address" label="Unit/Building/House No./Purok/Street/Subdivision"></v-text-field>
           </v-col>
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12" lg="4" md="4">
-            <v-select
-              v-model="data.province"
-              label="Province"
-              :items="provinces"
-            ></v-select>
+            <v-select v-model="data.province" label="Province" :items="provinces"></v-select>
           </v-col>
           <v-col cols="12" lg="4" md="4">
-            <v-select
-              v-model="data.municipality"
-              label="Municipality"
-              :items="municipalites"
-            ></v-select>
+            <v-select v-model="data.municipality" label="Municipality" :items="municipalites"></v-select>
           </v-col>
           <v-col cols="12" lg="4" md="4">
-            <v-select
-              v-model="data.barangay"
-              label="Barangay"
-              :items="barangays"
-            ></v-select>
+            <v-select v-model="data.barangay" label="Barangay" :items="barangays"></v-select>
           </v-col>
           <v-col cols="12">
-            <v-btn dark block class="blue" :loading="loading" @click="$emit('submitData', data)"
-              >Save</v-btn
-            >
+            <v-btn dark block class="blue" :loading="loading" @click="$emit('submitData', data)">Save</v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -182,8 +110,18 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
+import { mapGetters } from "vuex";
 export default {
-  props: ['loading'],
+  props: {
+    loading: {
+      type: "boolean",
+      required: true
+    },
+    id: {
+      type: "string",
+      required: false
+    }
+  },
   data: () => ({
     data: {
       category: null,
@@ -253,12 +191,34 @@ export default {
     menu: false,
   }),
   computed: {
+    ...mapGetters("registrants", ["getRegistrant"]),
     formattedDate() {
       return this.data.birthday
         ? format(parseISO(this.data.birthday), "MMMM d, yyyy")
         : "";
     },
   },
+  methods: {
+    async fetchRegistrant() {
+      if (this.id) {
+        try {
+          await this.$store.dispatch("registrants/fetchRegistrantId", this.id);
+        } catch (error) {
+          console.error("Error fetching registrant: EditView", error);
+        }
+      }
+    }
+  },
+  watch:{
+    getRegistrant(value){
+      console.log("watch:", value);
+      this.data.category = value.citizen.category;
+      //etc.
+    }
+  },
+  mounted(){
+    this.fetchRegistrantId();
+  }
 };
 </script>
 

@@ -6,6 +6,7 @@ import ManagementView from '../views/ManagementView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import ViewPrototype from '../views/ViewDetailsPrototype.vue'
 import ViewVaccination from '../views/VaccinationDetailsView.vue'
+import EditView from '../views/EditView.vue'
 
 Vue.use(VueRouter)
 
@@ -37,7 +38,8 @@ const routes = [
   {
     path: '/citizens/edit/:id',
     name: 'edit',
-    component: RegisterView
+    component: EditView,
+    props: true,
   },
   {
     path: '/citizens/details/:id',
