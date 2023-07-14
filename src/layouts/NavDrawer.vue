@@ -43,7 +43,7 @@
 export default {
   data: () => ({
     links: [
-      { icon: "mdi-view-dashboard", text: "Dashboard", route: "/" },
+      { icon: "mdi-view-dashboard", text: "Dashboard", route: "/dashboard" },
       { icon: "mdi-folder", text: "Citizens", route: "/citizens" },
       { icon: "mdi-account", text: "Management", route: "/management" },
     ],

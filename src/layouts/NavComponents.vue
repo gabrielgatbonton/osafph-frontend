@@ -8,7 +8,6 @@ import NavBar from '../layouts/NavBar'
         components:{
             NavBar,
         }
-        
     }
 </script>
 

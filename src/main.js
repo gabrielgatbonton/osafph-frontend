@@ -8,6 +8,14 @@ import axios from 'axios'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 
+axios.interceptors.request.use((config) => {
+  const accessToken = store.getters["login/accessToken"];
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+});
+
 new Vue({
   router,
   store,
