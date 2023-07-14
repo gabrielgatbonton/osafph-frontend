@@ -155,7 +155,8 @@ export default {
     vaccine_2: null,
     lot_number_2: null,
     vaccination_site_2: null,
-    vaccine_id: null,
+    vaccine_id_1: null,
+    vaccine_id_2: null,
     vaccines: [
       "ASTRAZENECA",
       "BIOTECH",
@@ -184,31 +185,48 @@ export default {
       }
     },
     async submit() {
-        const id = this.$route.params.id; // Update this line
+      const id = this.$route.params.id; // Update this line
+      let data1 = null;
+      let data2 = null;
       try {
         this.loading = true;
-        const data1 = [
-          {
+        if (this.vaccine_id_1 || this.vaccine_id_2) {
+          data1 = {
             dose: this.dose_1,
             vaccination_date: this.date_1,
             vaccine_name: this.vaccine_1,
             lot_no: this.lot_number_1,
             site_name: this.vaccination_site_1,
-          },
-        ];
-        // const data2 = [
-        //   {
-        //     dose: this.dose_2,
-        //     vaccination_date: this.date_2,
-        //     vaccine_name: this.vaccine_2,
-        //     lot_no: this.lot_number_2,
-        //     site_name: this.vaccination_site_2,
-        //   },
-        // ];
+            id: this.vaccine_id_1
+          };
+          data2 = {
+            dose: this.dose_2,
+            vaccination_date: this.date_2,
+            vaccine_name: this.vaccine_2,
+            lot_no: this.lot_number_2,
+            site_name: this.vaccination_site_2,
+            id: this.vaccine_id_2
+          };
+        } else {
+          data1 = {
+            dose: this.dose_1,
+            vaccination_date: this.date_1,
+            vaccine_name: this.vaccine_1,
+            lot_no: this.lot_number_1,
+            site_name: this.vaccination_site_1,
+          };
+          data2 = {
+            dose: this.dose_2,
+            vaccination_date: this.date_2,
+            vaccine_name: this.vaccine_2,
+            lot_no: this.lot_number_2,
+            site_name: this.vaccination_site_2,
+          };
+        }
 
         await this.$store.dispatch("registrants/updateVaccineInformation", {
           id: id,
-          data: data1,
+          data: [data1, data2],
         });
         this.loading = false;
       } catch (error) {
@@ -234,28 +252,33 @@ export default {
       this.info = value;
     },
     info(value) {
-      console.log("info:", value);
+      console.log("info", value);
+      console.log(value.vaccinationStat[0].id)
+      console.log(value.vaccinationStat[1].id)
+      // if (value.vaccinationStat >= 1) {
       if (value && value.vaccinationStat && value.vaccinationStat.length < 2) {
         this.dose_1 = value.vaccinationStat[0].dose;
         this.date_1 = value.vaccinationStat[0].vaccination_date;
         this.vaccine_1 = value.vaccinationStat[0].vaccine_name;
         this.lot_number_1 = value.vaccinationStat[0].lot_no;
         this.vaccination_site_1 = value.vaccinationStat[0].site_name;
-        this.vaccine_id = value.vaccinationStat[0].id        
+        this.vaccine_id_1 = value.vaccinationStat[0].id;
       }
-      if(value && value.vaccinationStat && value.vaccinationStat.length > 1){
+      if (value && value.vaccinationStat && value.vaccinationStat.length > 1) {
         this.dose_1 = value.vaccinationStat[0].dose;
         this.date_1 = value.vaccinationStat[0].vaccination_date;
         this.vaccine_1 = value.vaccinationStat[0].vaccine_name;
         this.lot_number_1 = value.vaccinationStat[0].lot_no;
         this.vaccination_site_1 = value.vaccinationStat[0].site_name;
+        this.vaccine_id_1 = value.vaccinationStat[0].id;
         this.dose_2 = value.vaccinationStat[1].dose;
         this.date_2 = value.vaccinationStat[1].vaccination_date;
         this.vaccine_2 = value.vaccinationStat[1].vaccine_name;
         this.lot_number_2 = value.vaccinationStat[1].lot_no;
         this.vaccination_site_2 = value.vaccinationStat[1].site_name;
-
+        this.vaccine_id_2 = value.vaccinationStat[1].id;
       }
+      // }
     },
   },
 };

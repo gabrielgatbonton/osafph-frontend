@@ -45,7 +45,7 @@
                 <v-list-item
                   v-for="(option, index) in getOptions(item)"
                   :key="index"
-                  :to="option.route"
+                  @click="executeAction(option)"
                 >
                   <v-list-item-title
                     ><v-icon dense left>{{ option.icon }}</v-icon
@@ -62,9 +62,11 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   props: ["registrants"],
   methods: {
+    ...mapActions("registrants", ["deleteRegistrant"]),
     filterOnlyCapsText(value, search, item) {
       if (value === "full_name") {
         const fullName =
@@ -90,12 +92,24 @@ export default {
           text: "EDIT",
           route: { name: "edit", params: { id: item.id } },
         },
-        { icon: "mdi-delete-alert-outline", text: "DELETE", route: "" },
+        {
+          icon: "mdi-delete-alert-outline",
+          text: "DELETE",
+          action: () => {
+            this.deleteRegistrant(item.id);
+          },
+        },
       ];
     },
-    // showOptions(item) {
-    //   // Handle the action for the selected item (item.actions)
-    // },
+    executeAction(option) {
+      if (option.action) {
+        // Execute the action
+        option.action();
+      } else if (option.route) {
+        // Navigate to the route
+        this.$router.push(option.route);
+      }
+    },
   },
   data: () => ({
     search: "",

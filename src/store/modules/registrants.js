@@ -93,16 +93,35 @@ const actions = {
       console.error("Error fetching vaccine information:", error);
     }
   },
-  async updateVaccineInformation({ commit }, { id, data }) {
+  async updateVaccineInformation({ commit, dispatch }, { id, data }) {
+    console.log(data)
     try {
-      const response = await axios.put(
-        `http://200.10.77.4/api/citizens/${id}/vaccine/3`,
-        data
-      );
-      const updateVaccineInformation = response.data;
-      await commit("", { id, updateVaccineInformation });
+      const promises = data.map(async (vaccineData, index) => {
+        const response = await axios.put(
+          `http://200.10.77.4/api/citizens/${id}/vaccine/${(data[index].id)}`, // Use index + 1 to generate the correct vaccine ID
+          vaccineData
+        );
+        return response.data;
+      });
+  
+      const updateVaccineInformation = await Promise.all(promises);
+  
+      await commit("UPDATE_VACCINATION_INFORMATION", { id, updateVaccineInformation });
+      await dispatch("fetchRegistrants");
     } catch (error) {
       console.error("Error requesting vaccination update:", error);
+    }
+  },
+  async deleteRegistrant({ commit, dispatch }, id) {
+    try {
+      const response = await axios.delete(
+        `http://200.10.77.4/api/citizens/${id}`
+      );
+      const data = response.data;
+      await commit("DELETE_REGISTRANT", data);
+      await dispatch("fetchRegistrants");
+    } catch (error) {
+      console.error("Error deleting registrant:", error);
     }
   },
 };
@@ -142,6 +161,11 @@ const mutations = {
       };
     }
   },
+  DELETE_REGISTRANT(state, data) {
+    state.registrants = state.registrants.filter(
+      (registrant) => registrant.id !== data.id
+    );
+  },
   UPDATE_REGISTRANT_FILES(state, { id, files }) {
     const registrant = state.registrant;
     if (registrant && registrant.id === id) {
@@ -162,24 +186,20 @@ const mutations = {
     state.vaccinationDetails = vaccineInformation;
   },
   UPDATE_VACCINATION_INFORMATION(state, { id, updateVaccineInformation }) {
+    // console.log(updateVaccineInformation)
     const vaccineInformation = state.vaccinationDetails;
-    if (vaccineInformation && vaccineInformation.citizen_id === id) {
-      vaccineInformation.vaccinationStat = [
-        {
-          dose: updateVaccineInformation.dose,
-          vaccination_date: updateVaccineInformation.vaccination_date,
-          vaccine_name: updateVaccineInformation.vaccine_name,
-          lot_no: updateVaccineInformation.lot_no,
-          site_name: updateVaccineInformation.site_name,
-        },
-        // {
-        //   dose: updateVaccineInformation.dose,
-        //   vaccination_date: updateVaccineInformation.vaccination_date,
-        //   vaccine_name: updateVaccineInformation.vaccine_name,
-        //   lot_no: updateVaccineInformation.lot_no,
-        //   site_name: updateVaccineInformation.site_name
-        // }
-      ];
+    if (
+      vaccineInformation &&
+      vaccineInformation.vaccinationStat.citizen_id === id &&
+      vaccineInformation.vaccinationStat.id === updateVaccineInformation.id
+    ) {
+      vaccineInformation.vaccinationStat = {
+        dose: updateVaccineInformation.dose,
+        vaccination_date: updateVaccineInformation.vaccination_date,
+        vaccine_name: updateVaccineInformation.vaccine_name,
+        lot_no: updateVaccineInformation.lot_no,
+        site_name: updateVaccineInformation.site_name,
+      };
     }
   },
 };
