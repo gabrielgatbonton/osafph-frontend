@@ -1,6 +1,6 @@
 <template>
   <v-app>
-     <NavComponents />
+     <NavComponents v-if="this.$route.name === 'login' ? false : true" />
     <v-main>
       <router-view/>
     </v-main>
