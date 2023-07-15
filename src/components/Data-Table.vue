@@ -1,19 +1,8 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="registrants"
-    item-key="name"
-    class="elevation-1"
-    :search="search"
-    :custom-filter="filterOnlyCapsText"
-  >
+  <v-data-table :headers="headers" :items="registrants" item-key="name" class="elevation-1" :search="search"
+    :custom-filter="filterOnlyCapsText">
     <template v-slot:top>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        class="mx-4"
-        prepend-icon="mdi-magnify"
-      ></v-text-field>
+      <v-text-field v-model="search" label="Search" class="mx-4" prepend-icon="mdi-magnify"></v-text-field>
     </template>
     <template v-slot:body="{ items }">
       <tbody>
@@ -21,8 +10,7 @@
           <td>{{ item.hub_registrant_number }}</td>
           <td>
             {{
-              `${item.last_name}, ${item.first_name} ${
-                item.middle_name ? " " + item.middle_name : ""
+              `${item.last_name}, ${item.first_name} ${item.middle_name ? " " + item.middle_name : ""
               }
                         ${item.suffix ? " " + item.suffix : ""}`
             }}
@@ -31,26 +19,23 @@
           <td>{{ item.birthday }}</td>
           <td>{{ item.barangay }}</td>
           <td>{{ item.municipality }}</td>
-          <td>{{ item.mcg_cares_card }}</td>
+          <td>
+            <div
+              :class="{ 'text-green': item.mcg_cares_card === 'CLAIMED', 'text-red': item.mcg_cares_card !== 'CLAIMED' }">
+              {{ item.mcg_cares_card }}
+            </div>
+
+          </td>
           <td>
             <!-- Icon button for options -->
             <v-menu left :offset-x="offset">
               <template v-slot:activator="{ on, attrs }">
-                <v-icon class="ml-n8" v-bind="attrs" v-on="on"
-                  >mdi-dots-vertical</v-icon
-                >
+                <v-icon class="ml-n8" v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
               </template>
 
               <v-list dense>
-                <v-list-item
-                  v-for="(option, index) in getOptions(item)"
-                  :key="index"
-                  @click="executeAction(option)"
-                >
-                  <v-list-item-title
-                    ><v-icon dense left>{{ option.icon }}</v-icon
-                    >{{ option.text }}</v-list-item-title
-                  >
+                <v-list-item v-for="(option, index) in getOptions(item)" :key="index" @click="executeAction(option)">
+                  <v-list-item-title><v-icon dense left>{{ option.icon }}</v-icon>{{ option.text }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -158,8 +143,18 @@ export default {
   },
   // watch: {
   //   registrants(value) {
-  //     console.log("watch:", value);
-  //   },
+
+  //   }
   // },
 };
 </script>
+
+<style scoped>
+.text-green {
+  color: green;
+}
+
+.text-red {
+  color: red;
+}
+</style>
