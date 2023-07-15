@@ -10,7 +10,7 @@
         <v-col cols="auto">
           <v-btn
             dark
-            class="blue mr-3"
+            class="blue darken-4 mr-3"
             :to="{ name: 'edit', params: { id: routeID } }"
             ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
           >
@@ -23,8 +23,8 @@
             <v-row>
               <v-col cols="12">
                 <v-card>
-                  <v-card-title class="grey lighten-2"
-                    ><v-icon left>mdi-folder-multiple</v-icon
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-folder-multiple</v-icon
                     >Category</v-card-title
                   >
                   <v-container fluid class="py-4">
@@ -49,8 +49,8 @@
               </v-col>
               <v-col cols="12" class="">
                 <v-card>
-                  <v-card-title class="grey lighten-2"
-                    ><v-icon left>mdi-human-greeting-variant</v-icon>Personal
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-human-greeting-variant</v-icon>Personal
                     Information</v-card-title
                   >
                   <v-container fluid class="py-4">
@@ -93,8 +93,8 @@
               </v-col>
               <v-col cols="12" class="mt-n1">
                 <v-card>
-                  <v-card-title class="grey lighten-2"
-                    ><v-icon left>mdi-map-marker</v-icon>Address</v-card-title
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-map-marker</v-icon>Address</v-card-title
                   >
                   <v-container fluid class="py-4">
                     <v-row v-for="info in address" :key="info.title" no-gutters>
@@ -120,8 +120,8 @@
             <v-row>
               <v-col cols="12">
                 <v-card>
-                  <v-card-title class="grey lighten-2"
-                    ><v-icon left>mdi-needle</v-icon>Vaccine</v-card-title
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-needle</v-icon>Vaccine</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
@@ -129,7 +129,7 @@
                         :to="{ name: 'vaccination', params: { id: routeID } }"
                         dark
                         block
-                        class="grey darken-1"
+                        class="blue darken-4"
                         >Vaccination Details</v-btn
                       >
                     </v-col>
@@ -138,8 +138,8 @@
               </v-col>
               <v-col cols="12" class="mt-n2">
                 <v-card>
-                  <v-card-title class="grey lighten-2"
-                    ><v-icon left>mdi-image</v-icon>CROP Image</v-card-title
+                  <v-card-title dark class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-image</v-icon>CROP Image</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
@@ -173,8 +173,8 @@
               </v-col>
               <v-col cols="12" class="mt-n2">
                 <v-card>
-                  <v-card-title class="grey lighten-2"
-                    ><v-icon left>mdi-image</v-icon>Image</v-card-title
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-image</v-icon>Image</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
@@ -208,8 +208,8 @@
               </v-col>
               <v-col cols="12" class="mt-n2">
                 <v-card>
-                  <v-card-title class="grey lighten-2"
-                    ><v-icon left>mdi-draw-pen</v-icon>Signature</v-card-title
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-draw-pen</v-icon>Signature</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
@@ -243,8 +243,8 @@
               </v-col>
               <v-col cols="12" class="mt-n2">
                 <v-card>
-                  <v-card-title class="grey lighten-2"
-                    ><v-icon left>mdi-card-account-details</v-icon>MCG Cares
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-card-account-details</v-icon>MCG Cares
                     Card</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
@@ -253,7 +253,6 @@
                         outlined
                         block
                         :loading="loading"
-                        :disabled="disabledButton"
                         @click="submitClaimStatus"
                         :color="cardStatus.status ? 'green' : 'red'"
                         class="mb-2"
@@ -261,12 +260,12 @@
                         {{ cardStatus.value }}
                       </v-btn>
 
-                      <v-btn dark block class="mb-2 grey darken-1"
+                      <v-btn dark block class="mb-2 blue darken-4"
                         ><v-icon left>mdi-smart-card-outline</v-icon
                         >Front</v-btn
                       >
 
-                      <v-btn dark block class="mb-2 grey darken-1"
+                      <v-btn dark block class="mb-2 blue darken-4"
                         ><v-icon left>mdi-credit-card-outline</v-icon
                         >Back</v-btn
                       >
@@ -297,7 +296,6 @@ export default {
       value: null,
       status: false,
     },
-    disabledButton: false,
     loading: false,
   }),
   methods: {
@@ -347,8 +345,8 @@ export default {
     async submitClaimStatus() {
       const id = this.$route.params.id;
       try {
-        this.loading = true;
         if (this.cardStatus.status === false) {
+          this.loading = true;
           this.cardStatus.status = true;
           this.cardStatus.value = "CLAIMED";
           const data = {
@@ -358,7 +356,7 @@ export default {
             id: id,
             data: data,
           });
-          this.disabledButton = true;
+          // this.disabledButton = true;
           this.loading = false;
         }
       } catch (error) {
@@ -386,6 +384,9 @@ export default {
         ? baseURL + this.registrant.citizen.citizen_file.crop_image_url
         : null;
       this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
+      if(this.registrant.citizen.mcg_cares_card === "CLAIMED"){
+        this.cardStatus.status = true;
+      }
       this.routeID = id;
     },
     // registrant() {
