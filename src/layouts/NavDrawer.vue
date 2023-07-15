@@ -6,7 +6,7 @@
       color="grey lighten-4"
       width="200"
     >
-      <v-container class="grey lighten-3">
+      <v-container class="grey lighten-2">
         <v-row>
           <v-col cols="auto" class="ma-n2 pl-4">
             <v-img
