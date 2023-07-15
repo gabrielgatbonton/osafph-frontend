@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import registrants from "./modules/registrants";
+import { registrants } from "./modules/registrants";
 import { login } from "./modules/login";
 
 Vue.use(Vuex);
