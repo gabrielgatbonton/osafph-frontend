@@ -121,6 +121,7 @@
               :value="data.contact_number"
               v-model="data.contact_number"
               label="Contact Number"
+              type="number"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -152,6 +153,7 @@
               :value="data.emergency_number"
               v-model="data.emergency_number"
               label="Contact Person's Number"
+              type="number"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -200,7 +202,7 @@
             <v-btn
               dark
               block
-              class="blue"
+              class="blue darken-4"
               :loading="loading"
               @click="$emit('submitData', data)"
               >Save</v-btn

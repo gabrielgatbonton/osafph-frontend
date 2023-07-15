@@ -4,6 +4,10 @@
 ```
 npm install
 ```
+## Reminder
+```
+Make sure you have the right baseURL configuration in `main.js`
+```
 
 ### Compiles and hot-reloads for development
 ```
@@ -23,20 +27,4 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-# How to Run JSON Server
-
-## Install JSON Server (If JSON Server is not installed)
-```
-npm install -g json-server
-```
-
-## Install Dependencies
-```
-npm i
-```
-
-### Run JSON Server
-```
-json-server --watch db.json
-```
 

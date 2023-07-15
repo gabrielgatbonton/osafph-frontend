@@ -8,7 +8,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn class="mr-3" @click="toRegister">Register</v-btn>
+          <v-btn dark class="mr-3 blue darken-4" @click="toRegister">Register</v-btn>
         </v-col>
       </v-row>
     </v-container>
