@@ -176,7 +176,7 @@ export const registrants = {
       const promises = data.map(async (vaccineData, index) => {
         return this.$axios
           .put(
-            `/citizens/${id}/vaccine/${data[index].id}`, // Use index + 1 to generate the correct vaccine ID
+            `/citizens/${id}/vaccine/${data[index].id}`,
             vaccineData
           )
           .then((response) => response.data)
@@ -192,7 +192,7 @@ export const registrants = {
             id,
             updateVaccineInformation,
           });
-          return dispatch("fetchRegistrants");
+          dispatch("fetchRegistrants");
         })
         .catch((error) => {
           console.error("Error requesting vaccination update:", error);

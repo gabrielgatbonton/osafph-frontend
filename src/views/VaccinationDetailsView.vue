@@ -248,15 +248,15 @@ export default {
   },
   watch: {
     getVaccineInformation(value) {
-      console.log("watch:", value);
+      // console.log("watch:", value);
       this.info = value;
     },
     info(value) {
-      console.log("info", value);
-      console.log(value.vaccinationStat[0].id)
-      console.log(value.vaccinationStat[1].id)
+      // console.log("info", value);
+      // console.log(value.vaccinationStat[0].id)
+      // console.log(value.vaccinationStat[1].id)
       // if (value.vaccinationStat >= 1) {
-      if (value && value.vaccinationStat && value.vaccinationStat.length < 2) {
+      if (value && value.vaccinationStat && value.vaccinationStat.length >= 1) {
         this.dose_1 = value.vaccinationStat[0].dose;
         this.date_1 = value.vaccinationStat[0].vaccination_date;
         this.vaccine_1 = value.vaccinationStat[0].vaccine_name;
@@ -264,7 +264,7 @@ export default {
         this.vaccination_site_1 = value.vaccinationStat[0].site_name;
         this.vaccine_id_1 = value.vaccinationStat[0].id;
       }
-      if (value && value.vaccinationStat && value.vaccinationStat.length > 1) {
+      if (value && value.vaccinationStat && value.vaccinationStat.length >= 2) {
         this.dose_1 = value.vaccinationStat[0].dose;
         this.date_1 = value.vaccinationStat[0].vaccination_date;
         this.vaccine_1 = value.vaccinationStat[0].vaccine_name;
