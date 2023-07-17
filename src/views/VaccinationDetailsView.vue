@@ -249,7 +249,6 @@ export default {
   watch: {
     getVaccineInformation(value) {
       // console.log("watch:", value);
-      //testing
       this.info = value;
     },
     info(value) {
