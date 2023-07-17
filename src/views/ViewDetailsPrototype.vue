@@ -284,7 +284,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-
 export default {
   data: () => ({
     routeID: null,
@@ -297,6 +296,7 @@ export default {
       status: false,
     },
     loading: false,
+    dynamicBaseURL: null,
   }),
   methods: {
     handleImageUpload(file) {
@@ -370,7 +370,7 @@ export default {
   watch: {
     getRegistrant(value) {
       const id = this.$route.params.id;
-      const baseURL = "http://200.10.77.4/";
+      const baseURL = this.$url;
       console.log("watch:", value);
       this.registrant = value;
       this.selectedImage = this.registrant.citizen.citizen_file.image_url

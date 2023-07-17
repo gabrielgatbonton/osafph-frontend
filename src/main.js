@@ -9,13 +9,18 @@ import axios from 'axios'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 
+//BaseURLs
+const baseURL = 'http://200.10.77.4/';  //Network BaseURL
+// const baseURL: 'http://127.0.0.1:8000/'; //Local BaseURL
+
+
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api' //Localhost API endpoint
-  // baseURL: 'http://200.10.77.4/api'  //Network API endpoint
+  baseURL: `${baseURL}api`  //Axios baseURL
 })
 
 Vue.prototype.$axios = axiosInstance;
 Vuex.Store.prototype.$axios = axiosInstance;
+Vue.prototype.$url = baseURL
 
 axiosInstance.interceptors.request.use((config) => {
   const accessToken = store.getters["login/accessToken"];
