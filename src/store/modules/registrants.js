@@ -106,7 +106,7 @@ export const registrants = {
           console.error("Error fetching registrants:", error);
         });
     },
-     addRegistrant({ commit }, data) {
+    addRegistrant({ commit }, data) {
       return this.$axios
         .post("/citizens/create", data)
         .then((response) => {
@@ -175,11 +175,11 @@ export const registrants = {
     updateVaccineInformation({ commit, dispatch }, { id, data }) {
       const promises = data.map(async (vaccineData, index) => {
         return this.$axios
-          .put(
-            `/citizens/${id}/vaccine/${data[index].id}`,
-            vaccineData
-          )
-          .then((response) => response.data)
+          .put(`/citizens/${id}/vaccine/${data[index].id}`, vaccineData)
+          .then((response) => {
+            response.data
+            dispatch("fetchRegistrants");
+          })
           .catch((error) => {
             console.error("Error updating vaccination information:", error);
             throw error; // Rethrow the error to be caught by the outer catch block
