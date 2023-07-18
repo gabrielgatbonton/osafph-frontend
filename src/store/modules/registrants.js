@@ -182,7 +182,7 @@ export const registrants = {
           })
           .catch((error) => {
             console.error("Error updating vaccination information:", error);
-            throw error; // Rethrow the error to be caught by the outer catch block
+            throw error;
           });
       });
 

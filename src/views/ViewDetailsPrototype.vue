@@ -50,8 +50,8 @@
               <v-col cols="12" class="">
                 <v-card>
                   <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-human-greeting-variant</v-icon>Personal
-                    Information</v-card-title
+                    ><v-icon dark left>mdi-human-greeting-variant</v-icon
+                    >Personal Information</v-card-title
                   >
                   <v-container fluid class="py-4">
                     <v-row
@@ -94,7 +94,8 @@
               <v-col cols="12" class="mt-n1">
                 <v-card>
                   <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-map-marker</v-icon>Address</v-card-title
+                    ><v-icon dark left>mdi-map-marker</v-icon
+                    >Address</v-card-title
                   >
                   <v-container fluid class="py-4">
                     <v-row v-for="info in address" :key="info.title" no-gutters>
@@ -125,13 +126,7 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <v-btn
-                        :to="{ name: 'vaccination', params: { id: routeID } }"
-                        dark
-                        block
-                        class="blue darken-4"
-                        >Vaccination Details</v-btn
-                      >
+                      <VaccinationDetailsViewVue :id="routeID" />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -139,7 +134,8 @@
               <v-col cols="12" class="mt-n2">
                 <v-card>
                   <v-card-title dark class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-image</v-icon>CROP Image</v-card-title
+                    ><v-icon dark left>mdi-image</v-icon>CROP
+                    Image</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
@@ -209,7 +205,8 @@
               <v-col cols="12" class="mt-n2">
                 <v-card>
                   <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-draw-pen</v-icon>Signature</v-card-title
+                    ><v-icon dark left>mdi-draw-pen</v-icon
+                    >Signature</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
@@ -244,8 +241,8 @@
               <v-col cols="12" class="mt-n2">
                 <v-card>
                   <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-card-account-details</v-icon>MCG Cares
-                    Card</v-card-title
+                    ><v-icon dark left>mdi-card-account-details</v-icon>MCG
+                    Cares Card</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
@@ -284,6 +281,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import VaccinationDetailsViewVue from "./VaccinationDetailsView.vue";
 export default {
   data: () => ({
     routeID: null,
@@ -298,6 +296,9 @@ export default {
     loading: false,
     dynamicBaseURL: null,
   }),
+  components: {
+    VaccinationDetailsViewVue,
+  },
   methods: {
     handleImageUpload(file) {
       // Handle the image upload
@@ -384,7 +385,7 @@ export default {
         ? baseURL + this.registrant.citizen.citizen_file.crop_image_url
         : null;
       this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
-      if(this.registrant.citizen.mcg_cares_card === "CLAIMED"){
+      if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
         this.cardStatus.status = true;
       }
       this.routeID = id;
