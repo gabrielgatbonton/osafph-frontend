@@ -1,5 +1,6 @@
 <template>
   <div>
+    <SubmissionAlert v-if="showAlert" :title="title" />
     <v-container fluid class="ma-1" v-if="registrant">
       <v-row>
         <v-col cols="auto">
@@ -126,7 +127,7 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <VaccinationDetailsViewVue :id="routeID" />
+                      <VaccinationDetailsViewVue :id="routeID" @request-successful="handleRequestSuccessful"/>
                     </v-col>
                   </v-row>
                 </v-card>
@@ -282,8 +283,10 @@
 <script>
 import { mapGetters } from "vuex";
 import VaccinationDetailsViewVue from "./VaccinationDetailsView.vue";
+import SubmissionAlert from "@/components/SubmissionAlert.vue";
 export default {
   data: () => ({
+    title: null,
     routeID: null,
     registrant: null,
     selectedImage: null, // Holds the selected image file
@@ -295,9 +298,11 @@ export default {
     },
     loading: false,
     dynamicBaseURL: null,
+    showAlert: false,
   }),
   components: {
     VaccinationDetailsViewVue,
+    SubmissionAlert,
   },
   methods: {
     handleImageUpload(file) {
@@ -364,6 +369,14 @@ export default {
         console.error("Error claiming card:", error);
       }
     },
+    handleRequestSuccessful(data){
+      this.showAlert = true;
+      this.title = data;
+      setTimeout(this.resetAlert, 5000); // Set timeout to call resetAlert after 5 seconds (5000 milliseconds)
+    },
+    resetAlert() {
+      this.showAlert = false;
+    },
   },
   created() {
     this.fetchRegistrant();
@@ -389,6 +402,7 @@ export default {
         this.cardStatus.status = true;
       }
       this.routeID = id;
+      this.showAlert = false;
     },
     // registrant() {
     //   const baseURL = "http://200.10.77.4/"

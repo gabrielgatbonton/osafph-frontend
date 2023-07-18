@@ -152,6 +152,7 @@ import parseISO from "date-fns/parseISO";
 export default {
   props: ['id'],
   data: () => ({
+    title: "Vaccination",
     dose_1: null,
     date_1: null,
     vaccine_1: null,
@@ -237,8 +238,9 @@ export default {
           data: [data1, data2],
         });
         this.loading = false;
-        this.dialog = false
+        this.dialog = false;
         this.fetchVaccination();
+        this.$emit("request-successful", this.title);
       } catch (error) {
         console.error("Error submitting vaccine information:", error);
       }
