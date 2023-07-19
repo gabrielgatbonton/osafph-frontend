@@ -1,6 +1,7 @@
 <template>
   <div>
     <SubmissionAlert v-if="showAlert" :title="title" />
+    <ErrorAlert v-if="showError" :title="title"/>
     <v-container fluid class="ma-1" v-if="registrant">
       <v-row>
         <v-col cols="auto">
@@ -127,43 +128,9 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <VaccinationDetailsViewVue :id="routeID" @request-successful="handleRequestSuccessful"/>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-col>
-              <v-col cols="12" class="mt-n2">
-                <v-card>
-                  <v-card-title dark class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-image</v-icon>CROP
-                    Image</v-card-title
-                  >
-                  <v-row justify="center" class="ma-2 pb-2">
-                    <v-col align-self="center" cols="12">
-                      <v-img
-                        class="grey darken-1 mx-auto"
-                        :src="selectedCropImage"
-                        :key="selectedCropImage"
-                        max-width="200"
-                        max-height="400"
-                      ></v-img>
-                      <v-file-input
-                        label="File input"
-                        color="grey darken-1"
-                        ref="cropImageInput"
-                        @change="handleCropImageUpload"
-                        :append-icon="
-                          selectedCropImage ? 'mdi-check' : 'mdi-upload'
-                        "
-                        :append-icon-cb="() => (selectedCropImage = '')"
-                      ></v-file-input>
-                      <!-- <v-btn
-                        dark
-                        block
-                        class="grey darken-1"
-                        :loading="loading"
-                        >Submit</v-btn
-                      > -->
+                      <VaccinationDetailsViewVue
+                        :id="routeID"
+                      />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -192,13 +159,6 @@
                         "
                         :append-icon-cb="() => (selectedImage = '')"
                       ></v-file-input>
-                      <!-- <v-btn
-                        dark
-                        block
-                        class="grey darken-1"
-                        :loading="loading"
-                        >Submit</v-btn
-                      > -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -284,13 +244,13 @@
 import { mapGetters } from "vuex";
 import VaccinationDetailsViewVue from "./VaccinationDetailsView.vue";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
+import ErrorAlert from "@/components/ErrorAlert.vue";
 export default {
   data: () => ({
     title: null,
     routeID: null,
     registrant: null,
     selectedImage: null, // Holds the selected image file
-    selectedCropImage: null, // Holds the selected crop image file
     selectedSignature: null, // Holds the selected signature image file
     cardStatus: {
       value: null,
@@ -299,10 +259,12 @@ export default {
     loading: false,
     dynamicBaseURL: null,
     showAlert: false,
+    showError: false,
   }),
   components: {
     VaccinationDetailsViewVue,
     SubmissionAlert,
+    ErrorAlert,
   },
   methods: {
     handleImageUpload(file) {
@@ -311,11 +273,6 @@ export default {
       // In this example, we are simply updating the `selectedImage` data property with the uploaded file
       this.selectedImage = URL.createObjectURL(file);
       this.submitImage(file, "image");
-    },
-    handleCropImageUpload(file) {
-      // Handle the image upload for the crop image component
-      this.selectedCropImage = URL.createObjectURL(file);
-      this.submitImage(file, "cropImage");
     },
     handleSignatureUpload(file) {
       // Handle the image upload for the signature component
@@ -334,7 +291,6 @@ export default {
       const id = this.$route.params.id;
       try {
         this.loading = true;
-
         // Append the selected image files to the FormData object
         const formData = new FormData();
         formData.append(type, file);
@@ -344,6 +300,7 @@ export default {
           data: formData, // Pass the FormData object as the data
         });
         this.loading = false;
+        this.handleRequestSuccessful(this.title);
       } catch (error) {
         console.error("Error submitting image:", error);
       }
@@ -369,14 +326,6 @@ export default {
         console.error("Error claiming card:", error);
       }
     },
-    handleRequestSuccessful(data){
-      this.showAlert = true;
-      this.title = data;
-      setTimeout(this.resetAlert, 5000); // Set timeout to call resetAlert after 5 seconds (5000 milliseconds)
-    },
-    resetAlert() {
-      this.showAlert = false;
-    },
   },
   created() {
     this.fetchRegistrant();
@@ -393,25 +342,29 @@ export default {
       this.selectedSignature = this.registrant.citizen.citizen_file.e_signature
         ? baseURL + this.registrant.citizen.citizen_file.e_signature
         : null;
-      this.selectedCropImage = this.registrant.citizen.citizen_file
-        .crop_image_url
-        ? baseURL + this.registrant.citizen.citizen_file.crop_image_url
-        : null;
       this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
       if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
         this.cardStatus.status = true;
       }
       this.routeID = id;
-      this.showAlert = false;
     },
-    // registrant() {
-    //   const baseURL = "http://200.10.77.4/"
-    //   console.log(baseURL+this.registrant.citizen.citizen_file.e_signature)
-    //   console.log("Watch", this.selectedImage);
-    // },
+    getShowAlert(value){
+      this.showAlert = value.alert;
+      this.title = value.message;
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 5000)
+    },
+    getShowError(value){
+      this.showError = value.alert;
+      this.title = value.message;
+      setTimeout(() => {
+        this.showError = false;
+      }, 5000)
+    },
   },
   computed: {
-    ...mapGetters("registrants", ["getRegistrant"]),
+    ...mapGetters("registrants", ["getRegistrant", "getShowAlert", "getShowError"]),
     categories() {
       return [
         {

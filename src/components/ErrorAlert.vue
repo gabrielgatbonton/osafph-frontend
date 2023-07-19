@@ -1,19 +1,18 @@
 <template>
   <div>
     <v-alert
-      type="success"
+      type="error"
       dismissible
       @input="showAlert = false"
-      >Successfully {{ title }} Information</v-alert
+      >{{ title }} and verification failed. Please try again.</v-alert
     >
   </div>
 </template>
 
 <script>
 export default {
-    props: ['title'],
+    props: ['title']
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -56,14 +56,17 @@ export default {
         };
 
         // Dispatch the 'addRegistrant' action from the Vuex store
-        await this.$store.dispatch("registrants/updateRegistrant", {
-          id: id,
-          data: collection,
-        });
-
-        // Assuming the response contains the newly created registrant object
-        this.loading = false;
-        this.$router.push({ name: "citizens" });
+        return this.$store
+          .dispatch("registrants/updateRegistrant", {
+            id: id,
+            data: collection,
+          })
+          .then(
+            (this.loading = false),
+            this.$router.push({ name: "citizens" }).catch((error) => {
+              console.error("Error submitting request", error);
+            })
+          );
       } catch (error) {
         console.error("Error updating registrant form:", error);
       }

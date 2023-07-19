@@ -9,24 +9,21 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <FormFormat
-    v-on:submitData="submit"
-    :loading="loading"
-    />
+    <FormFormat v-on:submitData="submit" :loading="loading" />
   </div>
 </template>
 
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-import FormFormat from '@/components/FormFormat.vue'
+import FormFormat from "@/components/FormFormat.vue";
 import { mapActions } from "vuex";
 export default {
   data: () => ({
     loading: false,
   }),
   components: {
-    FormFormat
+    FormFormat,
   },
   methods: {
     ...mapActions("registrants", ["addRegistrant"]),
@@ -59,11 +56,12 @@ export default {
         };
 
         // Dispatch the 'addRegistrant' action from the Vuex store
-        await this.$store.dispatch("registrants/addRegistrant", collection);
-
-        // Assuming the response contains the newly created registrant object
-        this.loading = false;
-        this.$router.push({ name: "citizens" });
+        return this.$store
+          .dispatch("registrants/addRegistrant", collection)
+          .then((this.loading = false), this.$router.push({ name: "citizens" }))
+          .catch((error) => {
+            console.error("Error dispatching registrant: ", error);
+          });
       } catch (error) {
         console.error("Error submitting form:", error);
       }

@@ -1,5 +1,7 @@
 <template>
   <div class="dashboard">
+    <SubmissionAlert :title="title" v-if="showAlert"/>
+    <ErrorAlert :title="title" v-if="showError"/>
     <v-container fluid class="table-title ma-2">
       <v-row>
         <v-col cols="auto">
@@ -25,15 +27,22 @@
 
 <script>
 import DataTable from "@/components/Data-Table.vue";
+import SubmissionAlert from "@/components/SubmissionAlert.vue";
+import ErrorAlert from '@/components/ErrorAlert.vue'
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "HomeView",
   components: {
     DataTable,
+    SubmissionAlert,
+    ErrorAlert,
   },
   data() {
     return {
       search: "",
+      showAlert: false,
+      showError: false,
+      title: null,
     };
   },
   methods: {
@@ -43,16 +52,29 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("registrants", ["allRegistrants"]),
+    ...mapGetters("registrants", ["allRegistrants", "getShowAlert", "getShowError"]),
   },
   created() {
     this.fetchRegistrants(); // Fetch registrants' data when the component is created
   },
-  // watch:{
-  //   allRegistrants(value){
-  //     console.log("watch:", value)
-  //   }
-  // }
+  watch:{
+    getShowAlert(value){
+      console.log("alert", value)
+      this.showAlert = value.alert;
+      this.title = value.message;
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 5000)
+    },
+    getShowError(value){
+      console.log("error", value)
+      this.showError = value.alert;
+      this.title = value.message;
+      setTimeout(() => {
+        this.showError = false;
+      }, 5000)
+    }
+  }
 };
 </script>
 

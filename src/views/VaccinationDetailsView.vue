@@ -150,7 +150,7 @@ import { mapGetters } from "vuex";
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 export default {
-  props: ['id'],
+  props: ["id"],
   data: () => ({
     title: "Vaccination",
     dose_1: null,
@@ -183,7 +183,7 @@ export default {
   }),
   methods: {
     async fetchVaccination() {
-      const id = this.id
+      const id = this.id;
       try {
         await this.$store.dispatch("registrants/fetchVaccineInformation", id);
       } catch (error) {
@@ -233,14 +233,18 @@ export default {
           };
         }
 
-        await this.$store.dispatch("registrants/updateVaccineInformation", {
-          id: id,
-          data: [data1, data2],
-        });
-        this.loading = false;
-        this.dialog = false;
-        this.fetchVaccination();
-        this.$emit("request-successful", this.title);
+        return this.$store
+          .dispatch("registrants/updateVaccineInformation", {
+            id: id,
+            data: [data1, data2],
+          })
+          .then(
+            (this.loading = false),
+            (this.dialog = false),
+          )
+          .catch((error) => {
+            console.error("Error submitting vaccine information:", error);
+          });
       } catch (error) {
         console.error("Error submitting vaccine information:", error);
       }

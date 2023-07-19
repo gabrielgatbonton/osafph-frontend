@@ -11,6 +11,8 @@ export const registrants = {
     registrants: [],
     registrant: null,
     vaccinationDetails: null,
+    showAlert: false,
+    showError: null,
   }),
   mutations: {
     SET_REGISTRANTS(state, registrants) {
@@ -57,7 +59,6 @@ export const registrants = {
       if (registrant && registrant.id === id) {
         registrant.citizen.citizen_file = {
           image_url: files.image_url,
-          crop_image_url: files.crop_image_url,
           e_signature: files.e_signature,
         };
       }
@@ -88,11 +89,25 @@ export const registrants = {
         };
       }
     },
+    SET_SHOW_ALERT(state, { alert, message }) {
+      state.showAlert = {
+        alert: alert,
+        message: message,
+      };
+    },
+    SET_SHOW_ERROR(state, { alert, message }) {
+      state.showError = {
+        alert: alert,
+        message: message,
+      };
+    },
   },
   getters: {
     allRegistrants: (state) => state.registrants,
     getRegistrant: (state) => state.registrant,
     getVaccineInformation: (state) => state.vaccinationDetails,
+    getShowAlert: (state) => state.showAlert,
+    getShowError: (state) => state.showError,
   },
   actions: {
     fetchRegistrants({ commit }) {
@@ -112,8 +127,16 @@ export const registrants = {
         .then((response) => {
           const registrant = response.data;
           commit("ADD_REGISTRANT", registrant);
+          commit("SET_SHOW_ALERT", {
+            alert: true,
+            message: "Saved Registrant",
+          });
         })
         .catch((error) => {
+          commit("SET_SHOW_ERROR", {
+            alert: true,
+            message: "Register",
+          });
           console.error("Error adding citizen:", error);
         });
     },
@@ -134,8 +157,16 @@ export const registrants = {
         .then((response) => {
           const updateRegistrant = response.data;
           commit("UPDATE_REGISTRANT", { id, updateRegistrant });
+          commit("SET_SHOW_ALERT", {
+            alert: true,
+            message: "Updated Registrant",
+          });
         })
         .catch((error) => {
+          commit("SET_SHOW_ERROR", {
+            alert: true,
+            message: "Update",
+          });
           console.error("Error updating request to registrant vuex:", error);
         });
     },
@@ -145,8 +176,16 @@ export const registrants = {
         .then((response) => {
           const files = response.data;
           commit("UPDATE_REGISTRANT_FILES", { id, files });
+          commit("SET_SHOW_ALERT", {
+            alert: true,
+            message: "Updated Image",
+          });
         })
         .catch((error) => {
+          commit("SET_SHOW_ERROR", {
+            alert: true,
+            message: "Update",
+          });
           console.error("Error updating registrant files:", error);
         });
     },
@@ -177,8 +216,7 @@ export const registrants = {
         return this.$axios
           .put(`/citizens/${id}/vaccine/${data[index].id}`, vaccineData)
           .then((response) => {
-            response.data
-            dispatch("fetchRegistrants");
+            response.data;
           })
           .catch((error) => {
             console.error("Error updating vaccination information:", error);
@@ -192,9 +230,17 @@ export const registrants = {
             id,
             updateVaccineInformation,
           });
+          commit("SET_SHOW_ALERT", {
+            alert: true,
+            message: "Updated Vaccine",
+          });
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
+          commit("SET_SHOW_ERROR", {
+            alert: true,
+            message: "Update",
+          });
           console.error("Error requesting vaccination update:", error);
         });
     },
@@ -204,9 +250,17 @@ export const registrants = {
         .then((response) => {
           const data = response.data;
           commit("DELETE_REGISTRANT", data);
+          commit("SET_SHOW_ALERT", {
+            alert: true,
+            message: "Deleted Registrant",
+          });
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
+          commit("SET_SHOW_ERROR", {
+            alert: true,
+            message: "Delete",
+          });
           console.error("Error deleting registrant:", error);
         });
     },
