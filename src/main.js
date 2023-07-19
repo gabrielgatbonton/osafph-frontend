@@ -5,13 +5,15 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
+import Vuelidate from 'vuelidate'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+Vue.use(Vuelidate)
 
 //BaseURLs
 const baseURL = 'http://200.10.77.4/';  //Network BaseURL
-// const baseURL: 'http://127.0.0.1:8000/'; //Local BaseURL
+// const baseURL: 'http://127.0.0.1:8000/'; //Lo cal BaseURL
 
 
 const axiosInstance = axios.create({

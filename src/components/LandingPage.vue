@@ -32,13 +32,24 @@
               >Login</v-card-title
             >
             <div class="mx-7">
-              <v-text-field v-model="username" label="Username"></v-text-field>
+              <v-text-field
+                v-model="username"
+                :error-messages="usernameErrors"
+                @blur="$v.username.$touch()"
+                :success="!$v.username.$invalid && $v.username.$dirty"
+                label="Username"
+              ></v-text-field>
               <v-text-field
                 v-model="password"
+                @blur="$v.password.$touch()"
+                :error-messages="passwordErrors"
+                :success="!$v.password.$invalid && $v.password.$dirty"
                 type="password"
                 label="Password"
               ></v-text-field>
-              <v-btn class="blue" block dark @click="handleLogin">Login</v-btn>
+              <v-btn class="mt-5 blue darken-2" block dark @click="handleLogin"
+                >Login</v-btn
+              >
             </div>
           </v-card>
         </v-col>
@@ -48,28 +59,89 @@
 </template>
 
 <script>
+import { required, minLength } from "vuelidate/lib/validators";
 export default {
   data: () => ({
     username: "",
     password: "",
+    loading: false,
+    loginError: null,
   }),
+  validations: {
+    username: {
+      required,
+      minLength: minLength(4),
+    },
+    password: {
+      required,
+      minLength: minLength(4),
+    },
+  },
+  computed: {
+    usernameErrors() {
+      const errors = [];
+      if (!this.$v.username.$dirty) return errors;
+      !this.$v.username.required && errors.push("Username is required");
+      !this.$v.username.minLength &&
+        errors.push("Username must be at least 4 characters long");
+      // Add loginError message to errors if it exists
+      if (this.loginError) {
+        errors.push(this.loginError);
+      }
+
+      return errors;
+    },
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.password.$dirty) return errors;
+      !this.$v.password.required && errors.push("Password is required");
+      !this.$v.password.minLength &&
+        errors.push("Password must be at least 4 characters long");
+
+      if (this.loginError) {
+        errors.push(this.loginError);
+      }
+      return errors;
+    },
+  },
   methods: {
     handleLogin() {
-      const credentials = {
-        username: this.username,
-        password: this.password,
-      };
+      // Validate the form before proceeding with login
+      this.$v.$touch();
 
-      this.$store
-        .dispatch("login/login", credentials)
-        .then(() => {
-          // Redirect to the dashboard component
-          this.$router.replace({ name: "dashboard" });
-        })
-        .catch((error) => {
-          // Handle login error
-          console.error("Login error:", error);
-        });
+      if (!this.$v.$invalid) {
+        // Validation passed, continue with login
+        const credentials = {
+          username: this.username,
+          password: this.password,
+        };
+
+        this.loading = true;
+        this.loginError = null;
+
+        this.$store
+          .dispatch("login/login", credentials)
+          .then(() => {
+            // Redirect to the dashboard component
+            this.$router.replace({ name: "dashboard" });
+          })
+          .catch((error) => {
+            // Handle login error
+            console.error("Login error:", error);
+
+            if (error.response && error.response.status === 401) {
+              // Status code 401 indicates unauthorized login (incorrect credentials)
+              this.loginError = "Invalid username or password";
+            } else {
+              // Other error, display a generic error message
+              this.loginError = "An error occurred during login";
+            }
+          })
+          .finally(() => {
+            // Reset loading state after login request is completed (whether successful or not)
+            this.loading = false;
+          });
+      }
     },
   },
 };
