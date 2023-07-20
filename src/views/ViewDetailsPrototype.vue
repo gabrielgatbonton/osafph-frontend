@@ -334,7 +334,6 @@ export default {
     getRegistrant(value) {
       const id = this.$route.params.id;
       const baseURL = this.$url;
-      console.log("watch:", value);
       this.registrant = value;
       this.selectedImage = this.registrant.citizen.citizen_file.image_url
         ? baseURL + this.registrant.citizen.citizen_file.image_url
@@ -384,7 +383,7 @@ export default {
           content: `${this.registrant.citizen.last_name.toUpperCase()}, 
           ${this.registrant.citizen.first_name.toUpperCase()} 
           ${
-            this.registrant.citizen.middle_name.toUpperCase()
+            this.registrant.citizen.middle_name
               ? " " + this.registrant.citizen.middle_name.toUpperCase()
               : ""
           } 
