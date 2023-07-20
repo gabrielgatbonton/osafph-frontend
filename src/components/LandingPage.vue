@@ -47,7 +47,7 @@
                 type="password"
                 label="Password"
               ></v-text-field>
-              <v-btn class="mt-5 blue darken-2" block dark @click="handleLogin"
+              <v-btn class="mt-5 blue darken-2" block dark :loading="loading" @click="handleLogin"
                 >Login</v-btn
               >
             </div>
@@ -129,7 +129,10 @@ export default {
             // Handle login error
             console.error("Login error:", error);
 
-            if (error.response && error.response.status === 401) {
+            if (error.response && error.response.status === 404) {
+              // Status code 404 indicates user not found
+              this.loginError = "User not found";
+            } else if (error.response && error.response.status === 401) {
               // Status code 401 indicates unauthorized login (incorrect credentials)
               this.loginError = "Invalid username or password";
             } else {
