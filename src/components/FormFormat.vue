@@ -16,6 +16,8 @@
               label="Category"
               :items="categories"
               placeholder="Choose..."
+              @blur="$v.data.category.$touch()"
+              :error-messages="errorMessages.category"
             ></v-select>
           </v-col>
         </v-row>
@@ -25,6 +27,8 @@
               :value="data.hub_registrant_number"
               v-model="data.hub_registrant_number"
               label="HUB Registrant Number"
+              @blur="$v.data.hub_registrant_number.$touch()"
+              :error-messages="errorMessages.hub_registrant_number"
             ></v-text-field>
           </v-col>
           <v-col cols="12" lg="6" md="6">
@@ -32,6 +36,8 @@
               :value="data.passport_number"
               v-model="data.passport_number"
               label="Passport Number"
+              @blur="$v.data.passport_number.$touch()"
+              :error-messages="errorMessages.passport_number"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -48,6 +54,8 @@
               :value="data.last_name"
               v-model="data.last_name"
               label="Last Name"
+              @blur="$v.data.last_name.$touch()"
+              :error-messages="errorMessages.last_name"
             ></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -55,6 +63,8 @@
               :value="data.first_name"
               v-model="data.first_name"
               label="First Name"
+              @blur="$v.data.first_name.$touch()"
+              :error-messages="errorMessages.first_name"
             ></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -62,6 +72,8 @@
               :value="data.middle_name"
               v-model="data.middle_name"
               label="Middle Name"
+              @blur="$v.data.middle_name.$touch()"
+              :error-messages="errorMessages.middle_name"
             ></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -71,6 +83,8 @@
               label="Suffix"
               :items="suffixes"
               placeholder="Choose..."
+              @blur="$v.data.suffix.$touch()"
+              :error-messages="errorMessages.suffix"
             ></v-combobox>
           </v-col>
         </v-row>
@@ -92,6 +106,8 @@
                   v-bind="attrs"
                   label="Birthday"
                   readonly
+                  @blur="$v.data.birthday.$touch()"
+                  :error-messages="errorMessages.birthday"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -106,6 +122,8 @@
               v-model="data.gender"
               label="Sex"
               :items="genders"
+              @blur="$v.data.gender.$touch()"
+              :error-messages="errorMessages.gender"
             ></v-select>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -114,6 +132,8 @@
               v-model="data.civil_status"
               label="Civil Status"
               :items="civil_statuses"
+              @blur="$v.data.civil_status.$touch()"
+              :error-messages="errorMessages.civil_status"
             ></v-select>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -122,6 +142,8 @@
               v-model="data.contact_number"
               label="Contact Number"
               type="number"
+              @blur="$v.data.contact_number.$touch()"
+              :error-messages="errorMessages.contact_number"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -131,6 +153,9 @@
               :value="data.tin_number"
               v-model="data.tin_number"
               label="TIN"
+              @blur="$v.data.tin_number.$touch()"
+              :error-messages="errorMessages.tin_number"
+              counter="12"
             ></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -139,6 +164,8 @@
               v-model="data.blood_type"
               label="Blood Type"
               :items="blood_types"
+              @blur="$v.data.blood_type.$touch()"
+              :error-messages="errorMessages.blood_type"
             ></v-select>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -146,6 +173,8 @@
               :value="data.emergency_name"
               v-model="data.emergency_name"
               label="Contact Person's Name"
+              @blur="$v.data.emergency_name.$touch()"
+              :error-messages="errorMessages.emergency_name"
             ></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -154,6 +183,8 @@
               v-model="data.emergency_number"
               label="Contact Person's Number"
               type="number"
+              @blur="$v.data.emergency_number.$touch()"
+              :error-messages="errorMessages.emergency_number"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -170,6 +201,8 @@
               :value="data.address"
               v-model="data.address"
               label="Unit/Building/House No./Purok/Street/Subdivision"
+              @blur="$v.data.address.$touch()"
+              :error-messages="errorMessages.address"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -180,6 +213,8 @@
               v-model="data.province"
               label="Province"
               :items="provinces"
+              @blur="$v.data.province.$touch()"
+              :error-messages="errorMessages.province"
             ></v-select>
           </v-col>
           <v-col cols="12" lg="4" md="4">
@@ -188,6 +223,8 @@
               v-model="data.municipality"
               label="Municipality"
               :items="municipalites"
+              @blur="$v.data.municipality.$touch()"
+              :error-messages="errorMessages.municipality"
             ></v-select>
           </v-col>
           <v-col cols="12" lg="4" md="4">
@@ -196,6 +233,8 @@
               v-model="data.barangay"
               label="Barangay"
               :items="barangays"
+              @blur="$v.data.barangay.$touch()"
+              :error-messages="errorMessages.barangay"
             ></v-select>
           </v-col>
           <v-col cols="12">
@@ -204,7 +243,7 @@
               block
               class="blue darken-4"
               :loading="loading"
-              @click="$emit('submitData', data)"
+              @click="submitForm"
               >Save</v-btn
             >
           </v-col>
@@ -217,6 +256,7 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
+import { required, maxLength, minLength } from "vuelidate/lib/validators";
 import { mapGetters } from "vuex";
 export default {
   props: {
@@ -298,12 +338,191 @@ export default {
     // value: null,
     menu: false,
   }),
+  validations: {
+    data: {
+      category: {
+        required,
+      },
+      hub_registrant_number: {
+        required,
+      },
+      passport_number: { required },
+      last_name: { required },
+      first_name: { required },
+      middle_name: {},
+      suffix: {},
+      birthday: { required },
+      gender: { required },
+      civil_status: { required },
+      contact_number: { required, minLength: minLength(11) },
+      tin_number: { maxLength: maxLength(12), minLength: minLength(9) },
+      blood_type: {},
+      emergency_name: { required },
+      emergency_number: {
+        required,
+        minLength: minLength(11),
+        sameAsContactNumber: function (value) {
+          return value !== this.data.contact_number;
+        },
+      },
+      address: { required },
+      province: { required },
+      municipality: { required },
+      barangay: { required },
+    },
+  },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
     formattedDate() {
       return this.data.birthday
         ? format(parseISO(this.data.birthday), "MMMM d, yyyy")
         : "";
+    },
+    errorMessages() {
+      const errors = {};
+
+      // Category field errors
+      errors.category = [];
+      if (this.$v.data.category.$dirty) {
+        !this.$v.data.category.required &&
+          errors.category.push("Category is required");
+      }
+
+      // Hub Registrant Number field errors
+      errors.hub_registrant_number = [];
+      if (this.$v.data.hub_registrant_number.$dirty) {
+        !this.$v.data.hub_registrant_number.required &&
+          errors.hub_registrant_number.push(
+            "HUB Registrant Number is required"
+          );
+      }
+
+      // Passport Number field errors
+      errors.passport_number = [];
+      if (this.$v.data.passport_number.$dirty) {
+        !this.$v.data.passport_number.required &&
+          errors.passport_number.push("Passport Number is required");
+      }
+
+      // Name fields errors
+      errors.last_name = [];
+      if (this.$v.data.last_name.$dirty) {
+        !this.$v.data.last_name.required &&
+          errors.last_name.push("Last name is required");
+      }
+
+      errors.first_name = [];
+      if (this.$v.data.first_name.$dirty) {
+        !this.$v.data.first_name.required &&
+          errors.first_name.push("First name is required");
+      }
+
+      errors.middle_name = [];
+      if (this.$v.data.middle_name.$dirty) {
+        // Middle name validations, if any
+      }
+
+      errors.suffix = [];
+      if (this.$v.data.suffix.$dirty) {
+        // Suffix validations, if any
+      }
+
+      // Birthday field errors
+      errors.birthday = [];
+      if (this.$v.data.birthday.$dirty) {
+        !this.$v.data.birthday.required &&
+          errors.birthday.push("Birthday is required");
+      }
+
+      // Sex field errors
+      errors.gender = [];
+      if (this.$v.data.gender.$dirty) {
+        !this.$v.data.gender.required && errors.gender.push("Sex is required");
+      }
+
+      // Civil Status field errors
+      errors.civil_status = [];
+      if (this.$v.data.civil_status.$dirty) {
+        !this.$v.data.civil_status.required &&
+          errors.civil_status.push("Civil Status is required");
+      }
+
+      // Contact Number field errors
+      errors.contact_number = [];
+      if (this.$v.data.contact_number.$dirty) {
+        !this.$v.data.contact_number.required &&
+          errors.contact_number.push("Contact Number is required");
+        !this.$v.data.contact_number.minLength &&
+          errors.contact_number.push(
+            "A minimun number of 11 digits is required"
+          );
+      }
+
+      // TIN field errors
+      errors.tin_number = [];
+      if (this.$v.data.tin_number.$dirty) {
+        !this.$v.data.tin_number.maxLength &&
+          errors.tin_number.push("TIN is capped 12 digits");
+        !this.$v.data.tin_number.minLength &&
+          errors.tin_number.push("TIN is required atleast 9 digits")
+      }
+
+      // Blood Type field errors
+      errors.blood_type = [];
+      if (this.$v.data.blood_type.$dirty) {
+        !this.$v.data.blood_type.required &&
+          errors.blood_type.push("Blood Type is required");
+      }
+
+      // Contact Person field errors
+      errors.emergency_name = [];
+      if (this.$v.data.emergency_name.$dirty) {
+        !this.$v.data.emergency_name.required &&
+          errors.emergency_name.push("Contact Name is required");
+      }
+
+      // Contact Person Number field errors
+      errors.emergency_number = [];
+      if (this.$v.data.emergency_number.$dirty) {
+        !this.$v.data.emergency_number.required &&
+          errors.emergency_number.push("Contact Number is required");
+        !this.$v.data.emergency_number.minLength &&
+          errors.emergency_number.push(
+            "A minimun number of 11 digits is required"
+          );
+        !this.$v.data.emergency_number.sameAsContactNumber &&
+          errors.emergency_number.push("Contact Number must not match");
+      }
+
+      // Address field errors
+      errors.address = [];
+      if (this.$v.data.address.$dirty) {
+        !this.$v.data.address.required &&
+          errors.address.push("Contact Number is required");
+      }
+
+      // Province field errors
+      errors.province = [];
+      if (this.$v.data.province.$dirty) {
+        !this.$v.data.province.required &&
+          errors.province.push("Province is required");
+      }
+
+      // Municipality field errors
+      errors.municipality = [];
+      if (this.$v.data.municipality.$dirty) {
+        !this.$v.data.municipality.required &&
+          errors.municipality.push("Province is required");
+      }
+
+      // Barangay field errors
+      errors.barangay = [];
+      if (this.$v.data.barangay.$dirty) {
+        !this.$v.data.barangay.required &&
+          errors.barangay.push("Province is required");
+      }
+
+      return errors;
     },
   },
   methods: {
@@ -316,6 +535,13 @@ export default {
         }
       }
     },
+    submitForm(){
+      this.$v.$touch();
+
+      if(!this.$v.$invalid){
+        this.$emit('submitData', this.data);
+      }
+    }
   },
   watch: {
     getRegistrant(value) {

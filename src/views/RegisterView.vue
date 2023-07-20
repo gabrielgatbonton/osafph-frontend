@@ -58,9 +58,11 @@ export default {
         // Dispatch the 'addRegistrant' action from the Vuex store
         return this.$store
           .dispatch("registrants/addRegistrant", collection)
-          .then((this.loading = false), this.$router.push({ name: "citizens" }))
+          .then(this.$router.push({ name: "citizens" }))
           .catch((error) => {
             console.error("Error dispatching registrant: ", error);
+          }).finally(() => {
+            this.loading = false;
           });
       } catch (error) {
         console.error("Error submitting form:", error);
