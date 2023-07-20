@@ -1,4 +1,5 @@
 import DashboardView from '@/views/DashboardView.vue'
+import { checkLoggedIn } from './auth-guard';
 export default [
   {
     path: "/dashboard",
@@ -9,5 +10,6 @@ export default [
     // which is lazy-loaded when the route is visited.
     // component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
     meta: { requiresAuth: true },
+    beforeEnter: checkLoggedIn,
   },
 ];
