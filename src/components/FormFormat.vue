@@ -255,6 +255,7 @@
 
 <script>
 import format from "date-fns/format";
+import { isBefore, subYears } from "date-fns";
 import parseISO from "date-fns/parseISO";
 import { required, maxLength, minLength } from "vuelidate/lib/validators";
 import { mapGetters } from "vuex";
@@ -351,12 +352,19 @@ export default {
       first_name: { required },
       middle_name: {},
       suffix: {},
-      birthday: { required },
+      birthday: {
+        required,
+        validBirthday(value) {
+          if (!value) return true; // Skip validation if no value provided
+          const fiveYearsAgo = subYears(new Date(), 5);
+          return isBefore(new Date(value), fiveYearsAgo);
+        },
+      },
       gender: { required },
       civil_status: { required },
       contact_number: { required, minLength: minLength(11) },
       tin_number: { maxLength: maxLength(12), minLength: minLength(9) },
-      blood_type: {},
+      blood_type: { required },
       emergency_name: { required },
       emergency_number: {
         required,
@@ -432,6 +440,8 @@ export default {
       if (this.$v.data.birthday.$dirty) {
         !this.$v.data.birthday.required &&
           errors.birthday.push("Birthday is required");
+        !this.$v.data.birthday.validBirthday &&
+          errors.birthday.push("Birthday must be at least five years ago");
       }
 
       // Sex field errors
@@ -464,7 +474,7 @@ export default {
         !this.$v.data.tin_number.maxLength &&
           errors.tin_number.push("TIN is capped 12 digits");
         !this.$v.data.tin_number.minLength &&
-          errors.tin_number.push("TIN is required atleast 9 digits")
+          errors.tin_number.push("TIN is required atleast 9 digits");
       }
 
       // Blood Type field errors
@@ -535,13 +545,13 @@ export default {
         }
       }
     },
-    submitForm(){
+    submitForm() {
       this.$v.$touch();
 
-      if(!this.$v.$invalid){
-        this.$emit('submitData', this.data);
+      if (!this.$v.$invalid) {
+        this.$emit("submitData", this.data);
       }
-    }
+    },
   },
   watch: {
     getRegistrant(value) {
