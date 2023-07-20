@@ -4,5 +4,6 @@ export default [
     path: "/management",
     name: "management",
     component: ManagementView,
+    meta: { requiresAuth: true },
   },
 ];

@@ -45,7 +45,9 @@ export const login = {
     },
   },
   getters: {
-    isLoggedIn: (state) => !!state.accessToken,
+    isLoggedIn: (state) => {
+      return !!state.accessToken;
+    },
     accessToken: (state) => state.accessToken,
   },
 };
