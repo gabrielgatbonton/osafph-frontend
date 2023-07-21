@@ -37,6 +37,9 @@
                 <v-list-item v-for="(option, index) in getOptions(item)" :key="index" @click="executeAction(option)">
                   <v-list-item-title><v-icon dense left>{{ option.icon }}</v-icon>{{ option.text }}</v-list-item-title>
                 </v-list-item>
+                <v-list-item>
+                  <DeleteDialog :id="item.id"/>
+                </v-list-item>
               </v-list>
             </v-menu>
           </td>
@@ -47,11 +50,13 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import DeleteDialog from './DeleteDialog.vue';
 export default {
   props: ["registrants"],
+  components:{
+    DeleteDialog,
+  },
   methods: {
-    ...mapActions("registrants", ["deleteRegistrant"]),
     filterOnlyCapsText(value, search, item) {
       if (value === "full_name") {
         const fullName =
@@ -77,13 +82,13 @@ export default {
           text: "EDIT",
           route: { name: "edit", params: { id: item.id } },
         },
-        {
-          icon: "mdi-delete-alert-outline",
-          text: "DELETE",
-          action: () => {
-            this.deleteRegistrant(item.id);
-          },
-        },
+        // {
+        //   icon: "mdi-delete-alert-outline",
+        //   text: "DELETE",
+        //   action: () => {
+        //     this.deleteRegistrant(item.id);
+        //   },
+        // },
       ];
     },
     executeAction(option) {
