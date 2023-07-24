@@ -8,7 +8,9 @@
           <v-tab-item>
             <PersonalDetails />
           </v-tab-item>
-          <v-tab-item> World </v-tab-item>
+          <v-tab-item>
+            <BoosterHistory />
+          </v-tab-item>
         </v-tabs>
       </v-col>
     </v-row>
@@ -17,9 +19,11 @@
 
 <script>
 import PersonalDetails from "./PersonalDetails.vue";
+import BoosterHistory from "./BoosterHistory.vue";
 export default {
   components: {
     PersonalDetails,
+    BoosterHistory
   },
 };
 </script>
