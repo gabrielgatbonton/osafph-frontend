@@ -36,7 +36,7 @@
                         </v-card>
                       </v-col>
                       <div class="custom-divider"></div>
-                      <v-col cols="12" class="pt-0">
+                      <v-col cols="12" class="py-0">
                         <v-expansion-panels>
                           <v-expansion-panel>
                             <v-expansion-panel-header>
@@ -88,6 +88,59 @@
                           </v-expansion-panel>
                         </v-expansion-panels>
                       </v-col>
+                      <div class="custom-divider"></div>
+                      <v-col cols="12" class="pt-0">
+                        <v-expansion-panels>
+                          <v-expansion-panel>
+                            <v-expansion-panel-header>
+                              <v-container class="py-2">
+                                <v-row>
+                                  <v-col cols="auto" class="px-0 py-1">
+                                    <v-avatar size="38" color="green">
+                                      <v-icon small dark> mdi-check </v-icon>
+                                    </v-avatar>
+                                  </v-col>
+                                  <v-col cols="auto" class="py-0">
+                                    <div
+                                      class="text-subtitle-2 font-weight-bold"
+                                    >
+                                      4TH DOSE
+                                    </div>
+                                    <div class="text-subtitle-2">
+                                      JUNE 14, 2022
+                                    </div>
+                                  </v-col>
+                                </v-row>
+                              </v-container>
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <div class="my-1 mx-5">
+                                <div
+                                  v-for="(vaccine, index) in vaccinesdata_4"
+                                  :key="index"
+                                >
+                                  <div class="text-caption grey--text">
+                                    {{ vaccine.title }}
+                                  </div>
+                                  <div class="text-subtitle-2 font-weight-bold">
+                                    {{ vaccine.content }}
+                                  </div>
+                                  <div
+                                    v-if="vaccine.serial"
+                                    class="text-caption font-weight-bold"
+                                  >
+                                    {{ vaccine.serial }}
+                                  </div>
+                                  <v-divider
+                                    v-if="index < vaccinesdata_4.length - 1"
+                                    class="my-3"
+                                  ></v-divider>
+                                </div>
+                              </div>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+                      </v-col>
                     </v-row>
                   </v-container>
                 </v-card>
@@ -113,6 +166,22 @@ export default {
         title: "Healthcare Professional",
         content: "MARJORIE V. BALAGTAS, RN",
         serial: "LICENSE NO. 0823592",
+      },
+      {
+        title: "Vaccination Site",
+        content: "MABALACAT CITY",
+      },
+    ],
+    vaccinesdata_4: [
+      {
+        title: "Vaccine Name / Manufacturer / Lot Number",
+        content: "PFIZER",
+        serial: "LOT NO. PCA0050",
+      },
+      {
+        title: "Healthcare Professional",
+        content: "ELLAINE L. CANLAS, RN",
+        serial: "LICENSE NO. 0599253",
       },
       {
         title: "Vaccination Site",
