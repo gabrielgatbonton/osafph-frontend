@@ -128,7 +128,7 @@
                         </v-card>
                       </v-col>
                       <div class="custom-divider"></div>
-                      <v-col cols="12" class="pt-0">
+                      <v-col cols="12" class="py-0">
                         <v-card rounded="lg" flat outlined>
                           <v-container class="pb-0">
                             <v-row dense class="mx-2 mt-2">
@@ -173,7 +173,7 @@
                         </v-card>
                       </v-col>
                       <div class="custom-divider"></div>
-                      <v-col cols="12">
+                      <v-col cols="12" class="pt-0">
                         <v-card rounded="lg" flat outlined>
                           <v-container class="pb-0">
                             <v-row dense class="mx-2 mt-2">
@@ -319,7 +319,7 @@ export default {
 <style scoped>
 .custom-divider {
   border-left: 2px solid  lightgray;
-  height: 30px; /* Adjust the height to the desired vertical connection length */
+  height: 20px; /* Adjust the height to the desired vertical connection length */
   margin-left: 30px; /* Add some spacing and center the divider */
 }
 </style>
