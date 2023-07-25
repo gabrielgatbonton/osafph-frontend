@@ -32,19 +32,31 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-// Function to reset local storage on tab close
-function resetLocalStorage() {
-  // Clear or reset the data in local storage as needed
-  // localStorage.clear(); // This will clear all data in local storage
-  
-  // Or you can selectively remove specific items from local storage
-  localStorage.removeItem("accessToken");
-  // Optionally, you can also reset the Vuex store state here if needed
-  store.commit("login/SET_LOGGED_OUT");
+function handleBeforeUnload(event) {
+  // Check if the tab or window is being closed intentionally
+  if (!event.currentTarget.performance.navigation.type === 1) {
+    // If it's not a refresh (type === 1), it's an actual close event
+    // Clear the token and other data here as needed
+    store.dispatch("login/logoutAndClearToken");
+  } else {
+    // If it's a refresh, store a flag in sessionStorage to remember it
+    sessionStorage.setItem("isRefresh", "true");
+  }
 }
 
 // Attach the beforeunload event to window
-window.addEventListener("beforeunload", resetLocalStorage);
+window.addEventListener("beforeunload", handleBeforeUnload);
+
+// Check if the page was refreshed
+const isRefresh = sessionStorage.getItem("isRefresh") === "true";
+
+// If it's a refresh, remove the flag from sessionStorage
+if (isRefresh) {
+  sessionStorage.removeItem("isRefresh");
+} else {
+  // If it's not a refresh, clear the token and other data on initial load
+  store.dispatch("login/logoutAndClearToken");
+}
 
 new Vue({
   router,
