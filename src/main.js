@@ -12,8 +12,8 @@ Vue.prototype.$http = axios
 Vue.use(Vuelidate)
 
 //BaseURLs
-const baseURL = 'http://200.10.77.4/';  //Network BaseURL
-// const baseURL: 'http://127.0.0.1:8000/'; //Lo cal BaseURL
+// const baseURL = 'http://200.10.77.4/';  //Network BaseURL
+const baseURL = 'http://127.0.0.1:8000/'; //Local BaseURL
 
 
 const axiosInstance = axios.create({
@@ -31,6 +31,20 @@ axiosInstance.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Function to reset local storage on tab close
+function resetLocalStorage() {
+  // Clear or reset the data in local storage as needed
+  // localStorage.clear(); // This will clear all data in local storage
+  
+  // Or you can selectively remove specific items from local storage
+  localStorage.removeItem("accessToken");
+  // Optionally, you can also reset the Vuex store state here if needed
+  store.commit("login/SET_LOGGED_OUT");
+}
+
+// Attach the beforeunload event to window
+window.addEventListener("beforeunload", resetLocalStorage);
 
 new Vue({
   router,
