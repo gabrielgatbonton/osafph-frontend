@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container v-if="data">
       <v-row no-gutters>
         <v-col cols="12">
           <v-container>
@@ -27,17 +27,44 @@
                       <v-col cols="12" class="pb-0">
                         <v-card rounded="lg" flat outlined>
                           <div
-                            class="green--text text-caption font-weight-bold ma-1"
+                            class="text-subtitle-2 font-weight-bold ma-1"
+                            :class="
+                              data.citizen.vaccination_stat[2]
+                                ? 'green--text'
+                                : 'red--text'
+                            "
                           >
-                            <v-icon class="ma-1" small color="green"
-                              >mdi-check-all</v-icon
-                            >Booster Information
+                            <v-icon
+                              class="ma-1"
+                              small
+                              :color="
+                                data.citizen.vaccination_stat[2]
+                                  ? 'green'
+                                  : 'red'
+                              "
+                              >{{
+                                data.citizen.vaccination_stat[2]
+                                  ? "mdi-check-all"
+                                  : "mdi-close"
+                              }}</v-icon
+                            >{{
+                              data.citizen.vaccination_stat[2]
+                                ? "Booster History"
+                                : "No Boosters"
+                            }}
                           </div>
                         </v-card>
                       </v-col>
-                      <div class="custom-divider"></div>
-                      <v-col cols="12" class="py-0">
-                        <v-expansion-panels>
+                      <div
+                        v-if="data.citizen.vaccination_stat[2]"
+                        class="custom-divider"
+                      ></div>
+                      <v-col
+                        cols="12"
+                        class="py-0"
+                        v-if="data.citizen.vaccination_stat[2]"
+                      >
+                        <v-expansion-panels popout>
                           <v-expansion-panel>
                             <v-expansion-panel-header>
                               <v-container class="py-2">
@@ -54,7 +81,9 @@
                                       3RD DOSE
                                     </div>
                                     <div class="text-subtitle-2">
-                                      FEBRUARY 04, 2022
+                                      {{
+                                        data.citizen.vaccination_stat[2].vaccination_date.toUpperCase()
+                                      }}
                                     </div>
                                   </v-col>
                                 </v-row>
@@ -88,9 +117,16 @@
                           </v-expansion-panel>
                         </v-expansion-panels>
                       </v-col>
-                      <div class="custom-divider"></div>
-                      <v-col cols="12" class="pt-0">
-                        <v-expansion-panels>
+                      <div
+                        v-if="data.citizen.vaccination_stat[3]"
+                        class="custom-divider"
+                      ></div>
+                      <v-col
+                        v-if="data.citizen.vaccination_stat[3]"
+                        cols="12"
+                        class="pt-0"
+                      >
+                        <v-expansion-panels popout>
                           <v-expansion-panel>
                             <v-expansion-panel-header>
                               <v-container class="py-2">
@@ -107,7 +143,9 @@
                                       4TH DOSE
                                     </div>
                                     <div class="text-subtitle-2">
-                                      JUNE 14, 2022
+                                      {{
+                                        data.citizen.vaccination_stat[3].vaccination_date.toUpperCase()
+                                      }}
                                     </div>
                                   </v-col>
                                 </v-row>
@@ -155,40 +193,54 @@
 
 <script>
 export default {
-  data: () => ({
-    vaccinesdata_3: [
-      {
-        title: "Vaccine Name / Manufacturer / Lot Number",
-        content: "PFIZER",
-        serial: "LOT NO. PCA0028",
-      },
-      {
-        title: "Healthcare Professional",
-        content: "MARJORIE V. BALAGTAS, RN",
-        serial: "LICENSE NO. 0823592",
-      },
-      {
-        title: "Vaccination Site",
-        content: "MABALACAT CITY",
-      },
-    ],
-    vaccinesdata_4: [
-      {
-        title: "Vaccine Name / Manufacturer / Lot Number",
-        content: "PFIZER",
-        serial: "LOT NO. PCA0050",
-      },
-      {
-        title: "Healthcare Professional",
-        content: "ELLAINE L. CANLAS, RN",
-        serial: "LICENSE NO. 0599253",
-      },
-      {
-        title: "Vaccination Site",
-        content: "MABALACAT CITY",
-      },
-    ],
-  }),
+  props: ["data"],
+  data: () => ({}),
+  computed: {
+    vaccinesdata_3() {
+      return [
+        {
+          title: "Vaccine Name / Manufacturer / Lot Number",
+          content: this.data.citizen.vaccination_stat[2].vaccine_name,
+          serial: this.data.citizen.vaccination_stat[2].lot_no,
+        },
+        {
+          title: "Healthcare Professional",
+          content:
+            this.data.citizen.vaccination_stat[2].healthcare_professional.toUpperCase(),
+          serial:
+            this.data.citizen.vaccination_stat[2]
+              .healthcare_professional_license_number,
+        },
+        {
+          title: "Vaccination Site",
+          content:
+            this.data.citizen.vaccination_stat[2].site_name.toUpperCase(),
+        },
+      ];
+    },
+    vaccinesdata_4() {
+      return [
+        {
+          title: "Vaccine Name / Manufacturer / Lot Number",
+          content: this.data.citizen.vaccination_stat[3].vaccine_name,
+          serial: this.data.citizen.vaccination_stat[3].lot_no,
+        },
+        {
+          title: "Healthcare Professional",
+          content:
+            this.data.citizen.vaccination_stat[3].healthcare_professional.toUpperCase(),
+          serial:
+            this.data.citizen.vaccination_stat[3]
+              .healthcare_professional_license_number,
+        },
+        {
+          title: "Vaccination Site",
+          content:
+            this.data.citizen.vaccination_stat[3].site_name.toUpperCase(),
+        },
+      ];
+    },
+  },
 };
 </script>
 

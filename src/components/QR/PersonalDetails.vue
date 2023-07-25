@@ -120,15 +120,48 @@
                     <v-row dense class="ma-2">
                       <v-col cols="12" class="pb-0">
                         <v-card rounded="lg" flat outlined>
-                          <div class="green--text text-subtitle-2 ma-1">
-                            <v-icon class="ma-1" small color="green"
-                              >mdi-check-all</v-icon
-                            >Fully Vaccinated
+                          <div
+                            class="text-subtitle-2 font-weight-bold ma-1"
+                            :class="
+                              data.citizen.vaccination_stat[0]
+                                ? 'green--text'
+                                : 'red--text'
+                            "
+                          >
+                            <v-icon
+                              class="ma-1"
+                              small
+                              :color="
+                                data.citizen.vaccination_stat[0]
+                                  ? 'green'
+                                  : 'red'
+                              "
+                              >{{
+                                data.citizen.vaccination_stat[0]
+                                  ? "mdi-check-all"
+                                  : "mdi-close"
+                              }}</v-icon
+                            >{{
+                              data.citizen.vaccination_stat[0] &&
+                              data.citizen.vaccination_stat[1]
+                                ? "Fully Vaccinated"
+                                : data.citizen.vaccination_stat[0] ||
+                                  data.citizen.vaccination_stat[1]
+                                ? "Vaccinated"
+                                : "Not Vaccinated"
+                            }}
                           </div>
                         </v-card>
                       </v-col>
-                      <div class="custom-divider"></div>
-                      <v-col cols="12" class="py-0">
+                      <div
+                        class="custom-divider"
+                        v-if="data.citizen.vaccination_stat[0]"
+                      ></div>
+                      <v-col
+                        cols="12"
+                        class="py-0"
+                        v-if="data.citizen.vaccination_stat[0]"
+                      >
                         <v-card rounded="lg" flat outlined>
                           <v-container class="pb-0">
                             <v-row dense class="mx-2 mt-2">
@@ -172,54 +205,58 @@
                           </div>
                         </v-card>
                       </v-col>
-                      
-                      <div v-if="data.citizen.vaccination_stat[1]">
-                        <div class="custom-divider"></div>
-                        <v-col cols="12" class="pt-0">
-                          <v-card rounded="lg" flat outlined>
-                            <v-container class="pb-0">
-                              <v-row dense class="mx-2 mt-2">
-                                <v-col cols="auto" class="">
-                                  <v-avatar color="green">
-                                    <v-icon dark> mdi-check </v-icon>
-                                  </v-avatar>
-                                </v-col>
-                                <v-col cols="auto" class="pt-2">
-                                  <div class="text-subtitle-2 font-weight-bold">
-                                    2ND DOSE
-                                  </div>
-                                  <div class="text-caption grey--text">
-                                    Vaccine information
-                                  </div>
-                                </v-col>
-                              </v-row>
-                            </v-container>
-                            <div class="my-7 mx-5">
-                              <div
-                                v-for="(vaccine, index) in vaccinesdata_2"
-                                :key="index"
-                              >
-                                <div class="text-caption grey--text">
-                                  {{ vaccine.title }}
-                                </div>
+                      <div
+                        v-if="data.citizen.vaccination_stat[1]"
+                        class="custom-divider"
+                      ></div>
+                      <v-col
+                        v-if="data.citizen.vaccination_stat[1]"
+                        cols="12"
+                        class="pt-0"
+                      >
+                        <v-card rounded="lg" flat outlined>
+                          <v-container class="pb-0">
+                            <v-row dense class="mx-2 mt-2">
+                              <v-col cols="auto" class="">
+                                <v-avatar color="green">
+                                  <v-icon dark> mdi-check </v-icon>
+                                </v-avatar>
+                              </v-col>
+                              <v-col cols="auto" class="pt-2">
                                 <div class="text-subtitle-2 font-weight-bold">
-                                  {{ vaccine.content }}
+                                  2ND DOSE
                                 </div>
-                                <div
-                                  v-if="vaccine.serial"
-                                  class="text-caption font-weight-bold"
-                                >
-                                  {{ vaccine.serial }}
+                                <div class="text-caption grey--text">
+                                  Vaccine information
                                 </div>
-                                <v-divider
-                                  v-if="index < vaccinesdata_2.length - 1"
-                                  class="my-3"
-                                ></v-divider>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                          <div class="my-7 mx-5">
+                            <div
+                              v-for="(vaccine, index) in vaccinesdata_2"
+                              :key="index"
+                            >
+                              <div class="text-caption grey--text">
+                                {{ vaccine.title }}
                               </div>
+                              <div class="text-subtitle-2 font-weight-bold">
+                                {{ vaccine.content }}
+                              </div>
+                              <div
+                                v-if="vaccine.serial"
+                                class="text-caption font-weight-bold"
+                              >
+                                {{ vaccine.serial }}
+                              </div>
+                              <v-divider
+                                v-if="index < vaccinesdata_2.length - 1"
+                                class="my-3"
+                              ></v-divider>
                             </div>
-                          </v-card>
-                        </v-col>
-                      </div>
+                          </div>
+                        </v-card>
+                      </v-col>
                     </v-row>
                   </v-container>
                 </v-card>
@@ -304,18 +341,20 @@ export default {
         {
           title: "Healthcare Professional",
           content:
-            this.data.citizen.vaccination_stat[0].healthcare_professional,
+            this.data.citizen.vaccination_stat[0].healthcare_professional.toUpperCase(),
           serial:
             this.data.citizen.vaccination_stat[0]
               .healthcare_professional_license_number,
         },
         {
           title: "Vaccination Site",
-          content: this.data.citizen.vaccination_stat[0].site_name,
+          content:
+            this.data.citizen.vaccination_stat[0].site_name.toUpperCase(),
         },
         {
           title: "Date Vaccinated",
-          content: this.data.citizen.vaccination_stat[0].vaccination_date,
+          content:
+            this.data.citizen.vaccination_stat[0].vaccination_date.toUpperCase(),
         },
       ];
     },
@@ -329,21 +368,26 @@ export default {
         {
           title: "Healthcare Professional",
           content:
-            this.data.citizen.vaccination_stat[1].healthcare_professional,
+            this.data.citizen.vaccination_stat[1].healthcare_professional.toUpperCase(),
           serial:
             this.data.citizen.vaccination_stat[1]
               .healthcare_professional_license_number,
         },
         {
           title: "Vaccination Site",
-          content: this.data.citizen.vaccination_stat[1].site_name,
+          content:
+            this.data.citizen.vaccination_stat[1].site_name.toUpperCase(),
         },
         {
           title: "Date Vaccinated",
-          content: this.data.citizen.vaccination_stat[1].vaccination_date,
+          content:
+            this.data.citizen.vaccination_stat[1].vaccination_date.toUpperCase(),
         },
       ];
     },
+  },
+  created() {
+    console.log(this.data);
   },
 };
 </script>
