@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container v-if="data">
       <v-row no-gutters>
         <v-col cols="7">
           <v-container>
@@ -172,51 +172,54 @@
                           </div>
                         </v-card>
                       </v-col>
-                      <div class="custom-divider"></div>
-                      <v-col cols="12" class="pt-0">
-                        <v-card rounded="lg" flat outlined>
-                          <v-container class="pb-0">
-                            <v-row dense class="mx-2 mt-2">
-                              <v-col cols="auto" class="">
-                                <v-avatar color="green">
-                                  <v-icon dark> mdi-check </v-icon>
-                                </v-avatar>
-                              </v-col>
-                              <v-col cols="auto" class="pt-2">
-                                <div class="text-subtitle-2 font-weight-bold">
-                                  2ND DOSE
-                                </div>
-                                <div class="text-caption grey--text">
-                                  Vaccine information
-                                </div>
-                              </v-col>
-                            </v-row>
-                          </v-container>
-                          <div class="my-7 mx-5">
-                            <div
-                              v-for="(vaccine, index) in vaccinesdata_2"
-                              :key="index"
-                            >
-                              <div class="text-caption grey--text">
-                                {{ vaccine.title }}
-                              </div>
-                              <div class="text-subtitle-2 font-weight-bold">
-                                {{ vaccine.content }}
-                              </div>
+                      
+                      <div v-if="data.citizen.vaccination_stat[1]">
+                        <div class="custom-divider"></div>
+                        <v-col cols="12" class="pt-0">
+                          <v-card rounded="lg" flat outlined>
+                            <v-container class="pb-0">
+                              <v-row dense class="mx-2 mt-2">
+                                <v-col cols="auto" class="">
+                                  <v-avatar color="green">
+                                    <v-icon dark> mdi-check </v-icon>
+                                  </v-avatar>
+                                </v-col>
+                                <v-col cols="auto" class="pt-2">
+                                  <div class="text-subtitle-2 font-weight-bold">
+                                    2ND DOSE
+                                  </div>
+                                  <div class="text-caption grey--text">
+                                    Vaccine information
+                                  </div>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                            <div class="my-7 mx-5">
                               <div
-                                v-if="vaccine.serial"
-                                class="text-caption font-weight-bold"
+                                v-for="(vaccine, index) in vaccinesdata_2"
+                                :key="index"
                               >
-                                {{ vaccine.serial }}
+                                <div class="text-caption grey--text">
+                                  {{ vaccine.title }}
+                                </div>
+                                <div class="text-subtitle-2 font-weight-bold">
+                                  {{ vaccine.content }}
+                                </div>
+                                <div
+                                  v-if="vaccine.serial"
+                                  class="text-caption font-weight-bold"
+                                >
+                                  {{ vaccine.serial }}
+                                </div>
+                                <v-divider
+                                  v-if="index < vaccinesdata_2.length - 1"
+                                  class="my-3"
+                                ></v-divider>
                               </div>
-                              <v-divider
-                                v-if="index < vaccinesdata_2.length - 1"
-                                class="my-3"
-                              ></v-divider>
                             </div>
-                          </div>
-                        </v-card>
-                      </v-col>
+                          </v-card>
+                        </v-col>
+                      </div>
                     </v-row>
                   </v-container>
                 </v-card>
@@ -231,94 +234,123 @@
 
 <script>
 export default {
-  data: () => ({
-    details: [
-      {
-        title: "Full Name",
-        content: "GABRIEL ALFONSO",
-      },
-      {
-        title: "Category",
-        content: "ROAP",
-      },
-      {
-        title: "Date of Birth",
-        content: "FEBRUARY 13, 1995",
-      },
-      {
-        title: "Sex",
-        content: "MALE",
-      },
-      {
-        title: "Civil Status",
-        content: "SINGLE",
-      },
-    ],
-    addresses: [
-      {
-        title: "Barangay",
-        content: "SAN JOAQUIN",
-      },
-      {
-        title: "City / Municipality",
-        content: "MABALACAT CITY",
-      },
-      {
-        title: "Province",
-        content: "PAMPANGA",
-      },
-      {
-        title: "Region",
-        content: "REGION III (CENTRAL LUZON)",
-      },
-    ],
-    vaccinesdata_1: [
-      {
-        title: "Vaccine Name / Manufacturer / Lot Number",
-        content: "SINOVAC",
-        serial: "LOT NO. C202105075",
-      },
-      {
-        title: "Healthcare Professional",
-        content: "CLARENCE ADRIAN B. PINGOL, RN",
-        serial: "LICENSE NO. 0760246",
-      },
-      {
-        title: "Vaccination Site",
-        content: "MABALACAT CITY",
-      },
-      {
-        title: "Date Vaccinated",
-        content: "JUNE 29, 2021",
-      },
-    ],
-    vaccinesdata_2: [
-      {
-        title: "Vaccine Name / Manufacturer / Lot Number",
-        content: "SINOVAC",
-        serial: "LOT NO. J202106040",
-      },
-      {
-        title: "Healthcare Professional",
-        content: "EMMANUEL C. TORRES, RN",
-        serial: "LICENSE NO. 0228966",
-      },
-      {
-        title: "Vaccination Site",
-        content: "MABALACAT CITY",
-      },
-      {
-        title: "Date Vaccinated",
-        content: "JULY 27, 2021",
-      },
-    ],
-  }),
+  props: ["data"],
+  data: () => ({}),
+  computed: {
+    details() {
+      return [
+        {
+          title: "Full Name",
+          content: `${this.data.citizen.last_name.toUpperCase()}, 
+          ${this.data.citizen.first_name.toUpperCase()} 
+          ${
+            this.data.citizen.middle_name
+              ? " " + this.data.citizen.middle_name.toUpperCase()
+              : ""
+          } 
+          ${
+            this.data.citizen.suffix
+              ? " " + this.data.citizen.suffix.toUpperCase()
+              : ""
+          }`,
+        },
+        {
+          title: "Category",
+          content: this.data.citizen.category.description,
+        },
+        {
+          title: "Date of Birth",
+          content: this.data.citizen.birthday,
+        },
+        {
+          title: "Sex",
+          content: this.data.citizen.gender,
+        },
+        {
+          title: "Civil Status",
+          content: this.data.citizen.civil_status,
+        },
+      ];
+    },
+    addresses() {
+      return [
+        {
+          title: "Barangay",
+          content: this.data.citizen.barangay.barangay_name,
+        },
+        {
+          title: "City / Municipality",
+          content: this.data.citizen.barangay.municipality.municipality_name,
+        },
+        {
+          title: "Province",
+          content:
+            this.data.citizen.barangay.municipality.province.province_name,
+        },
+        {
+          title: "Region",
+          content:
+            this.data.citizen.barangay.municipality.province.region.region_name,
+        },
+      ];
+    },
+    vaccinesdata_1() {
+      return [
+        {
+          title: "Vaccine Name / Manufacturer / Lot Number",
+          content: this.data.citizen.vaccination_stat[0].vaccine_name,
+          serial: this.data.citizen.vaccination_stat[0].lot_no,
+        },
+        {
+          title: "Healthcare Professional",
+          content:
+            this.data.citizen.vaccination_stat[0].healthcare_professional,
+          serial:
+            this.data.citizen.vaccination_stat[0]
+              .healthcare_professional_license_number,
+        },
+        {
+          title: "Vaccination Site",
+          content: this.data.citizen.vaccination_stat[0].site_name,
+        },
+        {
+          title: "Date Vaccinated",
+          content: this.data.citizen.vaccination_stat[0].vaccination_date,
+        },
+      ];
+    },
+    vaccinesdata_2() {
+      return [
+        {
+          title: "Vaccine Name / Manufacturer / Lot Number",
+          content: this.data.citizen.vaccination_stat[1].vaccine_name,
+          serial: this.data.citizen.vaccination_stat[1].lot_no,
+        },
+        {
+          title: "Healthcare Professional",
+          content:
+            this.data.citizen.vaccination_stat[1].healthcare_professional,
+          serial:
+            this.data.citizen.vaccination_stat[1]
+              .healthcare_professional_license_number,
+        },
+        {
+          title: "Vaccination Site",
+          content: this.data.citizen.vaccination_stat[1].site_name,
+        },
+        {
+          title: "Date Vaccinated",
+          content: this.data.citizen.vaccination_stat[1].vaccination_date,
+        },
+      ];
+    },
+  },
 };
 </script>
 
 <style scoped>
 .custom-divider {
-  border-left: 2px solid  lightgray;
+  border-left: 2px solid lightgray;
   height: 20px; /* Adjust the height to the desired vertical connection length */
   margin-left: 30px; /* Add some spacing and center the divider */
 }

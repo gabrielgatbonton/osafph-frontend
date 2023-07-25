@@ -1,8 +1,8 @@
-import DataTabs from '@/components/QR/DataTabs.vue'
+import ReroutePage from '@/components/QR/ReroutePage.vue'
 export default [
     {
-        path: '/tabs',
-        name: 'tabs',
-        component: DataTabs,
+        path: '/vaccination/:id',
+        name: 'reroute',
+        component: ReroutePage,
     }
 ]
