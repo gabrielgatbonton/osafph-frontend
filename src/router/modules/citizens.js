@@ -1,7 +1,7 @@
 import CitizensView from "@/views/CitizensView.vue";
 import RegisterView from '@/views/RegisterView.vue';
 import ViewPrototype from '@/views/ViewDetailsPrototype.vue';
-import ViewVaccination from '@/views/VaccinationDetailsView.vue';
+import ViewVaccination from '@/views/Vaccination/VaccinationDetailsView.vue';
 import EditView from '@/views/EditView.vue'
 import { checkLoggedIn } from './auth-guard';
 export default [

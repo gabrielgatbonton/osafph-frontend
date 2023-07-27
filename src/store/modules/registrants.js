@@ -82,13 +82,7 @@ export const registrants = {
         vaccineInformation.vaccinationStat.citizen_id === id &&
         vaccineInformation.vaccinationStat.id === updateVaccineInformation.id
       ) {
-        vaccineInformation.vaccinationStat = {
-          dose: updateVaccineInformation.dose,
-          vaccination_date: updateVaccineInformation.vaccination_date,
-          vaccine_name: updateVaccineInformation.vaccine_name,
-          lot_no: updateVaccineInformation.lot_no,
-          site_name: updateVaccineInformation.site_name,
-        };
+        vaccineInformation.vaccinationStat = updateVaccineInformation;
       }
     },
     SET_SHOW_ALERT(state, { alert, message }) {

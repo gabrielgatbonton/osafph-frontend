@@ -1,7 +1,7 @@
 <template>
   <div>
     <SubmissionAlert v-if="showAlert" :title="title" />
-    <ErrorAlert v-if="showError" :title="title"/>
+    <ErrorAlert v-if="showError" :title="title" />
     <v-container fluid class="ma-1" v-if="registrant">
       <v-row>
         <v-col cols="auto">
@@ -128,9 +128,7 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <VaccinationDetailsViewVue
-                        :id="routeID"
-                      />
+                      <VaccinationDetailsViewVue :id="routeID" />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -149,7 +147,8 @@
                         max-height="400"
                         max-width="200"
                       ></v-img>
-                      <v-file-input
+                      <CameraComponent v-on:picture-taken="handleImageUpload" />
+                      <!-- <v-file-input
                         label="File input"
                         color="grey darken-1"
                         ref="imageInput"
@@ -158,7 +157,7 @@
                           selectedImage ? 'mdi-check' : 'mdi-upload'
                         "
                         :append-icon-cb="() => (selectedImage = '')"
-                      ></v-file-input>
+                      ></v-file-input> -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -242,9 +241,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import VaccinationDetailsViewVue from "./VaccinationDetailsView.vue";
+import VaccinationDetailsViewVue from "./Vaccination/VaccinationDetailsView.vue";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
+import CameraComponent from "@/components/CameraComponent.vue";
 export default {
   data: () => ({
     title: null,
@@ -265,17 +265,21 @@ export default {
     VaccinationDetailsViewVue,
     SubmissionAlert,
     ErrorAlert,
+    CameraComponent,
   },
   methods: {
     handleImageUpload(file) {
       // Handle the image upload
       // Here, you can perform any necessary logic, such as storing the file or processing it
       // In this example, we are simply updating the `selectedImage` data property with the uploaded file
-      this.selectedImage = URL.createObjectURL(file);
+      // console.log(file);
+      // this.selectedImage = URL.createObjectURL(file);
+      // console.log("Image", this.selectedImage);
       this.submitImage(file, "image");
     },
     handleSignatureUpload(file) {
       // Handle the image upload for the signature component
+      // console.log("Signature", file);
       this.selectedSignature = URL.createObjectURL(file);
       this.submitImage(file, "signature");
     },
@@ -332,6 +336,7 @@ export default {
   },
   watch: {
     getRegistrant(value) {
+      console.log("Get Registrant", value);
       const id = this.$route.params.id;
       const baseURL = this.$url;
       this.registrant = value;
@@ -347,23 +352,27 @@ export default {
       }
       this.routeID = id;
     },
-    getShowAlert(value){
+    getShowAlert(value) {
       this.showAlert = value.alert;
       this.title = value.message;
       setTimeout(() => {
         this.showAlert = false;
-      }, 5000)
+      }, 5000);
     },
-    getShowError(value){
+    getShowError(value) {
       this.showError = value.alert;
       this.title = value.message;
       setTimeout(() => {
         this.showError = false;
-      }, 5000)
+      }, 5000);
     },
   },
   computed: {
-    ...mapGetters("registrants", ["getRegistrant", "getShowAlert", "getShowError"]),
+    ...mapGetters("registrants", [
+      "getRegistrant",
+      "getShowAlert",
+      "getShowError",
+    ]),
     categories() {
       return [
         {

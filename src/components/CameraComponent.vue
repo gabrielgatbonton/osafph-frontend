@@ -14,19 +14,18 @@
       <div class="text-center">
         <v-card-text class="my-5">
           <video ref="cameraVideo" v-if="!pictureTaken" autoplay></video>
-          <img v-else width="300px" :src="capturedImage" alt="Captured" />
         </v-card-text>
       </div>
 
       <v-card-actions>
-        <v-btn block dark color="blue darken-4" @click="takePictureOrRetake"
-          >{{ pictureTaken ? "Retake" : "Take Picture" }}</v-btn
-        >
+        <v-btn block dark color="blue darken-4" @click="takePicture">
+          Take Picture
+        </v-btn>
       </v-card-actions>
       <v-card-actions>
-        <v-btn dark outlined color="red" block @click="closeCameraDialog"
-          >Back</v-btn
-        >
+        <v-btn dark outlined color="red" block @click="closeCameraDialog">
+          Back
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -78,26 +77,25 @@ export default {
         video.srcObject = null;
       }
     },
-    takePictureOrRetake() {
-      if (this.pictureTaken) {
-        // If picture is already taken, retake the picture
-        this.pictureTaken = false;
-        this.capturedImage = null;
-        const video = this.$refs.cameraVideo;
-        video.style.display = "block";
-      } else {
-        // Take a new picture
-        const video = this.$refs.cameraVideo;
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const dataURL = canvas.toDataURL();
-        this.capturedImage = dataURL;
-        this.pictureTaken = true;
-        video.style.display = "none"; // Hide the video after capturing the picture
-      }
+    takePicture() {
+      // Take a new picture
+      const video = this.$refs.cameraVideo;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convert canvas data to JPG image data URL
+      const dataURL = canvas.toDataURL("image/jpeg", 0.8); // Set the quality (0.0 to 1.0)
+
+      this.capturedImage = dataURL;
+      console.log("dataURL:", dataURL);
+      // Emit the captured image data to the parent component
+      this.$emit("picture-taken", dataURL);
+
+      // Close the camera dialog after taking the picture
+      this.closeCameraDialog();
     },
   },
 };
