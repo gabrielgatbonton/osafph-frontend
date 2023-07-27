@@ -25,6 +25,7 @@ export const registrants = {
       state.registrant = registrant;
     },
     UPDATE_REGISTRANT(state, { id, updateRegistrant }) {
+      // console.log(state.registrant);
       const registrant = state.registrant;
       if (registrant && registrant.id === id) {
         registrant.citizen = {
@@ -46,6 +47,7 @@ export const registrants = {
           barangay: updateRegistrant.barangay,
           municipality: updateRegistrant.municipality,
           province: updateRegistrant.province,
+          region: updateRegistrant.region
         };
       }
     },
