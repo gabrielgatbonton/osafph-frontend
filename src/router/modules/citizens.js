@@ -1,6 +1,6 @@
 import CitizensView from "@/views/CitizensView.vue";
 import RegisterView from '@/views/RegisterView.vue';
-import ViewPrototype from '@/views/ViewDetailsPrototype.vue';
+import ViewDetailsView from '@/views/ViewDetailsView.vue';
 import ViewVaccination from '@/views/Vaccination/VaccinationDetailsView.vue';
 import EditView from '@/views/EditView.vue'
 import { checkLoggedIn } from './auth-guard';
@@ -38,7 +38,7 @@ export default [
   {
     path: '/citizens/details/:id',
     name: 'details',
-    component: ViewPrototype,
+    component: ViewDetailsView,
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
