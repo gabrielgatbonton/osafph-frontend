@@ -11,6 +11,7 @@ export const registrants = {
     registrants: [],
     registrant: null,
     vaccinationDetails: null,
+    boosterDetails: null,
     showAlert: false,
     showError: null,
   }),
@@ -85,6 +86,20 @@ export const registrants = {
         vaccineInformation.vaccinationStat = updateVaccineInformation;
       }
     },
+    SET_BOOSTER_INFORMATION(state, boosterInformation) {
+      state.boosterDetails = boosterInformation;
+    },
+    UPDATE_BOOSTER_INFORMATION(state, { id, updateBoosterInformation }) {
+      // console.log(updateVaccineInformation)
+      const boosterInformation = state.boosterDetails;
+      if (
+        boosterInformation &&
+        boosterInformation.boosterStat.citizen_id === id &&
+        boosterInformation.boosterStat.id === updateBoosterInformation.id
+      ) {
+        boosterInformation.boosterStat = updateBoosterInformation;
+      }
+    },
     SET_SHOW_ALERT(state, { alert, message }) {
       state.showAlert = {
         alert: alert,
@@ -102,6 +117,7 @@ export const registrants = {
     allRegistrants: (state) => state.registrants,
     getRegistrant: (state) => state.registrant,
     getVaccineInformation: (state) => state.vaccinationDetails,
+    getBoosterInformation: (state) => state.boosterDetails,
     getShowAlert: (state) => state.showAlert,
     getShowError: (state) => state.showError,
   },
@@ -198,7 +214,7 @@ export const registrants = {
     },
     fetchVaccineInformation({ commit }, id) {
       return this.$axios
-        .get(`/citizens/${id}/vaccine/`)
+        .get(`/citizens/${id}/vaccines/`)
         .then((response) => {
           const vaccineInformation = response.data;
           commit("SET_VACCINATION_INFORMATION", vaccineInformation);
@@ -210,7 +226,7 @@ export const registrants = {
     updateVaccineInformation({ commit, dispatch }, { id, data }) {
       const promises = data.map(async (vaccineData, index) => {
         return this.$axios
-          .put(`/citizens/${id}/vaccine/${data[index].id}`, vaccineData)
+          .put(`/citizens/${id}/vaccines/${data[index].id}`, vaccineData)
           .then((response) => {
             response.data;
           })
@@ -229,6 +245,50 @@ export const registrants = {
           commit("SET_SHOW_ALERT", {
             alert: true,
             message: "Updated Vaccine",
+          });
+          dispatch("fetchRegistrants");
+        })
+        .catch((error) => {
+          commit("SET_SHOW_ERROR", {
+            alert: true,
+            message: "Update",
+          });
+          console.error("Error requesting vaccination update:", error);
+        });
+    },
+    fetchBoosterInformation({ commit }, id) {
+      return this.$axios
+        .get(`/citizens/${id}/boosters`)
+        .then((response) => {
+          const boosterInformation = response.data;
+          commit("SET_BOOSTER_INFORMATION", boosterInformation);
+        })
+        .catch((error) => {
+          console.error("Error fetching booster information:", error);
+        });
+    },
+    updateBoosterInformation({ commit, dispatch }, { id, data }) {
+      const promises = data.map(async (boosterData, index) => {
+        return this.$axios
+          .put(`/citizens/${id}/boosters/${data[index].id}`, boosterData)
+          .then((response) => {
+            response.data;
+          })
+          .catch((error) => {
+            console.error("Error updating vaccination information:", error);
+            throw error;
+          });
+      });
+
+      return Promise.all(promises)
+        .then((updateBoosterInformation) => {
+          commit("UPDATE_BOOSTER_INFORMATION", {
+            id,
+            updateBoosterInformation,
+          });
+          commit("SET_SHOW_ALERT", {
+            alert: true,
+            message: "Updated Booster",
           });
           dispatch("fetchRegistrants");
         })

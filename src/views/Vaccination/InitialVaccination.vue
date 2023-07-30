@@ -219,28 +219,52 @@ export default {
       //   }
     },
     updateVariables() {
-      this.responses.dose_1 = this.payload.vaccinationStat[0].dose;
-      this.responses.date_1 = this.payload.vaccinationStat[0].vaccination_date;
-      this.responses.vaccine_1 = this.payload.vaccinationStat[0].vaccine_name;
-      this.responses.lot_number_1 = this.payload.vaccinationStat[0].lot_no;
-      this.responses.vaccination_site_1 =
-        this.payload.vaccinationStat[0].site_name;
-      this.responses.healthcare_professional_1 =
-        this.payload.vaccinationStat[0].healthcare_professional;
-      this.responses.healthcare_professional_license_number_1 =
-        this.payload.vaccinationStat[0].healthcare_professional_license_number;
-      this.responses.vaccine_id_1 = this.payload.vaccinationStat[0].id;
-      this.responses.dose_2 = this.payload.vaccinationStat[1].dose;
-      this.responses.date_2 = this.payload.vaccinationStat[1].vaccination_date;
-      this.responses.vaccine_2 = this.payload.vaccinationStat[1].vaccine_name;
-      this.responses.lot_number_2 = this.payload.vaccinationStat[1].lot_no;
-      this.responses.vaccination_site_2 =
-        this.payload.vaccinationStat[1].site_name;
-      this.responses.healthcare_professional_2 =
-        this.payload.vaccinationStat[1].healthcare_professional;
-      this.responses.healthcare_professional_license_number_2 =
-        this.payload.vaccinationStat[1].healthcare_professional_license_number;
-      this.responses.vaccine_id_2 = this.payload.vaccinationStat[1].id;
+      if (this.payload.vaccinationStat[0]) {
+        this.responses.dose_1 = this.payload.vaccinationStat[0].dose;
+        this.responses.date_1 =
+          this.payload.vaccinationStat[0].vaccination_date;
+        this.responses.vaccine_1 = this.payload.vaccinationStat[0].vaccine_name;
+        this.responses.lot_number_1 = this.payload.vaccinationStat[0].lot_no;
+        this.responses.vaccination_site_1 =
+          this.payload.vaccinationStat[0].site_name;
+        this.responses.healthcare_professional_1 =
+          this.payload.vaccinationStat[0].healthcare_professional;
+        this.responses.healthcare_professional_license_number_1 =
+          this.payload.vaccinationStat[0].healthcare_professional_license_number;
+        this.responses.vaccine_id_1 = this.payload.vaccinationStat[0].id;
+      } else {
+        this.responses.dose_1 = null;
+        this.responses.date_1 = null;
+        this.responses.vaccine_1 = null;
+        this.responses.lot_number_1 = null;
+        this.responses.vaccination_site_1 = null;
+        this.responses.healthcare_professional_1 = null;
+        this.responses.healthcare_professional_license_number_1 = null;
+        this.responses.vaccine_id_1 = null;
+      }
+      if (this.payload.vaccinationStat[1]) {
+        this.responses.dose_2 = this.payload.vaccinationStat[1].dose;
+        this.responses.date_2 =
+          this.payload.vaccinationStat[1].vaccination_date;
+        this.responses.vaccine_2 = this.payload.vaccinationStat[1].vaccine_name;
+        this.responses.lot_number_2 = this.payload.vaccinationStat[1].lot_no;
+        this.responses.vaccination_site_2 =
+          this.payload.vaccinationStat[1].site_name;
+        this.responses.healthcare_professional_2 =
+          this.payload.vaccinationStat[1].healthcare_professional;
+        this.responses.healthcare_professional_license_number_2 =
+          this.payload.vaccinationStat[1].healthcare_professional_license_number;
+        this.responses.vaccine_id_2 = this.payload.vaccinationStat[1].id;
+      } else {
+        this.responses.dose_2 = null;
+        this.responses.date_2 = null;
+        this.responses.vaccine_2 = null;
+        this.responses.lot_number_2 = null;
+        this.responses.vaccination_site_2 = null;
+        this.responses.healthcare_professional_2 = null;
+        this.responses.healthcare_professional_license_number_2 = null;
+        this.responses.vaccine_id_2 = null;
+      }
     },
   },
   computed: {
@@ -267,7 +291,7 @@ export default {
     // },
   },
   mounted() {
-    console.log(this.payload);
+    // console.log(this.payload);
     this.updateVariables();
   },
 };

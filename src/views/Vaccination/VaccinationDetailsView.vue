@@ -19,14 +19,14 @@
                 <v-tab>Booster</v-tab>
                 <v-tab-item>
                   <InitialVaccination
-                    v-on:submitData="submit"
+                    v-on:submitData="submitVaccine"
                     :payload="getVaccineInformation"
                   />
                 </v-tab-item>
                 <v-tab-item>
                   <BoosterVaccination
-                    v-on:submitData="submit"
-                    :payload="getVaccineInformation"
+                    v-on:submitData="submitBooster"
+                    :payload="getBoosterInformation"
                   />
                 </v-tab-item>
               </v-tabs>
@@ -56,9 +56,10 @@ export default {
     ...mapActions("registrants", [
       "fetchVaccineInformation",
       "updateVaccineInformation",
+      "fetchBoosterInformation",
+      "updateBoosterInformation"
     ]),
-    submit(data) {
-      console.log(data);
+    submitVaccine(data) {
       this.loading = true;
       let data1 = null;
       let data2 = null;
@@ -108,6 +109,66 @@ export default {
         };
       }
       this.updateVaccineInformation({
+        id: this.id,
+        data: [data1, data2],
+      })
+        .catch((error) => {
+          console.error("Error submitting vaccine information:", error);
+        })
+        .finally(() => {
+          (this.loading = false), (this.dialog = false);
+        });
+    },
+    submitBooster(data) {
+      this.loading = true;
+      let data1 = null;
+      let data2 = null;
+      if (data.vaccine_id_1 || data.vaccine_id_2) {
+        data1 = {
+          dose: data.dose_1,
+          booster_date: data.date_1,
+          booster_name: data.vaccine_1,
+          lot_no: data.lot_number_1,
+          site_name: data.vaccination_site_1,
+          healthcare_professional: data.healthcare_professional_1,
+          healthcare_professional_license_number:
+            data.healthcare_professional_license_number_1,
+          id: data.vaccine_id_1,
+        };
+        data2 = {
+          dose: data.dose_2,
+          booster_date: data.date_2,
+          booster_name: data.vaccine_2,
+          lot_no: data.lot_number_2,
+          site_name: data.vaccination_site_2,
+          healthcare_professional: data.healthcare_professional_2,
+          healthcare_professional_license_number:
+            data.healthcare_professional_license_number_2,
+          id: data.vaccine_id_2,
+        };
+      } else {
+        data1 = {
+          dose: data.dose_1,
+          booster_date: data.date_1,
+          booster_name: data.vaccine_1,
+          lot_no: data.lot_number_1,
+          site_name: data.vaccination_site_1,
+          healthcare_professional: data.healthcare_professional_1,
+          healthcare_professional_license_number:
+            data.healthcare_professional_license_number_1,
+        };
+        data2 = {
+          dose: data.dose_2,
+          booster_date: data.date_2,
+          booster_name: data.vaccine_2,
+          lot_no: data.lot_number_2,
+          site_name: data.vaccination_site_2,
+          healthcare_professional: data.healthcare_professional_2,
+          healthcare_professional_license_number:
+            data.healthcare_professional_license_number_2,
+        };
+      }
+      this.updateBoosterInformation({
         id: this.id,
         data: [data1, data2],
       })
@@ -173,7 +234,10 @@ export default {
     // },
     fetchData() {
       this.fetchVaccineInformation(this.id).catch((error) => {
-        console.error("VaccinationDetails Component Error:", error);
+        console.error("VaccinationDetails Component Vaccination Error:", error);
+      });
+      this.fetchBoosterInformation(this.id).catch((error) => {
+        console.error("VaccinationDetails Component Booster Error:", error);
       });
     },
   },
@@ -181,7 +245,15 @@ export default {
     this.fetchData();
   },
   computed: {
-    ...mapGetters("registrants", ["getVaccineInformation"]),
+    ...mapGetters("registrants", ["getVaccineInformation", "getBoosterInformation"]),
   },
+  watch: {
+    getVaccineInformation(value){
+      console.log("VaccineInformation", value);
+    },
+    getBoosterInformation(value){
+      console.log("BoosterInformation", value);
+    }
+  }
 };
 </script>

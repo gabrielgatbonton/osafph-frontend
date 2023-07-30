@@ -219,33 +219,19 @@ export default {
       //   }
     },
     updateVariables() {
-      if (this.payload.vaccinationStat[2] && this.payload.vaccinationStat[3]) {
-        this.responses.dose_1 = this.payload.vaccinationStat[2].dose;
-        this.responses.date_1 =
-          this.payload.vaccinationStat[2].vaccination_date;
-        this.responses.vaccine_1 = this.payload.vaccinationStat[2].vaccine_name;
-        this.responses.lot_number_1 = this.payload.vaccinationStat[2].lot_no;
+      if (this.payload.boosterStat[0]) {
+        this.responses.dose_1 = this.payload.boosterStat[0].dose;
+        this.responses.date_1 = this.payload.boosterStat[0].booster_date;
+        this.responses.vaccine_1 = this.payload.boosterStat[0].booster_name;
+        this.responses.lot_number_1 = this.payload.boosterStat[0].lot_no;
         this.responses.vaccination_site_1 =
-          this.payload.vaccinationStat[2].site_name;
+          this.payload.boosterStat[0].site_name;
         this.responses.healthcare_professional_1 =
-          this.payload.vaccinationStat[2].healthcare_professional;
+          this.payload.boosterStat[0].healthcare_professional;
         this.responses.healthcare_professional_license_number_1 =
-          this.payload.vaccinationStat[2].healthcare_professional_license_number;
-        this.responses.vaccine_id_1 = this.payload.vaccinationStat[2].id;
-        this.responses.dose_2 = this.payload.vaccinationStat[3].dose;
-        this.responses.date_2 =
-          this.payload.vaccinationStat[3].vaccination_date;
-        this.responses.vaccine_2 = this.payload.vaccinationStat[3].vaccine_name;
-        this.responses.lot_number_2 = this.payload.vaccinationStat[3].lot_no;
-        this.responses.vaccination_site_2 =
-          this.payload.vaccinationStat[3].site_name;
-        this.responses.healthcare_professional_2 =
-          this.payload.vaccinationStat[3].healthcare_professional;
-        this.responses.healthcare_professional_license_number_2 =
-          this.payload.vaccinationStat[3].healthcare_professional_license_number;
-        this.responses.vaccine_id_2 = this.payload.vaccinationStat[3].id;
-      }
-      else {
+          this.payload.boosterStat[0].healthcare_professional_license_number;
+        this.responses.vaccine_id_1 = this.payload.boosterStat[0].id;
+      } else {
         this.responses.dose_1 = null;
         this.responses.date_1 = null;
         this.responses.vaccine_1 = null;
@@ -254,6 +240,20 @@ export default {
         this.responses.healthcare_professional_1 = null;
         this.responses.healthcare_professional_license_number_1 = null;
         this.responses.vaccine_id_1 = null;
+      }
+      if (this.payload.boosterStat[1]) {
+        this.responses.dose_2 = this.payload.boosterStat[1].dose;
+        this.responses.date_2 = this.payload.boosterStat[1].booster_date;
+        this.responses.vaccine_2 = this.payload.boosterStat[1].booster_name;
+        this.responses.lot_number_2 = this.payload.boosterStat[1].lot_no;
+        this.responses.vaccination_site_2 =
+          this.payload.boosterStat[1].site_name;
+        this.responses.healthcare_professional_2 =
+          this.payload.boosterStat[1].healthcare_professional;
+        this.responses.healthcare_professional_license_number_2 =
+          this.payload.boosterStat[1].healthcare_professional_license_number;
+        this.responses.vaccine_id_2 = this.payload.boosterStat[1].id;
+      } else {
         this.responses.dose_2 = null;
         this.responses.date_2 = null;
         this.responses.vaccine_2 = null;
