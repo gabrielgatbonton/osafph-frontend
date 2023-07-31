@@ -259,17 +259,10 @@ export default {
   },
   methods: {
     handleImageUpload(file) {
-      // Handle the image upload
-      // Here, you can perform any necessary logic, such as storing the file or processing it
-      // In this example, we are simply updating the `selectedImage` data property with the uploaded file
-      // console.log(file);
       // this.selectedImage = URL.createObjectURL(file);
-      // console.log("Image", this.selectedImage);
       this.submitImage(file, "image");
     },
     handleSignatureUpload(file) {
-      // Handle the image upload for the signature component
-      // console.log("Signature", file);
       this.selectedSignature = URL.createObjectURL(file);
       this.submitImage(file, "signature");
     },
@@ -329,6 +322,7 @@ export default {
       const id = this.$route.params.id;
       const baseURL = this.$url;
       this.registrant = value;
+
       this.selectedImage = this.registrant.citizen.citizen_file.image_url
         ? baseURL + this.registrant.citizen.citizen_file.image_url
         : null;
