@@ -1,27 +1,21 @@
 <template>
   <v-app>
-    <NavComponents
-      v-if="
-        this.$route.name === 'login' || this.$route.name === 'reroute'
-          ? false
-          : true
-      "
-    />
+     <NavComponents v-if="this.$route.name === 'login' ? false : true" />
     <v-main>
-      <router-view />
+      <router-view/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import NavComponents from "./layouts/NavComponents.vue";
+import NavComponents from './layouts/NavComponents.vue';
 export default {
-  name: "App",
+  name: 'App',
   data: () => ({
     //
   }),
-  components: {
-    NavComponents,
-  },
+  components:{
+    NavComponents
+  }
 };
 </script>
