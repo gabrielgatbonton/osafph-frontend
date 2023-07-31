@@ -308,7 +308,7 @@ export default {
       "REST OF ADULT POPULATION (ROAP)",
       "FRONTLINE HEALTH SERVICES (A1)",
       "ALL SENIOR CITIZENS (A2)",
-      "PERSON WITH COMORBIDITIES (A3)",
+      "PERSONS WITH COMORBIDITIES (A3)",
       "FRONTLINE PERSONNEL (A4)",
     ],
     suffixes: ["Sr.", "Jr.", "III", "IV", "V"],
