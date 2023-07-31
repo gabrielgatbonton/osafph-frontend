@@ -258,7 +258,7 @@ export const registrants = {
     },
     fetchBoosterInformation({ commit }, id) {
       return this.$axios
-        .get(`/citizens/${id}/boosters`)
+        .get(`/citizens/${id}/boosters/`)
         .then((response) => {
           const boosterInformation = response.data;
           commit("SET_BOOSTER_INFORMATION", boosterInformation);
