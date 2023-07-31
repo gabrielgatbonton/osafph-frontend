@@ -3,7 +3,7 @@
     <v-container fluid class="container-height v-scrollbar-hide">
       <v-row>
         <v-col cols="12" md="6" class="grey darken-4">
-          <div class="text-center" style="margin-top: 100px">
+          <div class="text-center" style="margin-top: 80px">
             <div
               class="headline white--text text-center mx-auto"
               style="max-width: 300px"
@@ -16,6 +16,7 @@
                 src="../assets/OSAFPH LOGO.png"
                 max-height="320"
                 max-width="320"
+                contain
               ></v-img>
             </div>
           </div>
@@ -23,7 +24,7 @@
         <v-col cols="12" md="6" :style="{ backgroundColor: '#d1d1d1' }">
           <v-card
             rounded="xl"
-            class="mx-auto pb-7"
+            class="mx-auto pb-7 slide-down"
             max-width="350"
             elevation="7"
             style="margin-top: 100px"
@@ -157,4 +158,19 @@ export default {
   flex-direction: column; /* Arrange the columns vertically */
   overflow-y: hidden; /* Hide the vertical scrollbar */
 }
+
+ @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .slide-down {
+    animation: slideDown 1.5s ease-out;
+  }
 </style>
