@@ -13,7 +13,6 @@
               src="../assets/OSAFPH LOGO.png"
               height="55"
               width="55"
-              contain
             ></v-img>
           </v-col>
           <v-col cols="auto">
