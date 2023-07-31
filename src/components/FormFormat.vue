@@ -207,7 +207,7 @@
           </v-col>
         </v-row>
         <v-row class="mt-n3">
-          <v-col cols="12" lg="4" md="4">
+          <v-col cols="12" lg="6" md="6">
             <v-select
               :value="data.province"
               v-model="data.province"
@@ -217,7 +217,7 @@
               :error-messages="errorMessages.province"
             ></v-select>
           </v-col>
-          <v-col cols="12" lg="4" md="4">
+          <v-col cols="12" lg="6" md="6">
             <v-select
               :value="data.municipality"
               v-model="data.municipality"
@@ -227,7 +227,7 @@
               :error-messages="errorMessages.municipality"
             ></v-select>
           </v-col>
-          <v-col cols="12" lg="4" md="4">
+          <v-col cols="12" lg="6" md="6">
             <v-select
               :value="data.barangay"
               v-model="data.barangay"
@@ -235,6 +235,16 @@
               :items="barangays"
               @blur="$v.data.barangay.$touch()"
               :error-messages="errorMessages.barangay"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" lg="6" md="6">
+            <v-select
+              :value="data.region"
+              v-model="data.region"
+              label="Barangay"
+              :items="regions"
+              @blur="$v.data.region.$touch()"
+              :error-messages="errorMessages.region"
             ></v-select>
           </v-col>
           <v-col cols="12">
@@ -291,6 +301,7 @@ export default {
       province: null,
       municipality: null,
       barangay: null,
+      region: null,
       mcg_cares_card: null,
     },
     categories: [
@@ -336,6 +347,25 @@ export default {
       "TABUN",
       "CLARK FREEPORT ZONE",
     ],
+    regions: [
+      "REGION I (ILOCOS REGION)",
+      "REGION II (CAGAYAN VALLEY)",
+      "REGION III (CENTRAL LUZON)",
+      "REGION IV-A (CALABARZON)",
+      "REGION IV-B (MIMAROPA)",
+      "REGION V (BIKOL REGION)",
+      "REGION VI (WESTERN VISAYAS)",
+      "REGION VII (CENTRAL VISAYAS)",
+      "REGION VIII (EASTERN VISAYAS)",
+      "REGION IX (ZAMBOANGA PENINSULA)",
+      "REGION X (NORTHERN MINDANAO)",
+      "REGION XI (DAVAO REGION)",
+      "REGION XII (SOCCSKSARGEN)",
+      "REGION XIII (CARAGA)",
+      "CORDILLERA ADMINISTRATIVE REGION (CAR)",
+      "NATIONAL CAPITAL REGION (NCR)",
+      "BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO (BARMM)",
+    ],
     // value: null,
     menu: false,
   }),
@@ -377,6 +407,7 @@ export default {
       province: { required },
       municipality: { required },
       barangay: { required },
+      region: { required },
     },
   },
   computed: {
@@ -532,6 +563,13 @@ export default {
           errors.barangay.push("Province is required");
       }
 
+      // Region field errors
+      errors.region = [];
+      if (this.$v.data.region.$dirty) {
+        !this.$v.data.region.required &&
+          errors.region.push("Region is required");
+      }
+
       return errors;
     },
   },
@@ -555,7 +593,7 @@ export default {
   },
   watch: {
     getRegistrant(value) {
-      console.log("watch:", value);
+      // console.log("watch:", value);
       if (this.id) {
         this.data.category = value.citizen.category.description;
         this.data.hub_registrant_number = value.citizen.hub_registrant_number;
@@ -579,6 +617,7 @@ export default {
           value.citizen.barangay.municipality.municipality_name;
         this.data.barangay = value.citizen.barangay.barangay_name;
         this.data.mcg_cares_card = value.citizen.mcg_cares_card;
+        this.data.region = value.citizen.barangay.municipality.province.region.region_name;
       }
     },
   },
