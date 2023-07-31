@@ -43,6 +43,12 @@ export const login = {
           console.error("Error logging out:", error);
         });
     },
+    logoutAndClearToken({ commit }) {
+      // Clear the token from local storage
+      localStorage.removeItem("accessToken");
+      // Commit the mutation to set the user as logged out
+      commit("SET_LOGGED_OUT");
+    },
   },
   getters: {
     isLoggedIn: (state) => {
