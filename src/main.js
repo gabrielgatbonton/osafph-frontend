@@ -12,8 +12,8 @@ Vue.prototype.$http = axios
 Vue.use(Vuelidate)
 
 //BaseURLs
-const baseURL = 'http://200.10.77.4/';  //Network BaseURL
-// const baseURL: 'http://127.0.0.1:8000/'; //Lo cal BaseURL
+// const baseURL = 'http://200.10.77.4/';  //Network BaseURL
+const baseURL = 'http://127.0.0.1:8000/'; //Local BaseURL
 
 
 const axiosInstance = axios.create({
@@ -31,6 +31,32 @@ axiosInstance.interceptors.request.use((config) => {
   }
   return config;
 });
+
+function handleBeforeUnload(event) {
+  // Check if the tab or window is being closed intentionally
+  if (!event.currentTarget.performance.navigation.type === 1) {
+    // If it's not a refresh (type === 1), it's an actual close event
+    // Clear the token and other data here as needed
+    store.dispatch("login/logoutAndClearToken");
+  } else {
+    // If it's a refresh, store a flag in sessionStorage to remember it
+    sessionStorage.setItem("isRefresh", "true");
+  }
+}
+
+// Attach the beforeunload event to window
+window.addEventListener("beforeunload", handleBeforeUnload);
+
+// Check if the page was refreshed
+const isRefresh = sessionStorage.getItem("isRefresh") === "true";
+
+// If it's a refresh, remove the flag from sessionStorage
+if (isRefresh) {
+  sessionStorage.removeItem("isRefresh");
+} else {
+  // If it's not a refresh, clear the token and other data on initial load
+  store.dispatch("login/logoutAndClearToken");
+}
 
 new Vue({
   router,
