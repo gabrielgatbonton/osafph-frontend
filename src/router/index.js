@@ -1,3 +1,4 @@
+
 // index.js
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -5,7 +6,7 @@ import dashboardRoute from "./modules/dashboard";
 import citizensRoute from "./modules/citizens";
 import managementRoute from "./modules/management";
 import LogInLayout from "../components/LandingPage.vue";
-import Reroute from "./modules/ReroutePage";
+import reroute from "./modules/reroute";
 import { checkLoggedIn } from "./modules/auth-guard";
 
 Vue.use(VueRouter);
@@ -23,7 +24,6 @@ const routes = [
   ...dashboardRoute,
   ...citizensRoute,
   ...managementRoute,
-  ...Reroute
 ]
 
 const router = new VueRouter({
