@@ -7,7 +7,7 @@ import citizensRoute from "./modules/citizens";
 import managementRoute from "./modules/management";
 import LogInLayout from "../components/LandingPage.vue";
 import { checkLoggedIn } from "./modules/auth-guard";
-import ReroutePage from "./modules/ReroutePage";
+import ReroutePage from "./modules/reroute";
 
 Vue.use(VueRouter);
 
