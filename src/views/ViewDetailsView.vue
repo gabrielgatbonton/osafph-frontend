@@ -146,18 +146,9 @@
                         :key="selectedImage"
                         max-height="400"
                         max-width="200"
+                        style="transform: scaleX(-1);"
                       ></v-img>
-                      <CameraComponent v-on:picture-taken="handleImageUpload" />
-                      <!-- <v-file-input
-                        label="File input"
-                        color="grey darken-1"
-                        ref="imageInput"
-                        @change="handleImageUpload"
-                        :append-icon="
-                          selectedImage ? 'mdi-check' : 'mdi-upload'
-                        "
-                        :append-icon-cb="() => (selectedImage = '')"
-                      ></v-file-input> -->
+                      <CameraComponent :image="registrant.citizen.citizen_file.image_url" v-on:picture-taken="handleImageUpload" />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -180,7 +171,6 @@
                       <v-file-input
                         label="File input"
                         color="grey darken-1"
-                        ref="signatureInput"
                         @change="handleSignatureUpload"
                         :append-icon="
                           selectedSignature ? 'mdi-check' : 'mdi-upload'
@@ -304,7 +294,6 @@ export default {
           data: formData, // Pass the FormData object as the data
         });
         this.loading = false;
-        this.handleRequestSuccessful(this.title);
       } catch (error) {
         console.error("Error submitting image:", error);
       }
@@ -336,7 +325,7 @@ export default {
   },
   watch: {
     getRegistrant(value) {
-      console.log("Get Registrant", value);
+      // console.log("Get Registrant", value);
       const id = this.$route.params.id;
       const baseURL = this.$url;
       this.registrant = value;

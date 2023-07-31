@@ -5,6 +5,8 @@
         label="Choose file"
         v-bind="attrs"
         v-on="{ ...on, click: onClickFileInput }"
+        :append-icon="capturedImage ? 'mdi-check' : 'mdi-upload'"
+        :append-icon-cb="() => (capturedImage = '')"
       ></v-file-input>
     </template>
     <v-card rounded="lg">
@@ -33,10 +35,12 @@
 
 <script>
 export default {
+  props: ["image"],
   data: () => ({
     showCameraDialog: false,
     pictureTaken: false,
     capturedImage: null,
+    fileInput: null,
   }),
   methods: {
     onClickFileInput(event) {
@@ -90,7 +94,6 @@ export default {
       const dataURL = canvas.toDataURL("image/jpeg", 0.8); // Set the quality (0.0 to 1.0)
 
       this.capturedImage = dataURL;
-      console.log("dataURL:", dataURL);
       // Emit the captured image data to the parent component
       this.$emit("picture-taken", dataURL);
 
