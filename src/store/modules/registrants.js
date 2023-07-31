@@ -226,7 +226,7 @@ export const registrants = {
     updateVaccineInformation({ commit, dispatch }, { id, data }) {
       const promises = data.map(async (vaccineData, index) => {
         return this.$axios
-          .put(`/citizens/${id}/vaccines/${data[index].id}`, vaccineData)
+          .put(`/citizens/${id}/vaccines/${data[index].id}/addOrUpdate`, vaccineData)
           .then((response) => {
             response.data;
           })
@@ -270,7 +270,7 @@ export const registrants = {
     updateBoosterInformation({ commit, dispatch }, { id, data }) {
       const promises = data.map(async (boosterData, index) => {
         return this.$axios
-          .put(`/citizens/${id}/boosters/${data[index].id}`, boosterData)
+          .put(`/citizens/${id}/boosters/${data[index].id}/addOrUpdate`, boosterData)
           .then((response) => {
             response.data;
           })
