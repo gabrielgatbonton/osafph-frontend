@@ -3,7 +3,7 @@
     <v-app-bar app flat color="grey lighten-2">
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       <div>
-        <v-img src="../assets/MCG.png" width="120" height="60" contain></v-img>
+        <v-img src="../assets/MCG.png" width="120" height="60"></v-img>
       </div>
       <v-spacer></v-spacer>
       <v-menu bottom :offset-y="offset">

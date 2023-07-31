@@ -52,7 +52,6 @@ export default {
           province: data.province,
           barangay: data.barangay,
           municipality: data.municipality,
-          region: data.region,
           mcg_cares_card: data.mcg_cares_card,
         };
 
