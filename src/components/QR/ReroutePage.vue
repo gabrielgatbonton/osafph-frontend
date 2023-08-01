@@ -15,7 +15,7 @@
         Official COVID-19 Vaccination Record
       </div>
     </div>
-    <DataTabs :data="getRegistrant" />
+    <DataTabs :data="getRegistrant" v-bind:booster="getBoosterInformation" />
   </div>
 </template>
 
@@ -27,20 +27,28 @@ export default {
     DataTabs,
   },
   methods: {
-    ...mapActions("registrants", ["fetchRegistrantId"]),
+    ...mapActions("registrants", ["fetchRegistrantId", "fetchBoosterInformation"]),
     fetchData() {
       const id = this.$route.params.id;
       this.fetchRegistrantId(id).catch((error) => {
         console.error("Error fetching data in ReroutePage:", error);
       });
+      this.fetchBoosterInformation(id).catch((error) => {
+        console.error("Error fetching data in ReroutePage:", error);
+      });
     },
   },
   computed: {
-    ...mapGetters("registrants", ["getRegistrant"]),
+    ...mapGetters("registrants", ["getRegistrant", "getBoosterInformation"]),
   },
   created() {
     this.fetchData();
   },
+  watch:{
+    getBoosterInformation(value){
+      console.log("REroute: ", value)
+    }
+  }
 };
 </script>
 

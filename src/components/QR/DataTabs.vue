@@ -6,10 +6,10 @@
           <v-tab>Personal Details</v-tab>
           <v-tab>Booster History</v-tab>
           <v-tab-item>
-            <PersonalDetails :data="data"/>
+            <PersonalDetails :data="data" />
           </v-tab-item>
           <v-tab-item>
-            <BoosterHistory :data="data"/>
+            <BoosterHistory :data="booster" />
           </v-tab-item>
         </v-tabs>
       </v-col>
@@ -21,11 +21,17 @@
 import PersonalDetails from "./PersonalDetails.vue";
 import BoosterHistory from "./BoosterHistory.vue";
 export default {
-  props: ['data'],
+  props: ["data", "booster"],
   components: {
     PersonalDetails,
-    BoosterHistory
+    BoosterHistory,
   },
+  watch:{
+    booster(value){
+      console.log("DATATABS:", value)
+    }
+    
+  }
 };
 </script>
 

@@ -19,7 +19,7 @@
         </v-col>
       </v-row>
       <v-divider class="my-4"></v-divider>
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12" md="8">
           <v-container fluid class="mx-auto mt-3">
             <v-row>
@@ -184,6 +184,24 @@
                         :loading="loading"
                         >Submit</v-btn
                       > -->
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-col>
+              <v-col cols="12" class="mt-n2">
+                <v-card>
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-fingerprint</v-icon>Biometrics</v-card-title
+                  >
+                  <v-row justify="center" class="ma-2 pb-2">
+                    <v-col align-self="center" cols="12">
+                      <v-img
+                        class="grey darken-1 mx-auto"
+                        :src="biometrics"
+                        :key="biometrics"
+                        max-height="400"
+                        max-width="200"
+                      ></v-img>
                     </v-col>
                   </v-row>
                 </v-card>
