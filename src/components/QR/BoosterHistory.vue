@@ -144,7 +144,7 @@
                                     </div>
                                     <div class="text-subtitle-2">
                                       {{
-                                        data.boosterStat[1].vaccination_date.toUpperCase()
+                                        data.boosterStat[0].booster_date.toUpperCase()
                                       }}
                                     </div>
                                   </v-col>
