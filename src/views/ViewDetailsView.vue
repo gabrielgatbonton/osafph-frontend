@@ -168,7 +168,8 @@
                         max-height="150"
                         max-width="300"
                       ></v-img>
-                      <v-file-input
+                      <SignatureComponent v-on:signature-taken="handleSignatureUpload"/>
+                      <!-- <v-file-input
                         label="File input"
                         color="grey darken-1"
                         @change="handleSignatureUpload"
@@ -176,14 +177,7 @@
                           selectedSignature ? 'mdi-check' : 'mdi-upload'
                         "
                         :append-icon-cb="() => (selectedSignature = '')"
-                      ></v-file-input>
-                      <!-- <v-btn
-                        dark
-                        block
-                        class="grey darken-1"
-                        :loading="loading"
-                        >Submit</v-btn
-                      > -->
+                      ></v-file-input> -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -195,13 +189,13 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <v-img
+                      <!-- <v-img
                         class="grey darken-1 mx-auto"
                         :src="biometrics"
                         :key="biometrics"
                         max-height="400"
                         max-width="200"
-                      ></v-img>
+                      ></v-img> -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -253,6 +247,7 @@ import VaccinationDetailsViewVue from "./Vaccination/VaccinationDetailsView.vue"
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
 import CameraComponent from "@/components/CameraComponent.vue";
+import SignatureComponent from '@/components/Signature/SignatureComponent.vue';
 export default {
   data: () => ({
     title: null,
@@ -274,6 +269,7 @@ export default {
     SubmissionAlert,
     ErrorAlert,
     CameraComponent,
+    SignatureComponent,
   },
   methods: {
     handleImageUpload(file) {
@@ -281,7 +277,7 @@ export default {
       this.submitImage(file, "image");
     },
     handleSignatureUpload(file) {
-      this.selectedSignature = URL.createObjectURL(file);
+      // this.selectedSignature = URL.createObjectURL(file);
       this.submitImage(file, "signature");
     },
     async fetchRegistrant() {

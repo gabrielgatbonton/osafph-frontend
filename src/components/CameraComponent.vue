@@ -91,7 +91,7 @@ export default {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       // Convert canvas data to JPG image data URL
-      const dataURL = canvas.toDataURL("image/jpeg", 0.8); // Set the quality (0.0 to 1.0)
+      const dataURL = canvas.toDataURL("image/jpeg", 1.0); // Set the quality (0.0 to 1.0)
 
       this.capturedImage = dataURL;
       // Emit the captured image data to the parent component
