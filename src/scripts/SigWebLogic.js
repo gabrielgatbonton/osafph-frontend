@@ -163,6 +163,7 @@ export function onClear() {
 }
 
 export function onDone() {
+  close();
   return new Promise((resolve, reject) => {
     if (NumberOfTabletPoints() === 0) {
       alert("Please sign before continuing");

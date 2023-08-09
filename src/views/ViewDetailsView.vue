@@ -168,7 +168,7 @@
                         max-height="150"
                         max-width="300"
                       ></v-img>
-                      <SignatureComponent v-on:signature-taken="handleSignatureUpload"/>
+                      <SignatureComponent :checkSignature="checkSignature" v-on:signature-taken="handleSignatureUpload"/>
                       <!-- <v-file-input
                         label="File input"
                         color="grey darken-1"
@@ -263,6 +263,7 @@ export default {
     dynamicBaseURL: null,
     showAlert: false,
     showError: false,
+    checkSignature: null,
   }),
   components: {
     VaccinationDetailsViewVue,
@@ -301,6 +302,7 @@ export default {
           data: formData, // Pass the FormData object as the data
         });
         this.loading = false;
+        this.fetchRegistrant();
       } catch (error) {
         console.error("Error submitting image:", error);
       }
@@ -343,6 +345,7 @@ export default {
       this.selectedSignature = this.registrant.citizen.citizen_file.e_signature
         ? baseURL + this.registrant.citizen.citizen_file.e_signature
         : null;
+      this.checkSignature = this.selectedSignature ? true : false;
       this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
       if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
         this.cardStatus.status = true;

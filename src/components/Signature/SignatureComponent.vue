@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="blue darken-4" block dark v-bind="attrs" v-on="on">
-          Add Signature
+          {{ checkSignature ? "Edit" : "Add" }} Signature
         </v-btn>
       </template>
       <v-card>
@@ -22,22 +22,28 @@
                   height="100"
                 ></canvas>
               </div>
-              <div v-if="status" class="text-center">
-                {{ status }}
+              <div v-if="data" class="text-center font-weight-bold">
+                {{ data.version }}
               </div>
             </v-col>
             <v-col cols="12">
               <v-card-actions>
-                  <v-btn v-if="buttonStart" color="blue darken-1" dark @click="Start"
-                    >Start</v-btn
-                  >
-                  <v-btn v-if="buttonClear" color="red darken-4" dark @click="Clear"
-                    >Clear</v-btn
-                  >
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-4" dark @click="Save"
-                    >Save</v-btn
-                  >
+                <v-btn
+                  v-if="buttonStart"
+                  color="blue darken-1"
+                  dark
+                  @click="Start"
+                  >Start</v-btn
+                >
+                <v-btn
+                  v-if="buttonClear"
+                  color="red darken-4"
+                  dark
+                  @click="Clear"
+                  >Clear</v-btn
+                >
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-4" dark @click="Save">Save</v-btn>
               </v-card-actions>
             </v-col>
           </v-row>
@@ -51,11 +57,11 @@
 import { initSigWeb, onSign, onClear, onDone } from "@/scripts/SigWebLogic";
 import { mapActions } from "vuex";
 export default {
+  props: ["checkSignature"],
   data: () => ({
     dialog: false,
-    status: null,
     buttonStart: true,
-    buttonClear: false, 
+    buttonClear: false,
     data: null,
     tmr: null,
   }),
@@ -65,8 +71,8 @@ export default {
       initSigWeb()
         .then((data) => {
           // This block will execute when the promise is resolved successfully
-          // console.log(data); // Handle the data object as needed
           this.data = data;
+          console.log(data.expiry);
         })
         .catch(() => {
           // This block will execute when the promise is rejected
@@ -75,25 +81,34 @@ export default {
     },
     Start() {
       const ctx = document.getElementById("cnv").getContext("2d");
-      onSign(ctx, this.tmr).then(
-        () => (this.status = "You may now start signing.")
-      ).catch((error) => {
-        console.log("Error initializing the signature", error)
-        this.status = "Connection Failed"
-      }).finally(() => {
-        this.buttonStart = false,
-        this.buttonClear = true
-      });
+      onSign(ctx, this.tmr)
+        .then(() => (this.status = "You may now start signing."))
+        .catch((error) => {
+          console.log("Error initializing the signature", error);
+          this.status = "Connection Failed";
+        })
+        .finally(() => {
+          (this.buttonStart = false), (this.buttonClear = true);
+        });
     },
     Clear() {
       onClear();
     },
     Save() {
-      onDone().then((data) => {
-        this.$emit('signature-taken', data.sigImageData)
-      }).finally(() => {
-        this.dialog = false;
-      });
+      onDone()
+        .then((data) => {
+          this.$emit("signature-taken", data.sigImageData);
+        })
+        .catch((error) => {
+          console.log("Error Saving: ", error);
+        })
+        .finally(() => {
+          this.dialog = false;
+          this.buttonStart = true;
+          this.buttonClear = false;
+          this.data = null;
+          this.tmr = null;
+        });
     },
   },
   created() {
