@@ -25,6 +25,9 @@
               <div v-if="data" class="text-center font-weight-bold">
                 {{ data.version }}
               </div>
+              <div v-if="status" class="text-center font-weight-bold">
+                {{ status }}
+              </div>
             </v-col>
             <v-col cols="12">
               <v-card-actions>
@@ -43,6 +46,7 @@
                   >Clear</v-btn
                 >
                 <v-spacer></v-spacer>
+                <v-btn color="grey" dark @click="dialog = false">Cancel</v-btn>
                 <v-btn color="blue darken-4" dark @click="Save">Save</v-btn>
               </v-card-actions>
             </v-col>
@@ -64,6 +68,7 @@ export default {
     buttonClear: false,
     data: null,
     tmr: null,
+    status: null,
   }),
   methods: {
     ...mapActions("registrants", ["updateRegistrantFiles"]),
@@ -108,6 +113,7 @@ export default {
           this.buttonClear = false;
           this.data = null;
           this.tmr = null;
+          this.status = null;
         });
     },
   },
