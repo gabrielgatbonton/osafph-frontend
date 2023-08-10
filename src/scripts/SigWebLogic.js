@@ -3,7 +3,7 @@ import "./SigWebTablet";
 import { IsSigWebInstalled, GetSigWebVersion, GetDaysUntilCertificateExpires } from "@/scripts/SigWebTablet";
 import { SetDisplayXSize, SetDisplayYSize, SetTabletState, SetJustifyMode, ClearTablet } from "@/scripts/SigWebTablet";
 import { SetSigCompressionMode, SetImageXSize, SetImageYSize, SetImagePenWidth, GetSigImageB64, GetSigString, NumberOfTabletPoints } from "@/scripts/SigWebTablet";
-import { Reset } from "@/scripts/SigWebTablet";
+import { Reset, ClearSigWindow } from "@/scripts/SigWebTablet";
 var tmr;
 
 var resetIsSupported = false;
@@ -150,7 +150,7 @@ export function onSign(ctx, tmr) {
         tmr = null;
         tmr = SetTabletState(1, ctx, 50);
       }
-      resolve(); // Resolve the promise when the operation is complete
+      resolve(tmr); // Resolve the promise when the operation is complete
     } else {
       reject(new Error("Unable to communicate with SigWeb."));
     }
@@ -162,19 +162,18 @@ export function onClear() {
   ClearTablet();
 }
 
-export function onDone() {
-  close();
+export function onDone(tmr) {
   return new Promise((resolve, reject) => {
     if (NumberOfTabletPoints() === 0) {
       alert("Please sign before continuing");
       reject(new Error("No signature points"));
     } else {
+
       SetTabletState(0, tmr);
 
       // Set up signature data
       SetSigCompressionMode(1);
       const bioSigData = GetSigString();
-
       // Get the signature image as base64 URL
       const canvas = document.getElementById("cnv"); // Replace with your canvas ID
       const sigImageData = canvas.toDataURL("image/jpeg", 1.0);
@@ -190,7 +189,6 @@ function SigImageCallback(str) {
 
 function endDemo() {
   ClearTablet();
-  SetTabletState(0, tmr);
 }
 
 function close() {

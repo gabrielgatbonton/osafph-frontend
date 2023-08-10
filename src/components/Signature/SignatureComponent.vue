@@ -87,7 +87,10 @@ export default {
     Start() {
       const ctx = document.getElementById("cnv").getContext("2d");
       onSign(ctx, this.tmr)
-        .then(() => (this.status = "You may now start signing."))
+        .then((tmr) => {
+          this.status = "You may now start signing."
+          this.tmr = tmr
+        })
         .catch((error) => {
           console.log("Error initializing the signature", error);
           this.status = "Connection Failed";
@@ -100,7 +103,7 @@ export default {
       onClear();
     },
     Save() {
-      onDone()
+      onDone(this.tmr)
         .then((data) => {
           this.$emit("signature-taken", data.sigImageData);
         })
