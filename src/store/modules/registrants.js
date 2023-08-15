@@ -61,9 +61,9 @@ export const registrants = {
       const registrant = state.registrant;
       if (registrant && registrant.id === id) {
         registrant.citizen.citizen_file = {
-          image_url: files.image_url,
-          e_signature: files.e_signature,
-        };
+          image_url: files,
+          e_signature: files,
+        }
       }
     },
     UPDATE_CARD_STATUS(state, { id, claim }) {
@@ -182,7 +182,7 @@ export const registrants = {
           console.error("Error updating request to registrant vuex:", error);
         });
     },
-    updateRegistrantFiles({ commit }, { id, data }) {
+    updateRegistrantFiles({ commit, dispatch }, { id, data }) {
       return this.$axios
         .post(`/citizens/${id}/files`, data)
         .then((response) => {
@@ -192,6 +192,7 @@ export const registrants = {
             alert: true,
             message: "Updated Image",
           });
+          dispatch("fetchRegistrants");
         })
         .catch((error) => {
           commit("SET_SHOW_ERROR", {

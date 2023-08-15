@@ -168,7 +168,8 @@
                         max-height="150"
                         max-width="300"
                       ></v-img>
-                      <v-file-input
+                      <SignatureComponent :checkSignature="checkSignature" v-on:signature-taken="handleSignatureUpload"/>
+                      <!-- <v-file-input
                         label="File input"
                         color="grey darken-1"
                         @change="handleSignatureUpload"
@@ -176,14 +177,7 @@
                           selectedSignature ? 'mdi-check' : 'mdi-upload'
                         "
                         :append-icon-cb="() => (selectedSignature = '')"
-                      ></v-file-input>
-                      <!-- <v-btn
-                        dark
-                        block
-                        class="grey darken-1"
-                        :loading="loading"
-                        >Submit</v-btn
-                      > -->
+                      ></v-file-input> -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -253,6 +247,7 @@ import VaccinationDetailsViewVue from "./Vaccination/VaccinationDetailsView.vue"
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
 import CameraComponent from "@/components/CameraComponent.vue";
+import SignatureComponent from '@/components/Signature/SignatureComponent.vue';
 export default {
   data: () => ({
     title: null,
@@ -268,12 +263,14 @@ export default {
     dynamicBaseURL: null,
     showAlert: false,
     showError: false,
+    checkSignature: null,
   }),
   components: {
     VaccinationDetailsViewVue,
     SubmissionAlert,
     ErrorAlert,
     CameraComponent,
+    SignatureComponent,
   },
   methods: {
     handleImageUpload(file) {
@@ -281,7 +278,7 @@ export default {
       this.submitImage(file, "image");
     },
     handleSignatureUpload(file) {
-      this.selectedSignature = URL.createObjectURL(file);
+      // this.selectedSignature = URL.createObjectURL(file);
       this.submitImage(file, "signature");
     },
     async fetchRegistrant() {
@@ -305,6 +302,7 @@ export default {
           data: formData, // Pass the FormData object as the data
         });
         this.loading = false;
+        this.fetchRegistrant();
       } catch (error) {
         console.error("Error submitting image:", error);
       }
@@ -347,6 +345,7 @@ export default {
       this.selectedSignature = this.registrant.citizen.citizen_file.e_signature
         ? baseURL + this.registrant.citizen.citizen_file.e_signature
         : null;
+      this.checkSignature = this.selectedSignature ? true : false;
       this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
       if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
         this.cardStatus.status = true;
