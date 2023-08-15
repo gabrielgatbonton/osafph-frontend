@@ -1,10 +1,16 @@
 # osafph-frontend
 
+## Prerequisites
+
+Before setting up the project, make sure you have the following prerequisites installed:
+
+SigWeb SDK - https://topazsystems.com/sdks/sigweb.html   
+
 ## Project setup
 ```
 npm install
 ```
-## Reminder
+### Reminders
 ```
 Make sure you have the right baseURL configuration in `main.js`
 ```
