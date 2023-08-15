@@ -195,13 +195,13 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <v-img
+                      <!-- <v-img
                         class="grey darken-1 mx-auto"
                         :src="biometrics"
                         :key="biometrics"
                         max-height="400"
                         max-width="200"
-                      ></v-img>
+                      ></v-img> -->
                     </v-col>
                   </v-row>
                 </v-card>
