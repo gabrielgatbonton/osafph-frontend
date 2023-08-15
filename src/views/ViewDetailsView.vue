@@ -246,7 +246,7 @@ import { mapGetters } from "vuex";
 import VaccinationDetailsViewVue from "./Vaccination/VaccinationDetailsView.vue";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
-import CameraComponent from "@/components/CameraComponent.vue";
+import CameraComponent from "@/components/Camera/CameraComponent.vue";
 import SignatureComponent from '@/components/Signature/SignatureComponent.vue';
 export default {
   data: () => ({

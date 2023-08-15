@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { initSigWeb, onSign, onClear, onDone } from "@/scripts/SigWebLogic";
+import { initSigWeb, onSign, onClear, onDone } from "@/components/Signature/scripts/SigWebLogic";
 import { mapActions } from "vuex";
 export default {
   props: ["checkSignature"],

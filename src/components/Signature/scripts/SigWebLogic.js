@@ -1,9 +1,9 @@
 /* eslint-disable */
 import "./SigWebTablet";
-import { IsSigWebInstalled, GetSigWebVersion, GetDaysUntilCertificateExpires } from "@/scripts/SigWebTablet";
-import { SetDisplayXSize, SetDisplayYSize, SetTabletState, SetJustifyMode, ClearTablet } from "@/scripts/SigWebTablet";
-import { SetSigCompressionMode, SetImageXSize, SetImageYSize, SetImagePenWidth, GetSigImageB64, GetSigString, NumberOfTabletPoints } from "@/scripts/SigWebTablet";
-import { Reset, ClearSigWindow } from "@/scripts/SigWebTablet";
+import { IsSigWebInstalled, GetSigWebVersion, GetDaysUntilCertificateExpires } from "@/components/Signature/scripts/SigWebTablet";
+import { SetDisplayXSize, SetDisplayYSize, SetTabletState, SetJustifyMode, ClearTablet } from "@/components/Signature/scripts/SigWebTablet";
+import { SetSigCompressionMode, SetImageXSize, SetImageYSize, SetImagePenWidth, GetSigImageB64, GetSigString, NumberOfTabletPoints } from "@/components/Signature/scripts/SigWebTablet";
+import { Reset, ClearSigWindow } from "@/components/Signature/scripts/SigWebTablet";
 var tmr;
 
 var resetIsSupported = false;

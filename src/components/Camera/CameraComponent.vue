@@ -54,8 +54,15 @@ export default {
 
       // Access the user's camera
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const constraints = {
+          video: {
+            width: { ideal: 1080 }, // Set the desired width
+            height: { ideal: 1080 }, // Set the desired height
+          },
+        };
+
         navigator.mediaDevices
-          .getUserMedia({ video: true })
+          .getUserMedia(constraints)
           .then((stream) => {
             // Get the video element and set the stream as its source
             const video = this.$refs.cameraVideo;
