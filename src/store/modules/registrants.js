@@ -133,7 +133,7 @@ export const registrants = {
           console.error("Error fetching registrants:", error);
         });
     },
-    addRegistrant({ commit }, data) {
+    addRegistrant({ commit, dispatch }, data) {
       return this.$axios
         .post("/citizens/create", data)
         .then((response) => {
@@ -143,6 +143,7 @@ export const registrants = {
             alert: true,
             message: "Saved Registrant",
           });
+          dispatch("fetchRegistrants");
         })
         .catch((error) => {
           commit("SET_SHOW_ERROR", {
