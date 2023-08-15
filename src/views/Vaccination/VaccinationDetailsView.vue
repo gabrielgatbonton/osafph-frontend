@@ -16,7 +16,7 @@
             <v-col cols="12">
               <v-tabs centered>
                 <v-tab>Vaccination</v-tab>
-                <v-tab>Booster</v-tab>
+                <v-tab v-if="getVaccineInformation">Booster</v-tab>
                 <v-tab-item>
                   <InitialVaccination
                     v-on:submitData="submitVaccine"
@@ -57,7 +57,7 @@ export default {
       "fetchVaccineInformation",
       "updateVaccineInformation",
       "fetchBoosterInformation",
-      "updateBoosterInformation"
+      "updateBoosterInformation",
     ]),
     submitVaccine(data) {
       this.loading = true;
@@ -241,19 +241,22 @@ export default {
       });
     },
   },
-  mounted(){
+  mounted() {
     this.fetchData();
   },
   computed: {
-    ...mapGetters("registrants", ["getVaccineInformation", "getBoosterInformation"]),
+    ...mapGetters("registrants", [
+      "getVaccineInformation",
+      "getBoosterInformation",
+    ]),
   },
   watch: {
-    // getVaccineInformation(value){
+    // getVaccineInformation(value) {
     //   console.log("VaccineInformation", value);
     // },
     // getBoosterInformation(value){
     //   console.log("BoosterInformation", value);
     // }
-  }
+  },
 };
 </script>

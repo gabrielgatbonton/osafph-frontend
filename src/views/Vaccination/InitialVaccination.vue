@@ -3,12 +3,16 @@
     <v-card>
       <v-container fluid class="mx-auto" v-if="responses">
         <v-row class="mx-2">
+          <v-col cols="12" class="py-0">
+            <v-checkbox v-model="checkbox" label="For Janssen Vaccination"></v-checkbox>
+          </v-col>
           <v-col cols="6">
-            <v-text-field
-              :value="responses.dose_1"
+            <v-select
               v-model="responses.dose_1"
+              :value="responses.dose_1"
               label="Dose"
-            ></v-text-field>
+              :items="checkJanssenDose"
+            ></v-select>
           </v-col>
           <v-col cols="6">
             <v-menu
@@ -73,14 +77,15 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-divider class="ma-5"></v-divider>
-        <v-row class="mx-2">
+        <v-divider class="ma-5" v-if="checkJanssen"></v-divider>
+        <v-row class="mx-2"  v-if="checkJanssen">
           <v-col cols="6">
-            <v-text-field
-              :value="responses.dose_2"
+            <v-select
               v-model="responses.dose_2"
+              :value="responses.dose_2"
               label="Dose"
-            ></v-text-field>
+              :items="doses"
+            ></v-select>
           </v-col>
           <v-col cols="6">
             <v-menu
@@ -208,6 +213,7 @@ export default {
     ],
     menu_1: false,
     menu_2: false,
+    checkbox: false,
     // loading: false,
   }),
   methods: {
@@ -281,6 +287,19 @@ export default {
       return this.responses.date_2
         ? format(parseISO(this.responses.date_2), "MMMM d, yyyy")
         : "";
+    },
+    checkJanssen(){
+      return this.checkbox === true ? false : true;
+    },
+    checkJanssenDose(){
+      let doses = []
+      if(this.checkbox === true){
+        doses = ["2"];
+      }
+      else {
+        doses = ["1", "2"];
+      }
+      return doses
     },
     // errorMessages() {
     //   const errors = {};
