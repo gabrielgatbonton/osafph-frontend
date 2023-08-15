@@ -14,7 +14,7 @@
               :value="data.category"
               v-model="data.category"
               label="Category"
-              :items="categories"
+              :items="getCategories"
               placeholder="Choose..."
               @blur="$v.data.category.$touch()"
               :error-messages="errorMessages.category"
@@ -268,7 +268,7 @@ import format from "date-fns/format";
 import { isBefore, subYears } from "date-fns";
 import parseISO from "date-fns/parseISO";
 import { required, maxLength, minLength } from "vuelidate/lib/validators";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
     loading: {
@@ -304,13 +304,6 @@ export default {
       region: null,
       mcg_cares_card: null,
     },
-    categories: [
-      "REST OF ADULT POPULATION (ROAP)",
-      "FRONTLINE HEALTH SERVICES (A1)",
-      "ALL SENIOR CITIZENS (A2)",
-      "PERSONS WITH COMORBIDITIES (A3)",
-      "FRONTLINE PERSONNEL (A4)",
-    ],
     suffixes: ["Sr.", "Jr.", "III", "IV", "V"],
     genders: ["MALE", "FEMALE"],
     civil_statuses: ["SINGLE", "MARRIED", "SEPARATED", "WIDOWED", "DIVORCED"],
@@ -412,6 +405,7 @@ export default {
   },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
+    ...mapGetters("categories", ["getCategories"]),
     formattedDate() {
       return this.data.birthday
         ? format(parseISO(this.data.birthday), "MMMM d, yyyy")
@@ -574,6 +568,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("categories", ["fetchCategories"]),
     async fetchRegistrant() {
       if (this.id) {
         try {
@@ -620,6 +615,9 @@ export default {
         this.data.region = value.citizen.barangay.municipality.province.region.region_name;
       }
     },
+  },
+  created(){
+    this.fetchCategories();
   },
   mounted() {
     this.fetchRegistrant();
