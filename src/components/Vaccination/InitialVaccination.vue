@@ -15,6 +15,8 @@
               :value="responses.dose_1"
               label="Dose"
               :items="checkJanssenDose"
+              @blur="$v.responses.dose_1.$touch()"
+              :error-messages="errorMessages.dose_1"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -34,6 +36,8 @@
                   v-bind="attrs"
                   label="Date"
                   readonly
+                  @blur="$v.responses.date_1.$touch()"
+                  :error-messages="errorMessages.date_1"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -48,7 +52,8 @@
               :value="responses.vaccine_1"
               label="Vaccine"
               :items="vaccines"
-              placeholder="Choose..."
+              @blur="$v.responses.vaccine_1.$touch()"
+              :error-messages="errorMessages.vaccine_1"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -56,6 +61,8 @@
               v-model="responses.lot_number_1"
               :value="responses.lot_number_1"
               label="Lot no."
+              @blur="$v.responses.lot_number_1.$touch()"
+              :error-messages="errorMessages.lot_number_1"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -63,6 +70,8 @@
               v-model="responses.vaccination_site_1"
               :value="responses.vaccination_site_1"
               label="Vaccination Site"
+              @blur="$v.responses.vaccination_site_1.$touch()"
+              :error-messages="errorMessages.vaccination_site_1"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -70,6 +79,8 @@
               v-model="responses.healthcare_professional_1"
               :value="responses.healthcare_professional_1"
               label="Healthcare Professional"
+              @blur="$v.responses.healthcare_professional_1.$touch()"
+              :error-messages="errorMessages.healthcare_professional_1"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -77,6 +88,12 @@
               v-model="responses.healthcare_professional_license_number_1"
               :value="responses.healthcare_professional_license_number_1"
               label="Healthcare Professional License Number"
+              @blur="
+                $v.responses.healthcare_professional_license_number_1.$touch()
+              "
+              :error-messages="
+                errorMessages.healthcare_professional_license_number_1
+              "
             ></v-text-field>
           </v-col>
         </v-row>
@@ -88,6 +105,8 @@
               :value="responses.dose_2"
               label="Dose"
               :items="checkJanssenDose"
+              @blur="$v.responses.dose_2.$touch()"
+              :error-messages="errorMessages.dose_2"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -107,6 +126,8 @@
                   v-bind="attrs"
                   label="Date"
                   readonly
+                  @blur="$v.responses.date_2.$touch()"
+                  :error-messages="errorMessages.date_2"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -121,7 +142,8 @@
               :value="responses.vaccine_2"
               label="Vaccine"
               :items="vaccines"
-              placeholder="Choose..."
+              @blur="$v.responses.vaccine_2.$touch()"
+              :error-messages="errorMessages.vaccine_2"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -129,6 +151,8 @@
               :value="responses.lot_number_2"
               v-model="responses.lot_number_2"
               label="Lot no."
+              @blur="$v.responses.lot_number_2.$touch()"
+              :error-messages="errorMessages.lot_number_2"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -136,6 +160,8 @@
               :value="responses.vaccination_site_2"
               v-model="responses.vaccination_site_2"
               label="Vaccination Site"
+              @blur="$v.responses.vaccination_site_2.$touch()"
+              :error-messages="errorMessages.vaccination_site_2"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -143,6 +169,8 @@
               v-model="responses.healthcare_professional_2"
               :value="responses.healthcare_professional_2"
               label="Healthcare Professional"
+              @blur="$v.responses.healthcare_professional_2.$touch()"
+              :error-messages="errorMessages.healthcare_professional_2"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -150,6 +178,12 @@
               v-model="responses.healthcare_professional_license_number_2"
               :value="responses.healthcare_professional_license_number_2"
               label="Healthcare Professional License Number"
+              @blur="
+                $v.responses.healthcare_professional_license_number_2.$touch()
+              "
+              :error-messages="
+                errorMessages.healthcare_professional_license_number_2
+              "
             ></v-text-field>
           </v-col>
         </v-row>
@@ -165,10 +199,11 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-// import { required } from "vuelidate/lib/validators";
+import VaccinationMixin from "@/mixins/VaccinationValidation";
 // import { isBefore, subYears } from "date-fns";
 export default {
   props: ["payload"],
+  mixins: [VaccinationMixin],
   data: () => ({
     responses: {
       dose_1: null,
@@ -188,22 +223,6 @@ export default {
       vaccine_id_1: null,
       vaccine_id_2: null,
     },
-    // validations: {
-    //   responses: {
-    //     dose_1: { required },
-    //     date_1: { required },
-    //     vaccine_1: { required },
-    //     lot_number_1: { required },
-    //     vaccination_site_1: { required },
-    //     dose_2: { required },
-    //     date_2: { required },
-    //     vaccine_2: { required },
-    //     lot_number_2: { required },
-    //     vaccination_site_2: { required },
-    //     vaccine_id_1: { required },
-    //     vaccine_id_2: { required },
-    //   },
-    // },
     vaccines: [
       "ASTRAZENECA",
       "BIOTECH",
@@ -221,11 +240,11 @@ export default {
   }),
   methods: {
     submitData() {
-      //   this.$v.$touch();
+      this.$v.$touch();
 
-      //   if (!this.$v.$invalid) {
-      this.$emit("submitData", this.responses);
-      //   }
+      if (!this.$v.$invalid) {
+        this.$emit("submitData", this.responses);
+      }
     },
     updateVariables() {
       if (this.payload && this.payload.vaccinationStat) {
@@ -303,17 +322,6 @@ export default {
       }
       return doses;
     },
-    // errorMessages() {
-    //   const errors = {};
-
-    //   errors.dose_1 = [];
-    //   if (this.$v.responses.dose_1.$dirty) {
-    //     !this.$v.data.category.required &&
-    //       errors.category.push("Category is required");
-    //   }
-
-    //   return errors;
-    // },
   },
   mounted() {
     // console.log(this.payload);
