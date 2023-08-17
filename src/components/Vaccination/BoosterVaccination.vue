@@ -223,22 +223,6 @@ export default {
       vaccine_id_1: null,
       vaccine_id_2: null,
     },
-    // validations: {
-    //   responses: {
-    //     dose_1: { required },
-    //     date_1: { required },
-    //     vaccine_1: { required },
-    //     lot_number_1: { required },
-    //     vaccination_site_1: { required },
-    //     dose_2: { required },
-    //     date_2: { required },
-    //     vaccine_2: { required },
-    //     lot_number_2: { required },
-    //     vaccination_site_2: { required },
-    //     vaccine_id_1: { required },
-    //     vaccine_id_2: { required },
-    //   },
-    // },
     vaccines: [
       "ASTRAZENECA",
       "BIOTECH",

@@ -1,4 +1,5 @@
 import { required } from "vuelidate/lib/validators";
+// import { isBefore, subYears } from "date-fns";
 export default {
   validations: {
     responses: {
@@ -98,14 +99,18 @@ export default {
       errors.healthcare_professional_1 = [];
       if (this.$v.responses.healthcare_professional_1.$dirty) {
         !this.$v.responses.healthcare_professional_1.required &&
-          errors.healthcare_professional_1.push("Healthcare professional is required");
+          errors.healthcare_professional_1.push(
+            "Healthcare professional is required"
+          );
       }
 
       //Healthcare 2
       errors.healthcare_professional_2 = [];
       if (this.$v.responses.healthcare_professional_2.$dirty) {
         !this.$v.responses.healthcare_professional_2.required &&
-          errors.healthcare_professional_2.push("Healthcare professional is required");
+          errors.healthcare_professional_2.push(
+            "Healthcare professional is required"
+          );
       }
 
       //Healthcare Professional License 1

@@ -144,6 +144,7 @@
               type="number"
               @blur="$v.data.contact_number.$touch()"
               :error-messages="errorMessages.contact_number"
+              counter="11"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -155,7 +156,7 @@
               label="TIN"
               @blur="$v.data.tin_number.$touch()"
               :error-messages="errorMessages.tin_number"
-              counter="12"
+              :counter="11"
             ></v-text-field>
           </v-col>
           <v-col cols="12" lg="3" md="3" sm="6">
@@ -185,6 +186,7 @@
               type="number"
               @blur="$v.data.emergency_number.$touch()"
               :error-messages="errorMessages.emergency_number"
+              counter="11"
             ></v-text-field>
           </v-col>
         </v-row>

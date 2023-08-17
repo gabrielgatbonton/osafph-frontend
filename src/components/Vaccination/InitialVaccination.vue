@@ -200,7 +200,6 @@
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import VaccinationMixin from "@/mixins/VaccinationValidation";
-// import { isBefore, subYears } from "date-fns";
 export default {
   props: ["payload"],
   mixins: [VaccinationMixin],
