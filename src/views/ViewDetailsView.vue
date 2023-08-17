@@ -243,7 +243,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import VaccinationDetailsViewVue from "./Vaccination/VaccinationDetailsView.vue";
+import VaccinationDetailsViewVue from "@/components/Vaccination/VaccinationDetailsView.vue";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
 import CameraComponent from "@/components/Camera/CameraComponent.vue";
