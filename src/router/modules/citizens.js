@@ -1,7 +1,6 @@
 import CitizensView from "@/views/CitizensView.vue";
 import RegisterView from '@/views/RegisterView.vue';
 import ViewDetailsView from '@/views/ViewDetailsView.vue';
-import ViewVaccination from '@/views/Vaccination/VaccinationDetailsView.vue';
 import EditView from '@/views/EditView.vue'
 import { checkLoggedIn } from './auth-guard';
 export default [
@@ -23,14 +22,6 @@ export default [
     path: '/citizens/edit/:id',
     name: 'edit',
     component: EditView,
-    props: true,
-    meta: { requiresAuth: true },
-    beforeEnter: checkLoggedIn,
-  },
-  {
-    path: '/citizens/details/vaccination/:id',
-    name: 'vaccination',
-    component: ViewVaccination,
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,

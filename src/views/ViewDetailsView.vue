@@ -128,7 +128,7 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <VaccinationDetailsViewVue :id="routeID" />
+                      <VaccinationComponent :id="routeID" />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -243,7 +243,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import VaccinationDetailsViewVue from "@/components/Vaccination/VaccinationDetailsView.vue";
+import VaccinationComponent from "@/components/Vaccination/VaccinationDetailsView.vue";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
 import CameraComponent from "@/components/Camera/CameraComponent.vue";
@@ -266,7 +266,7 @@ export default {
     checkSignature: null,
   }),
   components: {
-    VaccinationDetailsViewVue,
+    VaccinationComponent,
     SubmissionAlert,
     ErrorAlert,
     CameraComponent,
