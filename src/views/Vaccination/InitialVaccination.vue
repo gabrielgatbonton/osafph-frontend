@@ -4,7 +4,10 @@
       <v-container fluid class="mx-auto" v-if="responses">
         <v-row class="mx-2">
           <v-col cols="12" class="py-0">
-            <v-checkbox v-model="checkbox" label="For Janssen Vaccination"></v-checkbox>
+            <v-checkbox
+              v-model="checkbox"
+              label="For Janssen Vaccination"
+            ></v-checkbox>
           </v-col>
           <v-col cols="6">
             <v-select
@@ -78,13 +81,13 @@
           </v-col>
         </v-row>
         <v-divider class="ma-5" v-if="checkJanssen"></v-divider>
-        <v-row class="mx-2"  v-if="checkJanssen">
+        <v-row class="mx-2" v-if="checkJanssen">
           <v-col cols="6">
             <v-select
               v-model="responses.dose_2"
               :value="responses.dose_2"
               label="Dose"
-              :items="doses"
+              :items="checkJanssenDose"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -288,18 +291,17 @@ export default {
         ? format(parseISO(this.responses.date_2), "MMMM d, yyyy")
         : "";
     },
-    checkJanssen(){
+    checkJanssen() {
       return this.checkbox === true ? false : true;
     },
-    checkJanssenDose(){
-      let doses = []
-      if(this.checkbox === true){
+    checkJanssenDose() {
+      let doses = [];
+      if (this.checkbox === true) {
         doses = ["2"];
-      }
-      else {
+      } else {
         doses = ["1", "2"];
       }
-      return doses
+      return doses;
     },
     // errorMessages() {
     //   const errors = {};
