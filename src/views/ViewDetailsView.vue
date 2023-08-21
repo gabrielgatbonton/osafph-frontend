@@ -219,11 +219,8 @@
                         {{ cardStatus.value }}
                       </v-btn>
 
-                      <v-btn dark block class="mb-2 blue darken-4"
-                        ><v-icon left>mdi-smart-card-outline</v-icon
-                        >Front</v-btn
-                      >
-
+                      <FrontCardComponent />
+                      
                       <v-btn dark block class="mb-2 blue darken-4"
                         ><v-icon left>mdi-credit-card-outline</v-icon
                         >Back</v-btn
@@ -248,6 +245,7 @@ import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
 import CameraComponent from "@/components/Camera/CameraComponent.vue";
 import SignatureComponent from '@/components/Signature/SignatureComponent.vue';
+import FrontCardComponent from '@/components/Card/FrontCard.vue'
 export default {
   data: () => ({
     title: null,
@@ -271,6 +269,7 @@ export default {
     ErrorAlert,
     CameraComponent,
     SignatureComponent,
+    FrontCardComponent,
   },
   methods: {
     handleImageUpload(file) {
