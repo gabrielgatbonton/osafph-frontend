@@ -37,8 +37,27 @@ export default {
   data: () => ({
     dialog: false,
     isImageLoaded: false, // Add this flag
+    category: null,
+    fullName: null,
+    birthday: null,
+    address: null,
+    imageURL: null,
   }),
   methods: {
+    values() {
+      const baseURL = this.$url;
+      this.category = `${this.registrant.citizen.category.description}`;
+      this.fullName = `${this.registrant.citizen.last_name.toUpperCase()}, ${this.registrant.citizen.first_name.toUpperCase()} ${this.registrant.citizen.middle_name.toUpperCase()}`;
+      this.birthday = `${format(
+        parseISO(this.registrant.citizen.birthday),
+        "MMMM d, yyyy"
+      )}`;
+      this.address = `${this.registrant.citizen.address}`;
+      this.imageURL = `${
+        baseURL + this.registrant.citizen.citizen_file.image_url
+      }`;
+      console.log(this.imageURL);
+    },
     generateID() {
       // Implement your ID generation logic here
       // For example, you can use a timestamp combined with a random number
@@ -46,15 +65,13 @@ export default {
       const randomNumber = Math.floor(Math.random() * 1000);
       return `ID-${timestamp}-${randomNumber}`;
     },
-    drawIDOnCanvas(id, registrant) {
-      const baseURL = this.$url;
-      console.log("Registrant: ", registrant);
+    drawIDOnCanvas(id) {
       const canvas = this.$refs.cardCanvas;
       const context = canvas.getContext("2d");
 
       // Load the card template image
       const img = new Image();
-      img.src = require("@/assets/front.jpg"); // Path to your card template image
+      img.src = require("@/assets/front.jpg");
       img.onload = () => {
         // Draw the card template image on the canvas
         canvas.width = img.width;
@@ -65,42 +82,28 @@ export default {
         context.font = "50px Arial";
         context.fillStyle = "black";
 
-        // Draw registrant's portrait image
-        const portraitImg = new Image();
-        portraitImg.src = `${
-          baseURL + registrant.citizen.citizen_file.image_url
-        }`;
-        portraitImg.onload = () => {
-          context.drawImage(portraitImg, 125, 600, 550, 700); // Adjust the position and size as needed
-        };
-
-        // Draw ID on the canvas
-        //Second Parameter: OffsetX
-        //Third Parameter: OffsetY
+        // Draw ID
         context.fillText(`${id}`, 130, 1400);
-        context.fillText(
-          `${registrant.citizen.category.description}`,
-          760,
-          730
-        );
-        context.fillText(
-          `${registrant.citizen.last_name.toUpperCase()}, ${registrant.citizen.first_name.toUpperCase()} ${registrant.citizen.middle_name.toUpperCase()}`,
-          760,
-          910
-        );
-        context.fillText(
-          `${format(parseISO(registrant.citizen.birthday), "MMMM d, yyyy")}`,
-          760,
-          1090
-        );
-        context.fillText(`${registrant.citizen.address}`, 760, 1275);
+
+        // Draw other text data
+
+        // Load and draw registrant's portrait image
+        const portraitImg = new Image();
+        portraitImg.src = this.imageURL;
+        portraitImg.onload = () => {
+          // Draw portrait image after it's loaded
+          context.drawImage(portraitImg, 125, 600, 550, 700);
+
+          // Draw the rest of the data
+          context.fillText(this.category, 760, 730);
+          context.fillText(this.fullName, 760, 910);
+          context.fillText(this.birthday, 760, 1090);
+          context.fillText(this.address, 760, 1275);
+        };
       };
     },
     async generateAndPrintID() {
       try {
-        const generatedID = this.generateID();
-        this.drawIDOnCanvas(generatedID);
-
         const canvas = this.$refs.cardCanvas;
         const updatedImageData = canvas.toDataURL();
 
@@ -108,8 +111,8 @@ export default {
         const printWindow = window.open("", "_blank");
         printWindow.document.open();
         printWindow.document.write(`
-      <img src="${updatedImageData}" style="max-width: 100%; height: auto;" />
-    `);
+          <img src="${updatedImageData}" style="max-width: 100%; height: auto;" />
+        `);
         printWindow.document.close();
 
         // Add a slight delay before triggering print
@@ -125,8 +128,11 @@ export default {
       }
     },
   },
+  mounted() {
+    this.values();
+  },
   updated() {
-    this.drawIDOnCanvas(this.generateID(), this.registrant);
+    this.drawIDOnCanvas(this.generateID());
   },
 };
 </script>
