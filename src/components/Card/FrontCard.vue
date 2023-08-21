@@ -10,7 +10,7 @@
         <v-card-title class="blue darken-1 pb-4 white--text"
           >ID Card Generator</v-card-title
         >
-        <div class="text-center ma-4">
+        <div class="text-center mx-4 mt-4">
           <canvas
             ref="cardCanvas"
             class="canvas-border"
@@ -19,9 +19,11 @@
         </div>
 
         <!-- Button to trigger generating and printing the ID -->
-        <v-btn dark class="blue darken-4" @click="generateAndPrintID"
-          >Print ID</v-btn
-        >
+        <v-card-actions>
+          <v-btn dark class="blue darken-4" @click="generateAndPrintID"
+            >Print ID</v-btn
+          >
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -45,7 +47,8 @@ export default {
       return `ID-${timestamp}-${randomNumber}`;
     },
     drawIDOnCanvas(id, registrant) {
-      console.log("Registrant: ", registrant)
+      const baseURL = this.$url;
+      console.log("Registrant: ", registrant);
       const canvas = this.$refs.cardCanvas;
       const context = canvas.getContext("2d");
 
@@ -62,11 +65,19 @@ export default {
         context.font = "50px Arial";
         context.fillStyle = "black";
 
+        // Draw registrant's portrait image
+        const portraitImg = new Image();
+        portraitImg.src = `${
+          baseURL + registrant.citizen.citizen_file.image_url
+        }`;
+        portraitImg.onload = () => {
+          context.drawImage(portraitImg, 125, 600, 550, 700); // Adjust the position and size as needed
+        };
+
         // Draw ID on the canvas
         //Second Parameter: OffsetX
         //Third Parameter: OffsetY
-        context.fillText(``, 100, 1550) //Image
-        context.fillText(`ID: ${id}`, 100, 1400);
+        context.fillText(`${id}`, 130, 1400);
         context.fillText(
           `${registrant.citizen.category.description}`,
           760,
