@@ -219,7 +219,7 @@
                         {{ cardStatus.value }}
                       </v-btn>
 
-                      <FrontCardComponent />
+                      <FrontCardComponent :registrant="getRegistrant"/>
                       
                       <v-btn dark block class="mb-2 blue darken-4"
                         ><v-icon left>mdi-credit-card-outline</v-icon

@@ -28,7 +28,10 @@
 </template>
 
 <script>
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 export default {
+  props: ["registrant"],
   data: () => ({
     dialog: false,
     isImageLoaded: false, // Add this flag
@@ -41,7 +44,8 @@ export default {
       const randomNumber = Math.floor(Math.random() * 1000);
       return `ID-${timestamp}-${randomNumber}`;
     },
-    drawIDOnCanvas(id) {
+    drawIDOnCanvas(id, registrant) {
+      console.log("Registrant: ", registrant)
       const canvas = this.$refs.cardCanvas;
       const context = canvas.getContext("2d");
 
@@ -61,11 +65,24 @@ export default {
         // Draw ID on the canvas
         //Second Parameter: OffsetX
         //Third Parameter: OffsetY
+        context.fillText(``, 100, 1550) //Image
         context.fillText(`ID: ${id}`, 100, 1400);
-        context.fillText(`ROAP`, 760, 730);
-        context.fillText(`Gabriel Gatbonton`, 760, 910);
-        context.fillText(`March 26, 2002`, 760, 1090);
-        context.fillText(`32 Maria Clara`, 760, 1275);
+        context.fillText(
+          `${registrant.citizen.category.description}`,
+          760,
+          730
+        );
+        context.fillText(
+          `${registrant.citizen.last_name.toUpperCase()}, ${registrant.citizen.first_name.toUpperCase()} ${registrant.citizen.middle_name.toUpperCase()}`,
+          760,
+          910
+        );
+        context.fillText(
+          `${format(parseISO(registrant.citizen.birthday), "MMMM d, yyyy")}`,
+          760,
+          1090
+        );
+        context.fillText(`${registrant.citizen.address}`, 760, 1275);
       };
     },
     async generateAndPrintID() {
@@ -98,13 +115,13 @@ export default {
     },
   },
   updated() {
-    this.drawIDOnCanvas(this.generateID());
+    this.drawIDOnCanvas(this.generateID(), this.registrant);
   },
 };
 </script>
 
 <style scoped>
 .canvas-border {
-  border: 2px solid lightgray
+  border: 2px solid lightgray;
 }
 </style>
