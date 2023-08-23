@@ -211,12 +211,28 @@
         <v-row class="mt-n3">
           <v-col cols="12" lg="6" md="6">
             <v-select
+              :value="data.region"
+              v-model="data.region"
+              label="Region"
+              :items="getRegions"
+              item-text="region_name"
+              item-value="id"
+              @blur="$v.data.region.$touch()"
+              :error-messages="errorMessages.region"
+              @change="(id) => initProvinces(id)"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" lg="6" md="6">
+            <v-select
               :value="data.province"
               v-model="data.province"
               label="Province"
-              :items="provinces"
+              :items="getProvinces"
+              item-text="province_name"
+              item-value="id"
               @blur="$v.data.province.$touch()"
               :error-messages="errorMessages.province"
+              @change="(id) => initMunicipalities(id)"
             ></v-select>
           </v-col>
           <v-col cols="12" lg="6" md="6">
@@ -224,9 +240,12 @@
               :value="data.municipality"
               v-model="data.municipality"
               label="Municipality"
-              :items="municipalites"
+              :items="getMunicipalities"
+              item-text="municipality_name"
+              item-value="id"
               @blur="$v.data.municipality.$touch()"
               :error-messages="errorMessages.municipality"
+              @change="(id) => initBarangays(id)"
             ></v-select>
           </v-col>
           <v-col cols="12" lg="6" md="6">
@@ -234,19 +253,11 @@
               :value="data.barangay"
               v-model="data.barangay"
               label="Barangay"
-              :items="barangays"
+              :items="getBarangays"
+              item-text="barangay_name"
+              item-value="id"
               @blur="$v.data.barangay.$touch()"
               :error-messages="errorMessages.barangay"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" lg="6" md="6">
-            <v-select
-              :value="data.region"
-              v-model="data.region"
-              label="Barangay"
-              :items="regions"
-              @blur="$v.data.region.$touch()"
-              :error-messages="errorMessages.region"
             ></v-select>
           </v-col>
           <v-col cols="12">
@@ -269,7 +280,7 @@
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import { mapGetters, mapActions } from "vuex";
-import FormValidation from '@/mixins/FormValidation';
+import FormValidation from "@/mixins/FormValidation";
 export default {
   props: {
     loading: {
@@ -310,63 +321,18 @@ export default {
     genders: ["MALE", "FEMALE"],
     civil_statuses: ["SINGLE", "MARRIED", "SEPARATED", "WIDOWED", "DIVORCED"],
     blood_types: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
-    provinces: ["PAMPANGA"],
-    municipalites: ["MABALACAT CITY", "CITY OF ANGELES"],
-    barangays: [
-      "ATLU-BOLA",
-      "BICAL",
-      "BUNDAGUL",
-      "CACUTUD",
-      "CALUMPANG",
-      "CAMACHILES",
-      "DAPDAP",
-      "DAU",
-      "DOLORES",
-      "DUQUIT",
-      "LAKANDULA",
-      "MABIGA",
-      "MACAPAGAL VILLAGE",
-      "MAMATITANG",
-      "MANGALIT",
-      "MARCOS VILLAGE",
-      "MAWAQUE",
-      "PARALAYUNAN",
-      "POBLACION",
-      "SAN FRANCISCO",
-      "SAN JOAQUIN",
-      "SANTA INES",
-      "SANTA MARIA",
-      "SANTO ROSARIO",
-      "SAPANG BALEN",
-      "SAPANG BIABAS",
-      "TABUN",
-      "CLARK FREEPORT ZONE",
-    ],
-    regions: [
-      "REGION I (ILOCOS REGION)",
-      "REGION II (CAGAYAN VALLEY)",
-      "REGION III (CENTRAL LUZON)",
-      "REGION IV-A (CALABARZON)",
-      "REGION IV-B (MIMAROPA)",
-      "REGION V (BIKOL REGION)",
-      "REGION VI (WESTERN VISAYAS)",
-      "REGION VII (CENTRAL VISAYAS)",
-      "REGION VIII (EASTERN VISAYAS)",
-      "REGION IX (ZAMBOANGA PENINSULA)",
-      "REGION X (NORTHERN MINDANAO)",
-      "REGION XI (DAVAO REGION)",
-      "REGION XII (SOCCSKSARGEN)",
-      "REGION XIII (CARAGA)",
-      "CORDILLERA ADMINISTRATIVE REGION (CAR)",
-      "NATIONAL CAPITAL REGION (NCR)",
-      "BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO (BARMM)",
-    ],
     // value: null,
     menu: false,
   }),
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
     ...mapGetters("categories", ["getCategories"]),
+    ...mapGetters("philippines", [
+      "getBarangays",
+      "getRegions",
+      "getMunicipalities",
+      "getProvinces",
+    ]),
     formattedDate() {
       return this.data.birthday
         ? format(parseISO(this.data.birthday), "MMMM d, yyyy")
@@ -375,6 +341,12 @@ export default {
   },
   methods: {
     ...mapActions("categories", ["fetchCategories"]),
+    ...mapActions("philippines", [
+      "fetchRegions",
+      "fetchProvinces",
+      "fetchMunicipalities",
+      "fetchBarangays",
+    ]),
     async fetchRegistrant() {
       if (this.id) {
         try {
@@ -390,6 +362,15 @@ export default {
       if (!this.$v.$invalid) {
         this.$emit("submitData", this.data);
       }
+    },
+    initProvinces(id) {
+      this.fetchProvinces(id);
+    },
+    initMunicipalities(id) {
+      this.fetchMunicipalities(id);
+    },
+    initBarangays(id) {
+      this.fetchBarangays(id);
     },
   },
   watch: {
@@ -418,12 +399,15 @@ export default {
           value.citizen.barangay.municipality.municipality_name;
         this.data.barangay = value.citizen.barangay.barangay_name;
         this.data.mcg_cares_card = value.citizen.mcg_cares_card;
-        this.data.region = value.citizen.barangay.municipality.province.region.region_name;
+        this.data.region =
+          value.citizen.barangay.municipality.province.region.region_name;
       }
     },
   },
-  created(){
+  created() {
     this.fetchCategories();
+    this.fetchRegions();
+    this.fetchPhilippines();
   },
   mounted() {
     this.fetchRegistrant();
