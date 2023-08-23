@@ -56,6 +56,7 @@ export const philippines = {
     fetchBarangays({ commit }, id) {
       return this.$axios.get("/philippines").then((response) => {
         const barangays = response.data.barangays;
+        console.log(barangays);
         commit("SET_BARANGAYS", { barangays, id });
       });
     },
