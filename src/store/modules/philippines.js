@@ -6,16 +6,12 @@ Vue.use(Vuex);
 export const philippines = {
   namespaced: true,
   state: () => ({
-    philippines: [],
     barangays: [],
     provinces: [],
     municipalities: [],
     regions: [],
   }),
   mutations: {
-    SET_PHIL(state, data) {
-      state.philippines = data;
-    },
     SET_REGIONS(state, regions) {
       state.regions = regions;
     },
@@ -52,12 +48,6 @@ export const philippines = {
     },
   },
   actions: {
-    fetchPhilippines({ commit }) {
-      return this.$axios.get("/philippines").then((response) => {
-        const data = response.data;
-        commit("SET_PHIL", data);
-      });
-    },
     fetchRegions({ commit }) {
       return this.$axios.get("/philippines").then((response) => {
         const regions = response.data.regions;

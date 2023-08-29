@@ -400,36 +400,6 @@ export default {
         this.data.barangay = data.barangay_name;
       }
     },
-    initSelects() {
-      // const region = this.getRegions.find(
-      //   (region) => region.region_name === this.data.region
-      // );
-      // if (region) {
-      //   this.fetchProvinces(region.id);
-      //   this.selects.region = region.id;
-      // }
-      // const province = this.getProvinces.find(
-      //   (province) => province.province_name === this.data.province
-      // );
-      // if (province) {
-      //   this.fetchMunicipalities(province.id);
-      //   this.selects.province = province.id;
-      // }
-      // const municipality = this.getMunicipalities.find(
-      //   (municipality) =>
-      //     municipality.municipality_name === this.data.municipality
-      // );
-      // if (municipality) {
-      //   this.fetchBarangays(municipality.id);
-      //   this.selects.municipality = municipality.id;
-      // }
-      // const barangay = this.getBarangays.find(
-      //   (barangay) => barangay.barangay_name === this.data.barangay
-      // );
-      // if (barangay) {
-      //   this.selects.barangay = barangay.id;
-      // }
-    },
   },
   watch: {
     getRegistrant(value) {
@@ -499,9 +469,7 @@ export default {
   },
   mounted() {
     this.fetchRegistrant();
-    this.initSelects();
   },
-  updated() {},
 };
 </script>
 
