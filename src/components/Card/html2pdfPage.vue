@@ -18,11 +18,9 @@
       ref="html2Pdf"
     >
       <section slot="pdf-content">
-        <h1>Hello World</h1>
-        <v-btn @click="generateReport">Hello</v-btn>
+        
       </section>
     </vue-html2pdf>
-    
   </div>
 </template>
 
