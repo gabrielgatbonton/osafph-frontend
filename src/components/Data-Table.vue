@@ -166,6 +166,7 @@ export default {
   watch: {
     registrants(value) {
       this.data = value.map((registrant) => ({
+        id: registrant.id,
         hub_registrant_number: registrant.hub_registrant_number,
         full_name: `${registrant.last_name}, ${registrant.first_name} ${
           registrant.middle_name ? " " + registrant.middle_name : ""
