@@ -221,10 +221,11 @@
 
                       <!-- <FrontCardComponent :registrant="getRegistrant"/> -->
                       <FrontCardJavaScript :registrant="getRegistrant"/>
-                      <v-btn dark block class="mb-2 blue darken-4"
+                      <BackCardJavaScript :registrant="getRegistrant"/>
+                      <!-- <v-btn dark block class="mb-2 blue darken-4"
                         ><v-icon left>mdi-credit-card-outline</v-icon
                         >Back</v-btn
-                      >
+                      > -->
                     </v-col>
                   </v-row>
                 </v-card>
@@ -247,6 +248,7 @@ import CameraComponent from "@/components/Camera/CameraComponent.vue";
 import SignatureComponent from '@/components/Signature/SignatureComponent.vue';
 // import FrontCardComponent from '@/components/Card/FrontCard.vue';
 import FrontCardJavaScript from '@/components/Card/FrontCardJavaScript.vue';
+import BackCardJavaScript from '@/components/Card/BackCardJavaScript.vue';
 export default {
   data: () => ({
     title: null,
@@ -271,7 +273,8 @@ export default {
     CameraComponent,
     SignatureComponent,
     // FrontCardComponent,
-    FrontCardJavaScript
+    FrontCardJavaScript,
+    BackCardJavaScript
   },
   methods: {
     handleImageUpload(file) {
