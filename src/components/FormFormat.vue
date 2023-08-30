@@ -210,44 +210,56 @@
         </v-row>
         <v-row class="mt-n3">
           <v-col cols="12" lg="6" md="6">
-            <v-select
-              :value="data.province"
-              v-model="data.province"
-              label="Province"
-              :items="provinces"
-              @blur="$v.data.province.$touch()"
-              :error-messages="errorMessages.province"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" lg="6" md="6">
-            <v-select
-              :value="data.municipality"
-              v-model="data.municipality"
-              label="Municipality"
-              :items="municipalites"
-              @blur="$v.data.municipality.$touch()"
-              :error-messages="errorMessages.municipality"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" lg="6" md="6">
-            <v-select
-              :value="data.barangay"
-              v-model="data.barangay"
-              label="Barangay"
-              :items="barangays"
-              @blur="$v.data.barangay.$touch()"
-              :error-messages="errorMessages.barangay"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" lg="6" md="6">
-            <v-select
-              :value="data.region"
-              v-model="data.region"
-              label="Barangay"
-              :items="regions"
+            <v-autocomplete
+              :value="selects.region"
+              v-model="selects.region"
+              label="Region"
+              :items="getRegions"
+              item-text="region_name"
+              item-value="id"
               @blur="$v.data.region.$touch()"
               :error-messages="errorMessages.region"
-            ></v-select>
+              @change="(id) => initProvinces(id)"
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="12" lg="6" md="6">
+            <v-autocomplete
+              :value="selects.province"
+              v-model="selects.province"
+              label="Province"
+              :items="getProvinces"
+              item-text="province_name"
+              item-value="id"
+              @blur="$v.data.province.$touch()"
+              :error-messages="errorMessages.province"
+              @change="(id) => initMunicipalities(id)"
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="12" lg="6" md="6">
+            <v-autocomplete
+              :value="selects.municipality"
+              v-model="selects.municipality"
+              label="Municipality"
+              :items="getMunicipalities"
+              item-text="municipality_name"
+              item-value="id"
+              @blur="$v.data.municipality.$touch()"
+              :error-messages="errorMessages.municipality"
+              @change="(id) => initBarangays(id)"
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="12" lg="6" md="6">
+            <v-autocomplete
+              :value="selects.barangay"
+              v-model="selects.barangay"
+              label="Barangay"
+              :items="getBarangays"
+              item-text="barangay_name"
+              item-value="id"
+              @blur="$v.data.barangay.$touch()"
+              :error-messages="errorMessages.barangay"
+              @change="(id) => setBarangay(id)"
+            ></v-autocomplete>
           </v-col>
           <v-col cols="12">
             <v-btn
@@ -269,7 +281,7 @@
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import { mapGetters, mapActions } from "vuex";
-import FormValidation from '@/mixins/FormValidation';
+import FormValidation from "@/mixins/FormValidation";
 export default {
   props: {
     loading: {
@@ -306,67 +318,28 @@ export default {
       region: null,
       mcg_cares_card: null,
     },
+    selects: {
+      province: null,
+      municipality: null,
+      barangay: null,
+      region: null,
+    },
     suffixes: ["Sr.", "Jr.", "III", "IV", "V"],
     genders: ["MALE", "FEMALE"],
     civil_statuses: ["SINGLE", "MARRIED", "SEPARATED", "WIDOWED", "DIVORCED"],
     blood_types: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
-    provinces: ["PAMPANGA"],
-    municipalites: ["MABALACAT CITY", "CITY OF ANGELES"],
-    barangays: [
-      "ATLU-BOLA",
-      "BICAL",
-      "BUNDAGUL",
-      "CACUTUD",
-      "CALUMPANG",
-      "CAMACHILES",
-      "DAPDAP",
-      "DAU",
-      "DOLORES",
-      "DUQUIT",
-      "LAKANDULA",
-      "MABIGA",
-      "MACAPAGAL VILLAGE",
-      "MAMATITANG",
-      "MANGALIT",
-      "MARCOS VILLAGE",
-      "MAWAQUE",
-      "PARALAYUNAN",
-      "POBLACION",
-      "SAN FRANCISCO",
-      "SAN JOAQUIN",
-      "SANTA INES",
-      "SANTA MARIA",
-      "SANTO ROSARIO",
-      "SAPANG BALEN",
-      "SAPANG BIABAS",
-      "TABUN",
-      "CLARK FREEPORT ZONE",
-    ],
-    regions: [
-      "REGION I (ILOCOS REGION)",
-      "REGION II (CAGAYAN VALLEY)",
-      "REGION III (CENTRAL LUZON)",
-      "REGION IV-A (CALABARZON)",
-      "REGION IV-B (MIMAROPA)",
-      "REGION V (BIKOL REGION)",
-      "REGION VI (WESTERN VISAYAS)",
-      "REGION VII (CENTRAL VISAYAS)",
-      "REGION VIII (EASTERN VISAYAS)",
-      "REGION IX (ZAMBOANGA PENINSULA)",
-      "REGION X (NORTHERN MINDANAO)",
-      "REGION XI (DAVAO REGION)",
-      "REGION XII (SOCCSKSARGEN)",
-      "REGION XIII (CARAGA)",
-      "CORDILLERA ADMINISTRATIVE REGION (CAR)",
-      "NATIONAL CAPITAL REGION (NCR)",
-      "BANGSAMORO AUTONOMOUS REGION IN MUSLIM MINDANAO (BARMM)",
-    ],
     // value: null,
     menu: false,
   }),
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
     ...mapGetters("categories", ["getCategories"]),
+    ...mapGetters("philippines", [
+      "getBarangays",
+      "getRegions",
+      "getMunicipalities",
+      "getProvinces",
+    ]),
     formattedDate() {
       return this.data.birthday
         ? format(parseISO(this.data.birthday), "MMMM d, yyyy")
@@ -375,6 +348,13 @@ export default {
   },
   methods: {
     ...mapActions("categories", ["fetchCategories"]),
+    ...mapActions("philippines", [
+      "fetchRegions",
+      "fetchProvinces",
+      "fetchMunicipalities",
+      "fetchBarangays",
+      "fetchPhilippines",
+    ]),
     async fetchRegistrant() {
       if (this.id) {
         try {
@@ -389,6 +369,35 @@ export default {
 
       if (!this.$v.$invalid) {
         this.$emit("submitData", this.data);
+      }
+    },
+    initProvinces(id) {
+      this.fetchProvinces(id);
+      const data = this.getRegions.find((region) => region.id === id);
+      if (data) {
+        this.data.region = data.region_name;
+      }
+    },
+    initMunicipalities(id) {
+      this.fetchMunicipalities(id);
+      const data = this.getProvinces.find((province) => province.id === id);
+      if (data) {
+        this.data.province = data.province_name;
+      }
+    },
+    initBarangays(id) {
+      this.fetchBarangays(id);
+      const data = this.getMunicipalities.find(
+        (municipality) => municipality.id === id
+      );
+      if (data) {
+        this.data.municipality = data.municipality_name;
+      }
+    },
+    setBarangay(id) {
+      const data = this.getBarangays.find((barangay) => barangay.id === id);
+      if (data) {
+        this.data.barangay = data.barangay_name;
       }
     },
   },
@@ -412,18 +421,51 @@ export default {
         this.data.emergency_name = value.citizen.emergency_name;
         this.data.emergency_number = value.citizen.emergency_number;
         this.data.address = value.citizen.address;
+        this.data.mcg_cares_card = value.citizen.mcg_cares_card;
+
+        //Selects
         this.data.province =
           value.citizen.barangay.municipality.province.province_name;
         this.data.municipality =
           value.citizen.barangay.municipality.municipality_name;
         this.data.barangay = value.citizen.barangay.barangay_name;
-        this.data.mcg_cares_card = value.citizen.mcg_cares_card;
-        this.data.region = value.citizen.barangay.municipality.province.region.region_name;
+        this.data.region =
+          value.citizen.barangay.municipality.province.region.region_name;
+
+        const region = this.getRegions.find(
+          (region) => region.region_name === this.data.region
+        );
+        if (region) {
+          this.selects.region = region.id;
+        }
+
+        const province = this.getProvinces.find(
+          (province) => province.province_name === this.data.province
+        );
+        if (province) {
+          this.selects.province = province.id;
+        }
+
+        const municipality = this.getMunicipalities.find(
+          (municipality) =>
+            municipality.municipality_name === this.data.municipality
+        );
+        if (municipality) {
+          this.selects.municipality = municipality.id;
+        }
+
+        const barangay = this.getBarangays.find(
+          (barangay) => barangay.barangay_name === this.data.barangay
+        );
+        if (barangay) {
+          this.selects.barangay = barangay.id;
+        }
       }
     },
   },
-  created(){
+  created() {
     this.fetchCategories();
+    this.fetchRegions();
   },
   mounted() {
     this.fetchRegistrant();
