@@ -1,19 +1,26 @@
 <template>
-  <v-data-table :headers="headers" :items="registrants" item-key="name" class="elevation-1" :search="search"
-    :custom-filter="filterOnlyCapsText">
+  <v-data-table
+    :headers="headers"
+    :items="data"
+    item-key="name"
+    class="elevation-1"
+    :search="search"
+    :custom-filter="filterOnlyCapsText"
+  >
     <template v-slot:top>
-      <v-text-field v-model="search" label="Search" class="mx-4" prepend-icon="mdi-magnify"></v-text-field>
+      <v-text-field
+        v-model="search"
+        label="Search"
+        class="mx-4"
+        prepend-icon="mdi-magnify"
+      ></v-text-field>
     </template>
     <template v-slot:body="{ items }">
       <tbody>
         <tr v-for="item in items" :key="item.hub_registrant_number">
           <td>{{ item.hub_registrant_number }}</td>
           <td>
-            {{
-              `${item.last_name}, ${item.first_name} ${item.middle_name ? " " + item.middle_name : ""
-              }
-                        ${item.suffix ? " " + item.suffix : ""}`
-            }}
+            {{ item.full_name }}
           </td>
           <td>{{ item.gender }}</td>
           <td>{{ item.birthday }}</td>
@@ -21,24 +28,36 @@
           <td>{{ item.municipality }}</td>
           <td>
             <div
-              :class="{ 'text-green': item.mcg_cares_card === 'CLAIMED', 'text-red': item.mcg_cares_card !== 'CLAIMED' }">
+              :class="{
+                'text-green': item.mcg_cares_card === 'CLAIMED',
+                'text-red': item.mcg_cares_card !== 'CLAIMED',
+              }"
+            >
               {{ item.mcg_cares_card }}
             </div>
-
           </td>
           <td>
             <!-- Icon button for options -->
             <v-menu left :offset-x="offset">
               <template v-slot:activator="{ on, attrs }">
-                <v-icon class="ml-n8" v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
+                <v-icon class="ml-n8" v-bind="attrs" v-on="on"
+                  >mdi-dots-vertical</v-icon
+                >
               </template>
 
               <v-list dense>
-                <v-list-item v-for="(option, index) in getOptions(item)" :key="index" @click="executeAction(option)">
-                  <v-list-item-title><v-icon dense left>{{ option.icon }}</v-icon>{{ option.text }}</v-list-item-title>
+                <v-list-item
+                  v-for="(option, index) in getOptions(item)"
+                  :key="index"
+                  @click="executeAction(option)"
+                >
+                  <v-list-item-title
+                    ><v-icon dense left>{{ option.icon }}</v-icon
+                    >{{ option.text }}</v-list-item-title
+                  >
                 </v-list-item>
                 <v-list-item>
-                  <DeleteDialog :id="item.id"/>
+                  <DeleteDialog :id="item.id" />
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -50,19 +69,16 @@
 </template>
 
 <script>
-import DeleteDialog from './DeleteDialog.vue';
+import DeleteDialog from "./DeleteDialog.vue";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 export default {
   props: ["registrants"],
-  components:{
+  components: {
     DeleteDialog,
   },
   methods: {
-    filterOnlyCapsText(value, search, item) {
-      if (value === "full_name") {
-        const fullName =
-          `${item.first_name} ${item.middle_name} ${item.last_name}`.toLowerCase();
-        return fullName.includes(search.toLowerCase());
-      }
+    filterOnlyCapsText(value, search) {
       return (
         value != null &&
         search != null &&
@@ -104,6 +120,7 @@ export default {
   data: () => ({
     search: "",
     offset: true,
+    data: [],
   }),
   computed: {
     headers() {
@@ -116,7 +133,7 @@ export default {
         },
         {
           text: "FULL NAME",
-          value: "last_name",
+          value: "full_name",
         },
         {
           text: "GENDER",
@@ -146,11 +163,22 @@ export default {
       ];
     },
   },
-  // watch: {
-  //   registrants(value) {
-
-  //   }
-  // },
+  watch: {
+    registrants(value) {
+      this.data = value.map((registrant) => ({
+        id: registrant.id,
+        hub_registrant_number: registrant.hub_registrant_number,
+        full_name: `${registrant.last_name}, ${registrant.first_name} ${
+          registrant.middle_name ? " " + registrant.middle_name : ""
+        } ${registrant.suffix ? " " + registrant.suffix : ""}`,
+        gender: registrant.gender,
+        birthday: format(parseISO(registrant.birthday), "MMMM dd, yyyy"),
+        barangay: registrant.barangay,
+        municipality: registrant.municipality,
+        mcg_cares_card: registrant.mcg_cares_card,
+      }));
+    },
+  },
 };
 </script>
 

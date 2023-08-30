@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import { registrants } from "./modules/registrants";
 import { login } from "./modules/login";
 import { categories } from "./modules/categories";
-import { card } from "./modules/card";
+import { philippines } from "./modules/philippines";
 
 Vue.use(Vuex);
 
@@ -12,6 +12,6 @@ export default new Vuex.Store({
     registrants,
     login,
     categories,
-    card,
+    philippines,
   },
 });

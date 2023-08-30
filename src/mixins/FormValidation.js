@@ -179,14 +179,14 @@ export default {
       errors.municipality = [];
       if (this.$v.data.municipality.$dirty) {
         !this.$v.data.municipality.required &&
-          errors.municipality.push("Province is required");
+          errors.municipality.push("Municipality is required");
       }
 
       // Barangay field errors
       errors.barangay = [];
       if (this.$v.data.barangay.$dirty) {
         !this.$v.data.barangay.required &&
-          errors.barangay.push("Province is required");
+          errors.barangay.push("Barangay is required");
       }
 
       // Region field errors
