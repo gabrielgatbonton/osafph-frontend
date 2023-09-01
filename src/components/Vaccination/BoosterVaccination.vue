@@ -51,7 +51,7 @@
               v-model="responses.vaccine_1"
               :value="responses.vaccine_1"
               label="Vaccine"
-              :items="vaccines"
+              :items="checkJanssenVaccine"
               @blur="$v.responses.vaccine_1.$touch()"
               :error-messages="errorMessages.vaccine_1"
             ></v-select>
@@ -141,7 +141,7 @@
               v-model="responses.vaccine_2"
               :value="responses.vaccine_2"
               label="Vaccine"
-              :items="vaccines"
+              :items="checkJanssenVaccine"
               @blur="$v.responses.vaccine_2.$touch()"
               :error-messages="errorMessages.vaccine_2"
             ></v-select>
@@ -190,7 +190,7 @@
       </v-container>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="submitData" class="blue darken-4" dark> Save </v-btn>
+        <v-btn @click="submitData()" class="blue darken-4" dark> Save </v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -199,11 +199,10 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-import VaccinationValidation from "@/mixins/VaccinationValidation";
-// import { isBefore, subYears } from "date-fns";
+import VaccinationMixin from "@/mixins/VaccinationValidation";
 export default {
   props: ["payload"],
-  mixins: [VaccinationValidation],
+  mixins: [VaccinationMixin],
   data: () => ({
     responses: {
       dose_1: null,
@@ -223,16 +222,6 @@ export default {
       vaccine_id_1: null,
       vaccine_id_2: null,
     },
-    vaccines: [
-      "ASTRAZENECA",
-      "BIOTECH",
-      "JANSSEN",
-      "MODERNA",
-      "PFIZER",
-      "SINOPHARM",
-      "SINOVAC",
-      "SPUTNIC V",
-    ],
     menu_1: false,
     menu_2: false,
     checkbox: false,
@@ -240,9 +229,11 @@ export default {
   }),
   methods: {
     submitData() {
+      console.log("Before Touch: ", this.responses);
       this.$v.$touch();
 
       if (!this.$v.$invalid) {
+        console.log(this.responses);
         this.$emit("submitData", this.responses);
       }
     },
@@ -317,6 +308,21 @@ export default {
         doses = ["3", "4"];
       }
       return doses;
+    },
+    checkJanssenVaccine() {
+      let vaccines = [
+        "ASTRAZENECA",
+        "BIOTECH",
+        "MODERNA",
+        "PFIZER",
+        "SINOPHARM",
+        "SINOVAC",
+        "SPUTNIC V",
+      ];
+      if (this.checkbox === true) {
+        vaccines = ["JANSSEN"];
+      }
+      return vaccines;
     },
   },
   mounted() {

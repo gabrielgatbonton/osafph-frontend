@@ -51,7 +51,7 @@
               v-model="responses.vaccine_1"
               :value="responses.vaccine_1"
               label="Vaccine"
-              :items="vaccines"
+              :items="checkJanssenVaccine"
               @blur="$v.responses.vaccine_1.$touch()"
               :error-messages="errorMessages.vaccine_1"
             ></v-select>
@@ -141,7 +141,7 @@
               v-model="responses.vaccine_2"
               :value="responses.vaccine_2"
               label="Vaccine"
-              :items="vaccines"
+              :items="checkJanssenVaccine"
               @blur="$v.responses.vaccine_2.$touch()"
               :error-messages="errorMessages.vaccine_2"
             ></v-select>
@@ -222,16 +222,6 @@ export default {
       vaccine_id_1: null,
       vaccine_id_2: null,
     },
-    vaccines: [
-      "ASTRAZENECA",
-      "BIOTECH",
-      "JANSSEN",
-      "MODERNA",
-      "PFIZER",
-      "SINOPHARM",
-      "SINOVAC",
-      "SPUTNIC V",
-    ],
     menu_1: false,
     menu_2: false,
     checkbox: false,
@@ -240,8 +230,9 @@ export default {
   methods: {
     submitData() {
       this.$v.$touch();
-
+      console.log("after touch:", this.responses);
       if (!this.$v.$invalid) {
+        console.log(this.responses);
         this.$emit("submitData", this.responses);
       }
     },
@@ -320,6 +311,21 @@ export default {
         doses = ["1", "2"];
       }
       return doses;
+    },
+    checkJanssenVaccine() {
+      let vaccines = [
+        "ASTRAZENECA",
+        "BIOTECH",
+        "MODERNA",
+        "PFIZER",
+        "SINOPHARM",
+        "SINOVAC",
+        "SPUTNIC V",
+      ];
+      if (this.checkbox === true) {
+        vaccines = ["JANSSEN"];
+      }
+      return vaccines;
     },
   },
   mounted() {
