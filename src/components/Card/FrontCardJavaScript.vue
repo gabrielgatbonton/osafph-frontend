@@ -80,13 +80,6 @@ export default {
       this.fetchImage(this.registrant.citizen.id);
       this.fetchSignature(this.registrant.citizen.id);
     },
-    generateID() {
-      // Implement your ID generation logic here
-      // For example, you can use a timestamp combined with a random number
-      const timestamp = Date.now();
-      const randomNumber = Math.floor(Math.random() * 1000);
-      return `ID-${timestamp}-${randomNumber}`;
-    },
     drawIDOnCanvas() {
       const canvas = this.$refs.cardCanvas;
       const context = canvas.getContext("2d");
@@ -101,7 +94,7 @@ export default {
         context.drawImage(img, 0, 0);
 
         // Draw dynamic data on the canvas
-        context.font = "50px Arial";
+        context.font = "bold 50px Arial";
         context.fillStyle = "black";
 
         // Load and draw registrant's portrait image

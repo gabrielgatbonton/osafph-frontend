@@ -15,7 +15,17 @@
             ref="cardCanvas"
             class="canvas-border"
             style="position: relative; max-width: 100%; height: auto"
-          ></canvas>
+          >
+          </canvas>
+          <vue-qrcode
+            :value="QRCodeValue"
+            @change="onDataUrlChange"
+            type="image/png"
+            :color="{ dark: '#000000ff', light: '#ffffffff' }"
+            :quality="options.quality"
+            :width="options.width"
+            :margin="options.margin"
+          ></vue-qrcode>
         </div>
 
         <!-- <div class="text-center mx-4 mt-4">
@@ -40,6 +50,7 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
+import VueQrcode from "vue-qrcode";
 import { mapActions, mapGetters } from "vuex";
 export default {
   props: ["registrant"],
@@ -58,15 +69,14 @@ export default {
     blood_type: null,
     emergency_name: null,
     emergency_number: null,
-  }),
-  htmlToPdfOptions: {
-    margin: 0,
-
-    html2canvas: {
-      useCORS: true,
-      allowTaint: true,
+    hub_registrant_id: null,
+    qrDataURL: null,
+    options: {
+      margin: 0,
+      quality: 1,
+      width: 930,
     },
-  },
+  }),
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature"]),
     values() {
@@ -79,28 +89,27 @@ export default {
         "MMMM d, yyyy"
       )}`;
       this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name}`;
-      this.vaccination_site_2= `${this.registrant.citizen.vaccination_stat[1].site_name}`;
+      this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[1].site_name}`;
       this.tin_number = `${this.registrant.citizen.tin_number}`;
       this.blood_type = `${this.registrant.citizen.blood_type}`;
-      this.emergency_name = `${this.registrant.citizen.emergency_name}`
+      this.emergency_name = `${this.registrant.citizen.emergency_name}`;
       this.emergency_number = `${this.registrant.citizen.emergency_number}`;
       this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name}`;
       this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name}`;
+      this.hub_registrant_id = `${this.registrant.citizen.hub_registrant_id}`;
     },
     requestImages() {
       this.fetchImage(this.registrant.citizen.id);
       this.fetchSignature(this.registrant.citizen.id);
     },
-    generateID() {
-      // Implement your ID generation logic here
-      // For example, you can use a timestamp combined with a random number
-      const timestamp = Date.now();
-      const randomNumber = Math.floor(Math.random() * 1000);
-      return `ID-${timestamp}-${randomNumber}`;
+    onDataUrlChange(dataUrl) {
+      this.qrDataURL = dataUrl;
     },
     drawIDOnCanvas() {
       const canvas = this.$refs.cardCanvas;
+      // const qrCodeCanvas = this.$refs.qrCodeCanvas;
       const context = canvas.getContext("2d");
+      // const qrContext = qrCodeCanvas.getContext("2d");
 
       // Load the card template image
       const img = new Image();
@@ -112,30 +121,30 @@ export default {
         context.drawImage(img, 0, 0);
 
         // Draw dynamic data on the canvas
-        context.font = "50px Arial";
+        context.font = "bold 50px Arial";
         context.fillStyle = "black";
 
         // Load and draw registrant's portrait image
-        const portraitImg = new Image();
-        portraitImg.src = this.getImage;
-        portraitImg.onload = () => {
-            // Draw portrait image after it's loaded
-            context.drawImage(portraitImg, 125, 600);
+        const qrImg = new Image();
+        qrImg.src = this.qrDataURL;
+        qrImg.onload = () => {
+          // Draw portrait image after it's loaded
+          context.drawImage(qrImg, 105, 205);
 
-            //   // Draw ID
-            //   context.fillText(`${id}`, 130, 1400);
+          // Draw ID
+          context.fillText(this.hub_registrant_id, 350, 1200, 1700);
 
-            // Draw the rest of the data
-            context.fillText(this.date_1, 1105, 270, 1700);
-            context.fillText(this.date_2, 1105, 545, 1700);
-            context.fillText(this.vaccination_site_1, 1105, 410, 1700);
-            context.fillText(this.vaccination_site_2, 1105, 690, 1700);
-            context.fillText(this.tin_number, 1105, 840, 1700);
-            context.fillText(this.blood_type, 1105, 980, 1700);
-            context.fillText(this.emergency_name, 1105, 1130, 1700);
-            context.fillText(this.emergency_number, 1105, 1190, 1700);
-            context.fillText(this.vaccine_1, 2000, 270, 1700);
-            context.fillText(this.vaccine_2, 2000, 545, 1700);
+          // Draw the rest of the data
+          context.fillText(this.date_1, 1105, 270, 1700);
+          context.fillText(this.date_2, 1105, 545, 1700);
+          context.fillText(this.vaccination_site_1, 1105, 410, 1700);
+          context.fillText(this.vaccination_site_2, 1105, 690, 1700);
+          context.fillText(this.tin_number, 1105, 840, 1700);
+          context.fillText(this.blood_type, 1105, 980, 1700);
+          context.fillText(this.emergency_name, 1105, 1130, 1700);
+          context.fillText(this.emergency_number, 1105, 1190, 1700);
+          context.fillText(this.vaccine_1, 2000, 270, 1700);
+          context.fillText(this.vaccine_2, 2000, 545, 1700);
         };
       };
     },
@@ -168,6 +177,12 @@ export default {
   },
   computed: {
     ...mapGetters("card", ["getImage", "getSignature"]),
+    QRCodeValue() {
+      return `localhost:8080/vaccination/${this.registrant.citizen.id}`;
+    },
+  },
+  components: {
+    VueQrcode,
   },
   created() {
     this.requestImages();
