@@ -74,14 +74,18 @@ export default {
         parseISO(this.registrant.citizen.vaccination_stat[0].vaccination_date),
         "MMMM d, yyyy"
       )}`;
-    // console.log("Dose_1", this.registrant.citizen.vaccination_stat[0].vaccination_date)
-    //   this.fullName = `${this.registrant.citizen.last_name.toUpperCase()}, ${this.registrant.citizen.first_name.toUpperCase()} ${this.registrant.citizen.middle_name.toUpperCase()}`;
-    //   this.birthday = `${format(
-    //     parseISO(this.registrant.citizen.birthday),
-    //     "MMMM d, yyyy"
-    //   )}`;
-    //   console.log("Birthday: ", this.registrant.citizen.birthday);
-    //   this.address = `${this.registrant.citizen.address}`;
+      this.date_2 = `${format(
+        parseISO(this.registrant.citizen.vaccination_stat[1].vaccination_date),
+        "MMMM d, yyyy"
+      )}`;
+      this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name}`;
+      this.vaccination_site_2= `${this.registrant.citizen.vaccination_stat[1].site_name}`;
+      this.tin_number = `${this.registrant.citizen.tin_number}`;
+      this.blood_type = `${this.registrant.citizen.blood_type}`;
+      this.emergency_name = `${this.registrant.citizen.emergency_name}`
+      this.emergency_number = `${this.registrant.citizen.emergency_number}`;
+      this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name}`;
+      this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name}`;
     },
     requestImages() {
       this.fetchImage(this.registrant.citizen.id);
@@ -115,23 +119,23 @@ export default {
         const portraitImg = new Image();
         portraitImg.src = this.getImage;
         portraitImg.onload = () => {
-          const signatureImg = new Image();
-          signatureImg.src = this.getSignature;
-          signatureImg.onload = () => {
             // Draw portrait image after it's loaded
             context.drawImage(portraitImg, 125, 600);
-            // Draw signature image after it's loaded
-            context.drawImage(signatureImg, 125, 1350, 600, 200);
 
             //   // Draw ID
             //   context.fillText(`${id}`, 130, 1400);
 
             // Draw the rest of the data
             context.fillText(this.date_1, 1105, 270, 1700);
-            // context.fillText(this.fullName, 760, 910, 1700);
-            // context.fillText(this.birthday, 760, 1090, 1700);
-            // context.fillText(this.address, 760, 1275, 1700);
-          };
+            context.fillText(this.date_2, 1105, 545, 1700);
+            context.fillText(this.vaccination_site_1, 1105, 410, 1700);
+            context.fillText(this.vaccination_site_2, 1105, 690, 1700);
+            context.fillText(this.tin_number, 1105, 840, 1700);
+            context.fillText(this.blood_type, 1105, 980, 1700);
+            context.fillText(this.emergency_name, 1105, 1130, 1700);
+            context.fillText(this.emergency_number, 1105, 1190, 1700);
+            context.fillText(this.vaccine_1, 2000, 270, 1700);
+            context.fillText(this.vaccine_2, 2000, 545, 1700);
         };
       };
     },
