@@ -80,22 +80,32 @@ export default {
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature"]),
     values() {
-      this.date_1 = `${format(
-        parseISO(this.registrant.citizen.vaccination_stat[0].vaccination_date),
-        "MMMM d, yyyy"
-      )}`;
-      this.date_2 = `${format(
-        parseISO(this.registrant.citizen.vaccination_stat[1].vaccination_date),
-        "MMMM d, yyyy"
-      )}`;
-      this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name}`;
-      this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[1].site_name}`;
+      if (
+        this.registrant.citizen.vaccination_stat[0] &&
+        this.registrant.citizen.vaccination_stat[1]
+      ) {
+        this.date_1 = `${format(
+          parseISO(
+            this.registrant.citizen.vaccination_stat[0].vaccination_date
+          ),
+          "MMMM d, yyyy"
+        )}`;
+        this.date_2 = `${format(
+          parseISO(
+            this.registrant.citizen.vaccination_stat[1].vaccination_date
+          ),
+          "MMMM d, yyyy"
+        )}`;
+        this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name}`;
+        this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[1].site_name}`;
+        this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name}`;
+        this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name}`;
+      }
+
       this.tin_number = `${this.registrant.citizen.tin_number}`;
       this.blood_type = `${this.registrant.citizen.blood_type}`;
       this.emergency_name = `${this.registrant.citizen.emergency_name}`;
       this.emergency_number = `${this.registrant.citizen.emergency_number}`;
-      this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name}`;
-      this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name}`;
       this.hub_registrant_id = `${this.registrant.citizen.hub_registrant_id}`;
     },
     requestImages() {
@@ -113,7 +123,14 @@ export default {
 
       // Load the card template image
       const img = new Image();
-      img.src = require("@/assets/back.jpg");
+      if (
+        this.registrant.citizen.vaccination_stat[0] &&
+        this.registrant.citizen.vaccination_stat[1]
+      ) {
+        img.src = require("@/assets/back.jpg");
+      } else {
+        img.src = require("@/assets/unvaccinated.jpg");
+      }
       img.onload = () => {
         // Draw the card template image on the canvas
         canvas.width = img.width;
@@ -131,20 +148,26 @@ export default {
           // Draw portrait image after it's loaded
           context.drawImage(qrImg, 105, 205);
 
-          // Draw ID
+          // Draw Hub code
           context.fillText(this.hub_registrant_id, 350, 1200, 1700);
 
           // Draw the rest of the data
-          context.fillText(this.date_1, 1105, 270, 1700);
-          context.fillText(this.date_2, 1105, 545, 1700);
-          context.fillText(this.vaccination_site_1, 1105, 410, 1700);
-          context.fillText(this.vaccination_site_2, 1105, 690, 1700);
+          if (
+            this.registrant.citizen.vaccination_stat[0] &&
+            this.registrant.citizen.vaccination_stat[1]
+          ) {
+            context.fillText(this.date_1, 1105, 270, 1700);
+            context.fillText(this.date_2, 1105, 545, 1700);
+            context.fillText(this.vaccination_site_1, 1105, 410, 1700);
+            context.fillText(this.vaccination_site_2, 1105, 690, 1700);
+            context.fillText(this.vaccine_1, 2000, 270, 1700);
+            context.fillText(this.vaccine_2, 2000, 545, 1700);
+          }
+
           context.fillText(this.tin_number, 1105, 840, 1700);
           context.fillText(this.blood_type, 1105, 980, 1700);
           context.fillText(this.emergency_name, 1105, 1130, 1700);
           context.fillText(this.emergency_number, 1105, 1190, 1700);
-          context.fillText(this.vaccine_1, 2000, 270, 1700);
-          context.fillText(this.vaccine_2, 2000, 545, 1700);
         };
       };
     },
