@@ -278,18 +278,7 @@ export default {
       return [
         {
           title: "Full Name",
-          content: `${this.data.citizen.last_name.toUpperCase()}, 
-          ${this.data.citizen.first_name.toUpperCase()} 
-          ${
-            this.data.citizen.middle_name
-              ? " " + this.data.citizen.middle_name.toUpperCase()
-              : ""
-          } 
-          ${
-            this.data.citizen.suffix
-              ? " " + this.data.citizen.suffix.toUpperCase()
-              : ""
-          }`,
+          content: `${this.data.citizen.full_name.toUpperCase()}`,
         },
         {
           title: "Category",
@@ -297,7 +286,7 @@ export default {
         },
         {
           title: "Date of Birth",
-          content: this.data.citizen.birthday,
+          content: this.data.citizen.date_of_birth,
         },
         {
           title: "Sex",
@@ -313,21 +302,19 @@ export default {
       return [
         {
           title: "Barangay",
-          content: this.data.citizen.barangay.barangay_name,
+          content: this.data.citizen.barangay,
         },
         {
           title: "City / Municipality",
-          content: this.data.citizen.barangay.municipality.municipality_name,
+          content: this.data.citizen.municipality,
         },
         {
           title: "Province",
-          content:
-            this.data.citizen.barangay.municipality.province.province_name,
+          content: this.data.citizen.province,
         },
         {
           title: "Region",
-          content:
-            this.data.citizen.barangay.municipality.province.region.region_name,
+          content: this.data.citizen.region,
         },
       ];
     },
@@ -387,7 +374,7 @@ export default {
     },
   },
   created() {
-    console.log(this.data);
+    // console.log(this.data);
   },
 };
 </script>

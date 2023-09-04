@@ -45,23 +45,13 @@ export default {
   props: ["registrant"],
   data: () => ({
     dialog: false,
-    isImageLoaded: false, // Add this flag
     category: null,
     fullName: null,
     birthday: null,
-    address: null,
-    imageURL: null,
-    image: null,
-    status: false,
+    barangay: null,
+    municipality: null,
+    province: null,
   }),
-  htmlToPdfOptions: {
-    margin: 0,
-
-    html2canvas: {
-      useCORS: true,
-      allowTaint: true,
-    },
-  },
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature"]),
     values() {
@@ -70,11 +60,10 @@ export default {
       this.birthday = `${format(
         parseISO(this.registrant.citizen.birthday),
         "MMMM d, yyyy"
-      )}`;
-      this.address = `${this.registrant.citizen.address}`;
-    },
-    statusChange() {
-      this.status = !this.status;
+      ).toUpperCase()}`;
+      this.barangay = `${this.registrant.citizen.barangay.barangay_name.toUpperCase()}`;
+      this.province = `${this.registrant.citizen.barangay.municipality.province.province_name.toUpperCase()}`;
+      this.municipality = `${this.registrant.citizen.barangay.municipality.municipality_name.toUpperCase()}, ${this.province}`;
     },
     requestImages() {
       this.fetchImage(this.registrant.citizen.id);
@@ -113,10 +102,11 @@ export default {
             //   context.fillText(`${id}`, 130, 1400);
 
             // Draw the rest of the data
-            context.fillText(this.category, 760, 730, 1700);
-            context.fillText(this.fullName, 760, 910, 1700);
-            context.fillText(this.birthday, 760, 1090, 1700);
-            context.fillText(this.address, 760, 1275, 1700);
+            context.fillText(this.category, 750, 730, 1700);
+            context.fillText(this.fullName, 750, 910, 1700);
+            context.fillText(this.birthday, 750, 1090, 1700);
+            context.fillText(this.barangay, 750, 1275, 1700);
+            context.fillText(this.municipality, 750, 1335, 1700);
           };
         };
       };
