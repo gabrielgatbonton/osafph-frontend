@@ -90,7 +90,7 @@ export default {
     },
   }),
   methods: {
-    ...mapActions("card", ["fetchImage", "fetchSignature"]),
+    ...mapActions("card", ["fetchPublicImage", "fetchPublicSignature"]),
     values() {
       if (this.registrant) {
         if (
@@ -102,17 +102,19 @@ export default {
               this.registrant.citizen.vaccination_stat[0].vaccination_date
             ),
             "MMMM d, yyyy"
-          )}`;
+          ).toUpperCase()}`;
           this.date_2 = `${format(
             parseISO(
               this.registrant.citizen.vaccination_stat[1].vaccination_date
             ),
             "MMMM d, yyyy"
-          )}`;
-          this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name}`;
-          this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[1].site_name}`;
-          this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name}`;
-          this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name}`;
+          ).toUpperCase()}`;
+          this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
+          this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[1].site_name.toUpperCase()}`;
+          this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
+          this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name.toUpperCase()}`;
+          this.lot_number_1 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
+          this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[1].lot_no.toUpperCase()}`;
         }
         this.category = `${this.registrant.citizen.category}`;
         this.fullName = `${this.registrant.citizen.full_name.toUpperCase()}`;
@@ -127,14 +129,14 @@ export default {
         }`;
         this.tin_number = `${this.registrant.citizen.tin_number}`;
         this.blood_type = `${this.registrant.citizen.blood_type}`;
-        this.emergency_name = `${this.registrant.citizen.emergency_name}`;
+        this.emergency_name = `${this.registrant.citizen.emergency_name.toUpperCase()}`;
         this.emergency_number = `${this.registrant.citizen.emergency_number}`;
         this.hub_registrant_id = `${this.registrant.citizen.hub_registrant_id}`;
       }
     },
     requestImages() {
-      this.fetchImage(this.registrant.citizen.id);
-      this.fetchSignature(this.registrant.citizen.id);
+      this.fetchPublicImage(this.registrant.citizen.id);
+      this.fetchPublicSignature(this.registrant.citizen.id);
     },
     onDataUrlChange(dataUrl) {
       this.qrDataURL = dataUrl;
@@ -158,10 +160,10 @@ export default {
 
         // Load and draw registrant's portrait image
         const portraitImg = new Image();
-        portraitImg.src = this.getImage;
+        portraitImg.src = this.getPublicImage;
         portraitImg.onload = () => {
           const signatureImg = new Image();
-          signatureImg.src = this.getSignature;
+          signatureImg.src = this.getPublicSignature;
           signatureImg.onload = () => {
             // Draw portrait image after it's loaded
             context.drawImage(portraitImg, 125, 600);
@@ -225,8 +227,15 @@ export default {
             context.fillText(this.vaccination_site_2, 1105, 690, 1700);
             context.fillText(this.vaccine_1, 2000, 270, 1700);
             context.fillText(this.vaccine_2, 2000, 545, 1700);
+
+            //Allow for the Lot numbers to be set to 40px
+            context.font = "bold 40px Arial";
+            context.fillText(this.lot_number_1, 2000, 320, 1700);
+            context.fillText(this.lot_number_1, 2000, 595, 1700);
           }
 
+          //Reset it back to 50px
+          context.font = "bold 50px Arial";
           context.fillText(this.tin_number, 1105, 840, 1700);
           context.fillText(this.blood_type, 1105, 980, 1700);
           context.fillText(this.emergency_name, 1105, 1130, 1700);
@@ -266,7 +275,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("card", ["getImage", "getSignature"]),
+    ...mapGetters("card", ["getPublicImage", "getPublicSignature"]),
     QRCodeValue() {
       return `192.168.1.12:8080/vaccination/${this.registrant.citizen.id}`;
     },
