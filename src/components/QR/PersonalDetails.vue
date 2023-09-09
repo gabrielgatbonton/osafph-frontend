@@ -274,6 +274,8 @@
 </template>
 
 <script>
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 export default {
   props: ["data"],
   data: () => ({}),
@@ -344,8 +346,10 @@ export default {
         },
         {
           title: "Date Vaccinated",
-          content:
-            this.data.citizen.vaccination_stat[0].vaccination_date.toUpperCase(),
+          content: format(
+            parseISO(this.data.citizen.vaccination_stat[0].vaccination_date),
+            "MMMM d, yyyy"
+          ).toUpperCase(),
         },
       ];
     },
@@ -371,8 +375,10 @@ export default {
         },
         {
           title: "Date Vaccinated",
-          content:
-            this.data.citizen.vaccination_stat[1].vaccination_date.toUpperCase(),
+          content: format(
+            parseISO(this.data.citizen.vaccination_stat[1].vaccination_date),
+            "MMMM d, yyyy"
+          ).toUpperCase(),
         },
       ];
     },

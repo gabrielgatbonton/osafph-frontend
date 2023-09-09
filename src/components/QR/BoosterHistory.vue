@@ -10,7 +10,11 @@
                   <v-container>
                     <v-row dense class="ma-2">
                       <v-col cols="auto">
-                        <v-avatar color="green">
+                        <v-avatar
+                          :color="
+                            data.citizen.booster_stat[0] ? 'green' : 'red'
+                          "
+                        >
                           <v-icon dark> mdi-needle </v-icon>
                         </v-avatar>
                       </v-col>
@@ -38,9 +42,7 @@
                               class="ma-1"
                               small
                               :color="
-                                data.citizen.booster_stat[0]
-                                  ? 'green'
-                                  : 'red'
+                                data.citizen.booster_stat[0] ? 'green' : 'red'
                               "
                               >{{
                                 data.citizen.booster_stat[0]
@@ -82,7 +84,7 @@
                                     </div>
                                     <div class="text-subtitle-2">
                                       {{
-                                        data.citizen.booster_stat[0].booster_date.toUpperCase()
+                                        formattedBoosterDate_1
                                       }}
                                     </div>
                                   </v-col>
@@ -144,7 +146,7 @@
                                     </div>
                                     <div class="text-subtitle-2">
                                       {{
-                                        data.citizen.booster_stat[0].booster_date.toUpperCase()
+                                        formattedBoosterDate_2
                                       }}
                                     </div>
                                   </v-col>
@@ -192,6 +194,8 @@
 </template>
 
 <script>
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 export default {
   props: ["data"],
   data: () => ({}),
@@ -213,8 +217,7 @@ export default {
         },
         {
           title: "Vaccination Site",
-          content:
-            this.data.citizen.booster_stat[0].site_name.toUpperCase(),
+          content: this.data.citizen.booster_stat[0].site_name.toUpperCase(),
         },
       ];
     },
@@ -235,15 +238,26 @@ export default {
         },
         {
           title: "Vaccination Site",
-          content:
-            this.data.citizen.booster_stat[1].site_name.toUpperCase(),
+          content: this.data.citizen.booster_stat[1].site_name.toUpperCase(),
         },
       ];
     },
+    formattedBoosterDate_1() {
+      return format(
+        parseISO(this.data.citizen.booster_stat[0].booster_date),
+        "MMMM dd, yyyy"
+      ).toUpperCase();
+    },
+    formattedBoosterDate_2() {
+      return format(
+        parseISO(this.data.citizen.booster_stat[1].booster_date),
+        "MMMM dd, yyyy"
+      ).toUpperCase();
+    },
   },
-  mounted(){
-    console.log("Booster Component: ", this.data)
-  }
+  mounted() {
+    console.log("Booster Component: ", this.data);
+  },
 };
 </script>
 
