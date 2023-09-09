@@ -104,7 +104,11 @@
                   <v-container>
                     <v-row dense class="ma-2">
                       <v-col cols="auto" class="">
-                        <v-avatar color="green">
+                        <v-avatar
+                          :color="
+                            data.citizen.vaccination_stat[0] ? 'green' : 'red'
+                          "
+                        >
                           <v-icon dark> mdi-needle </v-icon>
                         </v-avatar>
                       </v-col>
@@ -282,7 +286,7 @@ export default {
         },
         {
           title: "Category",
-          content: this.data.citizen.category.description,
+          content: this.data.citizen.category,
         },
         {
           title: "Date of Birth",
@@ -290,7 +294,7 @@ export default {
         },
         {
           title: "Sex",
-          content: this.data.citizen.gender,
+          content: this.data.citizen.sex,
         },
         {
           title: "Civil Status",
@@ -374,7 +378,7 @@ export default {
     },
   },
   created() {
-    // console.log(this.data);
+    console.log(this.data);
   },
 };
 </script>
