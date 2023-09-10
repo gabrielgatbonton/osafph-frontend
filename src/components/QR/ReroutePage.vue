@@ -19,8 +19,12 @@
     <v-container>
       <v-row dense>
         <v-col cols="6">
-          <div v-if="getPublicData" class="my-auto text-right">
-            <FrontBackCardJavaScript :registrant="getPublicData" />
+          <div v-if="getPublicData && getPublicImage && getPublicSignature" class="my-auto text-right slide-down">
+            <FrontBackCardJavaScript
+              :getPublicImage="getPublicImage"
+              :getPublicSignature="getPublicSignature"
+              :registrant="getPublicData"
+            />
           </div>
         </v-col>
         <v-col cols="6"> </v-col>
@@ -49,6 +53,7 @@ export default {
       "fetchBoosterInformation",
       "fetchPublicCitizenRecord",
     ]),
+    ...mapActions("card", ["fetchPublicImage", "fetchPublicSignature"]),
     fetchData() {
       const id = this.$route.params.hub_registrant_id;
       this.fetchPublicCitizenRecord(id).catch((error) => {
@@ -68,6 +73,7 @@ export default {
       "getBoosterInformation",
       "getPublicData",
     ]),
+    ...mapGetters("card", ["getPublicImage", "getPublicSignature"]),
   },
   created() {
     this.fetchData();
@@ -75,6 +81,10 @@ export default {
   watch: {
     getPublicData(value) {
       console.log("Success Public Data: ", value);
+      if (value.citizen.hub_registrant_id) {
+        this.fetchPublicImage(value.citizen.id);
+        this.fetchPublicSignature(value.citizen.id);
+      }
     },
     // getRegistrant(value) {
     //   console.log("Registrant: ", value);

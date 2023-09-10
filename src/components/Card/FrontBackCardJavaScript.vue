@@ -58,9 +58,8 @@
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import VueQrcode from "vue-qrcode";
-import { mapActions, mapGetters } from "vuex";
 export default {
-  props: ["registrant"],
+  props: ["registrant", "getPublicImage", "getPublicSignature"],
   data: () => ({
     dialog: false,
     category: null,
@@ -90,7 +89,6 @@ export default {
     },
   }),
   methods: {
-    ...mapActions("card", ["fetchPublicImage", "fetchPublicSignature"]),
     values() {
       if (this.registrant) {
         if (
@@ -133,10 +131,6 @@ export default {
         this.emergency_number = `${this.registrant.citizen.emergency_number}`;
         this.hub_registrant_id = `${this.registrant.citizen.hub_registrant_id}`;
       }
-    },
-    requestImages() {
-      this.fetchPublicImage(this.registrant.citizen.id);
-      this.fetchPublicSignature(this.registrant.citizen.id);
     },
     onDataUrlChange(dataUrl) {
       this.qrDataURL = dataUrl;
@@ -275,16 +269,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("card", ["getPublicImage", "getPublicSignature"]),
     QRCodeValue() {
       return `192.168.1.12:8080/vaccination/${this.registrant.citizen.id}`;
     },
   },
   components: {
     VueQrcode,
-  },
-  created() {
-    this.requestImages();
   },
   mounted() {
     this.values();
