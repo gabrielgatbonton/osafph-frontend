@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" min-width="600" max-width="900">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn dark block class="mb-2 blue darken-4" v-bind="attrs" v-on="on"
+        <v-btn dark block class="mb-2 blue darken-4" :class="{ 'disabled-button': disabledButton }" v-bind="attrs" v-on="on"
           ><v-icon left>mdi-smart-card-outline</v-icon>Front</v-btn
         >
       </template>
@@ -51,6 +51,7 @@ export default {
     barangay: null,
     municipality: null,
     province: null,
+    disabledButton: true,
   }),
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature"]),
@@ -141,6 +142,13 @@ export default {
   computed: {
     ...mapGetters("card", ["getImage", "getSignature"]),
   },
+  watch: {
+    getImage(value) {
+      if(value) {
+        this.disabledButton = false;
+      }
+    }
+  },
   created() {
     this.requestImages();
   },
@@ -156,5 +164,9 @@ export default {
 <style scoped>
 .canvas-border {
   border: 2px solid lightgray;
+}
+.disabled-button {
+  opacity: 0.5; /* Make it appear faded */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
 }
 </style>

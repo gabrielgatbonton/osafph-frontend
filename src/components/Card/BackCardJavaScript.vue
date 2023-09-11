@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" min-width="600" max-width="900">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn dark block class="mb-2 blue darken-4" v-bind="attrs" v-on="on"
+        <v-btn dark block class="mb-2 blue darken-4" :class="{ 'disabled-button': disabledButton }" v-bind="attrs" v-on="on"
           ><v-icon left>mdi-smart-card-outline</v-icon>Back</v-btn
         >
       </template>
@@ -76,6 +76,7 @@ export default {
       quality: 1,
       width: 930,
     },
+    disabledButton: true,
   }),
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature"]),
@@ -216,12 +217,19 @@ export default {
   components: {
     VueQrcode,
   },
+  watch: {
+    getImage(value) {
+      console.log(value);
+      if(value) {
+        this.disabledButton = false;
+      }
+    }
+  },
   created() {
     this.requestImages();
   },
   mounted() {
     this.values();
-    console.log("registrant: ", this.registrant);
   },
   updated() {
     this.drawIDOnCanvas();
@@ -232,5 +240,9 @@ export default {
 <style scoped>
 .canvas-border {
   border: 2px solid lightgray;
+}
+.disabled-button {
+  opacity: 0.5; /* Make it appear faded */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
 }
 </style>
