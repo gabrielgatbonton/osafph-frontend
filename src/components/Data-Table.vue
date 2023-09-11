@@ -98,6 +98,11 @@ export default {
           text: "EDIT",
           route: { name: "edit", params: { id: item.id } },
         },
+        {
+          icon: "mdi-medical-bag",
+          text: "HOSPITAL SERVICES",
+          route: { name: "hospital-services", params: { id: item.id } },
+        },
         // {
         //   icon: "mdi-delete-alert-outline",
         //   text: "DELETE",
