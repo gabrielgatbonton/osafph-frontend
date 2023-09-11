@@ -16,6 +16,9 @@ Vue.use(Vuelidate)
 // const baseURL = 'http://127.0.0.1:8000/'; //Local BaseURL
 const baseURL = 'http://192.168.1.108:80/';
 
+//Network URL
+const networkURL = 'http://192.168.1.118:8080/'
+
 
 const axiosInstance = axios.create({
   baseURL: `${baseURL}api`  //Axios baseURL
@@ -24,6 +27,7 @@ const axiosInstance = axios.create({
 Vue.prototype.$axios = axiosInstance;
 Vuex.Store.prototype.$axios = axiosInstance;
 Vue.prototype.$url = baseURL
+Vue.prototype.$network = networkURL
 
 axiosInstance.interceptors.request.use((config) => {
   const accessToken = store.getters["login/accessToken"];

@@ -2,7 +2,7 @@
   <div>
     <v-container v-if="data">
       <v-row no-gutters>
-        <v-col cols="7">
+        <v-col cols="12" md="7">
           <v-container>
             <v-row>
               <v-col cols="12">
@@ -96,7 +96,7 @@
             </v-row>
           </v-container>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="12" md="5">
           <v-container>
             <v-row>
               <v-col cols="12">

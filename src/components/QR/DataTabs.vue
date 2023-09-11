@@ -1,8 +1,8 @@
 <template>
   <v-container v-if="data">
-    <v-row class="mx-16">
+    <v-row>
       <v-col cols="12">
-        <v-tabs centered class="red">
+        <v-tabs centered>
           <v-tab>Personal Details</v-tab>
           <v-tab>Booster History</v-tab>
           <v-tab-item>

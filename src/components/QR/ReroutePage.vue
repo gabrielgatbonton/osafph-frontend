@@ -18,8 +18,8 @@
     </div>
     <v-container>
       <v-row dense>
-        <v-col cols="6">
-          <div v-if="getPublicData && getPublicImage && getPublicSignature" class="my-auto text-right slide-down">
+        <v-col cols="12">
+          <div v-if="getPublicData && getPublicImage && getPublicSignature" class="my-auto text-center slide-down">
             <FrontBackCardJavaScript
               :getPublicImage="getPublicImage"
               :getPublicSignature="getPublicSignature"
@@ -27,7 +27,6 @@
             />
           </div>
         </v-col>
-        <v-col cols="6"> </v-col>
       </v-row>
       <v-row dense>
         <v-col cols="12">

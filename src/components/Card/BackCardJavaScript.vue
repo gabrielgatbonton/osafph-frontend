@@ -210,7 +210,7 @@ export default {
   computed: {
     ...mapGetters("card", ["getImage", "getSignature"]),
     QRCodeValue() {
-      return `192.168.1.12:8080/vaccination/${this.registrant.citizen.id}`;
+      return `${this.$network}vaccination/${this.registrant.citizen.hub_registrant_id}`;
     },
   },
   components: {
