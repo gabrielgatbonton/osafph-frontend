@@ -85,7 +85,7 @@
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="submitForm()">Submit</v-btn>
+          <v-btn dark class="blue darken-4" @click="submitForm()">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -112,14 +112,14 @@ export default {
       diagnostics: ["X-RAY", "ULTRASOUND", "MAMMOGRAM"],
       consultations: ["OB", "PHYSICIAN", "CARDIOLOGY"],
     },
-    services: ["CONSULTATION", "DIAGNOSTICS", "LABORATORY"],
+    services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY"],
   }),
   methods: {
     ...mapActions("services", ["addHospitalService"]),
     initService(service) {
       if (service === "CONSULTATION") {
         this.services_types.selected = this.services_types.consultations;
-      } else if (service === "DIAGNOSTICS") {
+      } else if (service === "DIAGNOSTIC") {
         this.services_types.selected = this.services_types.diagnostics;
       } else if (service === "LABORATORY") {
         this.services_types.selected = this.services_types.laboratories;
@@ -127,8 +127,53 @@ export default {
     },
     submitForm() {
       const id = this.$route.params.id;
-      console.log(id);
-      // return this.addHospitalService()
+      let data = {};
+      if (this.service_type === "CONSULTATION") {
+        data = {
+          service_type: this.service_type,
+          specialty: this.serviceable_type,
+          date_received: this.date_received,
+          date_released: null,
+          result_type: "PENDING",
+          remarks: this.remarks,
+        };
+      } else if (this.service_type === "DIAGNOSTIC") {
+        data = {
+          service_type: this.service_type,
+          diagnostic_type: this.serviceable_type,
+          date_received: this.date_received,
+          date_released: null,
+          result_type: "PENDING",
+          remarks: this.remarks,
+        };
+      } else if (this.service_type === "LABORATORY") {
+        data = {
+          service_type: this.service_type,
+          laboratory_type: this.serviceable_type,
+          date_received: this.date_received,
+          date_released: null,
+          result_type: "PENDING",
+          remarks: this.remarks,
+        };
+      }
+
+      return this.addHospitalService({
+        id: id,
+        data: data,
+      })
+        .then(() => {
+          this.service_type = null;
+          this.serviceable_type = null;
+          this.date_received = null;
+          this.remarks = null;
+        })
+        .catch((error) => {
+          console.error(
+            "Error in Adding Service in AddServiceDialog Component",
+            error
+          );
+        })
+        .finally(() => (this.dialog = false));
     },
   },
   computed: {

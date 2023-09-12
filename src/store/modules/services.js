@@ -13,15 +13,18 @@ export const services = {
       state.hospitalServices = services;
     },
     ADD_HOSPITAL_SERVICE(state, service) {
-        state.hospitalServices.push(service);
+      state.hospitalServices.push(service);
     },
+    DELETE_HOSPITAL_SERVICE(state, service) {
+      state.hospitalServices = state.hospitalServices.filter((service) => service.id)
+    }
   },
   actions: {
     fetchServicesById({ commit }, id) {
       return this.$axios
         .get(`/citizens/${id}/hospital-services/`)
         .then((response) => {
-          const services = response.data;
+          const services = response.data.hospitalServices;
           commit("SET_HOSPITAL_SERVICES", services);
         })
         .catch((error) => {
@@ -34,11 +37,19 @@ export const services = {
         .then((response) => {
           const service = response.data;
           commit("ADD_HOSPITAL_SERVICE", service);
-          dispatch("fetchServicesById", id)
+          dispatch("fetchServicesById", id);
         })
         .catch((error) => {
           console.error("Error adding services: ", error);
         });
+    },
+    deleteHospitalService({ commit, dispatch }, { id, hospital_service_id }) {
+      return this.$axios.delete(
+        `citizens/${id}/hospital-services/${hospital_service_id}`
+      ).then((response) => {
+        const data = response.data;
+
+      });
     },
   },
   getters: {
