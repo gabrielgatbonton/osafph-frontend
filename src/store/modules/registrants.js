@@ -1,6 +1,7 @@
 // store/modules/registrants.js
 import Vuex from "vuex";
 import Vue from "vue";
+import store from '../../store'
 // import axios from "axios";
 
 Vue.use(Vuex);
@@ -194,6 +195,11 @@ export const registrants = {
         .then((response) => {
           const files = response.data;
           commit("UPDATE_REGISTRANT_FILES", { id, files });
+
+          //Store dispatch so that images will be updated
+          store.dispatch("card/fetchImage", id)
+          store.dispatch("card/fetchSignature", id)
+          
           commit("SET_SHOW_ALERT", {
             alert: true,
             message: "Updated Image",

@@ -2,7 +2,13 @@
   <div>
     <v-dialog v-model="dialog" min-width="600" max-width="900">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn dark block class="mb-2 blue darken-4" :class="{ 'disabled-button': disabledButton }" v-bind="attrs" v-on="on"
+        <v-btn
+          dark
+          block
+          class="mb-2 blue darken-4"
+          :class="{ 'disabled-button': disabledButton }"
+          v-bind="attrs"
+          v-on="on"
           ><v-icon left>mdi-smart-card-outline</v-icon>Back</v-btn
         >
       </template>
@@ -77,6 +83,8 @@ export default {
       width: 930,
     },
     disabledButton: true,
+    isGetImageLoaded: false,
+    isGetSignatureLoaded: false,
   }),
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature"]),
@@ -105,7 +113,7 @@ export default {
         this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[1].lot_no.toUpperCase()}`;
       }
 
-      this.tin_number = `${this.registrant.citizen.tin_number}`;
+      this.tin_number = `${this.registrant.citizen.tin_number ? this.registrant.citizen.tin_number : "-"}`;
       this.blood_type = `${this.registrant.citizen.blood_type}`;
       this.emergency_name = `${this.registrant.citizen.emergency_name.toUpperCase()}`;
       this.emergency_number = `${this.registrant.citizen.emergency_number}`;
@@ -219,11 +227,23 @@ export default {
   },
   watch: {
     getImage(value) {
-      console.log(value);
-      if(value) {
+      if (value) {
+        this.isGetImageLoaded = true;
+      }
+
+      if (this.isGetImageLoaded === this.isGetSignatureLoaded) {
         this.disabledButton = false;
       }
-    }
+    },
+    getSignature(value) {
+      if (value) {
+        this.isGetSignatureLoaded = true;
+      }
+
+      if (this.isGetImageLoaded === this.isGetSignatureLoaded) {
+        this.disabledButton = false;
+      }
+    },
   },
   created() {
     this.requestImages();

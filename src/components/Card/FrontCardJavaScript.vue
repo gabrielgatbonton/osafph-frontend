@@ -52,6 +52,8 @@ export default {
     municipality: null,
     province: null,
     disabledButton: true,
+    isGetImageLoaded: false,
+    isGetSignatureLoaded: false,
   }),
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature"]),
@@ -145,6 +147,19 @@ export default {
   watch: {
     getImage(value) {
       if(value) {
+        this.isGetImageLoaded = true;
+      }
+
+      if(this.isGetImageLoaded === this.isGetSignatureLoaded) {
+        this.disabledButton = false;
+      }
+    },
+    getSignature(value) {
+      if(value) {
+        this.isGetSignatureLoaded = true;
+      }
+
+      if(this.isGetImageLoaded === this.isGetSignatureLoaded) {
         this.disabledButton = false;
       }
     }
