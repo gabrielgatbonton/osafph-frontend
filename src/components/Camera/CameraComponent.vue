@@ -56,8 +56,8 @@ export default {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         const constraints = {
           video: {
-            width: { ideal: 1080 }, // Set the desired width
-            height: { ideal: 1080 }, // Set the desired height
+            width: { ideal: 550 }, // Set the desired width
+            height: { ideal: 700 }, // Set the desired height
           },
         };
 

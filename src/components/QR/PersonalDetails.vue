@@ -2,7 +2,7 @@
   <div>
     <v-container v-if="data">
       <v-row no-gutters>
-        <v-col cols="7">
+        <v-col cols="12" md="7">
           <v-container>
             <v-row>
               <v-col cols="12">
@@ -96,7 +96,7 @@
             </v-row>
           </v-container>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="12" md="5">
           <v-container>
             <v-row>
               <v-col cols="12">
@@ -104,7 +104,11 @@
                   <v-container>
                     <v-row dense class="ma-2">
                       <v-col cols="auto" class="">
-                        <v-avatar color="green">
+                        <v-avatar
+                          :color="
+                            data.citizen.vaccination_stat[0] ? 'green' : 'red'
+                          "
+                        >
                           <v-icon dark> mdi-needle </v-icon>
                         </v-avatar>
                       </v-col>
@@ -270,6 +274,8 @@
 </template>
 
 <script>
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 export default {
   props: ["data"],
   data: () => ({}),
@@ -278,30 +284,19 @@ export default {
       return [
         {
           title: "Full Name",
-          content: `${this.data.citizen.last_name.toUpperCase()}, 
-          ${this.data.citizen.first_name.toUpperCase()} 
-          ${
-            this.data.citizen.middle_name
-              ? " " + this.data.citizen.middle_name.toUpperCase()
-              : ""
-          } 
-          ${
-            this.data.citizen.suffix
-              ? " " + this.data.citizen.suffix.toUpperCase()
-              : ""
-          }`,
+          content: `${this.data.citizen.full_name.toUpperCase()}`,
         },
         {
           title: "Category",
-          content: this.data.citizen.category.description,
+          content: this.data.citizen.category,
         },
         {
           title: "Date of Birth",
-          content: this.data.citizen.birthday,
+          content: this.data.citizen.date_of_birth,
         },
         {
           title: "Sex",
-          content: this.data.citizen.gender,
+          content: this.data.citizen.sex,
         },
         {
           title: "Civil Status",
@@ -313,21 +308,19 @@ export default {
       return [
         {
           title: "Barangay",
-          content: this.data.citizen.barangay.barangay_name,
+          content: this.data.citizen.barangay,
         },
         {
           title: "City / Municipality",
-          content: this.data.citizen.barangay.municipality.municipality_name,
+          content: this.data.citizen.municipality,
         },
         {
           title: "Province",
-          content:
-            this.data.citizen.barangay.municipality.province.province_name,
+          content: this.data.citizen.province,
         },
         {
           title: "Region",
-          content:
-            this.data.citizen.barangay.municipality.province.region.region_name,
+          content: this.data.citizen.region,
         },
       ];
     },
@@ -353,8 +346,10 @@ export default {
         },
         {
           title: "Date Vaccinated",
-          content:
-            this.data.citizen.vaccination_stat[0].vaccination_date.toUpperCase(),
+          content: format(
+            parseISO(this.data.citizen.vaccination_stat[0].vaccination_date),
+            "MMMM d, yyyy"
+          ).toUpperCase(),
         },
       ];
     },
@@ -380,8 +375,10 @@ export default {
         },
         {
           title: "Date Vaccinated",
-          content:
-            this.data.citizen.vaccination_stat[1].vaccination_date.toUpperCase(),
+          content: format(
+            parseISO(this.data.citizen.vaccination_stat[1].vaccination_date),
+            "MMMM d, yyyy"
+          ).toUpperCase(),
         },
       ];
     },

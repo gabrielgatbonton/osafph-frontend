@@ -1,6 +1,7 @@
 // store/modules/registrants.js
 import Vuex from "vuex";
 import Vue from "vue";
+import store from '../../store'
 // import axios from "axios";
 
 Vue.use(Vuex);
@@ -14,6 +15,7 @@ export const registrants = {
     boosterDetails: null,
     showAlert: false,
     showError: null,
+    publicData: null,
   }),
   mutations: {
     SET_REGISTRANTS(state, registrants) {
@@ -100,6 +102,9 @@ export const registrants = {
         boosterInformation.boosterStat = updateBoosterInformation;
       }
     },
+    SET_PUBLIC_DATA(state, publicData) {
+      state.publicData = publicData;
+    },
     SET_SHOW_ALERT(state, { alert, message }) {
       state.showAlert = {
         alert: alert,
@@ -118,6 +123,7 @@ export const registrants = {
     getRegistrant: (state) => state.registrant,
     getVaccineInformation: (state) => state.vaccinationDetails,
     getBoosterInformation: (state) => state.boosterDetails,
+    getPublicData: (state) => state.publicData,
     getShowAlert: (state) => state.showAlert,
     getShowError: (state) => state.showError,
   },
@@ -189,6 +195,11 @@ export const registrants = {
         .then((response) => {
           const files = response.data;
           commit("UPDATE_REGISTRANT_FILES", { id, files });
+
+          //Store dispatch so that images will be updated
+          store.dispatch("card/fetchImage", id)
+          store.dispatch("card/fetchSignature", id)
+          
           commit("SET_SHOW_ALERT", {
             alert: true,
             message: "Updated Image",
@@ -324,5 +335,16 @@ export const registrants = {
           console.error("Error deleting registrant:", error);
         });
     },
+    fetchPublicCitizenRecord({ commit }, hub_registrant_id) {
+      return this.$axios
+      .get(`/public-citizen/${hub_registrant_id}`)
+      .then((response) => {
+        const publicData = response.data;
+        commit("SET_PUBLIC_DATA", publicData);
+      })
+      .catch((error) => {
+        console.error("Error fetching registrant:", error);
+      });
+    }
   },
 };

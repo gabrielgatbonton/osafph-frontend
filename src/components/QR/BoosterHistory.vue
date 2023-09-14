@@ -10,7 +10,11 @@
                   <v-container>
                     <v-row dense class="ma-2">
                       <v-col cols="auto">
-                        <v-avatar color="green">
+                        <v-avatar
+                          :color="
+                            data.citizen.booster_stat[0] ? 'green' : 'red'
+                          "
+                        >
                           <v-icon dark> mdi-needle </v-icon>
                         </v-avatar>
                       </v-col>
@@ -29,7 +33,7 @@
                           <div
                             class="text-subtitle-2 font-weight-bold ma-1"
                             :class="
-                              data.boosterStat[0]
+                              data.citizen.booster_stat[0]
                                 ? 'green--text'
                                 : 'red--text'
                             "
@@ -38,17 +42,15 @@
                               class="ma-1"
                               small
                               :color="
-                                data.boosterStat[0]
-                                  ? 'green'
-                                  : 'red'
+                                data.citizen.booster_stat[0] ? 'green' : 'red'
                               "
                               >{{
-                                data.boosterStat[0]
+                                data.citizen.booster_stat[0]
                                   ? "mdi-check-all"
                                   : "mdi-close"
                               }}</v-icon
                             >{{
-                              data.boosterStat[0]
+                              data.citizen.booster_stat[0]
                                 ? "Booster History"
                                 : "No Boosters"
                             }}
@@ -56,13 +58,13 @@
                         </v-card>
                       </v-col>
                       <div
-                        v-if="data.boosterStat[0]"
+                        v-if="data.citizen.booster_stat[0]"
                         class="custom-divider"
                       ></div>
                       <v-col
                         cols="12"
                         class="py-0"
-                        v-if="data.boosterStat[0]"
+                        v-if="data.citizen.booster_stat[0]"
                       >
                         <v-expansion-panels popout>
                           <v-expansion-panel>
@@ -82,7 +84,7 @@
                                     </div>
                                     <div class="text-subtitle-2">
                                       {{
-                                        data.boosterStat[0].booster_date.toUpperCase()
+                                        formattedBoosterDate_1
                                       }}
                                     </div>
                                   </v-col>
@@ -118,11 +120,11 @@
                         </v-expansion-panels>
                       </v-col>
                       <div
-                        v-if="data.boosterStat[1]"
+                        v-if="data.citizen.booster_stat[1]"
                         class="custom-divider"
                       ></div>
                       <v-col
-                        v-if="data.boosterStat[1]"
+                        v-if="data.citizen.booster_stat[1]"
                         cols="12"
                         class="pt-0"
                       >
@@ -144,7 +146,7 @@
                                     </div>
                                     <div class="text-subtitle-2">
                                       {{
-                                        data.boosterStat[0].booster_date.toUpperCase()
+                                        formattedBoosterDate_2
                                       }}
                                     </div>
                                   </v-col>
@@ -192,6 +194,8 @@
 </template>
 
 <script>
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 export default {
   props: ["data"],
   data: () => ({}),
@@ -200,21 +204,20 @@ export default {
       return [
         {
           title: "Vaccine Name / Manufacturer / Lot Number",
-          content: this.data.boosterStat[0].booster_name,
-          serial: this.data.boosterStat[0].lot_no,
+          content: this.data.citizen.booster_stat[0].booster_name,
+          serial: this.data.citizen.booster_stat[0].lot_no,
         },
         {
           title: "Healthcare Professional",
           content:
-            this.data.boosterStat[0].healthcare_professional.toUpperCase(),
+            this.data.citizen.booster_stat[0].healthcare_professional.toUpperCase(),
           serial:
-            this.data.boosterStat[0]
+            this.data.citizen.booster_stat[0]
               .healthcare_professional_license_number,
         },
         {
           title: "Vaccination Site",
-          content:
-            this.data.boosterStat[0].site_name.toUpperCase(),
+          content: this.data.citizen.booster_stat[0].site_name.toUpperCase(),
         },
       ];
     },
@@ -222,24 +225,38 @@ export default {
       return [
         {
           title: "Vaccine Name / Manufacturer / Lot Number",
-          content: this.data.boosterStat[1].booster_name,
-          serial: this.data.boosterStat[1].lot_no,
+          content: this.data.citizen.booster_stat[1].booster_name,
+          serial: this.data.citizen.booster_stat[1].lot_no,
         },
         {
           title: "Healthcare Professional",
           content:
-            this.data.boosterStat[1].healthcare_professional.toUpperCase(),
+            this.data.citizen.booster_stat[1].healthcare_professional.toUpperCase(),
           serial:
-            this.data.boosterStat[1]
+            this.data.citizen.booster_stat[1]
               .healthcare_professional_license_number,
         },
         {
           title: "Vaccination Site",
-          content:
-            this.data.boosterStat[1].site_name.toUpperCase(),
+          content: this.data.citizen.booster_stat[1].site_name.toUpperCase(),
         },
       ];
     },
+    formattedBoosterDate_1() {
+      return format(
+        parseISO(this.data.citizen.booster_stat[0].booster_date),
+        "MMMM dd, yyyy"
+      ).toUpperCase();
+    },
+    formattedBoosterDate_2() {
+      return format(
+        parseISO(this.data.citizen.booster_stat[1].booster_date),
+        "MMMM dd, yyyy"
+      ).toUpperCase();
+    },
+  },
+  mounted() {
+    console.log("Booster Component: ", this.data);
   },
 };
 </script>
