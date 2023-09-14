@@ -125,7 +125,7 @@ export default {
         this.municipality = `${this.registrant.citizen.municipality.toUpperCase()}, ${
           this.province
         }`;
-        this.tin_number = `${this.registrant.citizen.tin_number}`;
+        this.tin_number = `${this.registrant.citizen.tin_number ? this.registrant.citizen.tin_number : "-"}`;
         this.blood_type = `${this.registrant.citizen.blood_type}`;
         this.emergency_name = `${this.registrant.citizen.emergency_name.toUpperCase()}`;
         this.emergency_number = `${this.registrant.citizen.emergency_number}`;
