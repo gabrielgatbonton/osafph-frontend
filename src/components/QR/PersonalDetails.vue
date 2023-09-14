@@ -266,6 +266,16 @@
                 </v-card>
               </v-col>
             </v-row>
+            <v-row
+              v-if="
+                data.citizen.vaccination_stat[0] &&
+                data.citizen.vaccination_stat[1]
+                  ? true
+                  : false
+              "
+            >
+              <BoosterHistory :data="data" />
+            </v-row>
           </v-container>
         </v-col>
       </v-row>
@@ -276,9 +286,12 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
+import BoosterHistory from "./BoosterHistory.vue";
 export default {
   props: ["data"],
-  data: () => ({}),
+  components: {
+    BoosterHistory,
+  },
   computed: {
     details() {
       return [
@@ -292,7 +305,7 @@ export default {
         },
         {
           title: "Date of Birth",
-          content: this.data.citizen.date_of_birth,
+          content: format(parseISO(this.data.citizen.date_of_birth), "MMMM dd, yyyy").toUpperCase(),
         },
         {
           title: "Sex",
