@@ -8,6 +8,7 @@ import managementRoute from "./modules/management";
 import LogInLayout from "../components/LandingPage.vue";
 import { checkLoggedIn } from "./modules/auth-guard";
 import ReroutePage from "./modules/reroute";
+import html2pdfPage from "../components/Card/html2pdfPage.vue"
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: LogInLayout,
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: html2pdfPage,
   },
   ...dashboardRoute,
   ...citizensRoute,
