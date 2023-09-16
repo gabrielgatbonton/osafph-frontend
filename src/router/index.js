@@ -9,6 +9,7 @@ import LogInLayout from "../components/LandingPage.vue";
 import { checkLoggedIn } from "./modules/auth-guard";
 import ReroutePage from "./modules/reroute";
 import html2pdfPage from "../components/Card/html2pdfPage.vue"
+import hospitalServicesRoute from "./modules/hospital-services";
 
 Vue.use(VueRouter);
 
@@ -30,7 +31,8 @@ const routes = [
   ...dashboardRoute,
   ...citizensRoute,
   ...managementRoute,
-  ...ReroutePage
+  ...ReroutePage,
+  ...hospitalServicesRoute,
 ]
 
 const router = new VueRouter({

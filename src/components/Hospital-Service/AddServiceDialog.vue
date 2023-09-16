@@ -28,6 +28,13 @@
                 :items="services_types.selected"
               ></v-autocomplete>
             </v-col>
+            <!-- <v-col cols="12">
+              <v-autocomplete
+                v-model="doctor"
+                label="Doctor in Charge"
+                :items="doctor"
+              ></v-autocomplete>
+            </v-col> -->
             <v-col cols="6">
               <v-menu
                 max-width="290"
@@ -43,39 +50,43 @@
                     :value="formattedDate1"
                     v-on="on"
                     v-bind="attrs"
-                    label="Date Received"
+                    label="Scheduled Date"
                     readonly
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="date_received"
+                  v-model="scheduled_date"
+                  :min="minDate"
                   @input="menu_1 = false"
                 ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="6">
               <v-menu
-                max-width="290"
+                v-model="menu_2"
                 :close-on-content-click="false"
                 :nudge-right="40"
                 transition="scale-transition"
                 offset-y
-                min-width="auto"
-                v-model="menu_2"
+                max-width="290px"
+                min-width="290px"
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    :value="formattedDate2"
-                    v-on="on"
-                    v-bind="attrs"
-                    label="Date Released"
+                    :value="formattedTime1"
+                    v-model="formattedTime1"
+                    label="Scheduled Time"
+                    prepend-icon="mdi-clock-time-four-outline"
                     readonly
+                    v-bind="attrs"
+                    v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker
-                  v-model="date_released"
-                  @input="menu_2 = false"
-                ></v-date-picker>
+                <v-time-picker
+                  v-model="scheduled_time"
+                  full-width
+                  @click:minute="menu_2 = false"
+                ></v-time-picker>
               </v-menu>
             </v-col>
             <v-col cols="12">
@@ -103,8 +114,8 @@ export default {
     menu_2: false,
     service_type: null,
     serviceable_type: null,
-    date_received: null,
-    date_released: null,
+    scheduled_date: null,
+    scheduled_time: null,
     remarks: null,
     services_types: {
       selected: null,
@@ -113,6 +124,7 @@ export default {
       consultations: ["OB", "PHYSICIAN", "CARDIOLOGY"],
     },
     services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY"],
+    minDate: new Date().toISOString().slice(0, 10),
   }),
   methods: {
     ...mapActions("services", ["addHospitalService"]),
@@ -132,27 +144,33 @@ export default {
         data = {
           service_type: this.service_type,
           specialty: this.serviceable_type,
-          date_received: this.date_received,
+          scheduled_date: this.scheduled_date,
+          scheduled_time: this.scheduled_time,
           date_released: null,
-          result_type: "PENDING",
+          time_released: null,
+          status: "PENDING",
           remarks: this.remarks,
         };
       } else if (this.service_type === "DIAGNOSTIC") {
         data = {
           service_type: this.service_type,
           diagnostic_type: this.serviceable_type,
-          date_received: this.date_received,
+          scheduled_date: this.scheduled_date,
+          scheduled_time: this.scheduled_time,
           date_released: null,
-          result_type: "PENDING",
+          time_released: null,
+          status: "PENDING",
           remarks: this.remarks,
         };
       } else if (this.service_type === "LABORATORY") {
         data = {
           service_type: this.service_type,
           laboratory_type: this.serviceable_type,
-          date_received: this.date_received,
+          scheduled_date: this.scheduled_date,
+          scheduled_time: this.scheduled_time,
           date_released: null,
-          result_type: "PENDING",
+          time_released: null,
+          status: "PENDING",
           remarks: this.remarks,
         };
       }
@@ -164,7 +182,8 @@ export default {
         .then(() => {
           this.service_type = null;
           this.serviceable_type = null;
-          this.date_received = null;
+          this.scheduled_date = null;
+          this.scheduled_time = null;
           this.remarks = null;
         })
         .catch((error) => {
@@ -178,13 +197,13 @@ export default {
   },
   computed: {
     formattedDate1() {
-      return this.date_received
-        ? format(parseISO(this.date_received), "MMMM d, yyyy")
+      return this.scheduled_date
+        ? format(parseISO(this.scheduled_date), "MMMM d, yyyy")
         : "";
     },
-    formattedDate2() {
-      return this.date_released
-        ? format(parseISO(this.date_released), "MMMM d, yyyy")
+    formattedTime1() {
+      return this.scheduled_time
+        ? format(parseISO(`${this.scheduled_date}T${this.scheduled_time}`), "h:mm a")
         : "";
     },
   },

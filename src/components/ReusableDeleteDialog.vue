@@ -43,7 +43,7 @@ export default {
       required: true,
     },
     hospitalServiceId: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
   },

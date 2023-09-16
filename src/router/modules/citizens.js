@@ -2,7 +2,6 @@ import CitizensView from "@/views/CitizensView.vue";
 import RegisterView from '@/views/RegisterView.vue';
 import ViewDetailsView from '@/views/ViewDetailsView.vue';
 import EditView from '@/views/EditView.vue'
-import HospitalServicesView from '@/views/HospitalServicesView.vue';
 import { checkLoggedIn } from './auth-guard';
 export default [
   {
@@ -31,14 +30,6 @@ export default [
     path: '/citizens/details/:id',
     name: 'details',
     component: ViewDetailsView,
-    props: true,
-    meta: { requiresAuth: true },
-    beforeEnter: checkLoggedIn,
-  },
-  {
-    path: '/citizens/hospital-services/:id',
-    name: 'hospital-services',
-    component: HospitalServicesView,
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,

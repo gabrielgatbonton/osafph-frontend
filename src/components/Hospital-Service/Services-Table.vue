@@ -18,28 +18,29 @@
     <template v-slot:body="{ items }">
       <tbody>
         <tr v-for="(item, index) in items" :key="index">
-          <!-- <td>{{ item.hub_service_number }}</td>
-            <td>
-              {{ item.full_name }}
-            </td> -->
           <td>{{ item.service_type }}</td>
           <td>{{ item.serviceable_type_name }}</td>
+          <td>{{ item.scheduled_date }}</td>
+          <td>{{ item.scheduled_time }}</td>
           <td>
             <div
               :class="{
-                'text-green': item.result_type === 'ACCEPTED',
-                'text-red': item.result_type !== 'ACCEPTED',
+                'text-green': item.status === 'COMPLETED',
+                'text-red': item.status !== 'COMPLETED',
               }"
             >
-              {{ item.result_type }}
+              {{ item.status }}
             </div>
           </td>
-          <td>{{ item.remarks }}</td>
           <td>
             <v-container class="ml-n6">
-              <v-row no-gutters >
+              <v-row no-gutters>
                 <v-col cols="auto">
-                  <v-icon class="mx-1" color="grey darken-1" dense
+                  <v-icon
+                    @click="viewRegistrantService(item.citizen_id, item.id)"
+                    class="mx-1"
+                    color="grey darken-1"
+                    dense
                     >mdi-eye</v-icon
                   >
                 </v-col>
@@ -49,7 +50,10 @@
                   >
                 </v-col>
                 <v-col cols="auto">
-                  <ReusableDeleteDialog :id="item.citizen_id" :hospitalHospitalId="item.id" />
+                  <ReusableDeleteDialog
+                    :id="item.citizen_id"
+                    :hospitalServiceId="item.id"
+                  />
                 </v-col>
               </v-row>
             </v-container>
@@ -62,8 +66,8 @@
 
 <script>
 //   import DeleteDialog from "./DeleteDialog.vue";
-//   import format from "date-fns/format";
-//   import parseISO from "date-fns/parseISO";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 export default {
   props: ["services"],
@@ -89,6 +93,12 @@ export default {
     //       this.$router.push(option.route);
     //     }
     //   },
+    viewRegistrantService(id, hospital_service_id) {
+      this.$router.push({
+        name: "hospital-services-information",
+        params: { id: id, hospital_service_id: hospital_service_id },
+      });
+    },
   },
   data: () => ({
     search: "",
@@ -117,12 +127,16 @@ export default {
           value: "serviceable_type_name",
         },
         {
-          text: "STATUS",
-          value: "result_type",
+          text: "SCHEDULED DATE",
+          value: "scheduled_date",
         },
         {
-          text: "REMARKS",
-          value: "remarks",
+          text: "SCHEDULED TIME",
+          value: "scheduled_time",
+        },
+        {
+          text: "STATUS",
+          value: "status",
         },
         {
           text: "ACTIONS",
@@ -134,14 +148,15 @@ export default {
   },
   watch: {
     services(value) {
-      console.log("watch: ", value);
+      console.log("watch", value);
       this.data = value.map((service) => ({
         id: service.id,
         citizen_id: service.citizen_id,
         service_type: service.service_type,
         serviceable_type_name: service.serviceable_type_name,
-        result_type: service.result_type,
-        remarks: service.remarks,
+        status: service.status,
+        scheduled_date: format(parseISO(service.scheduled_date), "MMMM dd, yyyy"),
+        scheduled_time: format(parseISO(`${service.scheduled_date}T${service.scheduled_time}`), "h:mm a"),
       }));
     },
   },
