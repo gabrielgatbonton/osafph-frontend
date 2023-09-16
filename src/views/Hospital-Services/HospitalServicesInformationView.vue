@@ -166,7 +166,12 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-skeleton-loader v-else class="ma-1" height="400"></v-skeleton-loader>
+    <v-skeleton-loader
+      v-else
+      type="list-item-avatar-three-line, image, article"
+      class="mx-5 my-10"
+      height="auto"
+    ></v-skeleton-loader>
   </div>
 </template>
 
@@ -174,7 +179,7 @@
 import { mapActions, mapGetters } from "vuex";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
-import HospitalServiceInformationContinutation from './HospitalServiceInformationContinuatation.vue';
+import HospitalServiceInformationContinutation from "./HospitalServiceInformationContinuatation.vue";
 export default {
   data: () => ({
     title: null,

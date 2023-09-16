@@ -146,9 +146,12 @@
                         :key="selectedImage"
                         max-height="400"
                         max-width="200"
-                        style="transform: scaleX(-1);"
+                        style="transform: scaleX(-1)"
                       ></v-img>
-                      <CameraComponent :image="registrant.citizen.citizen_file.image_url" v-on:picture-taken="handleImageUpload" />
+                      <CameraComponent
+                        :image="registrant.citizen.citizen_file.image_url"
+                        v-on:picture-taken="handleImageUpload"
+                      />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -168,7 +171,10 @@
                         max-height="150"
                         max-width="300"
                       ></v-img>
-                      <SignatureComponent :checkSignature="checkSignature" v-on:signature-taken="handleSignatureUpload"/>
+                      <SignatureComponent
+                        :checkSignature="checkSignature"
+                        v-on:signature-taken="handleSignatureUpload"
+                      />
                       <!-- <v-file-input
                         label="File input"
                         color="grey darken-1"
@@ -185,7 +191,8 @@
               <v-col cols="12" class="mt-n2">
                 <v-card>
                   <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-fingerprint</v-icon>Biometrics</v-card-title
+                    ><v-icon dark left>mdi-fingerprint</v-icon
+                    >Biometrics</v-card-title
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
@@ -220,8 +227,8 @@
                       </v-btn>
 
                       <!-- <FrontCardComponent :registrant="getRegistrant"/> -->
-                      <FrontCardJavaScript :registrant="getRegistrant"/>
-                      <BackCardJavaScript :registrant="getRegistrant"/>
+                      <FrontCardJavaScript :registrant="getRegistrant" />
+                      <BackCardJavaScript :registrant="getRegistrant" />
                       <!-- <v-btn dark block class="mb-2 blue darken-4"
                         ><v-icon left>mdi-credit-card-outline</v-icon
                         >Back</v-btn
@@ -235,7 +242,12 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-skeleton-loader v-else class="ma-1" height="400"></v-skeleton-loader>
+    <v-skeleton-loader
+      v-else
+      type="list-item-avatar-three-line, image, article"
+      class="mx-5 my-10"
+      height="auto"
+    ></v-skeleton-loader>
   </div>
 </template>
 
@@ -245,10 +257,10 @@ import VaccinationComponent from "@/components/Vaccination/VaccinationDetailsVie
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
 import CameraComponent from "@/components/Camera/CameraComponent.vue";
-import SignatureComponent from '@/components/Signature/SignatureComponent.vue';
+import SignatureComponent from "@/components/Signature/SignatureComponent.vue";
 // import FrontCardComponent from '@/components/Card/FrontCard.vue';
-import FrontCardJavaScript from '@/components/Card/FrontCardJavaScript.vue';
-import BackCardJavaScript from '@/components/Card/BackCardJavaScript.vue';
+import FrontCardJavaScript from "@/components/Card/FrontCardJavaScript.vue";
+import BackCardJavaScript from "@/components/Card/BackCardJavaScript.vue";
 export default {
   data: () => ({
     title: null,
@@ -274,7 +286,7 @@ export default {
     SignatureComponent,
     // FrontCardComponent,
     FrontCardJavaScript,
-    BackCardJavaScript
+    BackCardJavaScript,
   },
   methods: {
     handleImageUpload(file) {
