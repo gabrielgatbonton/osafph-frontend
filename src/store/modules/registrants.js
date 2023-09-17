@@ -1,7 +1,7 @@
 // store/modules/registrants.js
 import Vuex from "vuex";
 import Vue from "vue";
-import store from '../../store'
+import store from "../../store";
 // import axios from "axios";
 
 Vue.use(Vuex);
@@ -13,8 +13,6 @@ export const registrants = {
     registrant: null,
     vaccinationDetails: null,
     boosterDetails: null,
-    showAlert: false,
-    showError: null,
     publicData: null,
   }),
   mutations: {
@@ -50,7 +48,7 @@ export const registrants = {
           barangay: updateRegistrant.barangay,
           municipality: updateRegistrant.municipality,
           province: updateRegistrant.province,
-          region: updateRegistrant.region
+          region: updateRegistrant.region,
         };
       }
     },
@@ -65,7 +63,7 @@ export const registrants = {
         registrant.citizen.citizen_file = {
           image_url: files,
           e_signature: files,
-        }
+        };
       }
     },
     UPDATE_CARD_STATUS(state, { id, claim }) {
@@ -105,18 +103,6 @@ export const registrants = {
     SET_PUBLIC_DATA(state, publicData) {
       state.publicData = publicData;
     },
-    SET_SHOW_ALERT(state, { alert, message }) {
-      state.showAlert = {
-        alert: alert,
-        message: message,
-      };
-    },
-    SET_SHOW_ERROR(state, { alert, message }) {
-      state.showError = {
-        alert: alert,
-        message: message,
-      };
-    },
   },
   getters: {
     allRegistrants: (state) => state.registrants,
@@ -124,8 +110,6 @@ export const registrants = {
     getVaccineInformation: (state) => state.vaccinationDetails,
     getBoosterInformation: (state) => state.boosterDetails,
     getPublicData: (state) => state.publicData,
-    getShowAlert: (state) => state.showAlert,
-    getShowError: (state) => state.showError,
   },
   actions: {
     fetchRegistrants({ commit }) {
@@ -145,14 +129,16 @@ export const registrants = {
         .then((response) => {
           const registrant = response.data;
           commit("ADD_REGISTRANT", registrant);
-          commit("SET_SHOW_ALERT", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Saved Registrant",
           });
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
-          commit("SET_SHOW_ERROR", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", {
             alert: true,
             message: "Register",
           });
@@ -176,13 +162,15 @@ export const registrants = {
         .then((response) => {
           const updateRegistrant = response.data;
           commit("UPDATE_REGISTRANT", { id, updateRegistrant });
-          commit("SET_SHOW_ALERT", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Updated Registrant",
           });
         })
         .catch((error) => {
-          commit("SET_SHOW_ERROR", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", {
             alert: true,
             message: "Update",
           });
@@ -197,17 +185,19 @@ export const registrants = {
           commit("UPDATE_REGISTRANT_FILES", { id, files });
 
           //Store dispatch so that images will be updated
-          store.dispatch("card/fetchImage", id)
-          store.dispatch("card/fetchSignature", id)
-          
-          commit("SET_SHOW_ALERT", {
+          store.dispatch("card/fetchImage", id);
+          store.dispatch("card/fetchSignature", id);
+
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Updated Image",
           });
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
-          commit("SET_SHOW_ERROR", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", {
             alert: true,
             message: "Update",
           });
@@ -240,7 +230,10 @@ export const registrants = {
     updateVaccineInformation({ commit, dispatch }, { id, data }) {
       const promises = data.map(async (vaccineData, index) => {
         return this.$axios
-          .put(`/citizens/${id}/vaccines/${data[index].id}/addOrUpdate`, vaccineData)
+          .put(
+            `/citizens/${id}/vaccines/${data[index].id}/addOrUpdate`,
+            vaccineData
+          )
           .then((response) => {
             response.data;
           })
@@ -256,14 +249,16 @@ export const registrants = {
             id,
             updateVaccineInformation,
           });
-          commit("SET_SHOW_ALERT", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Updated Vaccine",
           });
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
-          commit("SET_SHOW_ERROR", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", {
             alert: true,
             message: "Update",
           });
@@ -285,7 +280,10 @@ export const registrants = {
     updateBoosterInformation({ commit, dispatch }, { id, data }) {
       const promises = data.map(async (boosterData, index) => {
         return this.$axios
-          .put(`/citizens/${id}/boosters/${data[index].id}/addOrUpdate`, boosterData)
+          .put(
+            `/citizens/${id}/boosters/${data[index].id}/addOrUpdate`,
+            boosterData
+          )
           .then((response) => {
             response.data;
           })
@@ -301,14 +299,16 @@ export const registrants = {
             id,
             updateBoosterInformation,
           });
-          commit("SET_SHOW_ALERT", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Updated Booster",
           });
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
-          commit("SET_SHOW_ERROR", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", {
             alert: true,
             message: "Update",
           });
@@ -321,14 +321,16 @@ export const registrants = {
         .then((response) => {
           const data = response.data;
           commit("DELETE_REGISTRANT", data);
-          commit("SET_SHOW_ALERT", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Deleted Registrant",
           });
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
-          commit("SET_SHOW_ERROR", {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", {
             alert: true,
             message: "Delete",
           });
@@ -337,14 +339,14 @@ export const registrants = {
     },
     fetchPublicCitizenRecord({ commit }, hub_registrant_id) {
       return this.$axios
-      .get(`/public-citizen/${hub_registrant_id}`)
-      .then((response) => {
-        const publicData = response.data;
-        commit("SET_PUBLIC_DATA", publicData);
-      })
-      .catch((error) => {
-        console.error("Error fetching registrant:", error);
-      });
-    }
+        .get(`/public-citizen/${hub_registrant_id}`)
+        .then((response) => {
+          const publicData = response.data;
+          commit("SET_PUBLIC_DATA", publicData);
+        })
+        .catch((error) => {
+          console.error("Error fetching registrant:", error);
+        });
+    },
   },
 };
