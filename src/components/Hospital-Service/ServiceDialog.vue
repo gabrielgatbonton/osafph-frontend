@@ -229,6 +229,7 @@ export default {
     },
     submitForm() {
       if (this.hospitalService) {
+        //Attached the other variables to payload for updating service.
         this.payload.status = this.status;
         this.payload.time_released = this.time_released;
         this.payload.date_released = this.date_released;

@@ -117,15 +117,6 @@ export default {
     resetActivator(data) {
       this.activatorValue = data;
     },
-    //   executeAction(option) {
-    //     if (option.action) {
-    //       // Execute the action
-    //       option.action();
-    //     } else if (option.route) {
-    //       // Navigate to the route
-    //       this.$router.push(option.route);
-    //     }
-    //   },
     viewRegistrantService(id, hospital_service_id) {
       this.$router.push({
         name: "hospital-services-information",
@@ -133,22 +124,21 @@ export default {
       });
     },
     submitForm(payload, citizen_id, hospital_service_id) {
-      console.log("payload: ", payload);
-      console.log("citizen: ", citizen_id);
-      console.log("hospital: ", hospital_service_id);
-
       let data = {};
       if (payload.service_type === "CONSULTATION") {
         data = {
           service_type: payload.service_type,
           specialty: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: format(
+          scheduled_time: payload.scheduled_time ? format(
             parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
             "H:mm"
-          ),
+          ) : null,
           date_released: payload.date_released,
-          time_released: payload.time_released,
+          time_released: payload.time_released ? format(
+            parseISO(`${payload.date_released}T${payload.time_released}`),
+            "H:mm"
+          ) : null,
           status: payload.status,
           remarks: payload.remarks,
           doctor_id: 1,
@@ -158,12 +148,15 @@ export default {
           service_type: payload.service_type,
           diagnostic_type: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: format(
+          scheduled_time: payload.scheduled_time ? format(
             parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
             "H:mm"
-          ),
+          ) : null,
           date_released: payload.date_released,
-          time_released: payload.time_released,
+          time_released: payload.time_released ? format(
+            parseISO(`${payload.date_released}T${payload.time_released}`),
+            "H:mm"
+          ) : null,
           status: payload.status,
           remarks: payload.remarks,
           doctor_id: 1,
@@ -173,12 +166,15 @@ export default {
           service_type: payload.service_type,
           laboratory_type: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: format(
+          scheduled_time: payload.scheduled_time ? format(
             parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
             "H:mm"
-          ),
+          ) : null,
           date_released: payload.date_released,
-          time_released: payload.time_released,
+          time_released: payload.time_released ? format(
+            parseISO(`${payload.date_released}T${payload.time_released}`),
+            "H:mm"
+          ) : null,
           status: payload.status,
           remarks: payload.remarks,
           doctor_id: 1,
