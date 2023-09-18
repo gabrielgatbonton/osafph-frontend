@@ -19,6 +19,9 @@ export const services = {
     ADD_HOSPITAL_SERVICE(state, service) {
       state.hospitalServices.push(service);
     },
+    UPDATE_HOSPITAL_SERVICE(state, service) {
+      state.hospitalService = service
+    },
     DELETE_HOSPITAL_SERVICE(state, target) {
       state.hospitalServices = state.hospitalServices.filter(
         (service) => service.id !== target.id
@@ -58,6 +61,17 @@ export const services = {
         })
         .catch((error) => {
           console.error("Error adding services: ", error);
+        });
+    },
+    updateHospitalService({ commit, dispatch }, { id, hospital_service_id, data }) {
+      return this.$axios
+        .put(`citizens/${id}/hospital-services/${hospital_service_id}`, data)
+        .then((response) => {
+          const updatedHospitalService = response.data;
+          commit("UPDATE_HOSPITAL_SERVICE", updatedHospitalService);
+          dispatch("fetchServicesById", id);
+        }).catch((error) => {
+          console.error("Error Updating Hospital Service: ", error);
         });
     },
     deleteHospitalService({ commit, dispatch }, { id, hospital_service_id }) {

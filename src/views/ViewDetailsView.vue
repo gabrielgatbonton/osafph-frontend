@@ -384,11 +384,8 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("registrants", [
-      "getRegistrant",
-      "getShowAlert",
-      "getShowError",
-    ]),
+    ...mapGetters("registrants", ["getRegistrant"]),
+    ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
     categories() {
       return [
         {

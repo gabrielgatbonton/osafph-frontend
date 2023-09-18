@@ -45,7 +45,11 @@
                   >
                 </v-col>
                 <v-col cols="auto">
-                  <v-icon class="mx-1" color="blue darken-4" dense
+                  <v-icon
+                    class="mx-1"
+                    color="blue darken-4"
+                    dense
+                    @click="activator(item.citizen_id, item.id)"
                     >mdi-pencil</v-icon
                   >
                 </v-col>
@@ -60,6 +64,13 @@
           </td>
         </tr>
       </tbody>
+      <ServiceDialog
+        :activator="activatorValue"
+        :hospitalService="getHospitalService"
+        v-on:dialogResponse="resetActivator"
+        v-on:updateService="submitForm"
+        :dialogStatus="dialog"
+      />
     </template>
   </v-data-table>
 </template>
@@ -69,12 +80,19 @@
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
+import ServiceDialog from "./ServiceDialog.vue";
+import { mapActions, mapGetters } from "vuex";
 export default {
   props: ["services"],
   components: {
     ReusableDeleteDialog,
+    ServiceDialog,
   },
   methods: {
+    ...mapActions("services", [
+      "fetchHospitalServiceById",
+      "updateHospitalService",
+    ]),
     filterOnlyCapsText(value, search) {
       return (
         value != null &&
@@ -83,7 +101,22 @@ export default {
         value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
     },
+    activator(citizen_id, hospital_service_id) {
+      this.activatorValue = !this.activatorValue;
 
+      return this.fetchHospitalServiceById({
+        id: citizen_id,
+        hospital_service_id: hospital_service_id,
+      }).catch((error) => {
+        console.error(
+          "Error fetching hospital service request in edit: ",
+          error
+        );
+      });
+    },
+    resetActivator(data) {
+      this.activatorValue = data;
+    },
     //   executeAction(option) {
     //     if (option.action) {
     //       // Execute the action
@@ -99,25 +132,82 @@ export default {
         params: { id: id, hospital_service_id: hospital_service_id },
       });
     },
+    submitForm(payload, citizen_id, hospital_service_id) {
+      console.log("payload: ", payload);
+      console.log("citizen: ", citizen_id);
+      console.log("hospital: ", hospital_service_id);
+
+      let data = {};
+      if (payload.service_type === "CONSULTATION") {
+        data = {
+          service_type: payload.service_type,
+          specialty: payload.serviceable_type,
+          scheduled_date: payload.scheduled_date,
+          scheduled_time: format(
+            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
+            "H:mm"
+          ),
+          date_released: payload.date_released,
+          time_released: payload.time_released,
+          status: payload.status,
+          remarks: payload.remarks,
+          doctor_id: 1,
+        };
+      } else if (payload.service_type === "DIAGNOSTIC") {
+        data = {
+          service_type: payload.service_type,
+          diagnostic_type: payload.serviceable_type,
+          scheduled_date: payload.scheduled_date,
+          scheduled_time: format(
+            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
+            "H:mm"
+          ),
+          date_released: payload.date_released,
+          time_released: payload.time_released,
+          status: payload.status,
+          remarks: payload.remarks,
+          doctor_id: 1,
+        };
+      } else if (payload.service_type === "LABORATORY") {
+        data = {
+          service_type: payload.service_type,
+          laboratory_type: payload.serviceable_type,
+          scheduled_date: payload.scheduled_date,
+          scheduled_time: format(
+            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
+            "H:mm"
+          ),
+          date_released: payload.date_released,
+          time_released: payload.time_released,
+          status: payload.status,
+          remarks: payload.remarks,
+          doctor_id: 1,
+        };
+      }
+      return this.updateHospitalService({
+        id: citizen_id,
+        hospital_service_id: hospital_service_id,
+        data: data,
+      })
+        .catch((error) => {
+          console.error("Error Updating in Services-Table: ", error);
+        })
+        .finally(() => {
+          this.dialog = false;
+        });
+    },
   },
   data: () => ({
     search: "",
     offset: true,
     data: [],
+    activatorValue: false,
+    dialog: null,
   }),
   computed: {
+    ...mapGetters("services", ["getHospitalService"]),
     headers() {
       return [
-        //   {
-        //     text: "REGISTRANTS NO.",
-        //     align: "start",
-        //     sortable: false,
-        //     value: "hub_service_number",
-        //   },
-        //   {
-        //     text: "FULL NAME",
-        //     value: "full_name",
-        //   },
         {
           text: "SERVICE TYPE",
           value: "service_type",
@@ -148,15 +238,20 @@ export default {
   },
   watch: {
     services(value) {
-      console.log("watch", value);
       this.data = value.map((service) => ({
         id: service.id,
         citizen_id: service.citizen_id,
         service_type: service.service_type,
         serviceable_type_name: service.serviceable_type_name,
         status: service.status,
-        scheduled_date: format(parseISO(service.scheduled_date), "MMMM dd, yyyy"),
-        scheduled_time: format(parseISO(`${service.scheduled_date}T${service.scheduled_time}`), "h:mm a"),
+        scheduled_date: format(
+          parseISO(service.scheduled_date),
+          "MMMM dd, yyyy"
+        ),
+        scheduled_time: format(
+          parseISO(`${service.scheduled_date}T${service.scheduled_time}`),
+          "h:mm a"
+        ),
       }));
     },
   },

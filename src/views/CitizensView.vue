@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
-    <SubmissionAlert :title="title" v-if="showAlert"/>
-    <ErrorAlert :title="title" v-if="showError"/>
+    <SubmissionAlert :title="title" v-if="showAlert" />
+    <ErrorAlert :title="title" v-if="showError" />
     <v-container fluid class="table-title ma-2">
       <v-row>
         <v-col cols="auto">
@@ -10,7 +10,9 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn dark class="mr-3 blue darken-4" @click="toRegister">Register</v-btn>
+          <v-btn dark class="mr-3 blue darken-4" @click="toRegister"
+            >Register</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
@@ -28,7 +30,7 @@
 <script>
 import DataTable from "@/components/Data-Table.vue";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
-import ErrorAlert from '@/components/ErrorAlert.vue'
+import ErrorAlert from "@/components/ErrorAlert.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "HomeView",
@@ -52,29 +54,30 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("registrants", ["allRegistrants", "getShowAlert", "getShowError"]),
+    ...mapGetters("registrants", ["allRegistrants"]),
+    ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
   },
   created() {
     this.fetchRegistrants(); // Fetch registrants' data when the component is created
   },
-  watch:{
-    getShowAlert(value){
-      console.log("alert", value)
+  watch: {
+    getShowAlert(value) {
+      console.log("alert", value);
       this.showAlert = value.alert;
       this.title = value.message;
       setTimeout(() => {
         this.showAlert = false;
-      }, 5000)
+      }, 5000);
     },
-    getShowError(value){
-      console.log("error", value)
+    getShowError(value) {
+      console.log("error", value);
       this.showError = value.alert;
       this.title = value.message;
       setTimeout(() => {
         this.showError = false;
-      }, 5000)
-    }
-  }
+      }, 5000);
+    },
+  },
 };
 </script>
 
