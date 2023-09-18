@@ -180,10 +180,6 @@ export default {
       type: Object,
       required: false,
     },
-    dialogStatus: {
-      type: Boolean,
-      required: false,
-    },
     hospitalService: {
       type: Object,
       required: false,
@@ -279,9 +275,7 @@ export default {
     activator(newValue) {
       this.dialog = newValue;
     },
-    dialogStatus(value) {
-      this.dialog = value;
-    },
+    //Reset for Adding
     reset(value) {
       this.payload = value;
     },
@@ -291,6 +285,7 @@ export default {
       }
     },
     hospitalService(value) {
+      console.log("Checking: ", value);
       if (value) {
         this.citizen_id = value.hospitalService.citizen_id;
         this.hospital_service_id = value.hospitalService.id;

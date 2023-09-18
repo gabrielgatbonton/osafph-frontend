@@ -65,11 +65,10 @@
         </tr>
       </tbody>
       <ServiceDialog
-        :activator="activatorValue"
+        :activator="dialog"
         :hospitalService="getHospitalService"
         v-on:dialogResponse="resetActivator"
         v-on:updateService="submitForm"
-        :dialogStatus="dialog"
       />
     </template>
   </v-data-table>
@@ -102,7 +101,7 @@ export default {
       );
     },
     activator(citizen_id, hospital_service_id) {
-      this.activatorValue = !this.activatorValue;
+      this.dialog = !this.dialog;
 
       return this.fetchHospitalServiceById({
         id: citizen_id,
@@ -115,7 +114,7 @@ export default {
       });
     },
     resetActivator(data) {
-      this.activatorValue = data;
+      this.dialog = data;
     },
     viewRegistrantService(id, hospital_service_id) {
       this.$router.push({
@@ -197,8 +196,7 @@ export default {
     search: "",
     offset: true,
     data: [],
-    activatorValue: false,
-    dialog: null,
+    dialog: false,
   }),
   computed: {
     ...mapGetters("services", ["getHospitalService"]),

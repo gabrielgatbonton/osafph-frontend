@@ -6,14 +6,14 @@
           :class="{
             warning: status.title === 'PENDING',
             error: status.title === 'UNATTENDED',
-            'blue darken-1': status.title === 'COMPLETED',
+            success: status.title === 'COMPLETED',
           }"
         >
           <v-row justify="center" class="ma-2 pb-2">
             <v-col align-self="center" cols="12">
               <div class="my-3">
                 <v-avatar color="white">
-                  <v-icon color="warning"> mdi-message-processing </v-icon>
+                  <v-icon :color="iconColor"> mdi-message-processing </v-icon>
                 </v-avatar>
               </div>
               <div class="my-3 text-h4 text-left white--text">
@@ -102,14 +102,21 @@ export default {
   props: ["data"],
   data: () => ({
     isLoading: false,
+    iconColor: null,
   }),
   methods: {
     checkStatus() {
       if (this.data.hospitalService.status === "PENDING") {
         this.isLoading = true;
-      } else {
+        this.iconColor = "warning";
+      } else if (this.data.hospitalService.status === "UNATTENDED") {
         this.isLoading = false;
+        this.iconColor = "error";
+      } else if (this.data.hospitalService.status === "COMPLETED") {
+        this.isLoading = false;
+        this.iconColor = "success";
       }
+      console.log(this.iconColor);
     },
   },
   computed: {
@@ -173,9 +180,12 @@ export default {
       console.log(value);
     },
   },
-  created() {
+  mounted() {
     this.checkStatus();
   },
+  updated() {
+    this.checkStatus();
+  }
 };
 </script>
 

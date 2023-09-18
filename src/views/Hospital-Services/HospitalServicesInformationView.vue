@@ -170,11 +170,10 @@
       height="auto"
     ></v-skeleton-loader>
     <ServiceDialog
-      :activator="activatorValue"
+      :activator="dialog"
       :hospitalService="getHospitalService"
       v-on:dialogResponse="resetActivator"
       v-on:updateService="submitForm"
-      :dialogStatus="dialog"
     />
   </div>
 </template>
@@ -196,7 +195,6 @@ export default {
     loading: false,
     showAlert: false,
     showError: false,
-    activatorValue: false,
     dialog: null,
   }),
   components: {
@@ -226,10 +224,23 @@ export default {
         });
     },
     activator() {
-      this.activatorValue = !this.activatorValue;
+      const citizen_id = this.$route.params.id;
+      const hospital_service_id = this.$route.params.hospital_service_id;
+      
+      this.dialog = !this.dialog;
+
+      return this.fetchHospitalServiceById({
+        id: citizen_id,
+        hospital_service_id: hospital_service_id,
+      }).catch((error) => {
+        console.error(
+          "Error fetching hospital service request in edit: ",
+          error
+        );
+      });
     },
     resetActivator(data) {
-      this.activatorValue = data;
+      this.dialog = data;
     },
     submitForm(payload, citizen_id, hospital_service_id) {
       let data = {};
