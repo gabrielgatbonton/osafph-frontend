@@ -225,7 +225,7 @@ export default {
             //Allow for the Lot numbers to be set to 40px
             context.font = "bold 40px Arial";
             context.fillText(this.lot_number_1, 2000, 320, 1700);
-            context.fillText(this.lot_number_1, 2000, 595, 1700);
+            context.fillText(this.lot_number_2, 2000, 595, 1700);
           }
 
           //Reset it back to 50px
