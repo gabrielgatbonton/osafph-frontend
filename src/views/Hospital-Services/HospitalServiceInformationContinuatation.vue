@@ -121,12 +121,21 @@ export default {
   },
   computed: {
     status() {
+      let status = null;
       let message = null;
       if (this.data.hospitalService.status === "PENDING") {
+        status = this.data.hospitalService.status;
         message = "Application is still pending...";
+      } else if (this.data.hospitalService.status === "UNATTENDED") {
+        status = this.data.hospitalService.status;
+        message = "Applicant was unable to attend...";
+      } else if (this.data.hospitalService.status === "COMPLETED") {
+        status = this.data.hospitalService.status;
+        message = "Service was successfully completed...";
       }
+
       return {
-        title: this.data.hospitalService.status,
+        title: status,
         message: message,
       };
     },
@@ -185,7 +194,7 @@ export default {
   },
   updated() {
     this.checkStatus();
-  }
+  },
 };
 </script>
 
