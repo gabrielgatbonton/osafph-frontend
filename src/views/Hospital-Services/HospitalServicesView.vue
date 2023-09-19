@@ -14,9 +14,8 @@
           <ServiceDialog
             v-on:dialogResponse="resetActivator"
             v-on:submitForm="submitForm"
-            :activator="activatorValue"
+            :activator="dialog"
             :reset="payload"
-            :dialogStatus="dialog"
           />
         </v-col>
       </v-row>
@@ -30,90 +29,18 @@
 import { mapActions, mapGetters } from "vuex";
 import ServicesTable from "@/components/Hospital-Service/Services-Table.vue";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
+import addServiceMixin from "@/mixins/Hospital-Service/AddService";
 export default {
-  data: () => ({
-    activatorValue: false,
-    payload: null,
-    dialog: null,
-  }),
+  mixins: [addServiceMixin],
   components: {
     ServicesTable,
     ServiceDialog,
   },
   methods: {
-    ...mapActions("services", ["fetchServicesById", "addHospitalService"]),
+    ...mapActions("services", ["fetchServicesById"]),
     requestServices() {
       const id = this.$route.params.id;
       this.fetchServicesById(id);
-    },
-    activator() {
-      this.activatorValue = !this.activatorValue;
-    },
-    resetActivator(data) {
-      this.activatorValue = data;
-    },
-    submitForm(payload) {
-      const id = this.$route.params.id;
-      let data = {};
-      if (payload.service_type === "CONSULTATION") {
-        data = {
-          service_type: payload.service_type,
-          specialty: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time,
-          date_released: null,
-          time_released: null,
-          status: "PENDING",
-          remarks: payload.remarks,
-          doctor_id: 1
-        };
-      } else if (payload.service_type === "DIAGNOSTIC") {
-        data = {
-          service_type: payload.service_type,
-          diagnostic_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time,
-          date_released: null,
-          time_released: null,
-          status: "PENDING",
-          remarks: payload.remarks,
-          doctor_id: 1
-        };
-      } else if (payload.service_type === "LABORATORY") {
-        data = {
-          service_type: payload.service_type,
-          laboratory_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time,
-          date_released: null,
-          time_released: null,
-          status: "PENDING",
-          remarks: payload.remarks,
-          doctor_id: 1
-        };
-      }
-
-      return this.addHospitalService({
-        id: id,
-        data: data,
-      })
-        .then(() => {
-          const payload = {
-            service_type: null,
-            serviceable_type: null,
-            scheduled_date: null,
-            scheduled_time: null,
-            remarks: null,
-          };
-          this.payload = payload;
-        })
-        .catch((error) => {
-          console.error(
-            "Error in Adding Service in AddServiceDialog Component",
-            error
-          );
-        })
-        .finally(() => (this.dialog = false));
     },
   },
   computed: {

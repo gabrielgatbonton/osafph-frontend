@@ -180,13 +180,13 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
 import HospitalServiceInformationContinutation from "./HospitalServiceInformationContinuatation.vue";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
+import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
 export default {
+  mixins: [EditServiceMixin],
   data: () => ({
     title: null,
     routeID: null,
@@ -195,7 +195,6 @@ export default {
     loading: false,
     showAlert: false,
     showError: false,
-    dialog: null,
   }),
   components: {
     SubmissionAlert,
@@ -205,7 +204,6 @@ export default {
   },
   methods: {
     ...mapActions("registrants", ["fetchRegistrantId"]),
-    ...mapActions("services", ["fetchHospitalServiceById", "updateHospitalService"]),
     fetchRegistrant() {
       const id = this.$route.params.id;
       const hospital_service_id = this.$route.params.hospital_service_id;
@@ -238,78 +236,6 @@ export default {
           error
         );
       });
-    },
-    resetActivator(data) {
-      this.dialog = data;
-    },
-    submitForm(payload, citizen_id, hospital_service_id) {
-      let data = {};
-      if (payload.service_type === "CONSULTATION") {
-        data = {
-          service_type: payload.service_type,
-          specialty: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time ? format(
-            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-            "H:mm"
-          ) : null,
-          date_released: payload.date_released,
-          time_released: payload.time_released ? format(
-            parseISO(`${payload.date_released}T${payload.time_released}`),
-            "H:mm"
-          ) : null,
-          status: payload.status,
-          remarks: payload.remarks,
-          doctor_id: 1,
-        };
-      } else if (payload.service_type === "DIAGNOSTIC") {
-        data = {
-          service_type: payload.service_type,
-          diagnostic_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time ? format(
-            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-            "H:mm"
-          ) : null,
-          date_released: payload.date_released,
-          time_released: payload.time_released ? format(
-            parseISO(`${payload.date_released}T${payload.time_released}`),
-            "H:mm"
-          ) : null,
-          status: payload.status,
-          remarks: payload.remarks,
-          doctor_id: 1,
-        };
-      } else if (payload.service_type === "LABORATORY") {
-        data = {
-          service_type: payload.service_type,
-          laboratory_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time ? format(
-            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-            "H:mm"
-          ) : null,
-          date_released: payload.date_released,
-          time_released: payload.time_released ? format(
-            parseISO(`${payload.date_released}T${payload.time_released}`),
-            "H:mm"
-          ) : null,
-          status: payload.status,
-          remarks: payload.remarks,
-          doctor_id: 1,
-        };
-      }
-      return this.updateHospitalService({
-        id: citizen_id,
-        hospital_service_id: hospital_service_id,
-        data: data,
-      })
-        .catch((error) => {
-          console.error("Error Updating in Services-Table: ", error);
-        })
-        .finally(() => {
-          this.dialog = false;
-        });
     },
   },
   created() {
@@ -344,7 +270,6 @@ export default {
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
     ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
-    ...mapGetters("services", ["getHospitalService"]),
     categories() {
       return [
         {

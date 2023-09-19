@@ -80,18 +80,15 @@ import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import ServiceDialog from "./ServiceDialog.vue";
-import { mapActions, mapGetters } from "vuex";
+import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
 export default {
+  mixins: [EditServiceMixin],
   props: ["services"],
   components: {
     ReusableDeleteDialog,
     ServiceDialog,
   },
   methods: {
-    ...mapActions("services", [
-      "fetchHospitalServiceById",
-      "updateHospitalService",
-    ]),
     filterOnlyCapsText(value, search) {
       return (
         value != null &&
@@ -100,106 +97,19 @@ export default {
         value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
     },
-    activator(citizen_id, hospital_service_id) {
-      this.dialog = !this.dialog;
-
-      return this.fetchHospitalServiceById({
-        id: citizen_id,
-        hospital_service_id: hospital_service_id,
-      }).catch((error) => {
-        console.error(
-          "Error fetching hospital service request in edit: ",
-          error
-        );
-      });
-    },
-    resetActivator(data) {
-      this.dialog = data;
-    },
     viewRegistrantService(id, hospital_service_id) {
       this.$router.push({
         name: "hospital-services-information",
         params: { id: id, hospital_service_id: hospital_service_id },
       });
     },
-    submitForm(payload, citizen_id, hospital_service_id) {
-      let data = {};
-      if (payload.service_type === "CONSULTATION") {
-        data = {
-          service_type: payload.service_type,
-          specialty: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time ? format(
-            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-            "H:mm"
-          ) : null,
-          date_released: payload.date_released,
-          time_released: payload.time_released ? format(
-            parseISO(`${payload.date_released}T${payload.time_released}`),
-            "H:mm"
-          ) : null,
-          status: payload.status,
-          remarks: payload.remarks,
-          doctor_id: 1,
-        };
-      } else if (payload.service_type === "DIAGNOSTIC") {
-        data = {
-          service_type: payload.service_type,
-          diagnostic_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time ? format(
-            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-            "H:mm"
-          ) : null,
-          date_released: payload.date_released,
-          time_released: payload.time_released ? format(
-            parseISO(`${payload.date_released}T${payload.time_released}`),
-            "H:mm"
-          ) : null,
-          status: payload.status,
-          remarks: payload.remarks,
-          doctor_id: 1,
-        };
-      } else if (payload.service_type === "LABORATORY") {
-        data = {
-          service_type: payload.service_type,
-          laboratory_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time ? format(
-            parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-            "H:mm"
-          ) : null,
-          date_released: payload.date_released,
-          time_released: payload.time_released ? format(
-            parseISO(`${payload.date_released}T${payload.time_released}`),
-            "H:mm"
-          ) : null,
-          status: payload.status,
-          remarks: payload.remarks,
-          doctor_id: 1,
-        };
-      }
-      return this.updateHospitalService({
-        id: citizen_id,
-        hospital_service_id: hospital_service_id,
-        data: data,
-      })
-        .catch((error) => {
-          console.error("Error Updating in Services-Table: ", error);
-        })
-        .finally(() => {
-          this.dialog = false;
-        });
-    },
   },
   data: () => ({
     search: "",
     offset: true,
     data: [],
-    dialog: false,
   }),
   computed: {
-    ...mapGetters("services", ["getHospitalService"]),
     headers() {
       return [
         {
