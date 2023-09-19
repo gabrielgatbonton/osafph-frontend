@@ -9,7 +9,7 @@
             <PersonalDetails :data="data" />
           </v-tab-item>
           <v-tab-item>
-            <BoosterHistory />
+            <RegistrantServices :data="data"/>
           </v-tab-item>
         </v-tabs>
       </v-col>
@@ -19,12 +19,12 @@
 
 <script>
 import PersonalDetails from "./PersonalDetails.vue";
-import BoosterHistory from "./RegistrantServices.vue";
+import RegistrantServices from "./RegistrantServices.vue";
 export default {
   props: ["data"],
   components: {
     PersonalDetails,
-    BoosterHistory,
+    RegistrantServices,
   },
   watch:{
     // booster(value){
