@@ -11,65 +11,35 @@
                     <v-row dense class="ma-2">
                       <v-col cols="auto">
                         <v-avatar
-                          :color="
-                            data.citizen.booster_stat[0] ? 'green' : 'red'
+                          color="
+                            white
                           "
                         >
-                          <v-icon dark> mdi-needle </v-icon>
+                          <v-icon color="blue darken-1">
+                            mdi-medical-bag
+                          </v-icon>
                         </v-avatar>
                       </v-col>
                       <v-col cols="auto" class="pt-2">
                         <div class="text-subtitle-2 font-weight-bold">
-                          BOOSTER HISTORY
+                          REGISTRANT'S HOSPITAL SERVICES
                         </div>
                         <div class="text-caption grey--text">
-                          Citizen booster history
+                          Services Availed
                         </div>
                       </v-col>
                     </v-row>
                     <v-row dense class="ma-2">
-                      <v-col cols="12" class="pb-0">
-                        <v-card rounded="lg" flat outlined>
-                          <div
-                            class="text-subtitle-2 font-weight-bold ma-1"
-                            :class="
-                              data.citizen.booster_stat[0]
-                                ? 'green--text'
-                                : 'red--text'
-                            "
-                          >
-                            <v-icon
-                              class="ma-1"
-                              small
-                              :color="
-                                data.citizen.booster_stat[0] ? 'green' : 'red'
-                              "
-                              >{{
-                                data.citizen.booster_stat[0]
-                                  ? "mdi-check-all"
-                                  : "mdi-close"
-                              }}</v-icon
-                            >{{
-                              data.citizen.booster_stat[0]
-                                ? "Booster History"
-                                : "No Boosters"
-                            }}
-                          </div>
-                        </v-card>
-                      </v-col>
-                      <div
-                        v-if="data.citizen.booster_stat[0]"
-                        class="custom-divider"
-                      ></div>
                       <v-col
                         cols="12"
                         class="py-0"
-                        v-if="data.citizen.booster_stat[0]"
+                        v-for="(service, index) in services"
+                        :key="index"
                       >
-                        <v-expansion-panels popout>
+                        <v-expansion-panels popout class="my-1">
                           <v-expansion-panel>
                             <v-expansion-panel-header>
-                              <v-container class="py-2">
+                              <v-container class="py-1">
                                 <v-row>
                                   <v-col cols="auto" class="px-0 py-1">
                                     <v-avatar size="38" color="green">
@@ -80,106 +50,38 @@
                                     <div
                                       class="text-subtitle-2 font-weight-bold"
                                     >
-                                      3RD DOSE
+                                      {{ service.service_type }}
                                     </div>
                                     <div class="text-subtitle-2">
-                                      {{
-                                        formattedBoosterDate_1
-                                      }}
+                                      {{ service.scheduled_date }}
                                     </div>
                                   </v-col>
                                 </v-row>
                               </v-container>
                             </v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <div class="my-1 mx-5">
-                                <div
-                                  v-for="(vaccine, index) in vaccinesdata_3"
+                              <v-row>
+                                <v-col
+                                  cols="6"
+                                  md="6"
+                                  sm="6"
+                                  v-for="(detail, index) in service.details"
                                   :key="index"
                                 >
-                                  <div class="text-caption grey--text">
-                                    {{ vaccine.title }}
+                                  <div class="ma-2">
+                                    <div class="text-subtitle-2 grey--text">
+                                      {{ detail.title }}
+                                    </div>
+                                    <div class="text-h5">
+                                      {{ detail.content }}
+                                    </div>
                                   </div>
-                                  <div class="text-subtitle-2 font-weight-bold">
-                                    {{ vaccine.content }}
-                                  </div>
-                                  <div
-                                    v-if="vaccine.serial"
-                                    class="text-caption font-weight-bold"
-                                  >
-                                    {{ vaccine.serial }}
-                                  </div>
-                                  <v-divider
-                                    v-if="index < vaccinesdata_3.length - 1"
-                                    class="my-3"
-                                  ></v-divider>
-                                </div>
-                              </div>
+                                </v-col>
+                              </v-row>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
                         </v-expansion-panels>
-                      </v-col>
-                      <div
-                        v-if="data.citizen.booster_stat[1]"
-                        class="custom-divider"
-                      ></div>
-                      <v-col
-                        v-if="data.citizen.booster_stat[1]"
-                        cols="12"
-                        class="pt-0"
-                      >
-                        <v-expansion-panels popout>
-                          <v-expansion-panel>
-                            <v-expansion-panel-header>
-                              <v-container class="py-2">
-                                <v-row>
-                                  <v-col cols="auto" class="px-0 py-1">
-                                    <v-avatar size="38" color="green">
-                                      <v-icon small dark> mdi-check </v-icon>
-                                    </v-avatar>
-                                  </v-col>
-                                  <v-col cols="auto" class="py-0">
-                                    <div
-                                      class="text-subtitle-2 font-weight-bold"
-                                    >
-                                      4TH DOSE
-                                    </div>
-                                    <div class="text-subtitle-2">
-                                      {{
-                                        formattedBoosterDate_2
-                                      }}
-                                    </div>
-                                  </v-col>
-                                </v-row>
-                              </v-container>
-                            </v-expansion-panel-header>
-                            <v-expansion-panel-content>
-                              <div class="my-1 mx-5">
-                                <div
-                                  v-for="(vaccine, index) in vaccinesdata_4"
-                                  :key="index"
-                                >
-                                  <div class="text-caption grey--text">
-                                    {{ vaccine.title }}
-                                  </div>
-                                  <div class="text-subtitle-2 font-weight-bold">
-                                    {{ vaccine.content }}
-                                  </div>
-                                  <div
-                                    v-if="vaccine.serial"
-                                    class="text-caption font-weight-bold"
-                                  >
-                                    {{ vaccine.serial }}
-                                  </div>
-                                  <v-divider
-                                    v-if="index < vaccinesdata_4.length - 1"
-                                    class="my-3"
-                                  ></v-divider>
-                                </div>
-                              </div>
-                            </v-expansion-panel-content>
-                          </v-expansion-panel>
-                        </v-expansion-panels>
+
                       </v-col>
                     </v-row>
                   </v-container>
@@ -200,63 +102,61 @@ export default {
   props: ["data"],
   data: () => ({}),
   computed: {
-    vaccinesdata_3() {
-      return [
-        {
-          title: "Vaccine Name / Manufacturer / Lot Number",
-          content: this.data.citizen.booster_stat[0].booster_name,
-          serial: this.data.citizen.booster_stat[0].lot_no,
-        },
-        {
-          title: "Healthcare Professional",
-          content:
-            this.data.citizen.booster_stat[0].healthcare_professional.toUpperCase(),
-          serial:
-            this.data.citizen.booster_stat[0]
-              .healthcare_professional_license_number,
-        },
-        {
-          title: "Vaccination Site",
-          content: this.data.citizen.booster_stat[0].site_name.toUpperCase(),
-        },
-      ];
+    services() {
+      if (!this.data || !Array.isArray(this.data)) {
+        return []; // Return an empty array if data is not available or not an array
+      }
+
+      return this.data.map((item) => ({
+        service_type: item.service_type,
+        scheduled_date: format(parseISO(item.scheduled_date), "MMMM dd, yyyy").toUpperCase(),
+        details: [
+          {
+            title: "Service ID",
+            content: item.id,
+          },
+          {
+            title: "Doctor in charge",
+            content: "Doctor Aaron", // You can replace this with actual data
+          },
+          {
+            title: "Service Availed",
+            content: item.service_type,
+          },
+          {
+            title: "Serviceable Availed",
+            content: item.serviceable_type_name,
+          },
+        ],
+      }));
     },
-    vaccinesdata_4() {
-      return [
-        {
-          title: "Vaccine Name / Manufacturer / Lot Number",
-          content: this.data.citizen.booster_stat[1].booster_name,
-          serial: this.data.citizen.booster_stat[1].lot_no,
-        },
-        {
-          title: "Healthcare Professional",
-          content:
-            this.data.citizen.booster_stat[1].healthcare_professional.toUpperCase(),
-          serial:
-            this.data.citizen.booster_stat[1]
-              .healthcare_professional_license_number,
-        },
-        {
-          title: "Vaccination Site",
-          content: this.data.citizen.booster_stat[1].site_name.toUpperCase(),
-        },
-      ];
-    },
-    formattedBoosterDate_1() {
-      return format(
-        parseISO(this.data.citizen.booster_stat[0].booster_date),
-        "MMMM dd, yyyy"
-      ).toUpperCase();
-    },
-    formattedBoosterDate_2() {
-      return format(
-        parseISO(this.data.citizen.booster_stat[1].booster_date),
-        "MMMM dd, yyyy"
-      ).toUpperCase();
-    },
+    // services_content() {
+    //   if (!this.data || !Array.isArray(this.data)) {
+    //     return []; // Return an empty array if data is not available or not an array
+    //   }
+
+    //   return this.data.map((item) => [
+    //     {
+    //       title: "Service ID",
+    //       content: item.id,
+    //     },
+    //     {
+    //       title: "Doctor in charge",
+    //       content: "Doctor Aaron",
+    //     },
+    //     {
+    //       title: "Service Availed",
+    //       content: item.service_type,
+    //     },
+    //     {
+    //       title: "Serviceable Availed",
+    //       content: item.serviceable_type_name,
+    //     },
+    //   ]);
+    // },
   },
   mounted() {
-    console.log("Booster Component: ", this.data);
+    console.log("Registrant Services: ", this.data);
   },
 };
 </script>

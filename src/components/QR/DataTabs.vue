@@ -4,12 +4,12 @@
       <v-col cols="12">
         <v-tabs centered>
           <v-tab>Personal Details</v-tab>
-          <v-tab>Booster History</v-tab>
+          <v-tab>Services Availed</v-tab>
           <v-tab-item>
             <PersonalDetails :data="data" />
           </v-tab-item>
           <v-tab-item>
-            <RegistrantServices :data="data"/>
+            <RegistrantServices :data="services"/>
           </v-tab-item>
         </v-tabs>
       </v-col>
@@ -21,7 +21,7 @@
 import PersonalDetails from "./PersonalDetails.vue";
 import RegistrantServices from "./RegistrantServices.vue";
 export default {
-  props: ["data"],
+  props: ["data", "services"],
   components: {
     PersonalDetails,
     RegistrantServices,

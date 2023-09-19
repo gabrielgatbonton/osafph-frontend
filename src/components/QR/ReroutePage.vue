@@ -30,7 +30,7 @@
       </v-row>
       <v-row dense>
         <v-col cols="12">
-          <DataTabs :data="getPublicData" />
+          <DataTabs :data="getPublicData" :services="getPublicHospitalServices"/>
         </v-col>
       </v-row>
     </v-container>
@@ -53,6 +53,7 @@ export default {
       "fetchPublicCitizenRecord",
     ]),
     ...mapActions("card", ["fetchPublicImage", "fetchPublicSignature"]),
+    ...mapActions("services", ["fetchPublicServicesById"]),
     fetchData() {
       const id = this.$route.params.hub_registrant_id;
       this.fetchPublicCitizenRecord(id).catch((error) => {
@@ -73,6 +74,7 @@ export default {
       "getPublicData",
     ]),
     ...mapGetters("card", ["getPublicImage", "getPublicSignature"]),
+    ...mapGetters("services", ["getPublicHospitalServices"])
   },
   created() {
     this.fetchData();
@@ -83,6 +85,7 @@ export default {
       if (value.citizen.hub_registrant_id) {
         this.fetchPublicImage(value.citizen.id);
         this.fetchPublicSignature(value.citizen.id);
+        this.fetchPublicServicesById(value.citizen.id);
       }
     },
     // getRegistrant(value) {
