@@ -62,11 +62,30 @@
                             <v-expansion-panel-content>
                               <v-row>
                                 <v-col
-                                  cols="6"
+                                  cols="12"
                                   md="6"
                                   sm="6"
                                   v-for="(detail, index) in service.details"
-                                  :key="index"
+                                  :key="'detail-' + index"
+                                >
+                                  <div class="ma-2">
+                                    <div class="text-subtitle-2 grey--text">
+                                      {{ detail.title }}
+                                    </div>
+                                    <div class="text-h5">
+                                      {{ detail.content }}
+                                    </div>
+                                  </div>
+                                </v-col>
+                                <v-col cols="12">
+                                  <v-divider class="mx-3"></v-divider>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  md="6"
+                                  sm="6"
+                                  v-for="(detail, index) in service.dates"
+                                  :key="'date-' + index"
                                 >
                                   <div class="ma-2">
                                     <div class="text-subtitle-2 grey--text">
@@ -116,8 +135,8 @@ export default {
             content: item.id,
           },
           {
-            title: "Doctor in charge",
-            content: "Doctor Aaron", // You can replace this with actual data
+            title: "Status",
+            content: item.status,
           },
           {
             title: "Service Availed",
@@ -128,6 +147,24 @@ export default {
             content: item.serviceable_type_name,
           },
         ],
+        dates: [
+        {
+            title: "Scheduled Date",
+            content: format(parseISO(item.scheduled_date), "MMMM dd, yyyy").toUpperCase(),
+          },
+          {
+            title: "Scheduled Time",
+            content: format(parseISO(`${item.scheduled_date}T${item.scheduled_time}`), "h:mm a"),
+          },
+          {
+            title: "Doctor in Charge",
+            content: `${item.doctor_last_name}, ${item.doctor_first_name}`,
+          },
+          {
+            title: "Doctor Specialty",
+            content: item.doctor_specialty,
+          },
+        ]
       }));
     },
     // services_content() {
