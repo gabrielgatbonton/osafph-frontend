@@ -41,10 +41,10 @@
                             <v-expansion-panel-header>
                               <v-container class="py-1">
                                 <v-row>
-                                  <v-col cols="auto" class="px-0 py-1">
-                                    <v-avatar size="38" color="green">
-                                      <v-icon small dark> mdi-check </v-icon>
-                                    </v-avatar>
+                                  <v-col cols="auto" class="px-0">
+                                      <v-icon :color="serviceStatusColor(service.status)">
+                                        {{ serviceStatus(service.status) }}
+                                      </v-icon>
                                   </v-col>
                                   <v-col cols="auto" class="py-0">
                                     <div
@@ -100,7 +100,6 @@
                             </v-expansion-panel-content>
                           </v-expansion-panel>
                         </v-expansion-panels>
-
                       </v-col>
                     </v-row>
                   </v-container>
@@ -128,7 +127,11 @@ export default {
 
       return this.data.map((item) => ({
         service_type: item.service_type,
-        scheduled_date: format(parseISO(item.scheduled_date), "MMMM dd, yyyy").toUpperCase(),
+        scheduled_date: format(
+          parseISO(item.scheduled_date),
+          "MMMM dd, yyyy"
+        ).toUpperCase(),
+        status: item.status,
         details: [
           {
             title: "Service ID",
@@ -148,13 +151,19 @@ export default {
           },
         ],
         dates: [
-        {
+          {
             title: "Scheduled Date",
-            content: format(parseISO(item.scheduled_date), "MMMM dd, yyyy").toUpperCase(),
+            content: format(
+              parseISO(item.scheduled_date),
+              "MMMM dd, yyyy"
+            ).toUpperCase(),
           },
           {
             title: "Scheduled Time",
-            content: format(parseISO(`${item.scheduled_date}T${item.scheduled_time}`), "h:mm a"),
+            content: format(
+              parseISO(`${item.scheduled_date}T${item.scheduled_time}`),
+              "h:mm a"
+            ),
           },
           {
             title: "Doctor in Charge",
@@ -164,33 +173,29 @@ export default {
             title: "Doctor Specialty",
             content: item.doctor_specialty,
           },
-        ]
+        ],
       }));
     },
-    // services_content() {
-    //   if (!this.data || !Array.isArray(this.data)) {
-    //     return []; // Return an empty array if data is not available or not an array
-    //   }
-
-    //   return this.data.map((item) => [
-    //     {
-    //       title: "Service ID",
-    //       content: item.id,
-    //     },
-    //     {
-    //       title: "Doctor in charge",
-    //       content: "Doctor Aaron",
-    //     },
-    //     {
-    //       title: "Service Availed",
-    //       content: item.service_type,
-    //     },
-    //     {
-    //       title: "Serviceable Availed",
-    //       content: item.serviceable_type_name,
-    //     },
-    //   ]);
-    // },
+  },
+  methods: {
+    serviceStatus(service) {
+      return service === "COMPLETED"
+        ? "mdi-check"
+        : service === "UNATTENDED"
+        ? "mdi-alert-circle-outline"
+        : service === "PENDING"
+        ? "mdi-clock-outline"
+        : "";
+    },
+    serviceStatusColor(service) {
+      return service === "COMPLETED"
+        ? "success"
+        : service === "UNATTENDED"
+        ? "error"
+        : service === "PENDING"
+        ? "warning"
+        : "";
+    },
   },
   mounted() {
     console.log("Registrant Services: ", this.data);
