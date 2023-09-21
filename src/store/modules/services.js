@@ -13,8 +13,23 @@ export const services = {
   }),
   mutations: {
     SET_HOSPITAL_SERVICES(state, services) {
-      console.log("SET HOSPITAL SERVICES", services);
-      state.hospitalServices = services;
+      const pendingServices = services.filter((service) => {
+        return (service.status.includes("PENDING"));
+      })
+      state.hospitalServices = pendingServices;
+    },
+    SET_ARCHIVED_HOSPITAL_SERVICES(state, services) {
+      // Use filter to keep only services with 'PENDING' or 'UNATTENDED' status
+      const archivedServices = services.filter((service) => {
+        return (
+          service.status.includes("COMPLETED") ||
+          service.status.includes("UNATTENDED")
+        );
+      });
+
+      // Replace the contents of the archivedServices state variable
+      state.archivedServices = archivedServices;
+      console.log(state.archivedServices);
     },
     SET_HOSPITAL_SERVICE(state, service) {
       state.hospitalService = service;
@@ -41,6 +56,7 @@ export const services = {
         .then((response) => {
           const services = response.data.hospitalServices;
           commit("SET_HOSPITAL_SERVICES", services);
+          commit("SET_ARCHIVED_HOSPITAL_SERVICES", services);
         })
         .catch((error) => {
           console.error("Error requesting services: ", error);
@@ -102,7 +118,8 @@ export const services = {
         .then((response) => {
           const publicServices = response.data.hospitalServices;
           commit("SET_PUBLIC_HOSPITAL_SERVICES", publicServices);
-        }).catch((error) => {
+        })
+        .catch((error) => {
           console.error("Error requesting public services: ", error);
         });
     },

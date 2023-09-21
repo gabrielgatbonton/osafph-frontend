@@ -1,5 +1,5 @@
 import HospitalServicesView from "@/views/Hospital-Services/HospitalServicesView.vue";
-import HospitalServicesInformationsView from "@/views/Hospital-Services/HospitalServicesInformationView.vue";
+import HospitalServicesInformationsView from "@/views/Hospital-Services/HospitalServiceInformationView.vue";
 import { checkLoggedIn } from "./auth-guard";
 export default [
   {
