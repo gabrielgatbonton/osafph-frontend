@@ -25,7 +25,7 @@ export default {
           time_released: null,
           status: "PENDING",
           remarks: payload.remarks,
-          doctor_id: 1,
+          doctor_id: payload.doctor,
         };
       } else if (payload.service_type === "DIAGNOSTIC") {
         data = {
@@ -37,7 +37,7 @@ export default {
           time_released: null,
           status: "PENDING",
           remarks: payload.remarks,
-          doctor_id: 1,
+          doctor_id: payload.doctor,
         };
       } else if (payload.service_type === "LABORATORY") {
         data = {
@@ -49,7 +49,7 @@ export default {
           time_released: null,
           status: "PENDING",
           remarks: payload.remarks,
-          doctor_id: 1,
+          doctor_id: payload.doctor,
         };
       }
 

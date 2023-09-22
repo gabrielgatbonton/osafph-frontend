@@ -1,11 +1,6 @@
 <template>
   <div>
     <v-dialog v-model="dialog" max-width="600">
-      <!-- <template v-slot:activator="{ on, attrs }">
-        <v-btn class="mr-3" color="blue darken-4" dark v-bind="attrs" v-on="on">
-          Add Service
-        </v-btn>
-      </template> -->
       <v-card>
         <v-card-title class="blue darken-1 pb-4 white--text"
           ><v-icon dark left>mdi-medical-bag</v-icon>Add Medical
@@ -23,18 +18,23 @@
             </v-col>
             <v-col cols="12">
               <v-autocomplete
-                v-model="payload.serviceable_type"
+                v-model="selects.serviceable_type"
                 label="Serviceable Type"
-                :items="services_types.selected"
+                :items="services_choices"
+                item-text="name"
+                item-value="id"
+                @change="(value) => filterDoctor(value)"
               ></v-autocomplete>
             </v-col>
-            <!-- <v-col cols="12">
+            <v-col cols="12">
               <v-autocomplete
-                v-model="doctor"
+                v-model="payload.doctor"
                 label="Doctor in Charge"
-                :items="doctor"
+                :items="doctor_choices"
+                item-text="full_name"
+                item-value="doctor_id"
               ></v-autocomplete>
-            </v-col> -->
+            </v-col>
             <v-col cols="6">
               <v-menu
                 max-width="290"
@@ -170,6 +170,7 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
+import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
     activator: {
@@ -197,30 +198,43 @@ export default {
       scheduled_date: null,
       scheduled_time: null,
       remarks: null,
+      doctor: null,
     },
     date_released: null,
     time_released: null,
     status: null,
+    selects: {
+      serviceable_type: null,
+    },
     citizen_id: null,
     hospital_service_id: null,
-    services_types: {
-      selected: null,
-      laboratories: ["PCR", "RAPID ANTIGEN", "RAPID ANTIBODY", "OT"],
-      diagnostics: ["X-RAY", "ULTRASOUND", "MAMMOGRAM"],
-      consultations: ["OB", "PHYSICIAN", "CARDIOLOGY"],
-    },
+    services_choices: null,
+    doctor_choices: null,
     services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY"],
     statuses: ["PENDING", "UNATTENDED", "COMPLETED"],
     minDate: new Date().toISOString().slice(0, 10),
   }),
   methods: {
+    ...mapActions("services_choices", ["fetchData"]),
     initService(service) {
       if (service === "CONSULTATION") {
-        this.services_types.selected = this.services_types.consultations;
+        this.services_choices = this.getSpecialties;
       } else if (service === "DIAGNOSTIC") {
-        this.services_types.selected = this.services_types.diagnostics;
+        this.services_choices = this.getDiagnosticTypes;
       } else if (service === "LABORATORY") {
-        this.services_types.selected = this.services_types.laboratories;
+        this.services_choices = this.getLaboratoryTypes;
+      }
+    },
+    filterDoctor(value) {
+      const serviceable = this.services_choices.find(
+        (serviceable) => serviceable.id === value
+      );
+      if (serviceable) {
+        this.payload.serviceable_type = serviceable.name;
+      }
+      const data = this.getDoctors.find((doctor) => doctor.doctor_id === value);
+      if (data) {
+        this.doctor_choices = [data];
       }
     },
     submitForm() {
@@ -242,6 +256,12 @@ export default {
     },
   },
   computed: {
+    ...mapGetters("services_choices", [
+      "getDoctors",
+      "getSpecialties",
+      "getLaboratoryTypes",
+      "getDiagnosticTypes",
+    ]),
     formattedDate1() {
       return this.payload.scheduled_date
         ? format(parseISO(this.payload.scheduled_date), "MMMM d, yyyy")
@@ -285,14 +305,31 @@ export default {
       }
     },
     hospitalService(value) {
-      console.log("Checking: ", value);
       if (value) {
         this.citizen_id = value.hospitalService.citizen_id;
         this.hospital_service_id = value.hospitalService.id;
         this.payload.service_type = value.hospitalService.service_type;
         this.initService(value.hospitalService.service_type);
+
+        if (this.services_choices) {
+          const serviceable = this.services_choices.find(
+            (serviceable) =>
+              serviceable.name === value.hospitalService.serviceable_type_name
+          );
+          if (serviceable) {
+            this.selects.serviceable_type = serviceable.id;
+            this.filterDoctor(serviceable.id);
+          }
+        }
         this.payload.serviceable_type =
           value.hospitalService.serviceable_type_name;
+
+        const doctor = this.doctor_choices.find(
+          (doctor) => doctor.doctor_id === value.hospitalService.doctor_id
+        );
+        if (doctor) {
+          this.payload.doctor = doctor.doctor_id;
+        }
         this.payload.scheduled_date = value.hospitalService.scheduled_date;
         this.payload.scheduled_time = value.hospitalService.scheduled_time;
         this.payload.remarks = value.hospitalService.remarks;
@@ -301,6 +338,9 @@ export default {
         this.status = value.hospitalService.status;
       }
     },
+  },
+  created() {
+    this.fetchData();
   },
 };
 </script>

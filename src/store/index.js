@@ -7,6 +7,7 @@ import { philippines } from "./modules/philippines";
 import { card } from "./modules/card";
 import { services } from "./modules/services";
 import { alerts } from "./modules/alerts";
+import { services_choices } from "./modules/services-choices";
 
 Vue.use(Vuex);
 
@@ -19,5 +20,6 @@ export default new Vuex.Store({
     card,
     services,
     alerts,
+    services_choices,
   },
 });

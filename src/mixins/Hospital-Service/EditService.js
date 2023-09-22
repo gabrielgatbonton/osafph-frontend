@@ -36,14 +36,14 @@ export default {
           scheduled_time: payload.scheduled_time
             ? format(
                 parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-                "H:mm"
+                "HH:mm"
               )
             : null,
           date_released: payload.date_released,
           time_released: payload.time_released
             ? format(
                 parseISO(`${payload.date_released}T${payload.time_released}`),
-                "H:mm"
+                "HH:mm"
               )
             : null,
           status: payload.status,
@@ -58,14 +58,14 @@ export default {
           scheduled_time: payload.scheduled_time
             ? format(
                 parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-                "H:mm"
+                "HH:mm"
               )
             : null,
           date_released: payload.date_released,
           time_released: payload.time_released
             ? format(
                 parseISO(`${payload.date_released}T${payload.time_released}`),
-                "H:mm"
+                "HH:mm"
               )
             : null,
           status: payload.status,
@@ -80,14 +80,14 @@ export default {
           scheduled_time: payload.scheduled_time
             ? format(
                 parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-                "H:mm"
+                "HH:mm"
               )
             : null,
           date_released: payload.date_released,
           time_released: payload.time_released
             ? format(
                 parseISO(`${payload.date_released}T${payload.time_released}`),
-                "H:mm"
+                "HH:mm"
               )
             : null,
           status: payload.status,
