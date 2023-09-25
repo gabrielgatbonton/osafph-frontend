@@ -7,15 +7,20 @@ Vue.use(Vuex);
 export const login = {
   namespaced: true,
   state: () => ({
-    accessToken: localStorage.getItem("accessToken") || null,
+    user: {
+      accessToken: localStorage.getItem("accessToken") || null,
+      role: null,
+    },
   }),
   mutations: {
-    SET_LOGGED_IN(state, { accessToken }) {
-      state.accessToken = accessToken;
+    SET_LOGGED_IN(state, { accessToken, role }) {
+      state.user.accessToken = accessToken;
+      state.user.role = role;
       localStorage.setItem("accessToken", accessToken);
     },
     SET_LOGGED_OUT(state) {
-      state.accessToken = null;
+      state.user.accessToken = null;
+      state.user.role = null;
       localStorage.removeItem("accessToken");
     },
   },
@@ -25,7 +30,8 @@ export const login = {
         .post("/account/login", credentials)
         .then((response) => {
           const accessToken = response.data.token;
-          commit("SET_LOGGED_IN", { accessToken });
+          const role = response.data.user.role;
+          commit("SET_LOGGED_IN", { accessToken, role });
           return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -52,8 +58,9 @@ export const login = {
   },
   getters: {
     isLoggedIn: (state) => {
-      return !!state.accessToken;
+      return !!state.user.accessToken;
     },
-    accessToken: (state) => state.accessToken,
+    accessToken: (state) => state.user.accessToken,
+    userRole: (state) => state.user.role,
   },
 };

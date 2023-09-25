@@ -23,7 +23,7 @@
       </v-container>
       <v-list nav dense>
         <v-list-item
-          v-for="link in links"
+          v-for="link in setLinks"
           :key="link.text"
           router
           :to="link.route"
@@ -41,16 +41,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  data: () => ({
-    links: [
-      { icon: "mdi-view-dashboard", text: "Dashboard", route: "/dashboard" },
-      { icon: "mdi-folder", text: "Citizens", route: "/citizens" },
-      { icon: "mdi-account", text: "Management", route: "/management" },
-    ],
-  }),
+  // data: () => ({
+  //   links: [
+  //     { icon: "mdi-view-dashboard", text: "Dashboard", route: "/dashboard" },
+  //     { icon: "mdi-folder", text: "Citizens", route: "/citizens" },
+  //     { icon: "mdi-account", text: "Management", route: "/management" },
+  //   ],
+  // }),
   props: ["drawer"],
   computed: {
+    ...mapGetters("login", ["userRole"]),
     localDrawer: {
       get() {
         return this.drawer;
@@ -58,6 +60,35 @@ export default {
       set(value) {
         this.$emit("update-drawer", value);
       },
+    },
+    setLinks() {
+      let links = [];
+      if (this.userRole === "ADMIN") {
+        links = [
+          {
+            icon: "mdi-view-dashboard",
+            text: "Dashboard",
+            route: "/dashboard",
+          },
+          { icon: "mdi-folder", text: "Citizens", route: "/citizens" },
+          { icon: "mdi-account", text: "Management", route: "/management" },
+        ];
+      } else if (this.userRole === "DOCTOR") {
+        links = [
+          {
+            icon: "mdi-view-dashboard",
+            text: "Dashboard",
+            route: "/dashboard",
+          },
+          {
+            icon: "mdi-medical-bag",
+            text: "Consultations",
+            route: "/consultations",
+          },
+          { icon: "mdi-account", text: "Management", route: "/management" },
+        ];
+      }
+      return links;
     },
   },
 };

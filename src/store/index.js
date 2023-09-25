@@ -8,6 +8,7 @@ import { card } from "./modules/card";
 import { services } from "./modules/services";
 import { alerts } from "./modules/alerts";
 import { services_choices } from "./modules/services-choices";
+import { consultations } from "./modules/consultations";
 
 Vue.use(Vuex);
 
@@ -21,5 +22,6 @@ export default new Vuex.Store({
     services,
     alerts,
     services_choices,
+    consultations,
   },
 });
