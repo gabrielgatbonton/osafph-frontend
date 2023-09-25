@@ -153,7 +153,7 @@ export default {
         title: "Scheduled Time",
         content: format(
           parseISO(
-            `${this.data.hospitalService.scheduled_date}T${this.data.hospitalService.scheduled_date}`
+            `${this.data.hospitalService.scheduled_date}T${this.data.hospitalService.scheduled_time}`
           ),
           "h:mm a"
         ),
