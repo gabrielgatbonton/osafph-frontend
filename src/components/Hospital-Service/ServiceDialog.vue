@@ -298,6 +298,7 @@ export default {
     //Reset for Adding
     reset(value) {
       this.payload = value;
+      this.selects.serviceable_type = null;
     },
     dialog(value) {
       if (value === false) {

@@ -64,6 +64,7 @@ export default {
             scheduled_date: null,
             scheduled_time: null,
             remarks: null,
+            doctor_id: null,
           };
           this.payload = payload;
         })
