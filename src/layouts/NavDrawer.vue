@@ -23,7 +23,7 @@
       </v-container>
       <v-list nav dense>
         <v-list-item
-          v-for="link in setLinks"
+          v-for="link in links"
           :key="link.text"
           router
           :to="link.route"
@@ -43,13 +43,9 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  // data: () => ({
-  //   links: [
-  //     { icon: "mdi-view-dashboard", text: "Dashboard", route: "/dashboard" },
-  //     { icon: "mdi-folder", text: "Citizens", route: "/citizens" },
-  //     { icon: "mdi-account", text: "Management", route: "/management" },
-  //   ],
-  // }),
+  data: () => ({
+    links: null,
+  }),
   props: ["drawer"],
   computed: {
     ...mapGetters("login", ["userRole"]),
@@ -61,6 +57,8 @@ export default {
         this.$emit("update-drawer", value);
       },
     },
+  },
+  methods: {
     setLinks() {
       let links = [];
       if (this.userRole === "ADMIN") {
@@ -88,8 +86,12 @@ export default {
           { icon: "mdi-account", text: "Management", route: "/management" },
         ];
       }
-      return links;
+      this.links = links;
     },
   },
+  mounted() {
+    console.log(this.userRole);
+    this.setLinks()
+  }
 };
 </script>

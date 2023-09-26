@@ -9,7 +9,7 @@ export const login = {
   state: () => ({
     user: {
       accessToken: localStorage.getItem("accessToken") || null,
-      role: null,
+      role: localStorage.getItem("role") || null,
     },
   }),
   mutations: {
@@ -17,6 +17,7 @@ export const login = {
       state.user.accessToken = accessToken;
       state.user.role = role;
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("role", role);
     },
     SET_LOGGED_OUT(state) {
       state.user.accessToken = null;
