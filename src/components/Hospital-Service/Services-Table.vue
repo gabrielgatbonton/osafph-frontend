@@ -35,7 +35,7 @@
           <td>
             <v-container class="ml-n6">
               <v-row no-gutters>
-                <v-col cols="auto">
+                <v-col cols="auto" v-if="auth.view">
                   <v-icon
                     @click="viewRegistrantService(item.citizen_id, item.id)"
                     class="mx-1"
@@ -44,7 +44,7 @@
                     >mdi-eye</v-icon
                   >
                 </v-col>
-                <v-col cols="auto">
+                <v-col cols="auto" v-if="auth.edit">
                   <v-icon
                     class="mx-1"
                     color="blue darken-4"
@@ -53,7 +53,7 @@
                     >mdi-pencil</v-icon
                   >
                 </v-col>
-                <v-col cols="auto">
+                <v-col cols="auto" v-if="auth.delete">
                   <ReusableDeleteDialog
                     :id="item.citizen_id"
                     :hospitalServiceId="item.id"
@@ -75,12 +75,12 @@
 </template>
 
 <script>
-//   import DeleteDialog from "./DeleteDialog.vue";
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import ServiceDialog from "./ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
+import { mapGetters } from "vuex";
 export default {
   mixins: [EditServiceMixin],
   props: ["services"],
@@ -103,13 +103,28 @@ export default {
         params: { id: id, hospital_service_id: hospital_service_id },
       });
     },
+    userRolePermissions() {
+      if (this.userRole === "ADMIN") {
+        this.auth.view = true;
+        this.auth.edit = true;
+        this.auth.delete = true;
+      } else if (this.userRole === "ENCODER") {
+        this.auth.view = true;
+      }
+    }
   },
   data: () => ({
     search: "",
     offset: true,
     data: [],
+    auth: {
+      view: false,
+      edit: false,
+      delete: false,
+    }
   }),
   computed: {
+    ...mapGetters("login", ["userRole"]),
     headers() {
       return [
         {
@@ -159,6 +174,9 @@ export default {
       }));
     },
   },
+  updated() {
+    this.userRolePermissions()
+  }
 };
 </script>
 
