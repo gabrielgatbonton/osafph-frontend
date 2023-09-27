@@ -9,19 +9,19 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <!-- <ServicesTable :services="switchData" /> -->
+    <ConsultationsTable />
   </div>
 </template>
 
 <script>
 // import { mapActions, mapGetters } from "vuex";
-// import ServicesTable from "@/components/Hospital-Service/Services-Table.vue";
+import ConsultationsTable from '@/components/Hospital-Service/Consultations-Table.vue';
 export default {
   data: () => ({
     // servicesStatus: false,
   }),
   components: {
-    // ServicesTable,
+    ConsultationsTable,
   },
   methods: {
     // ...mapActions("services", ["fetchServicesById"]),
