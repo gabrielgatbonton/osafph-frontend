@@ -41,14 +41,6 @@ export default {
       type: Boolean,
       required: true,
     },
-    // id: {
-    //   type: [String, Number],
-    //   required: true,
-    // },
-    // hospitalServiceId: {
-    //   type: [Number, String],
-    //   required: true,
-    // },
   },
   data: () => ({
     dialog: false,
@@ -56,7 +48,7 @@ export default {
   }),
   methods: {
     deleteItem() {
-      this.$emit("deleteService", true);
+      this.$emit("deleteItem", true);
     }
   },
   watch: {

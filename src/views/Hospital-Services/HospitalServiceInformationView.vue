@@ -9,7 +9,7 @@
           <span class="title">Registrant Hospital Service Information</span>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="auto">
+        <v-col cols="auto" v-if="auth.edit">
           <v-btn dark class="blue darken-4 mr-3" @click="activator"
             ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
           >
@@ -195,6 +195,9 @@ export default {
     loading: false,
     showAlert: false,
     showError: false,
+    auth: {
+      edit: false
+    },
   }),
   components: {
     SubmissionAlert,
@@ -237,6 +240,11 @@ export default {
         );
       });
     },
+    userRolePermissions() {
+      if (this.userRole === "ADMIN") {
+        this.auth.edit = true;
+      } 
+    },
   },
   created() {
     this.fetchRegistrant();
@@ -270,6 +278,7 @@ export default {
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
     ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
+    ...mapGetters("login", ["userRole"]),
     categories() {
       return [
         {

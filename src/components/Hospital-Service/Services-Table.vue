@@ -76,7 +76,7 @@
       <ReusableDeleteDialog
         :activator="deleteDialog"
         v-on:dialogResponse="resetActivator"
-        v-on:deleteService="deleteItem"
+        v-on:deleteItem="deleteItem"
       />
     </template>
   </v-data-table>

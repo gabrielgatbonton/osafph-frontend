@@ -56,26 +56,38 @@
                     >{{ option.text }}</v-list-item-title
                   >
                 </v-list-item>
-                <v-list-item>
-                  <DeleteDialog :id="item.id" />
+                <v-list-item v-if="auth.delete">
+                  <v-list-item-title class="red--text" @click="deleteActivator(item.id)"
+                    ><v-icon dense left color="#F44336"
+                      >mdi-delete-alert-outline</v-icon
+                    >DELETE</v-list-item-title
+                  >
                 </v-list-item>
               </v-list>
             </v-menu>
           </td>
         </tr>
       </tbody>
+      <ReusableDeleteDialog
+        :activator="deleteDialog"
+        v-on:dialogResponse="resetActivator"
+        v-on:deleteItem="deleteItem"
+      />
     </template>
   </v-data-table>
 </template>
 
 <script>
-import DeleteDialog from "./DeleteDialog.vue";
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
+import ReusableDeleteDialog from "./ReusableDeleteDialog.vue";
+import DeleteRegistrantMixin from "@/mixins/Registrant/DeleteRegistrant";
+import { mapGetters } from "vuex";
 export default {
+  mixins: [DeleteRegistrantMixin],
   props: ["registrants"],
   components: {
-    DeleteDialog,
+    ReusableDeleteDialog,
   },
   methods: {
     filterOnlyCapsText(value, search) {
@@ -121,13 +133,24 @@ export default {
         this.$router.push(option.route);
       }
     },
+    userRolePermissions() {
+      if (this.userRole === "ADMIN") {
+        this.auth.delete = true;
+      } else if (this.userRole === "ENCODER") {
+        this.auth.delete = false;
+      }
+    },
   },
   data: () => ({
     search: "",
     offset: true,
     data: [],
+    auth: {
+      delete: null,
+    },
   }),
   computed: {
+    ...mapGetters("login", ["userRole"]),
     headers() {
       return [
         {
@@ -184,6 +207,9 @@ export default {
       }));
     },
   },
+  updated() {
+    this.userRolePermissions();
+  }
 };
 </script>
 
