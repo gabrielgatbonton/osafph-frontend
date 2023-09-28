@@ -6,19 +6,26 @@
         <v-img src="../assets/MCG.png" width="120" height="60" contain></v-img>
       </div>
       <v-spacer></v-spacer>
-      <v-menu bottom :offset-y="offset">
+      <div class="title py-1 mr-3">{{ userRole }}</div>
+      <v-menu bottom :offset-y="offset" class>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
+          <v-btn icon v-bind="attrs" v-on="on" class="mr-1" :loading="loading">
             <v-icon large>mdi-account</v-icon>
           </v-btn>
         </template>
         <v-list dense>
-          <v-list-item v-for="(item, index) in getOptions()" :key="index" @click="executeAction(item)">
-            <v-list-item-title><v-icon dense left>{{ item.icon }}</v-icon>{{ item.title }}</v-list-item-title>
+          <v-list-item
+            v-for="(item, index) in getOptions()"
+            :key="index"
+            @click="executeAction(item)"
+          >
+            <v-list-item-title
+              ><v-icon dense left>{{ item.icon }}</v-icon
+              >{{ item.title }}</v-list-item-title
+            >
           </v-list-item>
         </v-list>
       </v-menu>
-
     </v-app-bar>
     <NavDrawer :drawer="drawer" @update-drawer="updateDrawer" />
   </div>
@@ -26,11 +33,12 @@
 
 <script>
 import NavDrawer from "../layouts/NavDrawer.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data: () => ({
     offset: true,
     drawer: false,
+    loading: false,
   }),
   components: {
     NavDrawer,
@@ -55,18 +63,27 @@ export default {
     getOptions() {
       return [
         {
-          icon: 'mdi-logout',
-          title: 'LOG OUT',
+          icon: "mdi-logout",
+          title: "LOG OUT",
           action: () => {
-            this.logout().then(() => {
-              this.$router.replace({ name: "login" });
-            }).catch((error) => {
-              console.error("Error logging out:", error);
-            });
-          }
-        }
-      ]
-    }
+            this.loading = true;
+            this.logout()
+              .then(() => {
+                this.$router.replace({ name: "login" });
+              })
+              .catch((error) => {
+                console.error("Error logging out:", error);
+              })
+              .finally(() => {
+                this.loading = false;
+              });
+          },
+        },
+      ];
+    },
+  },
+  computed: {
+    ...mapGetters("login", ["userRole"]),
   },
 };
 </script>
