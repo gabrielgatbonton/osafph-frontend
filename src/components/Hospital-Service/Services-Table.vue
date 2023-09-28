@@ -33,9 +33,9 @@
             </div>
           </td>
           <td>
-            <v-container class="ml-n6">
-              <v-row no-gutters>
-                <v-col cols="auto" v-if="auth.view">
+            <v-container class="ml-n8" style="width: 120px;">
+              <v-row no-gutters justify="center">
+                <v-col cols="auto" v-if="auth.view" align-self="center">
                   <v-icon
                     @click="viewRegistrantService(item.citizen_id, item.id)"
                     class="mx-1"
@@ -44,7 +44,7 @@
                     >mdi-eye</v-icon
                   >
                 </v-col>
-                <v-col cols="auto" v-if="auth.edit">
+                <v-col cols="auto" v-if="auth.edit" align-self="center">
                   <v-icon
                     class="mx-1"
                     color="blue darken-4"
@@ -53,11 +53,14 @@
                     >mdi-pencil</v-icon
                   >
                 </v-col>
-                <v-col cols="auto" v-if="auth.delete">
-                  <ReusableDeleteDialog
-                    :id="item.citizen_id"
-                    :hospitalServiceId="item.id"
-                  />
+                <v-col cols="auto" v-if="auth.delete" align-self="center">
+                  <v-icon
+                    class="mx-1"
+                    color="error"
+                    dense
+                    @click="deleteActivator(item.citizen_id, item.id)"
+                    >mdi-trash-can</v-icon
+                  >
                 </v-col>
               </v-row>
             </v-container>
@@ -70,6 +73,11 @@
         v-on:dialogResponse="resetActivator"
         v-on:updateService="submitForm"
       />
+      <ReusableDeleteDialog
+        :activator="deleteDialog"
+        v-on:dialogResponse="resetActivator"
+        v-on:deleteService="deleteItem"
+      />
     </template>
   </v-data-table>
 </template>
@@ -81,8 +89,9 @@ import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import ServiceDialog from "./ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
 import { mapGetters } from "vuex";
+import DeleteServiceMixin from "@/mixins/Hospital-Service/DeleteService";
 export default {
-  mixins: [EditServiceMixin],
+  mixins: [EditServiceMixin, DeleteServiceMixin],
   props: ["services"],
   components: {
     ReusableDeleteDialog,
@@ -111,7 +120,7 @@ export default {
       } else if (this.userRole === "ENCODER") {
         this.auth.view = true;
       }
-    }
+    },
   },
   data: () => ({
     search: "",
@@ -121,7 +130,7 @@ export default {
       view: false,
       edit: false,
       delete: false,
-    }
+    },
   }),
   computed: {
     ...mapGetters("login", ["userRole"]),
@@ -175,8 +184,8 @@ export default {
     },
   },
   updated() {
-    this.userRolePermissions()
-  }
+    this.userRolePermissions();
+  },
 };
 </script>
 
