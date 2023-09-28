@@ -9,12 +9,12 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ConsultationsTable />
+    <ConsultationsTable :consultations="getConsultations"/>
   </div>
 </template>
 
 <script>
-// import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import ConsultationsTable from '@/components/Hospital-Service/Consultations-Table.vue';
 export default {
   data: () => ({
@@ -24,17 +24,10 @@ export default {
     ConsultationsTable,
   },
   methods: {
-    // ...mapActions("services", ["fetchServicesById"]),
-    // requestServices() {
-    //   const id = this.$route.params.id;
-    //   this.fetchServicesById(id);
-    // },
-    // switchServices() {
-    //   this.servicesStatus = !this.servicesStatus;
-    // },
+    ...mapActions("consultations", ["fetchConsultations"]),
   },
   computed: {
-    // ...mapGetters("services", ["getHospitalServices", "getArchivedServices"]),
+    ...mapGetters("consultations", ["getConsultations"]),
     // switchData() {
     //   return this.servicesStatus
     //     ? this.getArchivedServices
@@ -42,10 +35,12 @@ export default {
     // },
   },
   watch: {
-      
+      getConsultations(value) {
+        console.log(value);
+      }
   },
   created() {
-    // this.requestServices();
+    this.fetchConsultations();
   },
 };
 </script>

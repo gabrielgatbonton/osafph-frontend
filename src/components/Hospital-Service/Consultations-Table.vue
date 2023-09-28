@@ -32,11 +32,11 @@
               </div>
             </td>
             <td>
-              <v-container class="ml-n6">
-                <v-row no-gutters>
-                  <v-col cols="auto">
+              <v-container class="ml-n8" style="width: 120px;">
+                <v-row no-gutters justify="center">
+                  <v-col cols="auto" align-self="center">
                     <v-icon
-                      @click="viewRegistrantService(item.citizen_id, item.id)"
+                      @click="viewRegistrantService(item.consultation_id, item.hospital_service_id)"
                       class="mx-1"
                       color="grey darken-1"
                       dense
@@ -48,12 +48,6 @@
             </td>
           </tr>
         </tbody>
-        <ServiceDialog
-          :activator="dialog"
-          :hospitalService="getHospitalService"
-          v-on:dialogResponse="resetActivator"
-          v-on:updateService="submitForm"
-        />
       </template>
     </v-data-table>
   </template>
@@ -62,7 +56,7 @@
   import format from "date-fns/format";
   import parseISO from "date-fns/parseISO";
   export default {
-    props: [""],
+    props: ["consultations"],
     methods: {
       filterOnlyCapsText(value, search) {
         return (
@@ -72,12 +66,12 @@
           value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
         );
       },
-    //   viewRegistrantService(id, hospital_service_id) {
-    //     this.$router.push({
-    //       name: "hospital-services-information",
-    //       params: { id: id, hospital_service_id: hospital_service_id },
-    //     });
-    //   },
+      viewRegistrantService(consultation_id, hospital_service_id) {
+        this.$router.push({
+          name: "consultation-view",
+          params: { consultation_id: consultation_id, hospital_service_id: hospital_service_id },
+        });
+      },
     },
     data: () => ({
       search: "",
@@ -112,21 +106,21 @@
       },
     },
     watch: {
-      services(value) {
-        this.data = value.map((service) => ({
-          id: service.id,
-          citizen_id: service.citizen_id,
-          service_type: service.service_type,
-          serviceable_type_name: service.serviceable_type_name,
-          status: service.status,
+      consultations(value) {
+        // console.log("table: ", value);
+        this.data = value.map((consultation) => ({
+          patient_name: `${consultation.citizen.last_name}, ${consultation.citizen.first_name} ${consultation.citizen.middle_name} ${consultation.citizen.suffix}`,
+          status: consultation.hospital_service.status,
           scheduled_date: format(
-            parseISO(service.scheduled_date),
+            parseISO(consultation.hospital_service.scheduled_date),
             "MMMM dd, yyyy"
           ),
           scheduled_time: format(
-            parseISO(`${service.scheduled_date}T${service.scheduled_time}`),
+            parseISO(`${consultation.hospital_service.scheduled_date}T${consultation.hospital_service.scheduled_time}`),
             "h:mm a"
           ),
+          consultation_id: consultation.id,
+          hospital_service_id: consultation.hospital_service.id,
         }));
       },
     },
