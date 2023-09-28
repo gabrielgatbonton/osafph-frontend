@@ -1,5 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
+import store from "../../store";
 
 Vue.use(Vuex);
 
@@ -14,8 +15,8 @@ export const services = {
   mutations: {
     SET_HOSPITAL_SERVICES(state, services) {
       const pendingServices = services.filter((service) => {
-        return (service.status.includes("PENDING"));
-      })
+        return service.status.includes("PENDING");
+      });
       state.hospitalServices = pendingServices;
     },
     SET_ARCHIVED_HOSPITAL_SERVICES(state, services) {
@@ -79,9 +80,17 @@ export const services = {
         .then((response) => {
           const service = response.data;
           commit("ADD_HOSPITAL_SERVICE", service);
+          store.commit("alerts/SET_SHOW_ALERT", {
+            alert: true,
+            message: "Added Service",
+          });
           dispatch("fetchServicesById", id);
         })
         .catch((error) => {
+          store.commit("alerts/SET_SHOW_ERROR", {
+            alert: true,
+            message: "Adding",
+          });
           console.error("Error adding services: ", error);
         });
     },
@@ -94,9 +103,17 @@ export const services = {
         .then((response) => {
           const updatedHospitalService = response.data;
           commit("UPDATE_HOSPITAL_SERVICE", updatedHospitalService);
+          store.commit("alerts/SET_SHOW_ALERT", {
+            alert: true,
+            message: "Updated Service",
+          });
           dispatch("fetchServicesById", id);
         })
         .catch((error) => {
+          store.commit("alerts/SET_SHOW_ERROR", {
+            alert: true,
+            message: "Updating",
+          });
           console.error("Error Updating Hospital Service: ", error);
         });
     },
@@ -106,9 +123,17 @@ export const services = {
         .then((response) => {
           const data = response.data;
           commit("DELETE_HOSPITAL_SERVICE", data);
+          store.commit("alerts/SET_SHOW_ALERT", {
+            alert: true,
+            message: "Deleted Service",
+          });
           dispatch("fetchServicesById", id);
         })
         .catch((error) => {
+          store.commit("alerts/SET_SHOW_ERROR", {
+            alert: true,
+            message: "Deleting",
+          });
           console.error("Error Deleting Service: ", error);
         });
     },

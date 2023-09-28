@@ -254,16 +254,15 @@
 <script>
 import { mapGetters } from "vuex";
 import VaccinationComponent from "@/components/Vaccination/VaccinationDetailsView.vue";
-import SubmissionAlert from "@/components/SubmissionAlert.vue";
-import ErrorAlert from "@/components/ErrorAlert.vue";
 import CameraComponent from "@/components/Camera/CameraComponent.vue";
 import SignatureComponent from "@/components/Signature/SignatureComponent.vue";
+import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 // import FrontCardComponent from '@/components/Card/FrontCard.vue';
 import FrontCardJavaScript from "@/components/Card/FrontCardJavaScript.vue";
 import BackCardJavaScript from "@/components/Card/BackCardJavaScript.vue";
 export default {
+  mixins: [ErrorAlertsLogic],
   data: () => ({
-    title: null,
     routeID: null,
     registrant: null,
     selectedImage: null, // Holds the selected image file
@@ -274,14 +273,10 @@ export default {
     },
     loading: false,
     dynamicBaseURL: null,
-    showAlert: false,
-    showError: false,
     checkSignature: null,
   }),
   components: {
     VaccinationComponent,
-    SubmissionAlert,
-    ErrorAlert,
     CameraComponent,
     SignatureComponent,
     // FrontCardComponent,
@@ -368,24 +363,9 @@ export default {
       }
       this.routeID = id;
     },
-    getShowAlert(value) {
-      this.showAlert = value.alert;
-      this.title = value.message;
-      setTimeout(() => {
-        this.showAlert = false;
-      }, 5000);
-    },
-    getShowError(value) {
-      this.showError = value.alert;
-      this.title = value.message;
-      setTimeout(() => {
-        this.showError = false;
-      }, 5000);
-    },
   },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
-    ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
     categories() {
       return [
         {

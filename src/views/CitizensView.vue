@@ -6,7 +6,7 @@
       <v-row>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
-          <span class="title">List of Employees</span>
+          <span class="title">List of Citizens</span>
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
@@ -29,15 +29,13 @@
 
 <script>
 import DataTable from "@/components/Data-Table.vue";
-import SubmissionAlert from "@/components/SubmissionAlert.vue";
-import ErrorAlert from "@/components/ErrorAlert.vue";
+import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "HomeView",
+  name: "CitizensView",
+  mixins: [ErrorAlertsLogic],
   components: {
     DataTable,
-    SubmissionAlert,
-    ErrorAlert,
   },
   data() {
     return {
@@ -55,28 +53,9 @@ export default {
   },
   computed: {
     ...mapGetters("registrants", ["allRegistrants"]),
-    ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
   },
   created() {
     this.fetchRegistrants(); // Fetch registrants' data when the component is created
-  },
-  watch: {
-    getShowAlert(value) {
-      console.log("alert", value);
-      this.showAlert = value.alert;
-      this.title = value.message;
-      setTimeout(() => {
-        this.showAlert = false;
-      }, 5000);
-    },
-    getShowError(value) {
-      console.log("error", value);
-      this.showError = value.alert;
-      this.title = value.message;
-      setTimeout(() => {
-        this.showError = false;
-      }, 5000);
-    },
   },
 };
 </script>

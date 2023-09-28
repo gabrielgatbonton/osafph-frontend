@@ -1,5 +1,7 @@
 <template>
   <div>
+    <SubmissionAlert :title="title" v-if="showAlert"/>
+    <ErrorAlert :title="title" v-if="showError"/>
     <v-container fluid class="table-title ma-2">
       <v-row>
         <v-col cols="auto">
@@ -8,8 +10,14 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn class="mr-3" color="blue darken-4" dark @click="switchServices"
-            >{{ servicesStatus ? "Pending Services" : "Archived Services" }}</v-btn
+          <v-btn
+            class="mr-3"
+            color="blue darken-4"
+            dark
+            @click="switchServices"
+            >{{
+              servicesStatus ? "Pending Services" : "Archived Services"
+            }}</v-btn
           >
           <v-btn class="mr-3" color="blue darken-4" dark @click="activator">
             Add Service
@@ -33,11 +41,12 @@ import { mapActions, mapGetters } from "vuex";
 import ServicesTable from "@/components/Hospital-Service/Services-Table.vue";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import addServiceMixin from "@/mixins/Hospital-Service/AddService";
+import ErrorAlertsLogic from "../../mixins/Alerts & Errors/ErrorAlertsLogic"
 export default {
   data: () => ({
     servicesStatus: false,
   }),
-  mixins: [addServiceMixin],
+  mixins: [addServiceMixin, ErrorAlertsLogic],
   components: {
     ServicesTable,
     ServiceDialog,
@@ -50,18 +59,15 @@ export default {
     },
     switchServices() {
       this.servicesStatus = !this.servicesStatus;
-    }
+    },
   },
   computed: {
     ...mapGetters("services", ["getHospitalServices", "getArchivedServices"]),
     switchData() {
-      return this.servicesStatus ? this.getArchivedServices : this.getHospitalServices;
-    }
-  },
-  watch: {
-    // getHospitalServices(value) {
-    //     console.log("success: ", value);
-    // }
+      return this.servicesStatus
+        ? this.getArchivedServices
+        : this.getHospitalServices;
+    },
   },
   created() {
     this.requestServices();
