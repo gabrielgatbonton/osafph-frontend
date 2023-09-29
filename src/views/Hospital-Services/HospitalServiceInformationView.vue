@@ -187,7 +187,6 @@ import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
   mixins: [EditServiceMixin, ErrorAlertsLogic],
   data: () => ({
-    title: null,
     routeID: null,
     registrant: null,
     service: null,

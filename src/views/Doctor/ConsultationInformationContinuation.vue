@@ -106,13 +106,13 @@
     }),
     methods: {
       checkStatus() {
-        if (this.data.hospitalService.status === "PENDING") {
+        if (this.data.hospital_service.status === "PENDING") {
           this.isLoading = true;
           this.iconColor = "warning";
-        } else if (this.data.hospitalService.status === "UNATTENDED") {
+        } else if (this.data.hospital_service.status === "UNATTENDED") {
           this.isLoading = false;
           this.iconColor = "error";
-        } else if (this.data.hospitalService.status === "COMPLETED") {
+        } else if (this.data.hospital_service.status === "COMPLETED") {
           this.isLoading = false;
           this.iconColor = "success";
         }
@@ -123,14 +123,14 @@
       status() {
         let status = null;
         let message = null;
-        if (this.data.hospitalService.status === "PENDING") {
-          status = this.data.hospitalService.status;
+        if (this.data.hospital_service.status === "PENDING") {
+          status = this.data.hospital_service.status;
           message = "Application is still pending...";
-        } else if (this.data.hospitalService.status === "UNATTENDED") {
-          status = this.data.hospitalService.status;
+        } else if (this.data.hospital_service.status === "UNATTENDED") {
+          status = this.data.hospital_service.status;
           message = "Applicant was unable to attend...";
-        } else if (this.data.hospitalService.status === "COMPLETED") {
-          status = this.data.hospitalService.status;
+        } else if (this.data.hospital_service.status === "COMPLETED") {
+          status = this.data.hospital_service.status;
           message = "Service was successfully completed...";
         }
   
@@ -143,7 +143,7 @@
         return {
           title: "Scheduled Date",
           content: format(
-            parseISO(this.data.hospitalService.scheduled_date),
+            parseISO(this.data.hospital_service.scheduled_date),
             "MMMM dd, yyyy"
           ),
         };
@@ -153,30 +153,30 @@
           title: "Scheduled Time",
           content: format(
             parseISO(
-              `${this.data.hospitalService.scheduled_date}T${this.data.hospitalService.scheduled_time}`
+              `${this.data.hospital_service.scheduled_date}T${this.data.hospital_service.scheduled_time}`
             ),
             "h:mm a"
           ),
         };
       },
       dateReleased() {
-        return this.data.hospitalService.date_released
+        return this.data.hospital_service.date_released
           ? {
               title: "Date Released",
               content: format(
-                parseISO(this.data.hospitalService.date_released),
+                parseISO(this.data.hospital_service.date_released),
                 "MMMM dd, yyyy"
               ),
             }
           : false;
       },
       timeReleased() {
-        return this.data.hospitalService.time_released
+        return this.data.hospital_service.time_released
           ? {
               title: "Time Released",
               content: format(
                 parseISO(
-                  `${this.data.hospitalService.date_released}T${this.data.hospitalService.time_released}`
+                  `${this.data.hospital_service.date_released}T${this.data.hospital_service.time_released}`
                 ),
                 "h:mm a"
               ),

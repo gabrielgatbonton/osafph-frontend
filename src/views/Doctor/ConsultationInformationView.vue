@@ -1,407 +1,243 @@
 <template>
-    <div>
-      <SubmissionAlert v-if="showAlert" :title="title" />
-      <ErrorAlert v-if="showError" :title="title" />
-      <v-container fluid class="ma-1" v-if="registrant && service">
-        <v-row>
-          <v-col cols="auto">
-            <!-- <v-icon left>mdi-account-box-multiple</v-icon> -->
-            <span class="title">Registrant Hospital Service Information</span>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="auto" v-if="auth.edit">
-            <v-btn dark class="blue darken-4 mr-3" @click="activator"
-              ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
-            >
-          </v-col>
-        </v-row>
-        <v-divider class="my-4"></v-divider>
-        <v-row no-gutters>
-          <v-col cols="12" md="8">
-            <v-container fluid class="mx-auto mt-3">
-              <v-row>
-                <v-col cols="12" class="mt-n1">
-                  <v-card>
-                    <v-card-title class="blue darken-1 white--text"
-                      ><v-icon dark left>mdi-medical-bag</v-icon>Hospital Service
-                      Information</v-card-title
-                    >
-                    <v-container fluid class="py-4">
-                      <v-row no-gutters>
-                        <v-col
-                          cols="12"
-                          md="6"
-                          sm="6"
-                          v-for="(info, index) in serviceInformation"
-                          :key="index"
-                        >
-                          <div class="ma-2">
-                            <div class="text-subtitle-2 grey--text">
-                              {{ info.title }}
-                            </div>
-                            <div class="text-h5">{{ info.content }}</div>
-                          </div>
-                        </v-col>
-                        <v-col cols="12" class="mt-3">
-                          <v-expansion-panels>
-                            <v-expansion-panel
-                              v-for="(info, index) in expansionRemarks"
-                              :key="index"
-                            >
-                              <v-expansion-panel-header>
-                                <div class="text-subtitle-1 font-weight-bold">
-                                  {{ info.title }}
-                                </div>
-                              </v-expansion-panel-header>
-                              <v-expansion-panel-content>
-                                {{ info.content }}
-                              </v-expansion-panel-content>
-                            </v-expansion-panel>
-                          </v-expansion-panels>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card>
-                </v-col>
-                <v-col cols="12">
-                  <v-card>
-                    <v-card-title class="blue darken-1 white--text"
-                      ><v-icon dark left>mdi-folder-multiple</v-icon
-                      >Category</v-card-title
-                    >
-                    <v-container fluid class="py-4">
-                      <v-row
-                        v-for="(info, index) in categories"
+  <div>
+    <SubmissionAlert v-if="showAlert" :title="title" />
+    <ErrorAlert v-if="showError" :title="title" />
+    <v-container fluid class="ma-1" v-if="consultation">
+      <v-row>
+        <v-col cols="auto">
+          <v-icon left>mdi-account-box-multiple</v-icon>
+          <span class="title">Consultations</span>
+        </v-col>
+        <!-- <v-spacer></v-spacer>
+        <v-col cols="auto" v-if="auth.edit">
+          <v-btn dark class="blue darken-4 mr-3" @click="activator"
+            ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-divider class="my-4"></v-divider>
+      <v-row no-gutters>
+        <v-col cols="12" md="8">
+          <v-container fluid class="mx-auto mt-3">
+            <v-row>
+              <v-col cols="12" class="mt-n1">
+                <v-card flat outlined>
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-account</v-icon>Patient
+                    Consultation</v-card-title
+                  >
+                  <v-container fluid class="py-4">
+                    <v-row no-gutters>
+                      <v-col
+                        cols="12"
+                        md="6"
+                        sm="6"
+                        v-for="(info, index) in serviceInformation.service"
                         :key="index"
-                        no-gutters
                       >
-                        <v-col cols="12" md="6" sm="6">
-                          <v-card-subtitle class="py-0">{{
-                            info.title
-                          }}</v-card-subtitle>
-                        </v-col>
-                        <v-col cols="12" md="6" sm="6">
-                          <v-card-text class="font-weight-bold py-0">{{
-                            info.content
-                          }}</v-card-text>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card>
-                </v-col>
-                <v-col cols="12" class="">
-                  <v-card>
-                    <v-card-title class="blue darken-1 white--text"
-                      ><v-icon dark left>mdi-human-greeting-variant</v-icon
-                      >Personal Information</v-card-title
-                    >
-                    <v-container fluid class="py-4">
-                      <v-row
-                        v-for="(info, index) in personal_informations"
-                        :key="'personal_information-' + index"
-                        no-gutters
+                        <div class="ma-2">
+                          <div class="text-subtitle-1 grey--text">
+                            {{ info.title }}
+                          </div>
+                          <div class="text-h5">{{ info.content }}</div>
+                        </div>
+                      </v-col>
+                      <v-col cols="12" class="mt-3">
+                        <v-expansion-panels>
+                          <v-expansion-panel
+                            v-for="(info, index) in serviceInformation.address"
+                            :key="index"
+                          >
+                            <v-expansion-panel-header>
+                              <div class="text-subtitle-1 font-weight-bold">
+                                {{ info.title }}
+                              </div>
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              {{ info.content }}
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card>
+              </v-col>
+              <v-col cols="12">
+                <v-card flat outlined>
+                  <v-card-title class="blue darken-1 white--text"
+                    ><v-icon dark left>mdi-folder-multiple</v-icon>Patient
+                    Information</v-card-title
+                  >
+                  <v-container fluid class="py-4">
+                    <v-row no-gutters>
+                      <v-col cols="12">
+                        <v-avatar size="200" class="ml-3 my-3">
+                          <v-img
+                            max-height="400"
+                            max-width="200"
+                            :src="patient_information.image_url"
+                          ></v-img>
+                        </v-avatar>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="6"
+                        sm="6"
+                        v-for="(info, index) in patient_information.information"
+                        :key="index"
                       >
-                        <v-col cols="12" md="6" sm="6">
-                          <v-card-subtitle class="py-0">{{
-                            info.title
-                          }}</v-card-subtitle>
-                        </v-col>
-                        <v-col cols="12" md="6" sm="6">
-                          <v-card-text class="font-weight-bold py-0">{{
-                            info.content
-                          }}</v-card-text>
-                        </v-col>
-                      </v-row>
-                      <v-divider class="ma-3"></v-divider>
-                      <div class="mx-4">Emergency Information</div>
-                      <v-row
-                        v-for="(info, index) in emergency"
-                        :key="'emergency' + index"
-                        no-gutters
-                      >
-                        <v-col cols="12" md="6" sm="6">
-                          <v-card-subtitle class="py-0">{{
-                            info.title
-                          }}</v-card-subtitle>
-                        </v-col>
-                        <v-col cols="12" md="6" sm="6">
-                          <v-card-text class="font-weight-bold py-0">{{
-                            info.content
-                          }}</v-card-text>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card>
-                </v-col>
-                <v-col cols="12" class="mt-n1">
-                  <v-card>
-                    <v-card-title class="blue darken-1 white--text"
-                      ><v-icon dark left>mdi-map-marker</v-icon
-                      >Address</v-card-title
-                    >
-                    <v-container fluid class="py-4">
-                      <v-row v-for="info in address" :key="info.title" no-gutters>
-                        <v-col cols="12" md="6" sm="6">
-                          <v-card-subtitle class="py-0">{{
-                            info.title
-                          }}</v-card-subtitle>
-                        </v-col>
-                        <v-col cols="12" md="6" sm="6">
-                          <v-card-text class="font-weight-bold py-0">{{
-                            info.content
-                          }}</v-card-text>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-col>
-          <v-col cols="12" md="4">
-            <ConsultationInformationContinutation :data="getHospitalService" />
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-skeleton-loader
-        v-else
-        type="list-item-avatar-three-line, image, article"
-        class="mx-5 my-10"
-        height="auto"
-      ></v-skeleton-loader>
-      <ServiceDialog
+                        <div class="ma-2">
+                          <div class="text-subtitle-1 grey--text">
+                            {{ info.title }}
+                          </div>
+                          <div class="text-h5">{{ info.content }}</div>
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-col>
+        <v-col cols="12" md="4">
+          <ConsultationInformationContinutation :data="consultation" />
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-skeleton-loader
+      v-else
+      type="list-item-avatar-three-line, image, article"
+      class="mx-5 my-10"
+      height="auto"
+    ></v-skeleton-loader>
+    <!-- <ServiceDialog
         :activator="dialog"
         :hospitalService="getHospitalService"
         v-on:dialogResponse="resetActivator"
         v-on:updateService="submitForm"
-      />
-    </div>
-  </template>
-  
-  <script>
-  import { mapActions, mapGetters } from "vuex";
-  import SubmissionAlert from "@/components/SubmissionAlert.vue";
-  import ErrorAlert from "@/components/ErrorAlert.vue";
-  import ConsultationInformationContinutation from "./ConsultationInformationContinuation.vue";
-  import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
-  import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
-  export default {
-    mixins: [EditServiceMixin],
-    data: () => ({
-      title: null,
-      routeID: null,
-      registrant: null,
-      service: null,
-      loading: false,
-      showAlert: false,
-      showError: false,
-      auth: {
-        edit: false
-      },
-    }),
-    components: {
-      SubmissionAlert,
-      ErrorAlert,
-      ConsultationInformationContinutation,
-      ServiceDialog,
+      /> -->
+  </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+import ConsultationInformationContinutation from "./ConsultationInformationContinuation.vue";
+// import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
+import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
+import { format, parseISO } from "date-fns";
+export default {
+  mixins: [ErrorAlertsLogic],
+  data: () => ({
+    routeID: null,
+    consultation: null,
+    loading: false,
+  }),
+  components: {
+    ConsultationInformationContinutation,
+    // ServiceDialog,
+  },
+  methods: {
+    ...mapActions("consultations", ["fetchConsultationById"]),
+    fetchConsultation() {
+      const consultation_id = this.$route.params.consultation_id;
+      return this.fetchConsultationById(consultation_id).catch((error) => {
+        console.error("Error fetching Consultation Data:", error);
+      });
     },
-    methods: {
-      ...mapActions("registrants", ["fetchRegistrantId"]),
-      fetchRegistrant() {
-        const id = this.$route.params.id;
-        const hospital_service_id = this.$route.params.hospital_service_id;
-        return this.fetchRegistrantId(id)
-          .then(() => {
-            this.fetchHospitalServiceById({
-              id: id,
-              hospital_service_id: hospital_service_id,
-            });
-          })
-          .catch((error) => {
-            console.error(
-              "Error fetching Registrant and Hospital Service Data:",
-              error
-            );
-          });
-      },
-      activator() {
-        const citizen_id = this.$route.params.id;
-        const hospital_service_id = this.$route.params.hospital_service_id;
-        
-        this.dialog = !this.dialog;
-  
-        return this.fetchHospitalServiceById({
-          id: citizen_id,
-          hospital_service_id: hospital_service_id,
-        }).catch((error) => {
-          console.error(
-            "Error fetching hospital service request in edit: ",
-            error
-          );
-        });
-      },
-      userRolePermissions() {
-        if (this.userRole === "ADMIN") {
-          this.auth.edit = true;
-        } 
-      },
+  },
+  created() {
+    this.fetchConsultation();
+  },
+  watch: {
+    getConsultation(value) {
+      console.log("GET:", value);
+      this.consultation = value.consultation;
+      console.log("CONSULTATION: ", this.consultation);
     },
-    created() {
-      this.fetchRegistrant();
-    },
-    watch: {
-      getRegistrant(value) {
-        // console.log("Get Registrant", value);
-        const id = this.$route.params.id;
-        this.registrant = value;
-        this.routeID = id;
-      },
-      getShowAlert(value) {
-        this.showAlert = value.alert;
-        this.title = value.message;
-        setTimeout(() => {
-          this.showAlert = false;
-        }, 5000);
-      },
-      getShowError(value) {
-        this.showError = value.alert;
-        this.title = value.message;
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
-      },
-      getHospitalService(value) {
-        console.log(value);
-        this.service = value;
-      },
-    },
-    computed: {
-      ...mapGetters("registrants", ["getRegistrant"]),
-      ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
-      ...mapGetters("login", ["userRole"]),
-      categories() {
-        return [
+  },
+  computed: {
+    ...mapGetters("login", ["userRole"]),
+    ...mapGetters("consultations", ["getConsultation"]),
+    patient_information() {
+      return {
+        information: [
           {
-            title: "Category of the Target Eligible Population",
-            content: this.registrant.citizen.category.description,
-          },
-          {
-            title: "Hub Id Number",
-            content: this.registrant.citizen.hub_registrant_number,
-          },
-        ];
-      },
-      personal_informations() {
-        return [
-          {
-            title: "Full Name",
-            content: `${this.registrant.citizen.last_name.toUpperCase()}, 
-            ${this.registrant.citizen.first_name.toUpperCase()} 
-            ${
-              this.registrant.citizen.middle_name
-                ? " " + this.registrant.citizen.middle_name.toUpperCase()
+            title: "Patient Name",
+            content: `${this.consultation.citizen.last_name}, ${
+              this.consultation.citizen.first_name
+            } ${
+              this.consultation.citizen.middle_name
+                ? this.consultation.citizen.middle_name
                 : ""
-            } 
-            ${
-              this.registrant.citizen.suffix
-                ? " " + this.registrant.citizen.suffix.toUpperCase()
+            } ${
+              this.consultation.citizen.suffix
+                ? this.consultation.citizen.suffix
                 : ""
             }`,
           },
           {
-            title: "Date of Birth",
-            content: this.registrant.citizen.birthday,
+            title: "Date Of Birth",
+            content: format(
+              parseISO(this.consultation.citizen.birthday),
+              "MMMM dd, yyyy"
+            ),
           },
           {
-            title: "Gender",
-            content: this.registrant.citizen.gender,
+            title: "Sex",
+            content: this.consultation.citizen.sex,
           },
           {
             title: "Civil Status",
-            content: this.registrant.citizen.civil_status,
+            content: this.consultation.citizen.civil_status,
           },
           {
-            title: "Blood Type",
-            content: this.registrant.citizen.blood_type,
+            title: "Address",
+            content: this.consultation.citizen.address,
+          },
+        ],
+        image_url: this.$url + this.consultation.citizen.image_url,
+      };
+    },
+    serviceInformation() {
+      let serviceable_title = null;
+      if (this.consultation.hospital_service.service_type) {
+        serviceable_title =
+          this.consultation.hospital_service.service_type
+            .charAt(0)
+            .toUpperCase() +
+          this.consultation.hospital_service.service_type
+            .slice(1)
+            .toLowerCase();
+      }
+      return {
+        service: [
+          {
+            title: `${serviceable_title} ID`,
+            content: this.consultation.id,
           },
           {
-            title: "Contact No",
-            content: this.registrant.citizen.contact_number,
-          },
-          {
-            title: "Tin No",
-            content: this.registrant.citizen.tin_number,
-          },
-          {
-            title: "Passport No",
-            content: this.registrant.citizen.passport_number,
-          },
-        ];
-      },
-      emergency() {
-        return [
-          {
-            title: "Full Name",
-            content: this.registrant.citizen.emergency_name,
-          },
-          {
-            title: "Contact No",
-            content: this.registrant.citizen.emergency_number,
-          },
-        ];
-      },
-      address() {
-        return [
-          {
-            title: "Unit/Building/House No./Purok/Street/Subdivision",
-            content: this.registrant.citizen.address,
-          },
-          {
-            title: "Barangay",
-            content: this.registrant.citizen.barangay.barangay_name,
-          },
-          {
-            title: "Municipality",
-            content:
-              this.registrant.citizen.barangay.municipality.municipality_name,
-          },
-          {
-            title: "Province",
-            content:
-              this.registrant.citizen.barangay.municipality.province
-                .province_name,
-          },
-        ];
-      },
-      serviceInformation() {
-        return [
-          {
-            title: "Service ID",
-            content: this.service.hospitalService.id,
-          },
-          {
-            title: "Doctor in charge",
-            content: "Doctor Aaron",
+            title: "Status",
+            content: this.consultation.hospital_service.status,
           },
           {
             title: "Service Availed",
-            content: this.service.hospitalService.service_type,
+            content: this.consultation.hospital_service.service_type,
           },
           {
             title: "Serviceable Availed",
-            content: this.service.hospitalService.serviceable_type_name,
+            content: this.consultation.specialty.name,
           },
-        ];
-      },
-      expansionRemarks() {
-        return [
+        ],
+        address: [
           {
             title: "Remarks",
-            content: this.service.hospitalService.remarks,
+            content: this.consultation.hospital_service.remarks,
           },
-        ];
-      },
+        ],
+      };
     },
-  };
-  </script>
-  
+  },
+};
+</script>
