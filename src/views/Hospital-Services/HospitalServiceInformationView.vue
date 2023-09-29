@@ -180,28 +180,23 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import SubmissionAlert from "@/components/SubmissionAlert.vue";
-import ErrorAlert from "@/components/ErrorAlert.vue";
 import HospitalServiceInformationContinutation from "./HospitalServiceInformationContinuatation.vue";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
+import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
-  mixins: [EditServiceMixin],
+  mixins: [EditServiceMixin, ErrorAlertsLogic],
   data: () => ({
     title: null,
     routeID: null,
     registrant: null,
     service: null,
     loading: false,
-    showAlert: false,
-    showError: false,
     auth: {
-      edit: false
+      edit: false,
     },
   }),
   components: {
-    SubmissionAlert,
-    ErrorAlert,
     HospitalServiceInformationContinutation,
     ServiceDialog,
   },
@@ -227,7 +222,7 @@ export default {
     activator() {
       const citizen_id = this.$route.params.id;
       const hospital_service_id = this.$route.params.hospital_service_id;
-      
+
       this.dialog = !this.dialog;
 
       return this.fetchHospitalServiceById({
@@ -243,11 +238,14 @@ export default {
     userRolePermissions() {
       if (this.userRole === "ADMIN") {
         this.auth.edit = true;
-      } 
+      }
     },
   },
   created() {
     this.fetchRegistrant();
+  },
+  updated() {
+    this.userRolePermissions();
   },
   watch: {
     getRegistrant(value) {
@@ -256,20 +254,6 @@ export default {
       this.registrant = value;
       this.routeID = id;
     },
-    getShowAlert(value) {
-      this.showAlert = value.alert;
-      this.title = value.message;
-      setTimeout(() => {
-        this.showAlert = false;
-      }, 5000);
-    },
-    getShowError(value) {
-      this.showError = value.alert;
-      this.title = value.message;
-      setTimeout(() => {
-        this.showError = false;
-      }, 5000);
-    },
     getHospitalService(value) {
       console.log(value);
       this.service = value;
@@ -277,7 +261,6 @@ export default {
   },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
-    ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
     ...mapGetters("login", ["userRole"]),
     categories() {
       return [
@@ -380,8 +363,8 @@ export default {
           content: this.service.hospitalService.id,
         },
         {
-          title: "Doctor in charge",
-          content: "Doctor Aaron",
+          title: "Health Professional",
+          content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
         },
         {
           title: "Service Availed",
