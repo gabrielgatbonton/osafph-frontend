@@ -71,27 +71,70 @@
                   >
                   <v-container fluid class="py-4">
                     <v-row no-gutters>
-                      <v-col cols="12">
-                        <v-avatar size="200" class="ml-3 my-3">
-                          <v-img
-                            max-height="400"
-                            max-width="200"
-                            :src="patient_information.image_url"
-                          ></v-img>
-                        </v-avatar>
+                      <v-col cols="12" md="4">
+                        <div class="text-center">
+                          <v-avatar
+                            rounded="lg"
+                            size="175"
+                            class="my-3"
+                            color="blue darken-4"
+                          >
+                            <v-img
+                              max-height="170"
+                              max-width="170"
+                              :src="patient_information.image_url"
+                            ></v-img>
+                          </v-avatar>
+                        </div>
                       </v-col>
-                      <v-col
-                        cols="12"
-                        md="6"
-                        sm="6"
-                        v-for="(info, index) in patient_information.information"
-                        :key="index"
-                      >
-                        <div class="ma-2">
-                          <div class="text-subtitle-1 grey--text">
-                            {{ info.title }}
-                          </div>
-                          <div class="text-h5">{{ info.content }}</div>
+                      <v-col cols="12" md="8" sm="12" xs="12">
+                        <v-row>
+                          <v-col
+                            cols="12"
+                            md="6"
+                            sm="6"
+                            v-for="(
+                              info, index
+                            ) in patient_information.information"
+                            :key="index"
+                          >
+                            <div class="ma-2">
+                              <div class="text-subtitle-1 grey--text">
+                                {{ info.title }}
+                              </div>
+                              <div class="text-h5">{{ info.content }}</div>
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="12">
+                        <div class="my-2">
+                          <v-expansion-panels>
+                            <v-expansion-panel>
+                              <v-expansion-panel-header>
+                                <div class="text-subtitle-1 font-weight-bold">
+                                  Additional Information
+                                </div>
+                              </v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <div
+                                  v-for="(
+                                    info, index
+                                  ) in patient_information.additional_information"
+                                  :key="index"
+                                >
+                                  <div class="ma-2">
+                                    <div class="text-subtitle-1 grey--text">
+                                      {{ info.title }}
+                                    </div>
+                                    <div class="text-h5">
+                                      {{ info.content }}
+                                    </div>
+                                  </div>
+                                </div>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                          </v-expansion-panels>
                         </div>
                       </v-col>
                     </v-row>
@@ -162,6 +205,7 @@ export default {
     ...mapGetters("consultations", ["getConsultation"]),
     patient_information() {
       return {
+        image_url: this.$url + this.consultation.citizen.image_url,
         information: [
           {
             title: "Patient Name",
@@ -192,12 +236,13 @@ export default {
             title: "Civil Status",
             content: this.consultation.citizen.civil_status,
           },
+        ],
+        additional_information: [
           {
             title: "Address",
             content: this.consultation.citizen.address,
           },
         ],
-        image_url: this.$url + this.consultation.citizen.image_url,
       };
     },
     serviceInformation() {
