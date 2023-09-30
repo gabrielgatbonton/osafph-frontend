@@ -6,17 +6,29 @@ Vue.use(Vuex);
 export const consultations = {
   namespaced: true,
   state: () => ({
-    consultations: [],
+    pendingConsultations: [],
+    archivedConsultations: [],
     consultation: null,
   }),
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
-      state.consultations = consultations.consultations;
-      console.log(state.consultations);
+      const pendingConsultations = consultations.consultations.filter(
+        (consultation) =>
+          consultation.hospital_service.status.includes("PENDING")
+      );
+      state.pendingConsultations = pendingConsultations;
+
+      const archivedConsultations = consultations.consultations.filter(
+        (consultation) =>
+          consultation.hospital_service.status.includes("COMPLETED") ||
+          consultation.hospital_service.status.includes("UNATTENDED")
+      );
+      state.archivedConsultations = archivedConsultations;
+      console.log(state.archivedConsultations);
     },
     SET_CONSULTATION(state, consultation) {
       state.consultation = consultation;
-    }
+    },
   },
   actions: {
     fetchConsultations({ commit }) {
@@ -43,7 +55,8 @@ export const consultations = {
     },
   },
   getters: {
-    getConsultations: (state) => state.consultations,
+    getPendingConsultations: (state) => state.pendingConsultations,
+    getArchivedConsultations: (state) => state.archivedConsultations,
     getConsultation: (state) => state.consultation,
   },
 };

@@ -8,12 +8,13 @@
           <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Consultations</span>
         </v-col>
-        <!-- <v-spacer></v-spacer>
-        <v-col cols="auto" v-if="auth.edit">
-          <v-btn dark class="blue darken-4 mr-3" @click="activator"
-            ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
+        <v-spacer></v-spacer>
+        <v-col cols="auto">
+          <v-btn dark class="blue darken-4 mr-3" @click="addConsultation"
+            ><v-icon dark left>mdi-square-edit-outline</v-icon>Add
+            Consultation</v-btn
           >
-        </v-col> -->
+        </v-col>
       </v-row>
       <v-divider class="my-4"></v-divider>
       <v-row no-gutters>
@@ -188,6 +189,9 @@ export default {
       return this.fetchConsultationById(consultation_id).catch((error) => {
         console.error("Error fetching Consultation Data:", error);
       });
+    },
+    addConsultation() {
+      this.$router.push({ name: "add-consultation-form" });
     },
   },
   created() {

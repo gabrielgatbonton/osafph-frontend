@@ -189,6 +189,24 @@
               counter="11"
             ></v-text-field>
           </v-col>
+          <v-col cols="12" lg="3" md="3" sm="6">
+            <v-text-field
+              v-model="data.religion"
+              label="Religion"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" lg="3" md="3" sm="6">
+            <v-text-field
+              v-model="data.nationality"
+              label="Nationality"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" lg="6" md="6" sm="6">
+            <v-combobox
+              v-model="data.nationality"
+              label="Occupation"
+            ></v-combobox>
+          </v-col>
         </v-row>
         <v-divider class="mx-auto my-3"></v-divider>
         <v-row class="mt-3">
@@ -311,6 +329,9 @@ export default {
       blood_type: null,
       emergency_name: null,
       emergency_number: null,
+      religion: null,
+      nationality: null,
+      occupation: null,
       address: null,
       province: null,
       municipality: null,
@@ -422,6 +443,10 @@ export default {
         this.data.emergency_number = value.citizen.emergency_number;
         this.data.address = value.citizen.address;
         this.data.mcg_cares_card = value.citizen.mcg_cares_card;
+        //Data for New Variables
+        // this.data.religion = value.citizen.religion;
+        // this.data.nationality = value.citizen.nationality;
+        // this.data.occupation = value.citizen.occupation;
 
         //Selects
         this.data.province =
