@@ -6,10 +6,22 @@
           <v-icon left>mdi-medical-bag</v-icon>
           <span class="title">Consultations</span>
         </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="auto">
+          <v-btn
+            class="mr-3"
+            color="blue darken-4"
+            dark
+            @click="switchConsultations"
+            >{{
+              consultationsStatus ? "Pending" : "Archived"
+            }}</v-btn
+          >
+        </v-col>
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ConsultationsTable :consultations="getConsultations"/>
+    <ConsultationsTable :consultations="switchData"/>
   </div>
 </template>
 
@@ -18,21 +30,24 @@ import { mapActions, mapGetters } from "vuex";
 import ConsultationsTable from '@/components/Hospital-Service/Consultations-Table.vue';
 export default {
   data: () => ({
-    // servicesStatus: false,
+    consultationsStatus: false,
   }),
   components: {
     ConsultationsTable,
   },
   methods: {
     ...mapActions("consultations", ["fetchConsultations"]),
+    switchConsultations() {
+      this.consultationsStatus = !this.consultationsStatus;
+    }
   },
   computed: {
-    ...mapGetters("consultations", ["getConsultations"]),
-    // switchData() {
-    //   return this.servicesStatus
-    //     ? this.getArchivedServices
-    //     : this.getHospitalServices;
-    // },
+    ...mapGetters("consultations", ["getPendingConsultations", "getArchivedConsultations"]),
+    switchData() {
+      return this.consultationsStatus
+        ? this.getArchivedConsultations
+        : this.getPendingConsultations;
+    },
   },
   watch: {
       getConsultations(value) {
