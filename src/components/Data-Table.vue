@@ -3,7 +3,7 @@
     :headers="headers"
     :items="data"
     item-key="name"
-    class="elevation-1"
+    class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
   >

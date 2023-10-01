@@ -89,7 +89,7 @@
                         </div>
                       </v-col>
                       <v-col cols="12" md="8" sm="12" xs="12">
-                        <v-row>
+                        <v-row no-gutters>
                           <v-col
                             cols="12"
                             md="6"
