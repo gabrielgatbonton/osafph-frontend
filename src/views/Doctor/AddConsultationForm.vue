@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ConsultationForm from './ConsultationForm.vue'
+import ConsultationForm from './consultation-form/ConsultationForm.vue'
 export default {
     name: 'AddConsultationForm',
     components: {

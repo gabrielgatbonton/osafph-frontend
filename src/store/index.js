@@ -9,6 +9,7 @@ import { services } from "./modules/services";
 import { alerts } from "./modules/alerts";
 import { services_choices } from "./modules/services-choices";
 import { consultations } from "./modules/consultations";
+import { consultation_enum } from "./modules/consultation-enum";
 
 Vue.use(Vuex);
 
@@ -23,5 +24,6 @@ export default new Vuex.Store({
     alerts,
     services_choices,
     consultations,
+    consultation_enum,
   },
 });
