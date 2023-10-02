@@ -101,12 +101,13 @@
             <v-card flat outlined class="mx-2">
               <div class="ma-5">
                 <v-row>
-                  <v-col cols="9">
+                  <v-col cols="6">
                     <v-text-field
-                      readonly
+                      v-model="data.subjective.chief_complaint"
                       label="Chief Complaint"
                     ></v-text-field>
                   </v-col>
+                  <v-spacer></v-spacer>
                   <v-col cols="3">
                     <v-text-field readonly label="Date"></v-text-field>
                   </v-col>
@@ -153,7 +154,7 @@
                       <v-col cols="12">
                         <v-row no-gutters>
                           <v-col
-                            :cols="checkbox.label === 'Others' ? 8 : 4"
+                            :cols="checkbox.label === 'Other' ? 8 : 4"
                             v-for="(
                               checkbox, index
                             ) in checkboxes.past_medical_histories"
@@ -169,7 +170,7 @@
                               <v-text-field
                                 class="mt-n3 mx-5"
                                 v-if="
-                                  checkbox.label === 'Others' &&
+                                  checkbox.label === 'Other' &&
                                   checkbox.value === 15 &&
                                   checkbox.checked === true
                                 "
@@ -190,7 +191,7 @@
                       <v-col cols="12">
                         <v-row no-gutters>
                           <v-col
-                            :cols="checkbox.label === 'Others' ? 8 : 4"
+                            :cols="checkbox.label === 'Other' ? 8 : 4"
                             v-for="(
                               checkbox, index
                             ) in checkboxes.family_medical_histories"
@@ -206,7 +207,7 @@
                               <v-text-field
                                 class="mt-n3 mx-5"
                                 v-if="
-                                  checkbox.label === 'Others' &&
+                                  checkbox.label === 'Other' &&
                                   checkbox.value === 11 &&
                                   checkbox.checked === true
                                 "
@@ -260,29 +261,50 @@
                     <v-text-field readonly label="Vital Signs"></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-select readonly label="BP"></v-select>
+                    <v-text-field
+                      v-model="data.objective.blood_pressure"
+                      label="BP"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-text-field readonly label="HR"></v-text-field>
+                    <v-text-field
+                      v-model="data.objective.heart_rate"
+                      label="HR"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-text-field readonly label="RR"></v-text-field>
+                    <v-text-field
+                      v-model="data.objective.respiratory_rate"
+                      label="RR"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-text-field readonly label="Temperature"></v-text-field>
+                    <v-text-field
+                      v-model="data.objective.temperature"
+                      label="Temperature"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-text-field readonly label="O2 Saturation"></v-text-field>
+                    <v-text-field
+                      v-model="data.objective.oxygen_saturation"
+                      label="O2 Saturation"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-text-field readonly label="Weight (kg)"></v-text-field>
+                    <v-text-field
+                      v-model="data.objective.weight"
+                      label="Weight (kg)"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-text-field readonly label="Height (m)"></v-text-field>
+                    <v-text-field
+                      v-model="data.objective.height"
+                      label="Height (m)"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="8">
                     <v-text-field
-                      readonly
+                      v-model="data.objective.pertinent_findings"
                       label="Permanent Findings"
                     ></v-text-field>
                   </v-col>
@@ -309,9 +331,22 @@ export default {
   name: "ConsultationForm",
   data: () => ({
     data: {
-      histories_of_present_illnesses: [],
-      past_medical_histories: [],
-      family_medical_histories: [],
+      subjective: {
+        chief_complaint: null,
+        histories_of_present_illnesses_id: [],
+        past_medical_histories_id: [],
+        family_medical_histories_id: [],
+      },
+      objective: {
+        blood_pressure: null,
+        heart_rate: null,
+        respiratory_rate: null,
+        temperature: null,
+        pertinent_findings: null,
+        oxygen_saturation: null,
+        weight: null,
+        height: null,
+      },
     },
     checkboxes: {
       history_of_present_illnesses: [],
@@ -337,18 +372,22 @@ export default {
           .filter((checkbox) => checkbox.checked)
           .map((checkbox) => checkbox.value);
 
-      this.data.histories_of_present_illnesses = checkedValuesHistory;
-      this.data.past_medical_histories = checkedValuesPastMedicalHistory;
-      this.data.family_medical_histories = checkedValuesFamilyMedicalHistory;
+      this.data.subjective.histories_of_present_illnesses_id =
+        checkedValuesHistory;
+      this.data.subjective.past_medical_histories_id =
+        checkedValuesPastMedicalHistory;
+      this.data.subjective.family_medical_histories_id =
+        checkedValuesFamilyMedicalHistory;
     },
     toContinuation() {
       const consultation_id = this.$route.params.consultation_id;
       const hospital_service_id = this.$route.params.hospital_service_id;
       this.$router.push({
         name: "consultation-form-continuation",
-        params: {
+        query: {
           consultation_id: consultation_id,
           hospital_service_id: hospital_service_id,
+          data: JSON.stringify(this.data),
         },
       });
     },
@@ -360,7 +399,6 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
-      console.log(this.checkboxes.history_of_present_illnesses);
     },
     getPastMedicalHistories(value) {
       this.checkboxes.past_medical_histories = value.map((checkbox) => ({

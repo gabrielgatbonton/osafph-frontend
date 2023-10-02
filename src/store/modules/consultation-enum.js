@@ -9,6 +9,8 @@ export const consultation_enum = {
     history_of_present_illnesses: [],
     past_medical_histories: [],
     family_medical_histories: [],
+    diagnosis: [],
+    diagnostics: [],
   }),
   mutations: {
     SET_HISTORY(state, history) {
@@ -20,12 +22,22 @@ export const consultation_enum = {
     SET_FAMILY_MEDICAL_HISTORY(state, history) {
       state.family_medical_histories = history;
     },
+    SET_DIAGNOSIS(state, diagnosis) {
+      state.diagnosis = diagnosis;
+    },
+    SET_DIAGNOSTICS(state, diagnostics) {
+      state.diagnostics = diagnostics;
+    }
   },
   actions: {
     fetchCheckboxes({ dispatch }) {
       dispatch("fetchHistoryOfPresentIllnesses");
       dispatch("fetchPastMedicalHistories");
       dispatch("fetchFamilyMedicalHistories");
+    },
+    fetchMoreCheckboxes({ dispatch }) {
+      dispatch("fetchDiagnosis");
+      dispatch("fetchDiagnostics")
     },
     fetchHistoryOfPresentIllnesses({ commit }) {
       return this.$axios
@@ -63,10 +75,34 @@ export const consultation_enum = {
           console.error("Error Fetching Family Medical Histories ENUM: ", error);
         });
     },
+    fetchDiagnosis({ commit }) {
+      return this.$axios
+      .get(`consultation-forms/diagnosis`)
+      .then((response) => {
+        const diagnosis = response.data.diagnosis;
+        commit("SET_DIAGNOSIS", diagnosis);
+      })
+      .catch((error) => {
+        console.error("Error Fetching Diagnosis ENUM: ", error);
+      });
+    },
+    fetchDiagnostics({ commit }) {
+      return this.$axios
+      .get(`diagnostic-types`)
+      .then((response) => {
+        const diagnostics = response.data.diagnosticType;
+        commit("SET_DIAGNOSTICS", diagnostics);
+      })
+      .catch((error) => {
+        console.error("Error Fetching Diagnostics ENUM: ", error);
+      });
+    },
   },
   getters: {
     getHistory: (state) => state.history_of_present_illnesses,
     getPastMedicalHistories: (state) => state.past_medical_histories,
     getFamilyMedicalHistories: (state) => state.family_medical_histories,
+    getDiagnosis: (state) => state.diagnosis,
+    getDiagnostics: (state) => state.diagnostics,
   },
 };
