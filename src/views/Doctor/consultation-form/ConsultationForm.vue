@@ -27,44 +27,84 @@
               <div class="ma-5">
                 <v-row>
                   <v-col cols="6">
-                    <v-text-field readonly label="Patient Name"></v-text-field>
+                    <v-text-field
+                      v-model="localBasicDetails.patient_name"
+                      readonly
+                      label="Patient Name"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-select readonly label="Sex"></v-select>
+                    <v-select
+                      v-model="localBasicDetails.sex"
+                      :items="selects.sex"
+                      readonly
+                      label="Sex"
+                    ></v-select>
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
                       readonly
                       label="Age"
                       type="number"
+                      v-model="localBasicDetails.age"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="2">
-                    <v-text-field readonly label="Birthdate"></v-text-field>
+                    <v-text-field
+                      v-model="localBasicDetails.birthday"
+                      readonly
+                      label="Birthdate"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="3">
-                    <v-select readonly label="Civil Status"></v-select>
+                    <v-select
+                      v-model="localBasicDetails.civil_status"
+                      :items="selects.civil_status"
+                      readonly
+                      label="Civil Status"
+                    ></v-select>
                   </v-col>
                   <v-col cols="3">
-                    <v-text-field readonly label="Religion"></v-text-field>
+                    <v-text-field
+                      v-model="localBasicDetails.religion"
+                      readonly
+                      label="Religion"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="3">
-                    <v-combobox readonly label="Occupation"></v-combobox>
+                    <v-text-field
+                      v-model="localBasicDetails.occupation"
+                      readonly
+                      label="Occupation"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="3">
-                    <v-text-field readonly label="Nationality"></v-text-field>
+                    <v-text-field
+                      v-model="localBasicDetails.nationality"
+                      readonly
+                      label="Nationality"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field readonly label="Address"></v-text-field>
+                    <v-text-field
+                      v-model="localBasicDetails.address"
+                      readonly
+                      label="Address"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="4">
                     <v-text-field
+                      v-model="localBasicDetails.date_of_consult"
                       readonly
                       label="Date of Consult"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="4">
-                    <v-text-field readonly label="Doctor"></v-text-field>
+                    <v-text-field
+                      v-model="localBasicDetails.doctor_name"
+                      readonly
+                      label="Doctor"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="4">
                     <v-text-field readonly label="Diagnosis"></v-text-field>
@@ -109,7 +149,11 @@
                   </v-col>
                   <v-spacer></v-spacer>
                   <v-col cols="3">
-                    <v-text-field readonly label="Date"></v-text-field>
+                    <v-text-field
+                      v-model="formattedDate"
+                      readonly
+                      label="Date"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <div class="text-h6 mb-2">History</div>
@@ -256,10 +300,6 @@
                   <v-col cols="12">
                     <div class="text-h6">PHYSICAL EXAMINATION</div>
                   </v-col>
-
-                  <v-col cols="2">
-                    <v-text-field readonly label="Vital Signs"></v-text-field>
-                  </v-col>
                   <v-col cols="2">
                     <v-text-field
                       v-model="data.objective.blood_pressure"
@@ -294,12 +334,14 @@
                     <v-text-field
                       v-model="data.objective.weight"
                       label="Weight (kg)"
+                      type="number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
                       v-model="data.objective.height"
                       label="Height (m)"
+                      type="number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="8">
@@ -326,9 +368,11 @@
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "ConsultationForm",
+  props: ["basic_details"],
   data: () => ({
     data: {
       subjective: {
@@ -353,9 +397,14 @@ export default {
       past_medical_histories: [],
       family_medical_histories: [],
     },
+    selects: {
+      sex: ["MALE", "FEMALE"],
+      civil_status: ["SINGLE", "MARRIED", "SEPARATED", "WIDOWED", "DIVORCED"],
+    },
     other_history_of_present_illness: null,
     other_past_medical_history: null,
     other_family_medical_history: null,
+    present_date: new Date().toISOString().slice(0, 10),
   }),
   methods: {
     ...mapActions("consultation_enum", ["fetchCheckboxes"]),
@@ -421,6 +470,14 @@ export default {
       "getPastMedicalHistories",
       "getFamilyMedicalHistories",
     ]),
+    formattedDate() {
+      return this.present_date
+        ? format(parseISO(this.present_date), "MMMM dd, yyyy")
+        : "";
+    },
+    localBasicDetails() {
+      return this.basic_details;
+    },
   },
   created() {
     this.fetchCheckboxes();

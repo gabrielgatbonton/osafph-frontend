@@ -9,7 +9,7 @@
           <span class="title">Consultations</span>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="auto">
+        <v-col cols="auto" v-if="consultation.hospital_service.status !== 'COMPLETED'">
           <v-btn dark class="blue darken-4 mr-3" @click="addConsultation"
             ><v-icon dark left>mdi-square-edit-outline</v-icon>Add
             Consultation</v-btn
@@ -191,7 +191,9 @@ export default {
       });
     },
     addConsultation() {
-      this.$router.push({ name: "add-consultation-form" });
+      this.$router.push({ name: "add-consultation-form", query: {
+        data: JSON.stringify(this.consultation)
+      }});
     },
   },
   created() {

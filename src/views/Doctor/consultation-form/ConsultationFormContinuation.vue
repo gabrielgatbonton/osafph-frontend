@@ -210,7 +210,7 @@ export default {
   name: "ConsultationFormContinuation",
   data: () => ({
     checkboxes: {
-      diagnosis: [],
+      diagnosis: null,
       diagnostics: [],
     },
     data: {
@@ -236,15 +236,12 @@ export default {
   }),
   methods: {
     ...mapActions("consultation_enum", ["fetchMoreCheckboxes"]),
+    ...mapActions("consultations", ["addConsultationToId"]),
     pushToHistory() {
-      const checkedValuesDiagnosis = this.checkboxes.diagnosis
-        .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value);
       const checkedValuesDiagnostics = this.checkboxes.diagnostics
         .filter((checkbox) => checkbox.checked)
         .map((checkbox) => checkbox.value);
 
-      this.data.assessment.diagnosis = checkedValuesDiagnosis;
       this.data.plan.diagnostic_type_id = checkedValuesDiagnostics;
     },
     fetchQueryData() {
@@ -262,7 +259,41 @@ export default {
       }
     },
     submitForm() {
-      console.log("Submit Form", this.data);
+      const consultation_id = this.$route.query.consultation_id;
+      let data = {};
+
+      if (this.data.plan.others === null) {
+        data = {
+          diagnosis: this.data.assessment.diagnosis,
+          chief_complaint: this.data.subjective.chief_complaint,
+          history_of_present_illness_id:
+            this.data.subjective.histories_of_present_illnesses_id,
+          past_medical_history_id:
+            this.data.subjective.past_medical_histories_id,
+          family_medical_history_id:
+            this.data.subjective.family_medical_histories_id,
+          blood_pressure: this.data.objective.blood_pressure,
+          heart_rate: this.data.objective.heart_rate,
+          respiratory_rate: this.data.objective.respiratory_rate,
+          temperature: this.data.objective.temperature,
+          pertinent_findings: this.data.objective.pertinent_findings,
+          oxygen_saturation: this.data.objective.oxygen_saturation,
+          weight: this.data.objective.weight,
+          height: this.data.objective.height,
+          diagnostic_type_id: this.data.plan.diagnostic_type_id,
+          medications: this.data.plan.medications,
+          referral: this.data.plan.referral,
+          follow_up_date: this.data.plan.follow_up_date,
+          fit_to_work_starting: this.data.plan.fit_to_work_starting,
+          may_rest_for: this.data.plan.may_rest_for,
+        };
+      }
+      this.addConsultationToId({
+        consultation_id: consultation_id,
+        data: data,
+      }).catch((error) => {
+        console.log("Error Submitting Consultation Form: ", error);
+      });
     },
   },
   computed: {
@@ -279,18 +310,17 @@ export default {
     },
     formattedDays() {
       let value = null;
-      if (this.data.plan.may_rest_for === '1') {
-        value + " Day"
-      }
-      else {
-        value + " Days"
+      if (this.data.plan.may_rest_for === "1") {
+        value + " Day";
+      } else {
+        value + " Days";
       }
       return value;
-    }
+    },
   },
   watch: {
     getDiagnosis(value) {
-      this.checkboxes.diagnosis = value;
+      this.checkboxes.diagnosis = value.map((data) => data.name);
     },
     getDiagnostics(value) {
       this.checkboxes.diagnostics = value.map((checkbox) => ({

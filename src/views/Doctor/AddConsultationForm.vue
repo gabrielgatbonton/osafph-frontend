@@ -8,20 +8,51 @@
         </v-col>
       </v-row>
     </v-container>
-    <ConsultationForm />
+    <ConsultationForm :basic_details="fetchQueryData" />
   </div>
 </template>
 
 <script>
-import ConsultationForm from './consultation-form/ConsultationForm.vue'
+import ConsultationForm from "./consultation-form/ConsultationForm.vue";
+import { format, parseISO } from 'date-fns';
 export default {
-    name: 'AddConsultationForm',
-    components: {
-        ConsultationForm,
-    }
-}
+  name: "AddConsultationForm",
+  components: {
+    ConsultationForm,
+  },
+  computed: {
+    fetchQueryData() {
+      const data = this.$route.query.data;
+      let parsedData = null;
+      let basic_details = null;
+      if (data) {
+        parsedData = JSON.parse(data);
+        basic_details = {
+          patient_name: `${parsedData.citizen.last_name}, ${
+            parsedData.citizen.first_name
+          } ${
+            parsedData.citizen.middle_name ? parsedData.citizen.middle_name : ""
+          } ${parsedData.citizen.suffix ? parsedData.citizen.suffix : ""}`,
+          sex: parsedData.citizen.sex,
+          age: parsedData.citizen.age,
+          birthday: format(parseISO(parsedData.citizen.birthday), "MMMM dd, yyyy"),
+          civil_status: parsedData.citizen.civil_status,
+          religion: parsedData.citizen.religion,
+          occupation: parsedData.citizen.occupation,
+          nationality: parsedData.citizen.nationality,
+          address: parsedData.citizen.address,
+          date_of_consult: format(parseISO(parsedData.hospital_service.scheduled_date), "MMMM dd, yyyy"),
+          doctor_name: `${parsedData.doctor.last_name}, ${
+            parsedData.doctor.first_name
+          } ${
+            parsedData.doctor.middle_name ? parsedData.doctor.middle_name : ""
+          }`,
+        };
+      }
+      return basic_details;
+    },
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

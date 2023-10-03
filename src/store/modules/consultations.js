@@ -9,6 +9,7 @@ export const consultations = {
     pendingConsultations: [],
     archivedConsultations: [],
     consultation: null,
+    doctorConsultations: []
   }),
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
@@ -29,6 +30,9 @@ export const consultations = {
     SET_CONSULTATION(state, consultation) {
       state.consultation = consultation;
     },
+    ADD_DOCTOR_CONSULTATION(state, consultation) {
+      state.doctorConsultations.push(consultation);
+    }
   },
   actions: {
     fetchConsultations({ commit }) {
@@ -51,6 +55,22 @@ export const consultations = {
         })
         .catch((error) => {
           console.error("Error Fetching Consultation: ", error);
+        });
+    },
+    addConsultationToId({ commit }, {consultation_id, data}) {
+      console.log(consultation_id);
+      console.log(data)
+      return this.$axios
+        .post(
+          `doctors/consultations/${consultation_id}/consultation-forms`,
+          data
+        )
+        .then((response) => {
+          const consultation = response.data;
+          commit("ADD_DOCTOR_CONSULTATION", consultation);
+        })
+        .catch((error) => {
+          console.log("Error Adding Consultation by Doctor", error);
         });
     },
   },
