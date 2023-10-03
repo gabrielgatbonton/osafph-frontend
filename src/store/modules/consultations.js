@@ -9,7 +9,8 @@ export const consultations = {
     pendingConsultations: [],
     archivedConsultations: [],
     consultation: null,
-    doctorConsultations: []
+    doctorConsultationForms: [],
+    consultationsIndex: [],
   }),
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
@@ -31,7 +32,7 @@ export const consultations = {
       state.consultation = consultation;
     },
     ADD_DOCTOR_CONSULTATION(state, consultation) {
-      state.doctorConsultations.push(consultation);
+      state.doctorConsultationForms.push(consultation);
     }
   },
   actions: {
@@ -71,6 +72,9 @@ export const consultations = {
           console.log("Error Adding Consultation by Doctor", error);
         });
     },
+    // fetchConsultationForms({commit}) {
+    //   return this.$axios.get(``)
+    // }
   },
   getters: {
     getPendingConsultations: (state) => state.pendingConsultations,
