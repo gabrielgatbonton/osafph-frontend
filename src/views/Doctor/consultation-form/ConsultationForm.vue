@@ -143,7 +143,7 @@
                 <v-row>
                   <v-col cols="6">
                     <v-text-field
-                      v-model="data.subjective.chief_complaint"
+                      v-model="data.chief_complaint"
                       label="Chief Complaint"
                     ></v-text-field>
                   </v-col>
@@ -302,51 +302,51 @@
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
-                      v-model="data.objective.blood_pressure"
+                      v-model="data.blood_pressure"
                       label="BP"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
-                      v-model="data.objective.heart_rate"
+                      v-model="data.heart_rate"
                       label="HR"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
-                      v-model="data.objective.respiratory_rate"
+                      v-model="data.respiratory_rate"
                       label="RR"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
-                      v-model="data.objective.temperature"
+                      v-model="data.temperature"
                       label="Temperature"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
-                      v-model="data.objective.oxygen_saturation"
+                      v-model="data.oxygen_saturation"
                       label="O2 Saturation"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
-                      v-model="data.objective.weight"
+                      v-model="data.weight"
                       label="Weight (kg)"
                       type="number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="2">
                     <v-text-field
-                      v-model="data.objective.height"
+                      v-model="data.height"
                       label="Height (m)"
                       type="number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="8">
                     <v-text-field
-                      v-model="data.objective.pertinent_findings"
+                      v-model="data.pertinent_findings"
                       label="Permanent Findings"
                     ></v-text-field>
                   </v-col>
@@ -375,23 +375,22 @@ export default {
   props: ["basic_details"],
   data: () => ({
     data: {
-      subjective: {
-        chief_complaint: null,
-        histories_of_present_illnesses_id: [],
-        past_medical_histories_id: [],
-        family_medical_histories_id: [],
-      },
-      objective: {
-        blood_pressure: null,
-        heart_rate: null,
-        respiratory_rate: null,
-        temperature: null,
-        pertinent_findings: null,
-        oxygen_saturation: null,
-        weight: null,
-        height: null,
-      },
+      chief_complaint: null,
+      history_of_present_illness_id: [],
+      past_medical_history_id: [],
+      family_medical_history_id: [],
+      blood_pressure: null,
+      heart_rate: null,
+      respiratory_rate: null,
+      temperature: null,
+      pertinent_findings: null,
+      oxygen_saturation: null,
+      weight: null,
+      height: null,
     },
+    other_history_of_present_illness: null,
+    other_past_medical_history: null,
+    other_family_medical_history: null,
     checkboxes: {
       history_of_present_illnesses: [],
       past_medical_histories: [],
@@ -401,9 +400,6 @@ export default {
       sex: ["MALE", "FEMALE"],
       civil_status: ["SINGLE", "MARRIED", "SEPARATED", "WIDOWED", "DIVORCED"],
     },
-    other_history_of_present_illness: null,
-    other_past_medical_history: null,
-    other_family_medical_history: null,
     present_date: new Date().toISOString().slice(0, 10),
   }),
   methods: {
@@ -421,12 +417,30 @@ export default {
           .filter((checkbox) => checkbox.checked)
           .map((checkbox) => checkbox.value);
 
-      this.data.subjective.histories_of_present_illnesses_id =
-        checkedValuesHistory;
-      this.data.subjective.past_medical_histories_id =
-        checkedValuesPastMedicalHistory;
-      this.data.subjective.family_medical_histories_id =
-        checkedValuesFamilyMedicalHistory;
+      // Create an object to store the updated data.subjective
+      const updatedData = {
+        ...this.data,
+        history_of_present_illness_id: checkedValuesHistory,
+        past_medical_history_id: checkedValuesPastMedicalHistory,
+        family_medical_history_id: checkedValuesFamilyMedicalHistory,
+      };
+
+      // Check and add other values if they exist
+      if (this.other_history_of_present_illness) {
+        updatedData.other_history_of_present_illness =
+          this.other_history_of_present_illness;
+      }
+      if (this.other_past_medical_history) {
+        updatedData.other_past_medical_history =
+          this.other_past_medical_history;
+      }
+      if (this.other_family_medical_history) {
+        updatedData.other_family_medical_history =
+          this.other_family_medical_history;
+      }
+
+      // Set the data
+      this.data = updatedData;
     },
     toContinuation() {
       const consultation_id = this.$route.params.consultation_id;

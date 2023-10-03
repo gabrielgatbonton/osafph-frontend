@@ -29,7 +29,7 @@
                       item-text="name"
                       :items="checkboxes.diagnosis"
                       label="Diagnosis"
-                      v-model="data.assessment.diagnosis"
+                      v-model="data.diagnosis"
                       placeholder="Please Specify or Choose"
                     ></v-combobox>
                   </v-col>
@@ -91,7 +91,7 @@
                     <v-row no-gutters>
                       <v-col cols="12">
                         <v-text-field
-                          v-model="data.plan.medications"
+                          v-model="data.medications"
                           label="Specify Medications"
                         ></v-text-field>
                       </v-col>
@@ -103,7 +103,7 @@
                     <v-row no-gutters>
                       <v-col cols="12">
                         <v-text-field
-                          v-model="data.plan.referral"
+                          v-model="data.referral"
                           label="Specify Referral"
                         ></v-text-field>
                       </v-col>
@@ -115,7 +115,7 @@
                     <v-row no-gutters>
                       <v-col cols="12">
                         <v-text-field
-                          v-model="data.plan.others"
+                          v-model="data.others"
                           label="Specify Others"
                         ></v-text-field>
                       </v-col>
@@ -146,7 +146,7 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="data.plan.follow_up_date"
+                        v-model="data.follow_up_date"
                         :min="minDate_1"
                         @input="menu_1 = false"
                       ></v-date-picker>
@@ -172,7 +172,7 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="data.plan.fit_to_work_starting"
+                        v-model="data.fit_to_work_starting"
                         :min="minDate_2"
                         @input="menu_2 = false"
                       ></v-date-picker>
@@ -180,7 +180,7 @@
                   </v-col>
                   <v-col cols="4">
                     <v-text-field
-                      v-model="data.plan.may_rest_for"
+                      v-model="data.may_rest_for"
                       :value="formattedDays"
                       label="May Rest For"
                     ></v-text-field>
@@ -214,18 +214,14 @@ export default {
       diagnostics: [],
     },
     data: {
-      assessment: {
-        diagnosis: [],
-      },
-      plan: {
-        diagnostic_type_id: [],
-        medications: null,
-        referral: null,
-        others: null,
-        follow_up_date: null,
-        fit_to_work_starting: null,
-        may_rest_for: null,
-      },
+      diagnosis: null,
+      diagnostic_type_id: [],
+      medications: null,
+      referral: null,
+      others: null,
+      follow_up_date: null,
+      fit_to_work_starting: null,
+      may_rest_for: null,
     },
     menu_1: false,
     menu_2: false,
@@ -242,7 +238,7 @@ export default {
         .filter((checkbox) => checkbox.checked)
         .map((checkbox) => checkbox.value);
 
-      this.data.plan.diagnostic_type_id = checkedValuesDiagnostics;
+      this.data.diagnostic_type_id = checkedValuesDiagnostics;
     },
     fetchQueryData() {
       const consultationData = this.$route.query.data;
@@ -260,57 +256,34 @@ export default {
     },
     submitForm() {
       const consultation_id = this.$route.query.consultation_id;
-      let data = {};
 
-      if (this.data.plan.others === null) {
-        data = {
-          diagnosis: this.data.assessment.diagnosis,
-          chief_complaint: this.data.subjective.chief_complaint,
-          history_of_present_illness_id:
-            this.data.subjective.histories_of_present_illnesses_id,
-          past_medical_history_id:
-            this.data.subjective.past_medical_histories_id,
-          family_medical_history_id:
-            this.data.subjective.family_medical_histories_id,
-          blood_pressure: this.data.objective.blood_pressure,
-          heart_rate: this.data.objective.heart_rate,
-          respiratory_rate: this.data.objective.respiratory_rate,
-          temperature: this.data.objective.temperature,
-          pertinent_findings: this.data.objective.pertinent_findings,
-          oxygen_saturation: this.data.objective.oxygen_saturation,
-          weight: this.data.objective.weight,
-          height: this.data.objective.height,
-          diagnostic_type_id: this.data.plan.diagnostic_type_id,
-          medications: this.data.plan.medications,
-          referral: this.data.plan.referral,
-          follow_up_date: this.data.plan.follow_up_date,
-          fit_to_work_starting: this.data.plan.fit_to_work_starting,
-          may_rest_for: this.data.plan.may_rest_for,
-        };
-      }
       this.addConsultationToId({
         consultation_id: consultation_id,
-        data: data,
-      }).catch((error) => {
-        console.log("Error Submitting Consultation Form: ", error);
-      });
+        data: this.data,
+      })
+        .catch((error) => {
+          console.log("Error Submitting Consultation Form: ", error);
+        })
+        .finally(() => {
+          this.$router.push({ name: "consultation-view" });
+        });
     },
   },
   computed: {
     ...mapGetters("consultation_enum", ["getDiagnosis", "getDiagnostics"]),
     formattedDate1() {
-      return this.data.plan.follow_up_date
-        ? format(parseISO(this.data.plan.follow_up_date), "MMMM d, yyyy")
+      return this.data.follow_up_date
+        ? format(parseISO(this.data.follow_up_date), "MMMM d, yyyy")
         : "";
     },
     formattedDate2() {
-      return this.data.plan.fit_to_work_starting
-        ? format(parseISO(this.data.plan.fit_to_work_starting), "MMMM d, yyyy")
+      return this.data.fit_to_work_starting
+        ? format(parseISO(this.data.fit_to_work_starting), "MMMM d, yyyy")
         : "";
     },
     formattedDays() {
       let value = null;
-      if (this.data.plan.may_rest_for === "1") {
+      if (this.data.may_rest_for === "1") {
         value + " Day";
       } else {
         value + " Days";
