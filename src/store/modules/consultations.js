@@ -58,8 +58,6 @@ export const consultations = {
         });
     },
     addConsultationToId({ commit }, {consultation_id, data}) {
-      console.log(consultation_id);
-      console.log(data)
       return this.$axios
         .post(
           `doctors/consultations/${consultation_id}/consultation-forms`,

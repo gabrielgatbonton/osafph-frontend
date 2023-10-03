@@ -35,6 +35,11 @@
             <v-list-item-title>{{ link.text }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <DropdownDrawer
+          v-if="auth.citizen"
+          :content="citizen.dropDownData"
+          :sublinks="citizen.citizensSublinks"
+        />
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -42,11 +47,25 @@
 
 <script>
 import { mapGetters } from "vuex";
+import DropdownDrawer from "./Dropdown/DropdownDrawer.vue";
 export default {
   data: () => ({
     links: null,
+    citizen: {
+      dropDownData: {
+        icon: null,
+        title: null,
+      },
+      citizensSublinks: [],
+    },
+    auth: {
+      citizen: false,
+    },
   }),
   props: ["drawer"],
+  components: {
+    DropdownDrawer,
+  },
   computed: {
     ...mapGetters("login", ["userRole"]),
     localDrawer: {
@@ -68,8 +87,25 @@ export default {
             text: "Dashboard",
             route: "/dashboard",
           },
-          { icon: "mdi-folder", text: "Citizens", route: "/citizens" },
           { icon: "mdi-account", text: "Management", route: "/management" },
+        ];
+        //Configuration for the Citizen Dropdown NavDrawer
+        this.auth.citizen = true;
+        this.citizen.dropDownData = {
+          icon: "mdi-account-group",
+          title: "Citizens",
+        };
+        this.citizen.citizensSublinks = [
+          {
+            icon: "mdi-account",
+            text: "Registrants",
+            route: "/citizens",
+          },
+          {
+            icon: "mdi-medical-bag",
+            text: "Consultations",
+            route: "/consultations",
+          },
         ];
       } else if (this.userRole === "DOCTOR") {
         links = [
@@ -91,7 +127,7 @@ export default {
   },
   mounted() {
     console.log(this.userRole);
-    this.setLinks()
-  }
+    this.setLinks();
+  },
 };
 </script>
