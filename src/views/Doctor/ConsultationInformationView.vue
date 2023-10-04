@@ -9,7 +9,10 @@
           <span class="title">Consultations</span>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="auto" v-if="consultation.hospital_service.status !== 'COMPLETED'">
+        <v-col
+          cols="auto"
+          v-if="consultation.hospital_service.status !== 'COMPLETED'"
+        >
           <v-btn dark class="blue darken-4 mr-3" @click="addConsultation"
             ><v-icon dark left>mdi-square-edit-outline</v-icon>Add
             Consultation</v-btn
@@ -118,20 +121,23 @@
                                 </div>
                               </v-expansion-panel-header>
                               <v-expansion-panel-content>
-                                <div
-                                  v-for="(
-                                    info, index
-                                  ) in patient_information.additional_information"
-                                  :key="index"
-                                >
-                                  <div class="ma-2">
-                                    <div class="text-subtitle-1 grey--text">
-                                      {{ info.title }}
-                                    </div>
-                                    <div class="text-h5">
-                                      {{ info.content }}
-                                    </div>
-                                  </div>
+                                <div class="ma-2">
+                                  <v-row>
+                                    <v-col
+                                      cols="6"
+                                      v-for="(
+                                        info, index
+                                      ) in patient_information.additional_information"
+                                      :key="index"
+                                    >
+                                      <div class="text-subtitle-1 grey--text">
+                                        {{ info.title }}
+                                      </div>
+                                      <div class="text-h5">
+                                        {{ info.content }}
+                                      </div>
+                                    </v-col>
+                                  </v-row>
                                 </div>
                               </v-expansion-panel-content>
                             </v-expansion-panel>
@@ -191,9 +197,12 @@ export default {
       });
     },
     addConsultation() {
-      this.$router.push({ name: "add-consultation-form", query: {
-        data: JSON.stringify(this.consultation)
-      }});
+      this.$router.push({
+        name: "add-consultation-form",
+        query: {
+          data: JSON.stringify(this.consultation),
+        },
+      });
     },
   },
   created() {
@@ -228,25 +237,41 @@ export default {
             }`,
           },
           {
-            title: "Date Of Birth",
-            content: format(
-              parseISO(this.consultation.citizen.birthday),
-              "MMMM dd, yyyy"
-            ),
+            title: "Age",
+            content: this.consultation.citizen.age,
           },
           {
             title: "Sex",
             content: this.consultation.citizen.sex,
           },
           {
-            title: "Civil Status",
-            content: this.consultation.citizen.civil_status,
+            title: "Date Of Birth",
+            content: format(
+              parseISO(this.consultation.citizen.birthday),
+              "MMMM dd, yyyy"
+            ),
           },
         ],
         additional_information: [
           {
             title: "Address",
             content: this.consultation.citizen.address,
+          },
+          {
+            title: "Civil Status",
+            content: this.consultation.citizen.civil_status,
+          },
+          {
+            title: "Religion",
+            content: this.consultation.citizen.religion,
+          },
+          {
+            title: "Occupation",
+            content: this.consultation.citizen.occupation,
+          },
+          {
+            title: "Nationality",
+            content: this.consultation.citizen.nationality,
           },
         ],
       };
