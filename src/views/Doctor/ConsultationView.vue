@@ -21,7 +21,7 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ConsultationsTable :consultations="switchData"/>
+    <ConsultationsTable :routeName="routeName" :consultations="switchData"/>
   </div>
 </template>
 
@@ -31,6 +31,7 @@ import ConsultationsTable from '@/components/Hospital-Service/Consultations-Tabl
 export default {
   data: () => ({
     consultationsStatus: false,
+    routeName: "consultation-view"
   }),
   components: {
     ConsultationsTable,

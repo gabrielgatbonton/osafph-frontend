@@ -62,7 +62,7 @@
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 export default {
-  props: ["consultations"],
+  props: ["consultations", "routeName"],
   methods: {
     filterOnlyCapsText(value, search) {
       return (
@@ -74,7 +74,7 @@ export default {
     },
     viewRegistrantService(consultation_id, hospital_service_id) {
       this.$router.push({
-        name: "consultation-view",
+        name: this.routeName,
         params: {
           consultation_id: consultation_id,
           hospital_service_id: hospital_service_id,
