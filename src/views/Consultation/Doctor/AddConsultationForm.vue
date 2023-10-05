@@ -47,7 +47,6 @@ export default {
             parsedData.doctor.middle_name ? parsedData.doctor.middle_name : ""
           }`,
         };
-        console.log(basic_details)
       }
       return basic_details;
     },

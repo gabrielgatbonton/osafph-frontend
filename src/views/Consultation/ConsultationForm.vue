@@ -497,18 +497,20 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
-      this.checkboxes.history_of_present_illnesses.forEach((checkbox) => {
-        if (
-          this.consultation_form.history_of_present_illness.includes(
-            checkbox.label
-          )
-        ) {
-          checkbox.checked = true;
-        } else {
-          checkbox.checked = false;
-        }
-      });
-      this.assignValues();
+      if (this.consultation_form) {
+        this.checkboxes.history_of_present_illnesses.forEach((checkbox) => {
+          if (
+            this.consultation_form.history_of_present_illness.includes(
+              checkbox.label
+            )
+          ) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
+        this.assignValues();
+      }
     },
     getPastMedicalHistories(value) {
       this.checkboxes.past_medical_histories = value.map((checkbox) => ({
@@ -516,16 +518,18 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
-      this.checkboxes.past_medical_histories.forEach((checkbox) => {
-        if (
-          this.consultation_form.past_medical_history.includes(checkbox.label)
-        ) {
-          checkbox.checked = true;
-        } else {
-          checkbox.checked = false;
-        }
-      });
-      this.assignValues();
+      if (this.consultation_form) {
+        this.checkboxes.past_medical_histories.forEach((checkbox) => {
+          if (
+            this.consultation_form.past_medical_history.includes(checkbox.label)
+          ) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
+        this.assignValues();
+      }
     },
     getFamilyMedicalHistories(value) {
       this.checkboxes.family_medical_histories = value.map((checkbox) => ({
@@ -533,16 +537,20 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
-      this.checkboxes.family_medical_histories.forEach((checkbox) => {
-        if (
-          this.consultation_form.family_medical_history.includes(checkbox.label)
-        ) {
-          checkbox.checked = true;
-        } else {
-          checkbox.checked = false;
-        }
-      });
-      this.assignValues();
+      if (this.consultation_form) {
+        this.checkboxes.family_medical_histories.forEach((checkbox) => {
+          if (
+            this.consultation_form.family_medical_history.includes(
+              checkbox.label
+            )
+          ) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
+        this.assignValues();
+      }
     },
   },
   computed: {
@@ -564,7 +572,6 @@ export default {
   created() {
     this.fetchCheckboxes();
   },
-  mounted() {},
 };
 </script>
 

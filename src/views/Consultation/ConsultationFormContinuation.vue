@@ -277,8 +277,8 @@ export default {
           });
       } else if (this.userRole === "ADMIN") {
         this.updateAdminConsultationFormById({
-          consultation_id: consultation_id,
-          consultation_form_id: this.consultation_form.id,
+          consultation_id: this.consultation_form.consultation_id,
+          consultation_form_id: this.consultation_form.consultation_form_id,
           data: this.data,
         })
           .catch((error) => {
@@ -291,14 +291,15 @@ export default {
     },
     assignValues() {
       if (this.consultation_form) {
-          this.data.diagnosis = this.consultation_form.diagnosis;
-          this.data.diagnostic_type_id = this.consultation_form.diagnostic_type;
-          this.data.medications = this.consultation_form.medications;
-          this.data.referral = this.consultation_form.referral;
-          this.data.others = this.consultation_form.others;
-          this.data.follow_up_date = this.consultation_form.follow_up_date;
-          this.data.fit_to_work_starting = this.consultation_form.fit_to_work_starting;
-          this.data.may_rest_for = this.consultation_form.may_rest_for;
+        this.data.diagnosis = this.consultation_form.diagnosis;
+        this.data.diagnostic_type_id = this.consultation_form.diagnostic_type;
+        this.data.medications = this.consultation_form.medications;
+        this.data.referral = this.consultation_form.referral;
+        this.data.others = this.consultation_form.others;
+        this.data.follow_up_date = this.consultation_form.follow_up_date;
+        this.data.fit_to_work_starting =
+          this.consultation_form.fit_to_work_starting;
+        this.data.may_rest_for = this.consultation_form.may_rest_for;
       }
     },
   },
@@ -315,20 +316,13 @@ export default {
         ? format(parseISO(this.data.fit_to_work_starting), "MMMM d, yyyy")
         : "";
     },
-    formattedDays() {
-      let value = null;
-      if (this.data.may_rest_for === "1") {
-        value + " Day";
-      } else {
-        value + " Days";
-      }
-      return value;
-    },
   },
   watch: {
     getDiagnosis(value) {
       this.checkboxes.diagnosis = value.map((data) => data.name);
-      this.assignValues();
+      if (this.consultation_form) {
+        this.assignValues();
+      }
     },
     getDiagnostics(value) {
       this.checkboxes.diagnostics = value.map((checkbox) => ({
@@ -336,14 +330,16 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
-      this.checkboxes.diagnostics.forEach((checkbox) => {
-        if (this.consultation_form.diagnostic_type.includes(checkbox.label)) {
-          checkbox.checked = true;
-        } else {
-          checkbox.checked = false;
-        }
-      });
-      this.assignValues();
+      if (this.consultation_form) {
+        this.checkboxes.diagnostics.forEach((checkbox) => {
+          if (this.consultation_form.diagnostic_type.includes(checkbox.label)) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
+        this.assignValues();
+      }
     },
   },
   created() {

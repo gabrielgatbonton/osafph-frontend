@@ -247,14 +247,12 @@ export default {
   watch: {
     getConsultation(value) {
       this.consultation = value.consultation;
-      console.log(this.consultation);
     },
     getAdminConsultation(value) {
       this.consultation = value.consultation;
     },
     getAdminConsultationForm(value) {
       this.consultation_form = value;
-      console.log(this.consultation_form)
     },
   },
   computed: {

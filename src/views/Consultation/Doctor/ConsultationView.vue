@@ -50,11 +50,6 @@ export default {
         : this.getPendingConsultations;
     },
   },
-  watch: {
-      getPendingConsultations(value) {
-        console.log(value);
-      }
-  },
   created() {
     this.fetchConsultations();
   },
