@@ -372,7 +372,16 @@ import { format, parseISO } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "ConsultationForm",
-  props: ["basic_details"],
+  props: {
+    basic_details: {
+      type: Object,
+      required: true,
+    },
+    consultation_form: {
+      type: Object,
+      required: false,
+    },
+  },
   data: () => ({
     data: {
       chief_complaint: null,
@@ -445,14 +454,40 @@ export default {
     toContinuation() {
       const consultation_id = this.$route.params.consultation_id;
       const hospital_service_id = this.$route.params.hospital_service_id;
-      this.$router.push({
-        name: "consultation-form-continuation",
-        query: {
-          consultation_id: consultation_id,
-          hospital_service_id: hospital_service_id,
-          data: JSON.stringify(this.data),
-        },
-      });
+      if (this.userRole === "DOCTOR") {
+        this.$router.push({
+          name: "consultation-form-continuation",
+          query: {
+            consultation_id: consultation_id,
+            hospital_service_id: hospital_service_id,
+            data: JSON.stringify(this.data),
+          },
+        });
+      } else if (this.userRole === "ADMIN") {
+        this.$router.push({
+          name: "edit-consultation-form-continuation",
+          query: {
+            consultation_id: consultation_id,
+            hospital_service_id: hospital_service_id,
+            data: JSON.stringify(this.data),
+            consultation_form: JSON.stringify(this.consultation_form),
+          },
+        });
+      }
+    },
+    assignValues() {
+      if (this.consultation_form && this.checkboxes) {
+        this.data.chief_complaint = this.consultation_form.chief_complaint;
+        this.data.blood_pressure = this.consultation_form.blood_pressure;
+        this.data.heart_rate = this.consultation_form.heart_rate;
+        this.data.respiratory_rate = this.consultation_form.respiratory_rate;
+        this.data.temperature = this.consultation_form.temperature;
+        this.data.pertinent_findings =
+          this.consultation_form.pertinent_findings;
+        this.data.oxygen_saturation = this.consultation_form.oxygen_saturation;
+        this.data.weight = this.consultation_form.weight;
+        this.data.height = this.consultation_form.height;
+      }
     },
   },
   watch: {
@@ -462,6 +497,18 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
+      this.checkboxes.history_of_present_illnesses.forEach((checkbox) => {
+        if (
+          this.consultation_form.history_of_present_illness.includes(
+            checkbox.label
+          )
+        ) {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
+      });
+      this.assignValues();
     },
     getPastMedicalHistories(value) {
       this.checkboxes.past_medical_histories = value.map((checkbox) => ({
@@ -469,6 +516,16 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
+      this.checkboxes.past_medical_histories.forEach((checkbox) => {
+        if (
+          this.consultation_form.past_medical_history.includes(checkbox.label)
+        ) {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
+      });
+      this.assignValues();
     },
     getFamilyMedicalHistories(value) {
       this.checkboxes.family_medical_histories = value.map((checkbox) => ({
@@ -476,6 +533,16 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
+      this.checkboxes.family_medical_histories.forEach((checkbox) => {
+        if (
+          this.consultation_form.family_medical_history.includes(checkbox.label)
+        ) {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
+      });
+      this.assignValues();
     },
   },
   computed: {
@@ -484,6 +551,7 @@ export default {
       "getPastMedicalHistories",
       "getFamilyMedicalHistories",
     ]),
+    ...mapGetters("login", ["userRole"]),
     formattedDate() {
       return this.present_date
         ? format(parseISO(this.present_date), "MMMM dd, yyyy")
@@ -496,6 +564,7 @@ export default {
   created() {
     this.fetchCheckboxes();
   },
+  mounted() {},
 };
 </script>
 

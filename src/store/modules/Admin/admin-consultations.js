@@ -19,7 +19,10 @@ export const admin_consultations = {
     },
     SET_CONSULTATION_FORM(state, consultation_form) {
       state.consultation_form = consultation_form;
-    }
+    },
+    UPDATE_CONSULTATION_FORM(state, consultation_form) {
+      state.consultation_form = consultation_form;
+    },
   },
   actions: {
     fetchConsultations({ commit }) {
@@ -53,6 +56,23 @@ export const admin_consultations = {
         })
         .catch((error) => {
           console.error("Error Fetching Consultation Form: ", error);
+        });
+    },
+    updateAdminConsultationFormById(
+      { commit },
+      { consultation_id, consultation_form_id, data }
+    ) {
+      return this.$axios
+        .put(
+          `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}/`,
+          data
+        )
+        .then((response) => {
+          const updatedConsultationForm = response.data;
+          commit("SET_UPDATED_CONSULTATION_FORM", updatedConsultationForm);
+        })
+        .catch((error) => {
+          console.log("Error updating Consultation Form", error);
         });
     },
   },

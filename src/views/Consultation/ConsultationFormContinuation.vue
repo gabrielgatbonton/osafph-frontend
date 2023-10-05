@@ -229,10 +229,12 @@ export default {
     minDate_2: new Date(Date.now() + 24 * 60 * 60 * 1000)
       .toISOString()
       .slice(0, 10),
+    consultation_form: null,
   }),
   methods: {
     ...mapActions("consultation_enum", ["fetchMoreCheckboxes"]),
     ...mapActions("consultations", ["addConsultationToId"]),
+    ...mapActions("admin_consultations", ["updateAdminConsultationFormById"]),
     pushToHistory() {
       const checkedValuesDiagnostics = this.checkboxes.diagnostics
         .filter((checkbox) => checkbox.checked)
@@ -242,6 +244,7 @@ export default {
     },
     fetchQueryData() {
       const consultationData = this.$route.query.data;
+      const consultationFormData = this.$route.query.consultation_form;
       if (consultationData) {
         const parsedData = JSON.parse(consultationData);
 
@@ -253,24 +256,55 @@ export default {
         }
         console.log("Passed Data", this.data);
       }
+      if (consultationFormData) {
+        const parsedData = JSON.parse(consultationFormData);
+        this.consultation_form = parsedData;
+        console.log(this.consultation_form);
+      }
     },
     submitForm() {
       const consultation_id = this.$route.query.consultation_id;
-
-      this.addConsultationToId({
-        consultation_id: consultation_id,
-        data: this.data,
-      })
-        .catch((error) => {
-          console.log("Error Submitting Consultation Form: ", error);
+      if (this.userRole === "DOCTOR") {
+        this.addConsultationToId({
+          consultation_id: consultation_id,
+          data: this.data,
         })
-        .finally(() => {
-          this.$router.push({ name: "consultation-view" });
-        });
+          .catch((error) => {
+            console.log("Error Submitting Consultation Form: ", error);
+          })
+          .finally(() => {
+            this.$router.push({ name: "consultation-view" });
+          });
+      } else if (this.userRole === "ADMIN") {
+        this.updateAdminConsultationFormById({
+          consultation_id: consultation_id,
+          consultation_form_id: this.consultation_form.id,
+          data: this.data,
+        })
+          .catch((error) => {
+            console.log("Error Updating Consultation Form: ", error);
+          })
+          .finally(() => {
+            this.$router.push({ name: "citizens-consultations-view" });
+          });
+      }
+    },
+    assignValues() {
+      if (this.consultation_form) {
+          this.data.diagnosis = this.consultation_form.diagnosis;
+          this.data.diagnostic_type_id = this.consultation_form.diagnostic_type;
+          this.data.medications = this.consultation_form.medications;
+          this.data.referral = this.consultation_form.referral;
+          this.data.others = this.consultation_form.others;
+          this.data.follow_up_date = this.consultation_form.follow_up_date;
+          this.data.fit_to_work_starting = this.consultation_form.fit_to_work_starting;
+          this.data.may_rest_for = this.consultation_form.may_rest_for;
+      }
     },
   },
   computed: {
     ...mapGetters("consultation_enum", ["getDiagnosis", "getDiagnostics"]),
+    ...mapGetters("login", ["userRole"]),
     formattedDate1() {
       return this.data.follow_up_date
         ? format(parseISO(this.data.follow_up_date), "MMMM d, yyyy")
@@ -294,6 +328,7 @@ export default {
   watch: {
     getDiagnosis(value) {
       this.checkboxes.diagnosis = value.map((data) => data.name);
+      this.assignValues();
     },
     getDiagnostics(value) {
       this.checkboxes.diagnostics = value.map((checkbox) => ({
@@ -301,6 +336,14 @@ export default {
         value: checkbox.id,
         checked: false,
       }));
+      this.checkboxes.diagnostics.forEach((checkbox) => {
+        if (this.consultation_form.diagnostic_type.includes(checkbox.label)) {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
+      });
+      this.assignValues();
     },
   },
   created() {
