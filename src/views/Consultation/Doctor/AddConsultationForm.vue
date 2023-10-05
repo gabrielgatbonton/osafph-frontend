@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ConsultationForm from "./consultation-form/ConsultationForm.vue";
+import ConsultationForm from "../ConsultationForm.vue";
 import { format, parseISO } from 'date-fns';
 export default {
   name: "AddConsultationForm",
@@ -23,10 +23,9 @@ export default {
   computed: {
     fetchQueryData() {
       const data = this.$route.query.data;
-      let parsedData = null;
+      let parsedData = JSON.parse(data);
       let basic_details = null;
-      if (data) {
-        parsedData = JSON.parse(data);
+      if (parsedData) {
         basic_details = {
           patient_name: `${parsedData.citizen.last_name}, ${
             parsedData.citizen.first_name
@@ -48,6 +47,7 @@ export default {
             parsedData.doctor.middle_name ? parsedData.doctor.middle_name : ""
           }`,
         };
+        console.log(basic_details)
       }
       return basic_details;
     },

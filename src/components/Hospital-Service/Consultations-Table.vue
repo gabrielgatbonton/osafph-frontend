@@ -8,7 +8,7 @@
     :custom-filter="filterOnlyCapsText"
     no-data-text="No Service Available"
   >
-    <template v-slot:top v-if="data.length > 1">
+    <template v-slot:top v-if="data.length > 0">
       <v-text-field
         v-model="search"
         label="Search"
@@ -16,7 +16,7 @@
         prepend-icon="mdi-magnify"
       ></v-text-field>
     </template>
-    <template v-slot:body="{ items }"  v-if="data.length > 1">
+    <template v-slot:body="{ items }" v-if="data.length > 0">
       <tbody>
         <tr v-for="(item, index) in items" :key="index">
           <td>{{ item.patient_name }}</td>
@@ -116,22 +116,22 @@ export default {
   },
   watch: {
     consultations(value) {
-        this.data = value.map((consultation) => ({
-          patient_name: `${consultation.citizen.last_name}, ${consultation.citizen.first_name} ${consultation.citizen.middle_name} ${consultation.citizen.suffix}`,
-          status: consultation.hospital_service.status,
-          scheduled_date: format(
-            parseISO(consultation.hospital_service.scheduled_date),
-            "MMMM dd, yyyy"
+      this.data = value.map((consultation) => ({
+        patient_name: `${consultation.citizen.last_name}, ${consultation.citizen.first_name} ${consultation.citizen.middle_name} ${consultation.citizen.suffix}`,
+        status: consultation.hospital_service.status,
+        scheduled_date: format(
+          parseISO(consultation.hospital_service.scheduled_date),
+          "MMMM dd, yyyy"
+        ),
+        scheduled_time: format(
+          parseISO(
+            `${consultation.hospital_service.scheduled_date}T${consultation.hospital_service.scheduled_time}`
           ),
-          scheduled_time: format(
-            parseISO(
-              `${consultation.hospital_service.scheduled_date}T${consultation.hospital_service.scheduled_time}`
-            ),
-            "h:mm a"
-          ),
-          consultation_id: consultation.id,
-          hospital_service_id: consultation.hospital_service.id,
-        }));
+          "h:mm a"
+        ),
+        consultation_id: consultation.id,
+        hospital_service_id: consultation.hospital_service.id,
+      }));
     },
   },
 };

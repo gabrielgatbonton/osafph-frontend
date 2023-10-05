@@ -9,12 +9,14 @@
           <span class="title">Consultations</span>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col
-          cols="auto"
-          v-if="auth.consultationForm"
-        >
-          <v-btn dark class="blue darken-4 mr-3" :disabled="disabled" @click="alterConsultation"
-            ><v-icon dark left>mdi-square-edit-outline</v-icon>{{ auth.consultationFormTitle }}</v-btn
+        <v-col cols="auto" v-if="auth.consultationForm">
+          <v-btn
+            dark
+            class="blue darken-4 mr-3"
+            :disabled="disabled"
+            @click="alterConsultation"
+            ><v-icon dark left>mdi-square-edit-outline</v-icon
+            >{{ auth.consultationFormTitle }}</v-btn
           >
         </v-col>
       </v-row>
@@ -161,12 +163,6 @@
       class="mx-5 my-10"
       height="auto"
     ></v-skeleton-loader>
-    <!-- <ServiceDialog
-        :activator="dialog"
-        :hospitalService="getHospitalService"
-        v-on:dialogResponse="resetActivator"
-        v-on:updateService="submitForm"
-      /> -->
   </div>
 </template>
 
@@ -180,6 +176,7 @@ export default {
   data: () => ({
     routeID: null,
     consultation: null,
+    consultation_form: null,
     loading: false,
     auth: {
       consultationForm: true,
@@ -192,15 +189,20 @@ export default {
   },
   methods: {
     ...mapActions("consultations", ["fetchConsultationById"]),
-    ...mapActions("admin_consultations", ["fetchAdminConsultationById"]),
+    ...mapActions("admin_consultations", [
+      "fetchAdminConsultationById",
+      "fetchAdminConsultationFormById",
+    ]),
     fetchConsultation() {
       const consultation_id = this.$route.params.consultation_id;
       if (this.userRole === "ADMIN") {
-        return this.fetchAdminConsultationById(consultation_id).catch(
-          (error) => {
+        return this.fetchAdminConsultationById(consultation_id)
+          .then(() => {
+            this.fetchAdminConsultationFormById(consultation_id);
+          })
+          .catch((error) => {
             console.error("Error fetching Consultation Data:", error);
-          }
-        );
+          });
       } else if (this.userRole === "DOCTOR") {
         return this.fetchConsultationById(consultation_id).catch((error) => {
           console.error("Error fetching Consultation Data:", error);
@@ -209,14 +211,15 @@ export default {
     },
     alterConsultation() {
       if (this.userRole === "ADMIN") {
-        this.$router.push({
+        return this.$router.push({
           name: "edit-consultation-form",
           query: {
             data: JSON.stringify(this.consultation),
+            consultation_form: JSON.stringify(this.consultation_form),
           },
         });
       } else if (this.userRole === "DOCTOR") {
-        this.$router.push({
+        return this.$router.push({
           name: "add-consultation-form",
           query: {
             data: JSON.stringify(this.consultation),
@@ -226,10 +229,10 @@ export default {
     },
     userRolePermissions() {
       if (this.userRole === "ADMIN") {
-        this.auth.consultationFormTitle = "Edit Consultation"
+        this.auth.consultationFormTitle = "Edit Consultation";
       } else if (this.userRole === "DOCTOR") {
-        this.auth.consultationFormTitle = "Add Consultation"
-        if(this.consultation.hospital_service.status) {
+        this.auth.consultationFormTitle = "Add Consultation";
+        if (this.consultation.hospital_service.status === "COMPLETED") {
           this.disabled = true;
         }
       }
@@ -244,15 +247,23 @@ export default {
   watch: {
     getConsultation(value) {
       this.consultation = value.consultation;
+      console.log(this.consultation);
     },
     getAdminConsultation(value) {
       this.consultation = value.consultation;
+    },
+    getAdminConsultationForm(value) {
+      this.consultation_form = value;
+      console.log(this.consultation_form)
     },
   },
   computed: {
     ...mapGetters("login", ["userRole"]),
     ...mapGetters("consultations", ["getConsultation"]),
-    ...mapGetters("admin_consultations", ["getAdminConsultation"]),
+    ...mapGetters("admin_consultations", [
+      "getAdminConsultation",
+      "getAdminConsultationForm",
+    ]),
     patient_information() {
       return {
         image_url: this.$url + this.consultation.citizen.image_url,

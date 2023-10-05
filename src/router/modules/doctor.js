@@ -1,6 +1,6 @@
 import ConsultationView from '@/views/Consultation/Doctor/ConsultationView.vue';
 import ConsultationInformationView from '@/views/Consultation/ConsultationInformationView.vue'
-import AddConsultationForm from '@/views/Consultation/ConsultationForm.vue'
+import AddConsultationForm from '@/views/Consultation/Doctor/AddConsultationForm.vue'
 import ConsultationFormContinuation from '@/views/Consultation/ConsultationFormContinuation.vue';
 import { checkLoggedIn } from "./auth-guard";
 export default [
