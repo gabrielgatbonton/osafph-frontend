@@ -12,9 +12,9 @@ Vue.prototype.$http = axios
 Vue.use(Vuelidate)
 
 //BaseURLs
-// const baseURL = 'http://200.10.77.4/';  //Network BaseURL
+const baseURL = 'http://200.10.77.12/';  //Network BaseURL
 // const baseURL = 'http://127.0.0.1:8000/'; //Local BaseURL
-const baseURL = 'http://192.168.1.108:80/';
+// const baseURL = 'http://192.168.1.108:80/';
 
 //Network URL
 const networkURL = 'http://192.168.1.118:8080/'

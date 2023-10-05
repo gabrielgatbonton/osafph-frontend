@@ -2,8 +2,9 @@ import CitizensView from "@/views/CitizensView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import ViewDetailsView from "@/views/ViewDetailsView.vue";
 import EditView from "@/views/EditView.vue";
-import CitizensConsultationView from "@/views/Admin/ConsultationsIndexView.vue";
-import CitizensConsultationInformationView from '@/views/Doctor/ConsultationInformationView.vue'
+import CitizensConsultationView from "@/views/Consultation/Admin/ConsultationsIndexView.vue";
+import CitizensConsultationInformationView from '@/views/Consultation/ConsultationInformationView.vue';
+import EditConsultationForm from '@/views/Consultation/Admin/EditConsultationForm.vue';
 import { checkLoggedIn } from "./auth-guard";
 export default [
   {
@@ -51,5 +52,13 @@ export default [
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
-  }
+  },
+  {
+    path: "/citizens-consultations/:consultation_id/view/:hospital_service_id/form",
+    name: "edit-consultation-form",
+    component: EditConsultationForm,
+    props: true,
+    meta: { requiresAuth: true },
+    beforeEnter: checkLoggedIn,
+  },
 ];

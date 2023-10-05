@@ -29,7 +29,7 @@ export const admin_consultations = {
           console.error("Error Fetching Consultations: ", error);
         });
     },
-    fetchConsultationById({ commit }, consultation_id) {
+    fetchAdminConsultationById({ commit }, consultation_id) {
       return this.$axios
         .get(`admin/consultations/${consultation_id}`)
         .then((response) => {

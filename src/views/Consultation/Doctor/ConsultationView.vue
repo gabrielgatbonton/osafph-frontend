@@ -51,7 +51,7 @@ export default {
     },
   },
   watch: {
-      getConsultations(value) {
+      getPendingConsultations(value) {
         console.log(value);
       }
   },

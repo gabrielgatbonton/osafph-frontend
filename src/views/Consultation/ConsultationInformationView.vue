@@ -11,11 +11,10 @@
         <v-spacer></v-spacer>
         <v-col
           cols="auto"
-          v-if="consultation.hospital_service.status !== 'COMPLETED'"
+          v-if="auth.consultationForm"
         >
-          <v-btn dark class="blue darken-4 mr-3" @click="addConsultation"
-            ><v-icon dark left>mdi-square-edit-outline</v-icon>Add
-            Consultation</v-btn
+          <v-btn dark class="blue darken-4 mr-3" :disabled="disabled" @click="alterConsultation"
+            ><v-icon dark left>mdi-square-edit-outline</v-icon>{{ auth.consultationFormTitle }}</v-btn
           >
         </v-col>
       </v-row>
@@ -174,7 +173,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import ConsultationInformationContinutation from "./ConsultationInformationContinuation.vue";
-// import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import { format, parseISO } from "date-fns";
 export default {
@@ -183,41 +181,78 @@ export default {
     routeID: null,
     consultation: null,
     loading: false,
+    auth: {
+      consultationForm: true,
+      consultationFormTitle: null,
+    },
+    disabled: false,
   }),
   components: {
     ConsultationInformationContinutation,
-    // ServiceDialog,
   },
   methods: {
     ...mapActions("consultations", ["fetchConsultationById"]),
+    ...mapActions("admin_consultations", ["fetchAdminConsultationById"]),
     fetchConsultation() {
       const consultation_id = this.$route.params.consultation_id;
-      return this.fetchConsultationById(consultation_id).catch((error) => {
-        console.error("Error fetching Consultation Data:", error);
-      });
+      if (this.userRole === "ADMIN") {
+        return this.fetchAdminConsultationById(consultation_id).catch(
+          (error) => {
+            console.error("Error fetching Consultation Data:", error);
+          }
+        );
+      } else if (this.userRole === "DOCTOR") {
+        return this.fetchConsultationById(consultation_id).catch((error) => {
+          console.error("Error fetching Consultation Data:", error);
+        });
+      }
     },
-    addConsultation() {
-      this.$router.push({
-        name: "add-consultation-form",
-        query: {
-          data: JSON.stringify(this.consultation),
-        },
-      });
+    alterConsultation() {
+      if (this.userRole === "ADMIN") {
+        this.$router.push({
+          name: "edit-consultation-form",
+          query: {
+            data: JSON.stringify(this.consultation),
+          },
+        });
+      } else if (this.userRole === "DOCTOR") {
+        this.$router.push({
+          name: "add-consultation-form",
+          query: {
+            data: JSON.stringify(this.consultation),
+          },
+        });
+      }
+    },
+    userRolePermissions() {
+      if (this.userRole === "ADMIN") {
+        this.auth.consultationFormTitle = "Edit Consultation"
+      } else if (this.userRole === "DOCTOR") {
+        this.auth.consultationFormTitle = "Add Consultation"
+        if(this.consultation.hospital_service.status) {
+          this.disabled = true;
+        }
+      }
     },
   },
   created() {
     this.fetchConsultation();
   },
+  updated() {
+    this.userRolePermissions();
+  },
   watch: {
     getConsultation(value) {
-      console.log("GET:", value);
       this.consultation = value.consultation;
-      console.log("CONSULTATION: ", this.consultation);
+    },
+    getAdminConsultation(value) {
+      this.consultation = value.consultation;
     },
   },
   computed: {
     ...mapGetters("login", ["userRole"]),
     ...mapGetters("consultations", ["getConsultation"]),
+    ...mapGetters("admin_consultations", ["getAdminConsultation"]),
     patient_information() {
       return {
         image_url: this.$url + this.consultation.citizen.image_url,
