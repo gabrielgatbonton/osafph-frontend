@@ -275,6 +275,13 @@ export default {
         setTimeout(() => {
           this.showAlert = false;
         }, 5000);
+      } else if (this.getShowError) {
+        let value = this.getShowAlert;
+        this.showAlert = value.alert;
+        this.title = value.message;
+        setTimeout(() => {
+          this.showAlert = false;
+        }, 5000);
       }
     },
   },
@@ -288,14 +295,6 @@ export default {
     this.userRolePermissions();
   },
   watch: {
-    getShowAlert(value) {
-      console.log("alert", value);
-      this.showAlert = value.alert;
-      this.title = value.message;
-      setTimeout(() => {
-        this.showAlert = false;
-      }, 5000);
-    },
     getConsultation(value) {
       this.consultation = value.consultation;
     },

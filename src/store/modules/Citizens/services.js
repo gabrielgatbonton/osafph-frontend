@@ -14,19 +14,33 @@ export const services = {
   }),
   mutations: {
     SET_HOSPITAL_SERVICES(state, services) {
-      const pendingServices = services.filter((service) => {
-        return service.status.includes("PENDING");
-      });
+      const pendingServices = services
+        .filter((service) => {
+          return service.status.includes("PENDING");
+        })
+        .sort((a, b) => {
+          //Filter to Older to Newest Dates
+          const dateA = new Date(a.hospital_service.scheduled_date);
+          const dateB = new Date(b.hospital_service.scheduled_date);
+          return dateA - dateB;
+        });
       state.hospitalServices = pendingServices;
     },
     SET_ARCHIVED_HOSPITAL_SERVICES(state, services) {
       // Use filter to keep only services with 'PENDING' or 'UNATTENDED' status
-      const archivedServices = services.filter((service) => {
-        return (
-          service.status.includes("COMPLETED") ||
-          service.status.includes("UNATTENDED")
-        );
-      });
+      const archivedServices = services
+        .filter((service) => {
+          return (
+            service.status.includes("COMPLETED") ||
+            service.status.includes("UNATTENDED")
+          );
+        })
+        .sort((a, b) => {
+          //Filter to Newer to Oldest Dates
+          const dateA = new Date(b.hospital_service.scheduled_date);
+          const dateB = new Date(a.hospital_service.scheduled_date);
+          return dateA - dateB;
+        });
 
       // Replace the contents of the archivedServices state variable
       state.archivedServices = archivedServices;

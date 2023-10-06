@@ -14,26 +14,36 @@ export const consultations = {
   }),
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
-      const pendingConsultations = consultations.consultations.filter(
-        (consultation) =>
+      const pendingConsultations = consultations.consultations
+        .filter((consultation) =>
           consultation.hospital_service.status.includes("PENDING")
-      );
+        )
+        .sort((a, b) => { //Filter to Older to Newest Dates
+          const dateA = new Date(a.hospital_service.scheduled_date);
+          const dateB = new Date(b.hospital_service.scheduled_date);
+          return dateA - dateB;
+        });
       state.pendingConsultations = pendingConsultations;
 
-      const archivedConsultations = consultations.consultations.filter(
-        (consultation) =>
-          consultation.hospital_service.status.includes("COMPLETED") ||
-          consultation.hospital_service.status.includes("UNATTENDED")
-      );
+      const archivedConsultations = consultations.consultations
+        .filter(
+          (consultation) =>
+            consultation.hospital_service.status.includes("COMPLETED") ||
+            consultation.hospital_service.status.includes("UNATTENDED")
+        )
+        .sort((a, b) => { //Filter to Newer to Oldest Dates
+          const dateA = new Date(b.hospital_service.scheduled_date);
+          const dateB = new Date(a.hospital_service.scheduled_date);
+          return dateA - dateB;
+        });
       state.archivedConsultations = archivedConsultations;
-      console.log(state.archivedConsultations);
     },
     SET_CONSULTATION(state, consultation) {
       state.consultation = consultation;
     },
     ADD_DOCTOR_CONSULTATION(state, consultation) {
       state.doctorConsultationForms.push(consultation);
-    }
+    },
   },
   actions: {
     fetchConsultations({ commit }) {
@@ -58,7 +68,7 @@ export const consultations = {
           console.error("Error Fetching Consultation: ", error);
         });
     },
-    addConsultationToId({ commit }, {consultation_id, data}) {
+    addConsultationToId({ commit }, { consultation_id, data }) {
       return this.$axios
         .post(
           `doctors/consultations/${consultation_id}/consultation-forms`,
@@ -69,13 +79,13 @@ export const consultations = {
           commit("ADD_DOCTOR_CONSULTATION", consultation);
           store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
-            message: "Added Consultation Form"
+            message: "Added Consultation Form",
           });
         })
         .catch((error) => {
           store.commit("alerts/SET_SHOW_ERROR", {
             alert: true,
-            message: "Adding"
+            message: "Adding",
           });
           console.log("Error Adding Consultation by Doctor", error);
         });
