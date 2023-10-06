@@ -3,7 +3,7 @@ import store from "@/store";
 
 export function checkLoggedIn(to, from, next) {
   const isLoggedIn = store.getters["login/isLoggedIn"];
-  const userRole = store.getters['login/userRole'];
+  const userRole = store.getters["login/userRole"];
 
   if (to.name === "login" && isLoggedIn) {
     // If the user is already logged in and tries to access the login page,
@@ -13,7 +13,15 @@ export function checkLoggedIn(to, from, next) {
     // If the route requires authentication and the user is not logged in,
     // redirect to the login page
     next({ name: "login" });
-  } else if (userRole === "ADMIN" && isRestrictedRoute(to.name)) {
+  } else if (userRole === "ADMIN" && !isAllowedRoutes(to.name, "ADMIN")) {
+    // If the user is an admin and is trying to access a restricted route,
+    // redirect to a different route (e.g., 'home') or display an error message
+    next({ name: "dashboard" });
+  } else if (userRole === "DOCTOR" && !isAllowedRoutes(to.name, "DOCTOR")) {
+    // If the user is an admin and is trying to access a restricted route,
+    // redirect to a different route (e.g., 'home') or display an error message
+    next({ name: "dashboard" });
+  } else if (userRole === "ENCODER" && !isAllowedRoutes(to.name, "ENCODER")) {
     // If the user is an admin and is trying to access a restricted route,
     // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
@@ -23,15 +31,45 @@ export function checkLoggedIn(to, from, next) {
   }
 }
 
-function isRestrictedRoute(routeName) {
-  // Define an array of route names that should be restricted for 'ADMIN' users
-  const restrictedRoutes = [
-    "consultation-view",
-    "consultations",
-    "add-consultation-form",
-    "consultation-form-continuation",
-  ];
-
+function isAllowedRoutes(routeName, userRole) {
+  // Define an array of route names that should be restricted for 'ADMIN', 'DOCTOR', 'ENCODER' users
+  let allowedRoutes = [];
+  if (userRole === "DOCTOR") {
+    allowedRoutes = [
+      "consultation-view",
+      "consultations",
+      "add-consultation-form",
+      "consultation-form-continuation",
+      "dashboard",
+      "management",
+    ];
+  } else if (userRole === "ADMIN") {
+    allowedRoutes = [
+      "citizens",
+      "register",
+      "edit",
+      "details",
+      "citizens-consultations",
+      "citizens-consultations-view",
+      "edit-consultation-form",
+      "edit-consultation-form-continuation",
+      "dashboard",
+      "hospital-services",
+      "hospital-services-information",
+      "management",
+    ];
+  } else if (userRole === "ENCODER") {
+    allowedRoutes = [
+      "citizens",
+      "register",
+      "edit",
+      "details",
+      "dashboard",
+      "hospital-services",
+      "hospital-services-information",
+      "management",
+    ];
+  }
   // Check if the provided routeName is in the restrictedRoutes array
-  return restrictedRoutes.includes(routeName);
+  return allowedRoutes.includes(routeName);
 }
