@@ -268,7 +268,7 @@ export default {
           data: this.data,
         })
           .then(() => {
-            this.$router.push({ name: "consultation-view" });
+            this.$router.replace({ name: "consultation-view" });
           })
           .catch((error) => {
             console.log("Error Submitting Consultation Form: ", error);
@@ -280,7 +280,7 @@ export default {
           data: this.data,
         })
           .then(() => {
-            this.$router.push({ name: "citizens-consultations-view" });
+            this.$router.replace({ name: "citizens-consultations-view" });
           })
           .catch((error) => {
             console.log("Error Updating Consultation Form: ", error);

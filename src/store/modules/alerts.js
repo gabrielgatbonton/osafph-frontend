@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export const alerts = {
   namespaced: true,
   state: () => ({
-    showAlert: false,
+    showAlert: null,
     showError: null,
   }),
   mutations: {
@@ -15,13 +15,18 @@ export const alerts = {
         alert: alert,
         message: message,
       };
-      console.log(state.showAlert);
+      setTimeout(() => {
+        state.showAlert = null;
+      }, 5000);
     },
     SET_SHOW_ERROR(state, { alert, message }) {
       state.showError = {
         alert: alert,
         message: message,
       };
+      setTimeout(() => {
+        state.showError = null;
+      }, 5000);
     },
   },
   actions: {

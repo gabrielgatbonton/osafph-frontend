@@ -455,7 +455,7 @@ export default {
       const consultation_id = this.$route.params.consultation_id;
       const hospital_service_id = this.$route.params.hospital_service_id;
       if (this.userRole === "DOCTOR") {
-        this.$router.push({
+        this.$router.replace({
           name: "consultation-form-continuation",
           query: {
             consultation_id: consultation_id,
@@ -464,7 +464,7 @@ export default {
           },
         });
       } else if (this.userRole === "ADMIN") {
-        this.$router.push({
+        this.$router.replace({
           name: "edit-consultation-form-continuation",
           query: {
             consultation_id: consultation_id,
