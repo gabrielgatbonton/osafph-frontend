@@ -63,6 +63,11 @@ import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 export default {
   props: ["consultations", "routeName"],
+  data: () => ({
+    search: "",
+    offset: true,
+    data: [],
+  }),
   methods: {
     filterOnlyCapsText(value, search) {
       return (
@@ -82,11 +87,6 @@ export default {
       });
     },
   },
-  data: () => ({
-    search: "",
-    offset: true,
-    data: [],
-  }),
   computed: {
     headers() {
       return [

@@ -3,7 +3,7 @@
     <SubmissionAlert v-if="showAlert" :title="title" />
     <ErrorAlert v-if="showError" :title="title" />
     <v-container fluid class="ma-1" v-if="consultation">
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Consultations</span>
@@ -18,6 +18,9 @@
             ><v-icon dark left>mdi-square-edit-outline</v-icon
             >{{ auth.consultationFormTitle }}</v-btn
           >
+        </v-col>
+        <v-col cols="auto">
+          <v-btn class="error" @click="deleteActivator" dark><v-icon>mdi-trash-can</v-icon></v-btn>
         </v-col>
       </v-row>
       <v-divider class="my-4"></v-divider>
@@ -163,16 +166,23 @@
       class="mx-5 my-10"
       height="auto"
     ></v-skeleton-loader>
+    <ReusableDeleteDialog
+      :activator="deleteDialog"
+      v-on:dialogResponse="resetActivator"
+      v-on:deleteItem="deleteConsultationForm"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import ConsultationInformationContinutation from "./ConsultationInformationContinuation.vue";
+import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
+import DeleteDialog from "@/mixins/DeleteDialog";
 import { format, parseISO } from "date-fns";
 export default {
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, DeleteDialog],
   data: () => ({
     routeID: null,
     consultation: null,
@@ -186,12 +196,14 @@ export default {
   }),
   components: {
     ConsultationInformationContinutation,
+    ReusableDeleteDialog,
   },
   methods: {
     ...mapActions("consultations", ["fetchConsultationById"]),
     ...mapActions("admin_consultations", [
       "fetchAdminConsultationById",
       "fetchAdminConsultationFormById",
+      "deleteAdminConsultationFormById",
     ]),
     fetchConsultation() {
       const consultation_id = this.$route.params.consultation_id;
@@ -229,13 +241,27 @@ export default {
     },
     userRolePermissions() {
       if (this.userRole === "ADMIN") {
-        this.auth.consultationFormTitle = "Edit Consultation";
+        this.auth.consultationFormTitle = "Edit Consultation Form";
       } else if (this.userRole === "DOCTOR") {
-        this.auth.consultationFormTitle = "Add Consultation";
+        this.auth.consultationFormTitle = "Add Consultation Form";
         if (this.consultation.hospital_service.status === "COMPLETED") {
           this.disabled = true;
         }
       }
+    },
+    deleteConsultationForm() {
+      this.loading = true;
+      this.deleteAdminConsultationFormById({
+        consultation_id: this.consultation_form.consultation_id,
+        consultation_form_id: this.consultation_form.consultation_form_id,
+      })
+        .then(() => (this.loading = false))
+        .catch((error) => {
+          console.log("Error Proceding with delete:", error);
+        })
+        .finally(() => {
+          this.deleteDialog = false;
+        });
     },
   },
   created() {

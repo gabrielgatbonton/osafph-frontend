@@ -23,6 +23,13 @@ export const admin_consultations = {
     UPDATE_CONSULTATION_FORM(state, consultation_form) {
       state.consultation_form = consultation_form;
     },
+    DELETE_CONSULTATION_FORM(state, target_form) {
+      state.consultation_form = state.consultation_form.filter(
+        (consultation_form) =>
+          consultation_form.consultation_form_id !==
+          target_form.consultation_form_id
+      );
+    },
   },
   actions: {
     fetchConsultations({ commit }) {
@@ -73,6 +80,22 @@ export const admin_consultations = {
         })
         .catch((error) => {
           console.log("Error updating Consultation Form", error);
+        });
+    },
+    deleteAdminConsultationFormById(
+      { commit, },
+      { consultation_id, consultation_form_id }
+    ) {
+      return this.$axios
+        .delete(
+          `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}/`
+        )
+        .then((response) => {
+          const data = response.data;
+          commit("DELETE_CONSULTATION_FORM", data);
+        })
+        .catch((error) => {
+          console.error("Error Deleting Consultation Form: ", error);
         });
     },
   },

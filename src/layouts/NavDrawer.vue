@@ -87,7 +87,7 @@ export default {
             text: "Dashboard",
             route: "/dashboard",
           },
-          { icon: "mdi-account", text: "Management", route: "/management" },
+          { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
         //Configuration for the Citizen Dropdown NavDrawer
         this.auth.citizen = true;
@@ -119,7 +119,7 @@ export default {
             text: "Consultations",
             route: "/consultations",
           },
-          { icon: "mdi-account", text: "Management", route: "/management" },
+          { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
       } else if (this.userRole === "ENCODER") {
         links = [
@@ -128,7 +128,7 @@ export default {
             text: "Dashboard",
             route: "/dashboard",
           },
-          { icon: "mdi-account", text: "Management", route: "/management" },
+          { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
         //Configuration for the Citizen Dropdown NavDrawer
         this.auth.citizen = true;
