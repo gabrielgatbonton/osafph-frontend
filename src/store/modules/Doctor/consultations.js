@@ -10,7 +10,6 @@ export const consultations = {
     archivedConsultations: [],
     consultation: null,
     doctorConsultationForms: [],
-    consultationsIndex: [],
   }),
   mutations: {
     SET_CONSULTATIONS(state, consultations) {

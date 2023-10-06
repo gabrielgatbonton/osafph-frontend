@@ -1,7 +1,7 @@
 // store/modules/registrants.js
 import Vuex from "vuex";
 import Vue from "vue";
-import store from "../../store";
+import store from "../..";
 // import axios from "axios";
 
 Vue.use(Vuex);
