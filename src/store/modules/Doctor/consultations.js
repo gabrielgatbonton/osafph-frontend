@@ -1,5 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
+import store from "../../";
 
 Vue.use(Vuex);
 
@@ -66,14 +67,19 @@ export const consultations = {
         .then((response) => {
           const consultation = response.data;
           commit("ADD_DOCTOR_CONSULTATION", consultation);
+          store.commit("alerts/SET_SHOW_ALERT", {
+            alert: true,
+            message: "Added Consultation Form"
+          });
         })
         .catch((error) => {
+          store.commit("alerts/SET_SHOW_ERROR", {
+            alert: true,
+            message: "Adding"
+          });
           console.log("Error Adding Consultation by Doctor", error);
         });
     },
-    // fetchConsultationForms({commit}) {
-    //   return this.$axios.get(``)
-    // }
   },
   getters: {
     getPendingConsultations: (state) => state.pendingConsultations,

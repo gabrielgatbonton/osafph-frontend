@@ -116,7 +116,6 @@
           this.isLoading = false;
           this.iconColor = "success";
         }
-        console.log(this.iconColor);
       },
     },
     computed: {

@@ -19,8 +19,10 @@
             >{{ auth.consultationFormTitle }}</v-btn
           >
         </v-col>
-        <v-col cols="auto">
-          <v-btn class="error" @click="deleteActivator" dark><v-icon>mdi-trash-can</v-icon></v-btn>
+        <v-col cols="auto" v-if="auth.delete">
+          <v-btn class="error" @click="deleteActivator" dark
+            ><v-icon>mdi-trash-can</v-icon></v-btn
+          >
         </v-col>
       </v-row>
       <v-divider class="my-4"></v-divider>
@@ -182,7 +184,7 @@ import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import DeleteDialog from "@/mixins/DeleteDialog";
 import { format, parseISO } from "date-fns";
 export default {
-  mixins: [ErrorAlertsLogic, DeleteDialog],
+  mixins: [DeleteDialog, ErrorAlertsLogic],
   data: () => ({
     routeID: null,
     consultation: null,
@@ -191,6 +193,7 @@ export default {
     auth: {
       consultationForm: true,
       consultationFormTitle: null,
+      delete: false,
     },
     disabled: false,
   }),
@@ -242,6 +245,7 @@ export default {
     userRolePermissions() {
       if (this.userRole === "ADMIN") {
         this.auth.consultationFormTitle = "Edit Consultation Form";
+        this.auth.delete = true;
       } else if (this.userRole === "DOCTOR") {
         this.auth.consultationFormTitle = "Add Consultation Form";
         if (this.consultation.hospital_service.status === "COMPLETED") {
@@ -263,14 +267,35 @@ export default {
           this.deleteDialog = false;
         });
     },
+    checkAlerts() {
+      if (this.getShowAlert) {
+        let value = this.getShowAlert;
+        this.showAlert = value.alert;
+        this.title = value.message;
+        setTimeout(() => {
+          this.showAlert = false;
+        }, 5000);
+      }
+    },
   },
   created() {
     this.fetchConsultation();
+  },
+  mounted() {
+    this.checkAlerts();
   },
   updated() {
     this.userRolePermissions();
   },
   watch: {
+    getShowAlert(value) {
+      console.log("alert", value);
+      this.showAlert = value.alert;
+      this.title = value.message;
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 5000);
+    },
     getConsultation(value) {
       this.consultation = value.consultation;
     },

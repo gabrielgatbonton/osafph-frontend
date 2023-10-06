@@ -476,6 +476,7 @@ export default {
       }
     },
     assignValues() {
+      console.log(this.consultation_form)
       if (this.consultation_form && this.checkboxes) {
         this.data.chief_complaint = this.consultation_form.chief_complaint;
         this.data.blood_pressure = this.consultation_form.blood_pressure;
@@ -488,6 +489,7 @@ export default {
         this.data.weight = this.consultation_form.weight;
         this.data.height = this.consultation_form.height;
       }
+      this.pushToHistory();
     },
   },
   watch: {

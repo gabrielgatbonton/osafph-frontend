@@ -181,7 +181,6 @@
                   <v-col cols="4">
                     <v-text-field
                       v-model="data.may_rest_for"
-                      :value="formattedDays"
                       label="May Rest For"
                     ></v-text-field>
                   </v-col>
@@ -259,40 +258,38 @@ export default {
       if (consultationFormData) {
         const parsedData = JSON.parse(consultationFormData);
         this.consultation_form = parsedData;
-        console.log(this.consultation_form);
       }
     },
     submitForm() {
       const consultation_id = this.$route.query.consultation_id;
       if (this.userRole === "DOCTOR") {
-        this.addConsultationToId({
+        return this.addConsultationToId({
           consultation_id: consultation_id,
           data: this.data,
         })
+          .then(() => {
+            this.$router.push({ name: "consultation-view" });
+          })
           .catch((error) => {
             console.log("Error Submitting Consultation Form: ", error);
-          })
-          .finally(() => {
-            this.$router.push({ name: "consultation-view" });
           });
       } else if (this.userRole === "ADMIN") {
-        this.updateAdminConsultationFormById({
+        return this.updateAdminConsultationFormById({
           consultation_id: this.consultation_form.consultation_id,
           consultation_form_id: this.consultation_form.consultation_form_id,
           data: this.data,
         })
+          .then(() => {
+            this.$router.push({ name: "citizens-consultations-view" });
+          })
           .catch((error) => {
             console.log("Error Updating Consultation Form: ", error);
-          })
-          .finally(() => {
-            this.$router.push({ name: "citizens-consultations-view" });
           });
       }
     },
     assignValues() {
-      if (this.consultation_form) {
+      if (this.consultation_form && this.checkboxes) {
         this.data.diagnosis = this.consultation_form.diagnosis;
-        this.data.diagnostic_type_id = this.consultation_form.diagnostic_type;
         this.data.medications = this.consultation_form.medications;
         this.data.referral = this.consultation_form.referral;
         this.data.others = this.consultation_form.others;
@@ -301,6 +298,7 @@ export default {
           this.consultation_form.fit_to_work_starting;
         this.data.may_rest_for = this.consultation_form.may_rest_for;
       }
+      this.pushToHistory();
     },
   },
   computed: {

@@ -15,6 +15,7 @@ export const alerts = {
         alert: alert,
         message: message,
       };
+      console.log(state.showAlert);
     },
     SET_SHOW_ERROR(state, { alert, message }) {
       state.showError = {

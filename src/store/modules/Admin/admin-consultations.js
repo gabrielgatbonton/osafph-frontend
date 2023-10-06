@@ -1,5 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
+import store from "../..";
 
 Vue.use(Vuex);
 
@@ -23,12 +24,10 @@ export const admin_consultations = {
     UPDATE_CONSULTATION_FORM(state, consultation_form) {
       state.consultation_form = consultation_form;
     },
-    DELETE_CONSULTATION_FORM(state, target_form) {
-      state.consultation_form = state.consultation_form.filter(
-        (consultation_form) =>
-          consultation_form.consultation_form_id !==
-          target_form.consultation_form_id
-      );
+    DELETE_CONSULTATION_FORM(state, target) {
+      if(state.consultation_form.consultation_id === target.consultation_id) {
+        state.consultation_form = null;
+      }
     },
   },
   actions: {
@@ -76,9 +75,17 @@ export const admin_consultations = {
         )
         .then((response) => {
           const updatedConsultationForm = response.data;
-          commit("SET_UPDATED_CONSULTATION_FORM", updatedConsultationForm);
+          commit("UPDATE_CONSULTATION_FORM", updatedConsultationForm);
+          store.commit("alerts/SET_SHOW_ALERT", {
+            alert: true,
+            message: "Updated Service",
+          });
         })
         .catch((error) => {
+          store.commit("alerts/SET_SHOW_ERROR", {
+            alert: true,
+            message: "Updating",
+          });
           console.log("Error updating Consultation Form", error);
         });
     },
@@ -93,8 +100,16 @@ export const admin_consultations = {
         .then((response) => {
           const data = response.data;
           commit("DELETE_CONSULTATION_FORM", data);
+          store.commit("alerts/SET_SHOW_ALERT", {
+            alert: true,
+            message: "Deleted Consultation Form",
+          });
         })
         .catch((error) => {
+          store.commit("alerts/SET_SHOW_ERROR", {
+            alert: true,
+            message: "Deleted",
+          });
           console.error("Error Deleting Consultation Form: ", error);
         });
     },
