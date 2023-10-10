@@ -13,7 +13,7 @@
           <v-btn
             dark
             class="blue darken-4 mr-3"
-            :disabled="disabled"
+            :class="{ 'disabled-button': disabled }"
             @click="alterConsultation"
             ><v-icon dark left>mdi-square-edit-outline</v-icon
             >{{ auth.consultationFormTitle }}</v-btn
@@ -191,7 +191,7 @@ export default {
     consultation_form: null,
     loading: false,
     auth: {
-      consultationForm: true,
+      consultationForm: false,
       consultationFormTitle: null,
       delete: false,
     },
@@ -210,22 +210,23 @@ export default {
     ]),
     fetchConsultation() {
       const consultation_id = this.$route.params.consultation_id;
-      if (this.userRole === "ADMIN") {
+      console.log(consultation_id);
+      if (this.userRole === "ADMIN" || this.userRole === "ADMIN_SUPER" || this.userRole === "ENCODER") {
         return this.fetchAdminConsultationById(consultation_id)
           .then(() => {
             this.fetchAdminConsultationFormById(consultation_id);
           })
           .catch((error) => {
-            console.error("Error fetching Consultation Data:", error);
+            console.error("Error fetching Consultation Data for Admin:", error);
           });
       } else if (this.userRole === "DOCTOR") {
         return this.fetchConsultationById(consultation_id).catch((error) => {
-          console.error("Error fetching Consultation Data:", error);
+          console.error("Error fetching Consultation Data for Doctor:", error);
         });
       }
     },
     alterConsultation() {
-      if (this.userRole === "ADMIN") {
+      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         return this.$router.push({
           name: "edit-consultation-form",
           query: {
@@ -245,11 +246,17 @@ export default {
     userRolePermissions() {
       if (this.userRole === "ADMIN") {
         this.auth.consultationFormTitle = "Edit Consultation Form";
-        this.auth.delete = true;
+        this.auth.consultationForm = true;
       } else if (this.userRole === "DOCTOR") {
+        this.auth.consultationForm = true;
         this.auth.consultationFormTitle = "Add Consultation Form";
         if (this.consultation.hospital_service.status === "COMPLETED") {
           this.disabled = true;
+        }
+      } else if (this.userRole === "") {
+        this.auth.delete = true;
+        if (this.consultation.hospital_service.status === "") {
+          this.auth.delete = false;
         }
       }
     },
@@ -411,3 +418,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.disabled-button {
+  opacity: 0.5; /* Make it appear faded */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
+}
+</style>

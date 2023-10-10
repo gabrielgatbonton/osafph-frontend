@@ -14,14 +14,15 @@ export const services = {
   }),
   mutations: {
     SET_HOSPITAL_SERVICES(state, services) {
+      console.log(services)
       const pendingServices = services
         .filter((service) => {
           return service.status.includes("PENDING");
         })
         .sort((a, b) => {
           //Filter to Older to Newest Dates
-          const dateA = new Date(a.hospital_service.scheduled_date);
-          const dateB = new Date(b.hospital_service.scheduled_date);
+          const dateA = new Date(a.scheduled_date);
+          const dateB = new Date(b.scheduled_date);
           return dateA - dateB;
         });
       state.hospitalServices = pendingServices;
@@ -37,8 +38,8 @@ export const services = {
         })
         .sort((a, b) => {
           //Filter to Newer to Oldest Dates
-          const dateA = new Date(b.hospital_service.scheduled_date);
-          const dateB = new Date(a.hospital_service.scheduled_date);
+          const dateA = new Date(b.scheduled_date);
+          const dateB = new Date(a.scheduled_date);
           return dateA - dateB;
         });
 

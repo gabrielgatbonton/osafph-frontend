@@ -13,15 +13,19 @@ export function checkLoggedIn(to, from, next) {
     // If the route requires authentication and the user is not logged in,
     // redirect to the login page
     next({ name: "login" });
-  } else if (userRole === "ADMIN" && !isAllowedRoutes(to.name, "ADMIN")) {
+  } else if (userRole === "ADMIN" && !isAllowedRoutes(to.name, userRole)) {
     // If the user is an admin and is trying to access a restricted route,
     // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
-  } else if (userRole === "DOCTOR" && !isAllowedRoutes(to.name, "DOCTOR")) {
+  } else if (userRole === "ROOT" && !isAllowedRoutes(to.name, userRole)) {
     // If the user is an admin and is trying to access a restricted route,
     // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
-  } else if (userRole === "ENCODER" && !isAllowedRoutes(to.name, "ENCODER")) {
+  } else if (userRole === "DOCTOR" && !isAllowedRoutes(to.name, userRole)) {
+    // If the user is an admin and is trying to access a restricted route,
+    // redirect to a different route (e.g., 'home') or display an error message
+    next({ name: "dashboard" });
+  } else if (userRole === "ENCODER" && !isAllowedRoutes(to.name, userRole)) {
     // If the user is an admin and is trying to access a restricted route,
     // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
@@ -43,7 +47,7 @@ function isAllowedRoutes(routeName, userRole) {
       "dashboard",
       "management",
     ];
-  } else if (userRole === "ADMIN") {
+  } else if (userRole === "ADMIN" || userRole === "ROOT") {
     allowedRoutes = [
       "citizens",
       "register",
@@ -68,6 +72,7 @@ function isAllowedRoutes(routeName, userRole) {
       "hospital-services",
       "hospital-services-information",
       "management",
+      "citizens-consultations-view",
     ];
   }
   // Check if the provided routeName is in the restrictedRoutes array

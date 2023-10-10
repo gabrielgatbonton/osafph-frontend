@@ -80,7 +80,7 @@ export default {
   methods: {
     setLinks() {
       let links = [];
-      if (this.userRole === "ADMIN") {
+      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         links = [
           {
             icon: "mdi-view-dashboard",

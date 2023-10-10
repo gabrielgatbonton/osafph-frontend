@@ -463,7 +463,7 @@ export default {
             data: JSON.stringify(this.data),
           },
         });
-      } else if (this.userRole === "ADMIN") {
+      } else if (this.userRole === "ADMIN" || this.userRole === "SUPER_ADMIN") {
         this.$router.replace({
           name: "edit-consultation-form-continuation",
           query: {
