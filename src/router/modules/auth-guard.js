@@ -17,7 +17,7 @@ export function checkLoggedIn(to, from, next) {
     // If the user is an admin and is trying to access a restricted route,
     // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
-  } else if (userRole === "ROOT" && !isAllowedRoutes(to.name, userRole)) {
+  } else if (userRole === "SUPER_ADMIN" && !isAllowedRoutes(to.name, userRole)) {
     // If the user is an admin and is trying to access a restricted route,
     // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
@@ -47,7 +47,7 @@ function isAllowedRoutes(routeName, userRole) {
       "dashboard",
       "management",
     ];
-  } else if (userRole === "ADMIN" || userRole === "ROOT") {
+  } else if (userRole === "ADMIN" || userRole === "SUPER_ADMIN") {
     allowedRoutes = [
       "citizens",
       "register",
@@ -72,7 +72,6 @@ function isAllowedRoutes(routeName, userRole) {
       "hospital-services",
       "hospital-services-information",
       "management",
-      "citizens-consultations-view",
     ];
   }
   // Check if the provided routeName is in the restrictedRoutes array

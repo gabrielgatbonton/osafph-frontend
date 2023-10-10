@@ -211,7 +211,7 @@ export default {
     fetchConsultation() {
       const consultation_id = this.$route.params.consultation_id;
       console.log(consultation_id);
-      if (this.userRole === "ADMIN" || this.userRole === "ADMIN_SUPER" || this.userRole === "ENCODER") {
+      if (this.userRole === "ADMIN" || this.userRole === "SUPER_ADMIN") {
         return this.fetchAdminConsultationById(consultation_id)
           .then(() => {
             this.fetchAdminConsultationFormById(consultation_id);
@@ -226,7 +226,7 @@ export default {
       }
     },
     alterConsultation() {
-      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
+      if (this.userRole === "ADMIN" || this.userRole === "SUPER_ADMIN") {
         return this.$router.push({
           name: "edit-consultation-form",
           query: {
@@ -253,7 +253,7 @@ export default {
         if (this.consultation.hospital_service.status === "COMPLETED") {
           this.disabled = true;
         }
-      } else if (this.userRole === "") {
+      } else if (this.userRole === "SUPER_ADMIN") {
         this.auth.delete = true;
         if (this.consultation.hospital_service.status === "") {
           this.auth.delete = false;
