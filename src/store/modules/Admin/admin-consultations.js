@@ -90,7 +90,7 @@ export const admin_consultations = {
         });
     },
     deleteAdminConsultationFormById(
-      { commit, },
+      { commit, dispatch},
       { consultation_id, consultation_form_id }
     ) {
       return this.$axios
@@ -100,6 +100,7 @@ export const admin_consultations = {
         .then((response) => {
           const data = response.data;
           commit("DELETE_CONSULTATION_FORM", data);
+          dispatch("fetchAdminConsultationById", consultation_id);
           store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Deleted Consultation Form",

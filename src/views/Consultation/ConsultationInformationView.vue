@@ -21,7 +21,7 @@
         </v-col>
         <v-col cols="auto" v-if="auth.delete">
           <v-btn class="error" @click="deleteActivator" dark
-            ><v-icon>mdi-trash-can</v-icon></v-btn
+            ><v-icon>mdi-trash-can</v-icon>Delete Form</v-btn
           >
         </v-col>
       </v-row>
@@ -211,7 +211,7 @@ export default {
     fetchConsultation() {
       const consultation_id = this.$route.params.consultation_id;
       console.log(consultation_id);
-      if (this.userRole === "ADMIN" || this.userRole === "SUPER_ADMIN") {
+      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         return this.fetchAdminConsultationById(consultation_id)
           .then(() => {
             this.fetchAdminConsultationFormById(consultation_id);
@@ -226,7 +226,7 @@ export default {
       }
     },
     alterConsultation() {
-      if (this.userRole === "ADMIN" || this.userRole === "SUPER_ADMIN") {
+      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         return this.$router.push({
           name: "edit-consultation-form",
           query: {
@@ -253,9 +253,9 @@ export default {
         if (this.consultation.hospital_service.status === "COMPLETED") {
           this.disabled = true;
         }
-      } else if (this.userRole === "SUPER_ADMIN") {
+      } else if (this.userRole === "ROOT") {
         this.auth.delete = true;
-        if (this.consultation.hospital_service.status === "") {
+        if (this.consultation.hospital_service.status === "PENDING") {
           this.auth.delete = false;
         }
       }
@@ -266,7 +266,10 @@ export default {
         consultation_id: this.consultation_form.consultation_id,
         consultation_form_id: this.consultation_form.consultation_form_id,
       })
-        .then(() => (this.loading = false))
+        .then(() => {
+          this.loading = false;
+          this.$router.push({ name: "citizens-consultations" });
+        })
         .catch((error) => {
           console.log("Error Proceding with delete:", error);
         })
