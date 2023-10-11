@@ -61,34 +61,6 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col cols="6">
-              <v-menu
-                v-model="menu_2"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    :value="formattedTime1"
-                    v-model="formattedTime1"
-                    label="Scheduled Time"
-                    prepend-icon="mdi-clock-time-four-outline"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-time-picker
-                  v-model="payload.scheduled_time"
-                  full-width
-                  @click:minute="menu_2 = false"
-                ></v-time-picker>
-              </v-menu>
-            </v-col>
             <v-col cols="6" v-if="hospitalService">
               <v-menu
                 max-width="290"
@@ -113,34 +85,6 @@
                   :min="minDate"
                   @input="menu_3 = false"
                 ></v-date-picker>
-              </v-menu>
-            </v-col>
-            <v-col cols="6" v-if="hospitalService">
-              <v-menu
-                v-model="menu_4"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    :value="formattedTime2"
-                    v-model="formattedTime2"
-                    label="Time Released"
-                    prepend-icon="mdi-clock-time-four-outline"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-time-picker
-                  v-model="time_released"
-                  full-width
-                  @click:minute="menu_4 = false"
-                ></v-time-picker>
               </v-menu>
             </v-col>
             <v-col cols="12">
@@ -196,12 +140,10 @@ export default {
       service_type: null,
       serviceable_type: null,
       scheduled_date: null,
-      scheduled_time: null,
       remarks: null,
       doctor: null,
     },
     date_released: null,
-    time_released: null,
     status: null,
     selects: {
       serviceable_type: null,
@@ -241,7 +183,6 @@ export default {
       if (this.hospitalService) {
         //Attached the other variables to payload for updating service.
         this.payload.status = this.status;
-        this.payload.time_released = this.time_released;
         this.payload.date_released = this.date_released;
 
         this.$emit(
@@ -270,24 +211,6 @@ export default {
     formattedDate2() {
       return this.date_released
         ? format(parseISO(this.date_released), "MMMM d, yyyy")
-        : "";
-    },
-    formattedTime1() {
-      return this.payload.scheduled_time
-        ? format(
-            parseISO(
-              `${this.payload.scheduled_date}T${this.payload.scheduled_time}`
-            ),
-            "h:mm a"
-          )
-        : "";
-    },
-    formattedTime2() {
-      return this.time_released
-        ? format(
-            parseISO(`${this.date_released}T${this.time_released}`),
-            "h:mm a"
-          )
         : "";
     },
   },
@@ -332,10 +255,8 @@ export default {
           this.payload.doctor = doctor.doctor_id;
         }
         this.payload.scheduled_date = value.hospitalService.scheduled_date;
-        this.payload.scheduled_time = value.hospitalService.scheduled_time;
         this.payload.remarks = value.hospitalService.remarks;
         this.date_released = value.hospitalService.date_released;
-        this.time_released = value.hospitalService.time_released;
         this.status = value.hospitalService.status;
       }
     },

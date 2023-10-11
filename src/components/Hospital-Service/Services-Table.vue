@@ -176,10 +176,6 @@ export default {
           parseISO(service.scheduled_date),
           "MMMM dd, yyyy"
         ),
-        scheduled_time: format(
-          parseISO(`${service.scheduled_date}T${service.scheduled_time}`),
-          "h:mm a"
-        ),
       }));
     },
   },
