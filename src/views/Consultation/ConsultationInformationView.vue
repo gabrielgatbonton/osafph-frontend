@@ -307,6 +307,7 @@ export default {
   watch: {
     getConsultation(value) {
       this.consultation = value.consultation;
+      console.log(value.consultation)
     },
     getAdminConsultation(value) {
       this.consultation = value.consultation;

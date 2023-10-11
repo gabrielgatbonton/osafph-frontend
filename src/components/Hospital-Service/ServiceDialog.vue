@@ -35,7 +35,7 @@
                 item-value="doctor_id"
               ></v-autocomplete>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12">
               <v-menu
                 max-width="290"
                 :close-on-content-click="false"
@@ -61,7 +61,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col cols="6" v-if="hospitalService">
+            <v-col cols="12" v-if="hospitalService">
               <v-menu
                 max-width="290"
                 :close-on-content-click="false"
@@ -86,6 +86,9 @@
                   @input="menu_3 = false"
                 ></v-date-picker>
               </v-menu>
+            </v-col>
+            <v-col cols="12">
+              <v-autocomplete v-model="payload.service_location" label="Location"></v-autocomplete>
             </v-col>
             <v-col cols="12">
               <v-text-field
@@ -140,6 +143,7 @@ export default {
       service_type: null,
       serviceable_type: null,
       scheduled_date: null,
+      service_location: null,
       remarks: null,
       doctor: null,
     },
@@ -257,6 +261,7 @@ export default {
         this.payload.scheduled_date = value.hospitalService.scheduled_date;
         this.payload.remarks = value.hospitalService.remarks;
         this.date_released = value.hospitalService.date_released;
+        //Add Location Here
         this.status = value.hospitalService.status;
       }
     },

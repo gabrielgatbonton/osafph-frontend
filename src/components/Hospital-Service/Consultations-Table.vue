@@ -123,12 +123,6 @@ export default {
           parseISO(consultation.hospital_service.scheduled_date),
           "MMMM dd, yyyy"
         ),
-        scheduled_time: format(
-          parseISO(
-            `${consultation.hospital_service.scheduled_date}T${consultation.hospital_service.scheduled_time}`
-          ),
-          "h:mm a"
-        ),
         consultation_id: consultation.id,
         hospital_service_id: consultation.hospital_service.id,
       }));
