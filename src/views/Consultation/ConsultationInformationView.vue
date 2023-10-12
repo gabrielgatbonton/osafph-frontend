@@ -154,6 +154,11 @@
                   </v-container>
                 </v-card>
               </v-col>
+              <v-col cols="12">
+                <PreviousConsultations
+                  :data="consultation.previous_consultation_forms"
+                />
+              </v-col>
             </v-row>
           </v-container>
         </v-col>
@@ -179,6 +184,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import ConsultationInformationContinutation from "./ConsultationInformationContinuation.vue";
+import PreviousConsultations from "./PreviousConsultations.vue";
 import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import DeleteDialog from "@/mixins/DeleteDialog";
@@ -200,6 +206,7 @@ export default {
   components: {
     ConsultationInformationContinutation,
     ReusableDeleteDialog,
+    PreviousConsultations,
   },
   methods: {
     ...mapActions("consultations", ["fetchConsultationById"]),
@@ -307,7 +314,7 @@ export default {
   watch: {
     getConsultation(value) {
       this.consultation = value.consultation;
-      console.log(value.consultation)
+      console.log(value.consultation);
     },
     getAdminConsultation(value) {
       this.consultation = value.consultation;

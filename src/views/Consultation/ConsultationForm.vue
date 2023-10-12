@@ -126,7 +126,7 @@
         <v-row dense class="mx-4 mt-4">
           <v-col cols="auto" class="">
             <v-avatar color="indigo">
-              <v-icon dark> mdi-account </v-icon>
+              <v-icon dark> mdi-history </v-icon>
             </v-avatar>
           </v-col>
           <v-col cols="auto" class="pt-2">
@@ -282,7 +282,7 @@
         <v-row dense class="mx-4 mt-4">
           <v-col cols="auto" class="">
             <v-avatar color="indigo">
-              <v-icon dark> mdi-account </v-icon>
+              <v-icon dark> mdi-folder </v-icon>
             </v-avatar>
           </v-col>
           <v-col cols="auto" class="pt-2">

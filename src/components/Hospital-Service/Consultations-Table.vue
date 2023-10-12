@@ -21,7 +21,7 @@
         <tr v-for="(item, index) in items" :key="index">
           <td>{{ item.patient_name }}</td>
           <td>{{ item.scheduled_date }}</td>
-          <td>{{ item.scheduled_time }}</td>
+          <td>{{ item.sex }}</td>
           <td>
             <div
               :class="{
@@ -99,8 +99,8 @@ export default {
           value: "scheduled_date",
         },
         {
-          text: "SCHEDULED TIME",
-          value: "scheduled_time",
+          text: "SEX",
+          value: "sex",
         },
         {
           text: "STATUS",
@@ -123,6 +123,7 @@ export default {
           parseISO(consultation.hospital_service.scheduled_date),
           "MMMM dd, yyyy"
         ),
+        sex: consultation.citizen.sex,
         consultation_id: consultation.id,
         hospital_service_id: consultation.hospital_service.id,
       }));
