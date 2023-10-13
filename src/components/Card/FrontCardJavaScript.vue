@@ -282,7 +282,7 @@ export default {
         margin: 0;
         padding: 0;
         display: flex;
-        flex-direction: column; /* Display front and back cards in a column */
+        flex-direction: column;
         height: 100vh;
       }
       img {
@@ -293,7 +293,8 @@ export default {
       }
       .back-card {
         display: block;
-        page-break-after: always; /* Page break after the back card */
+        transform: rotate(180deg);
+        page-break-after: always;
       }
     `;
         head.appendChild(style);
