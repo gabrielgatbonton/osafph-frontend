@@ -8,7 +8,7 @@ import managementRoute from "./modules/management";
 import LogInLayout from "../components/LandingPage.vue";
 import { checkLoggedIn } from "./modules/auth-guard";
 import ReroutePage from "./modules/reroute";
-import html2pdfPage from "../components/Card/html2pdfPage.vue"
+import html2pdfPage from "../components/Card/Reusable Files/html2pdfPage.vue"
 import hospitalServicesRoute from "./modules/hospital-services";
 import doctorRoute from './modules/doctor'
 

@@ -9,7 +9,7 @@
           :class="{ 'disabled-button': disabledButton }"
           v-bind="attrs"
           v-on="on"
-          ><v-icon left>mdi-smart-card-outline</v-icon>Front</v-btn
+          ><v-icon left>mdi-smart-card-outline</v-icon>Print Card</v-btn
         >
       </template>
       <v-card>

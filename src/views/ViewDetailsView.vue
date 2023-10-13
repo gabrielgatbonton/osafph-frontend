@@ -225,14 +225,7 @@
                       >
                         {{ cardStatus.value }}
                       </v-btn>
-
-                      <!-- <FrontCardComponent :registrant="getRegistrant"/> -->
-                      <FrontCardJavaScript :registrant="getRegistrant" />
-                      <BackCardJavaScript :registrant="getRegistrant" />
-                      <!-- <v-btn dark block class="mb-2 blue darken-4"
-                        ><v-icon left>mdi-credit-card-outline</v-icon
-                        >Back</v-btn
-                      > -->
+                      <PrintCardJavaScript :registrant="getRegistrant" />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -257,9 +250,7 @@ import VaccinationComponent from "@/components/Vaccination/VaccinationDetailsVie
 import CameraComponent from "@/components/Camera/CameraComponent.vue";
 import SignatureComponent from "@/components/Signature/SignatureComponent.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-// import FrontCardComponent from '@/components/Card/FrontCard.vue';
-import FrontCardJavaScript from "@/components/Card/FrontCardJavaScript.vue";
-import BackCardJavaScript from "@/components/Card/BackCardJavaScript.vue";
+import PrintCardJavaScript from "@/components/Card/PrintCardJavaScript.vue";
 export default {
   mixins: [ErrorAlertsLogic],
   data: () => ({
@@ -279,9 +270,7 @@ export default {
     VaccinationComponent,
     CameraComponent,
     SignatureComponent,
-    // FrontCardComponent,
-    FrontCardJavaScript,
-    BackCardJavaScript,
+    PrintCardJavaScript,
   },
   methods: {
     handleImageUpload(file) {
