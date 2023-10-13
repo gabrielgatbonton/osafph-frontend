@@ -86,7 +86,7 @@ export default {
         context.drawImage(img, 0, 0);
 
         // Draw dynamic data on the canvas
-        context.font = "bold 50px Arial";
+        context.font = "bold 65px Arial";
         context.fillStyle = "black";
 
         // Load and draw registrant's portrait image
@@ -101,15 +101,12 @@ export default {
             // Draw signature image after it's loaded
             context.drawImage(signatureImg, 125, 1350, 600, 200);
 
-            //   // Draw ID
-            //   context.fillText(`${id}`, 130, 1400);
-
             // Draw the rest of the data
-            context.fillText(this.category, 750, 730, 1700);
-            context.fillText(this.fullName, 750, 910, 1700);
-            context.fillText(this.birthday, 750, 1090, 1700);
-            context.fillText(this.barangay, 750, 1275, 1700);
-            context.fillText(this.municipality, 750, 1335, 1700);
+            context.fillText(this.category, 750, 745, 1700);
+            context.fillText(this.fullName, 750, 925, 1700);
+            context.fillText(this.birthday, 750, 1105, 1700);
+            context.fillText(this.barangay, 750, 1280, 1700);
+            context.fillText(this.municipality, 750, 1340, 1700);
           };
         };
       };

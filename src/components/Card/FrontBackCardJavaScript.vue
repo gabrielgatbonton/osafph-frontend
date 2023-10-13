@@ -125,7 +125,11 @@ export default {
         this.municipality = `${this.registrant.citizen.municipality.toUpperCase()}, ${
           this.province
         }`;
-        this.tin_number = `${this.registrant.citizen.tin_number ? this.registrant.citizen.tin_number : "-"}`;
+        this.tin_number = `${
+          this.registrant.citizen.tin_number
+            ? this.registrant.citizen.tin_number
+            : "-"
+        }`;
         this.blood_type = `${this.registrant.citizen.blood_type}`;
         this.emergency_name = `${this.registrant.citizen.emergency_name.toUpperCase()}`;
         this.emergency_number = `${this.registrant.citizen.emergency_number}`;
@@ -149,7 +153,7 @@ export default {
         context.drawImage(frontImg, 0, 0);
 
         // Draw dynamic data on the canvas
-        context.font = "bold 50px Arial";
+        context.font = "bold 65px Arial";
         context.fillStyle = "black";
 
         // Load and draw registrant's portrait image
@@ -164,15 +168,12 @@ export default {
             // Draw signature image after it's loaded
             context.drawImage(signatureImg, 125, 1350, 600, 200);
 
-            //   // Draw ID
-            //   context.fillText(`${id}`, 130, 1400);
-
             // Draw the rest of the data
-            context.fillText(this.category, 750, 730, 1700);
-            context.fillText(this.fullName, 750, 910, 1700);
-            context.fillText(this.birthday, 750, 1090, 1700);
-            context.fillText(this.barangay, 750, 1275, 1700);
-            context.fillText(this.municipality, 750, 1335, 1700);
+            context.fillText(this.category, 750, 745, 1700);
+            context.fillText(this.fullName, 750, 925, 1700);
+            context.fillText(this.birthday, 750, 1105, 1700);
+            context.fillText(this.barangay, 750, 1280, 1700);
+            context.fillText(this.municipality, 750, 1340, 1700);
           };
         };
       };
@@ -215,21 +216,22 @@ export default {
             this.registrant.citizen.vaccination_stat[0] &&
             this.registrant.citizen.vaccination_stat[1]
           ) {
-            context.fillText(this.date_1, 1105, 270, 1700);
-            context.fillText(this.date_2, 1105, 545, 1700);
-            context.fillText(this.vaccination_site_1, 1105, 410, 1700);
-            context.fillText(this.vaccination_site_2, 1105, 690, 1700);
+            context.font = "bold 65px Arial";
+            context.fillText(this.date_1, 1105, 285, 1700);
+            context.fillText(this.date_2, 1105, 560, 1700);
+            context.fillText(this.vaccination_site_1, 1105, 425, 1700);
+            context.fillText(this.vaccination_site_2, 1105, 705, 1700);
             context.fillText(this.vaccine_1, 2000, 270, 1700);
             context.fillText(this.vaccine_2, 2000, 545, 1700);
 
             //Allow for the Lot numbers to be set to 40px
-            context.font = "bold 40px Arial";
+            context.font = "bold 50px Arial";
             context.fillText(this.lot_number_1, 2000, 320, 1700);
             context.fillText(this.lot_number_2, 2000, 595, 1700);
           }
 
           //Reset it back to 50px
-          context.font = "bold 50px Arial";
+          context.font = "bold 65px Arial";
           context.fillText(this.tin_number, 1105, 840, 1700);
           context.fillText(this.blood_type, 1105, 980, 1700);
           context.fillText(this.emergency_name, 1105, 1130, 1700);

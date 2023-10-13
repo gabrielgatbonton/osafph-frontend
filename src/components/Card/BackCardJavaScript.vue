@@ -167,25 +167,26 @@ export default {
             this.registrant.citizen.vaccination_stat[0] &&
             this.registrant.citizen.vaccination_stat[1]
           ) {
-            context.fillText(this.date_1, 1105, 270, 1700);
-            context.fillText(this.date_2, 1105, 545, 1700);
-            context.fillText(this.vaccination_site_1, 1105, 410, 1700);
-            context.fillText(this.vaccination_site_2, 1105, 690, 1700);
+            context.font = "bold 65px Arial";
+            context.fillText(this.date_1, 1105, 285, 1700);
+            context.fillText(this.date_2, 1105, 560, 1700);
+            context.fillText(this.vaccination_site_1, 1105, 425, 1700);
+            context.fillText(this.vaccination_site_2, 1105, 705, 1700);
             context.fillText(this.vaccine_1, 2000, 270, 1700);
             context.fillText(this.vaccine_2, 2000, 545, 1700);
 
             //Allow for the Lot numbers to be set to 40px
-            context.font = "bold 40px Arial";
+            context.font = "bold 50px Arial";
             context.fillText(this.lot_number_1, 2000, 320, 1700);
             context.fillText(this.lot_number_2, 2000, 595, 1700);
           }
 
           //Reset it back to 50px
-          context.font = "bold 50px Arial";
-          context.fillText(this.tin_number, 1105, 840, 1700);
-          context.fillText(this.blood_type, 1105, 980, 1700);
-          context.fillText(this.emergency_name, 1105, 1130, 1700);
-          context.fillText(this.emergency_number, 1105, 1190, 1700);
+          context.font = "bold 65px Arial";
+          context.fillText(this.tin_number, 1105, 855, 1700);
+          context.fillText(this.blood_type, 1105, 995, 1700);
+          context.fillText(this.emergency_name, 1105, 1145, 1700);
+          context.fillText(this.emergency_number, 1105, 1205, 1700);
         };
       };
     },
