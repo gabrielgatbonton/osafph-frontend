@@ -161,7 +161,9 @@
         </v-col>
       </v-row>
     </v-container>
-    <div v-else class="error--text text-center my-5 text-h6">No Recorded Consultations</div>
+    <div v-else class="error--text text-center my-5 text-h6">
+      No Recorded Consultations
+    </div>
   </v-card>
 </template>
 
@@ -177,7 +179,10 @@ export default {
       }
 
       return this.data.map((item) => ({
-        consultation_date: format(parseISO(item.consultation_date), "MMMM dd, yyyy"),
+        consultation_date: format(
+          parseISO(item.consultation_date),
+          "MMMM dd, yyyy"
+        ),
         subjectives: [
           {
             title: "Chief Complaint",
@@ -251,7 +256,9 @@ export default {
         plans: [
           {
             title: "Diagnostics",
-            content: item.diagnostic_type,
+            content: Array.isArray(item.diagnostic_type)
+              ? item.diagnostic_type.join(", ")
+              : item.diagnostic_type,
           },
           {
             title: "Medications",
@@ -275,7 +282,10 @@ export default {
           },
           {
             title: "Fit To Work Starting",
-            content: format(parseISO(item.fit_to_work_starting), "MMMM dd, yyyy"),
+            content: format(
+              parseISO(item.fit_to_work_starting),
+              "MMMM dd, yyyy"
+            ),
           },
           {
             title: "May Rest For",
