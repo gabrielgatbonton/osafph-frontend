@@ -9,7 +9,7 @@ export default {
       hub_registrant_number: {
         required,
       },
-      passport_number: { required },
+      id_number: { required },
       last_name: { required },
       first_name: { required },
       middle_name: {},
@@ -26,6 +26,7 @@ export default {
       civil_status: { required },
       contact_number: { required, minLength: minLength(11) },
       tin_number: { maxLength: maxLength(12), minLength: minLength(9) },
+      passport_number: {},
       blood_type: { required },
       emergency_name: { required },
       emergency_number: {
@@ -63,10 +64,10 @@ export default {
       }
 
       // Passport Number field errors
-      errors.passport_number = [];
-      if (this.$v.data.passport_number.$dirty) {
-        !this.$v.data.passport_number.required &&
-          errors.passport_number.push("Passport Number is required");
+      errors.id_number = [];
+      if (this.$v.data.id_number.$dirty) {
+        !this.$v.data.id_number.required &&
+          errors.id_number.push("Id Number is required");
       }
 
       // Name fields errors
@@ -132,6 +133,13 @@ export default {
           errors.tin_number.push("TIN is capped 12 digits");
         !this.$v.data.tin_number.minLength &&
           errors.tin_number.push("TIN is required atleast 9 digits");
+      }
+
+      // Passport field errors
+      errors.passport_number = [];
+      if (this.$v.data.passport_number.$dirty) {
+        !this.$v.data.passport_number.required &&
+          errors.passport_number.push("Passport Number is required");
       }
 
       // Blood Type field errors
