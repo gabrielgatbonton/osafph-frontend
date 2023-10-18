@@ -22,7 +22,7 @@ export default {
           return isBefore(new Date(value), fiveYearsAgo);
         },
       },
-      gender: { required },
+      sex: { required },
       civil_status: { required },
       contact_number: { required, minLength: minLength(11) },
       tin_number: { maxLength: maxLength(12), minLength: minLength(9) },
@@ -103,9 +103,9 @@ export default {
       }
 
       // Sex field errors
-      errors.gender = [];
-      if (this.$v.data.gender.$dirty) {
-        !this.$v.data.gender.required && errors.gender.push("Sex is required");
+      errors.sex = [];
+      if (this.$v.data.sex.$dirty) {
+        !this.$v.data.sex.required && errors.sex.push("Sex is required");
       }
 
       // Civil Status field errors

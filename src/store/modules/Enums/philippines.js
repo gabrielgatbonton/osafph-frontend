@@ -10,10 +10,21 @@ export const philippines = {
     provinces: [],
     municipalities: [],
     regions: [],
+    countries: [],
   }),
   mutations: {
-    SET_REGIONS(state, regions) {
-      state.regions = regions;
+    SET_COUNTRIES(state, countries) {
+      state.countries = countries;
+    },
+    SET_REGIONS(state, { regions, id }) {
+      if(id) {
+        const filteredRegions = regions.filter(
+          (region) => region.country_id === id
+        );
+        state.regions = filteredRegions;
+      } else {
+        state.regions = regions;
+      }
     },
     SET_PROVINCES(state, { provinces, id }) {
       if (id) {
@@ -41,17 +52,19 @@ export const philippines = {
           (barangay) => barangay.municipality_id === id
         );
         state.barangays = filteredBarangays;
-      }
-      else {
+      } else {
         state.barangays = barangays;
       }
     },
   },
   actions: {
-    fetchRegions({ commit }) {
+    fetchCountries({ commit }) {
       return this.$axios.get("/philippines").then((response) => {
+        const countries = response.data.countries;
+        commit("SET_COUNTRIES", countries);
+
         const regions = response.data.regions;
-        commit("SET_REGIONS", regions);
+        commit("SET_REGIONS", { regions });
 
         const provinces = response.data.provinces;
         commit("SET_PROVINCES", { provinces });
@@ -61,6 +74,12 @@ export const philippines = {
 
         const barangays = response.data.barangays;
         commit("SET_BARANGAYS", { barangays });
+      });
+    },
+    fetchRegions({ commit }, id) {
+      return this.$axios.get("/philippines").then((response) => {
+        const regions = response.data.regions;
+        commit("SET_REGIONS", { regions, id });
       });
     },
     fetchProvinces({ commit }, id) {
@@ -87,5 +106,6 @@ export const philippines = {
     getMunicipalities: (state) => state.municipalities,
     getProvinces: (state) => state.provinces,
     getRegions: (state) => state.regions,
+    getCountries: (state) => state.countries,
   },
 };

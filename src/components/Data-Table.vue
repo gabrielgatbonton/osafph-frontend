@@ -22,7 +22,7 @@
           <td>
             {{ item.full_name }}
           </td>
-          <td>{{ item.gender }}</td>
+          <td>{{ item.sex }}</td>
           <td>{{ item.birthday }}</td>
           <td>{{ item.barangay }}</td>
           <td>{{ item.municipality }}</td>
@@ -164,8 +164,8 @@ export default {
           value: "full_name",
         },
         {
-          text: "GENDER",
-          value: "gender",
+          text: "SEX",
+          value: "sex",
         },
         {
           text: "BIRTHDAY",
@@ -199,7 +199,7 @@ export default {
         full_name: `${registrant.last_name}, ${registrant.first_name} ${
           registrant.middle_name ? " " + registrant.middle_name : ""
         } ${registrant.suffix ? " " + registrant.suffix : ""}`,
-        gender: registrant.gender,
+        sex: registrant.sex,
         birthday: format(parseISO(registrant.birthday), "MMMM dd, yyyy"),
         barangay: registrant.barangay,
         municipality: registrant.municipality,

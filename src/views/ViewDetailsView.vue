@@ -334,7 +334,7 @@ export default {
   },
   watch: {
     getRegistrant(value) {
-      // console.log("Get Registrant", value);
+      console.log("Get Registrant", value);
       const id = this.$route.params.id;
       const baseURL = this.$url;
       this.registrant = value;
@@ -389,8 +389,8 @@ export default {
           content: this.registrant.citizen.birthday,
         },
         {
-          title: "Gender",
-          content: this.registrant.citizen.gender,
+          title: "Sex",
+          content: this.registrant.citizen.sex,
         },
         {
           title: "Civil Status",

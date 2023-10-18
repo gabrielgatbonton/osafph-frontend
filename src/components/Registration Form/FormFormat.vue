@@ -2,46 +2,54 @@
   <div>
     <v-stepper v-model="stepper" elevation="0" non-linear>
       <v-stepper-header>
-        <v-stepper-step :complete="stepper > 1" step="1">
+        <v-stepper-step :complete="stepper > 1" step="1" editable>
           Category
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :complete="stepper > 2" step="2">
+        <v-stepper-step :complete="stepper > 2" step="2" editable>
           Personal Details
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :complete="stepper > 3" step="3">
+        <v-stepper-step :complete="stepper > 3" step="3" editable>
           Address
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :complete="stepper > 4" step="4">
+        <v-stepper-step :complete="stepper > 4" step="4" editable>
           Emergency Contact
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :complete="stepper > 5" step="5">
+        <v-stepper-step :complete="stepper > 5" step="5" editable>
           Employment Details
         </v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
-          <CategorySection />
-          <v-btn color="primary" @click="stepper = 2"> Continue </v-btn>
+          <CategorySection
+            :editData="CategorySectionEditData"
+            v-on:data="updatedData"
+            v-on:stepper="updateStepper"
+          />
         </v-stepper-content>
         <v-stepper-content step="2">
-          <PersonalInformationSection />
-          <v-btn color="primary" @click="stepper = 3"> Continue </v-btn>
+          <PersonalInformationSection
+            v-on:data="updatedData"
+            v-on:stepper="updateStepper"
+          />
         </v-stepper-content>
         <v-stepper-content step="3">
-          <AddressSection />
-          <v-btn color="primary" @click="stepper = 4"> Continue </v-btn>
+          <AddressSection
+            v-on:data="updatedData"
+            v-on:stepper="updateStepper"
+          />
         </v-stepper-content>
         <v-stepper-content step="4">
-          <EmergencySection />
-          <v-btn color="primary" @click="stepper = 5"> Continue </v-btn>
+          <EmergencySection
+            v-on:data="updatedData"
+            v-on:stepper="updateStepper"
+          />
         </v-stepper-content>
-        <v-stepper-content step="5"> 
-          <EmploymentSection />
-          <v-btn color="primary" @click="stepper = 1"> Continue </v-btn>
+        <v-stepper-content step="5">
+          <EmploymentSection v-on:data="submitForm" />
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -85,7 +93,7 @@ export default {
     PersonalInformationSection,
     AddressSection,
     EmergencySection,
-    EmploymentSection
+    EmploymentSection,
   },
   data: () => ({
     data: {
@@ -93,9 +101,27 @@ export default {
     },
     // value: null,
     stepper: 1,
+    category: null,
   }),
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
+    CategorySectionEditData() {
+      
+if (this.id) {
+        if (this.category) {
+          const data = {
+            category: this.category.citizen.category.description,
+            identification_card_id:
+              this.category.citizen.identification_card_id,
+            type_of_id: this.category.citizen.type_of_id,
+            other_id: this.category.citizen.other_id,
+            hub_registrant_number: this.category.citizen.hub_registrant_number,
+            id_number: this.category.citizen.id_number,
+          };
+          return data;
+        }
+      }
+    },
   },
   methods: {
     async fetchRegistrant() {
@@ -107,17 +133,37 @@ export default {
         }
       }
     },
-    submitForm() {
-      this.$v.$touch();
+    submitForm(data) {
+      // this.$v.$touch();
 
-      if (!this.$v.$invalid) {
-        this.$emit("submitData", this.data);
+      const parsedData = data;
+      for (const key in parsedData) {
+        if (Object.hasOwnProperty.call(parsedData, key)) {
+          this.data[key] = parsedData[key];
+        }
       }
+
+      // if (!this.$v.$invalid) {
+      this.$emit("submitData", this.data);
+      // }
+    },
+    updatedData(data) {
+      const parsedData = data;
+      for (const key in parsedData) {
+        if (Object.hasOwnProperty.call(parsedData, key)) {
+          this.data[key] = parsedData[key];
+        }
+      }
+      console.log("Passed Data", this.data);
+    },
+    updateStepper(stepper) {
+      this.stepper = stepper;
     },
   },
   watch: {
     getRegistrant(value) {
-      // console.log("watch:", value);
+      this.category = value;
+      console.log("watch:", value);
       if (this.id) {
         this.data.category = value.citizen.category.description;
         this.data.hub_registrant_number = value.citizen.hub_registrant_number;
@@ -142,42 +188,42 @@ export default {
         // this.data.occupation = value.citizen.occupation;
 
         //Selects
-        this.data.province =
-          value.citizen.barangay.municipality.province.province_name;
-        this.data.municipality =
-          value.citizen.barangay.municipality.municipality_name;
-        this.data.barangay = value.citizen.barangay.barangay_name;
-        this.data.region =
-          value.citizen.barangay.municipality.province.region.region_name;
+        // this.data.province =
+        //   value.citizen.barangay.municipality.province.province_name;
+        // this.data.municipality =
+        //   value.citizen.barangay.municipality.municipality_name;
+        // this.data.barangay = value.citizen.barangay.barangay_name;
+        // this.data.region =
+        //   value.citizen.barangay.municipality.province.region.region_name;
 
-        const region = this.getRegions.find(
-          (region) => region.region_name === this.data.region
-        );
-        if (region) {
-          this.selects.region = region.id;
-        }
+        // const region = this.getRegions.find(
+        //   (region) => region.region_name === this.data.region
+        // );
+        // if (region) {
+        //   this.selects.region = region.id;
+        // }
 
-        const province = this.getProvinces.find(
-          (province) => province.province_name === this.data.province
-        );
-        if (province) {
-          this.selects.province = province.id;
-        }
+        // const province = this.getProvinces.find(
+        //   (province) => province.province_name === this.data.province
+        // );
+        // if (province) {
+        //   this.selects.province = province.id;
+        // }
 
-        const municipality = this.getMunicipalities.find(
-          (municipality) =>
-            municipality.municipality_name === this.data.municipality
-        );
-        if (municipality) {
-          this.selects.municipality = municipality.id;
-        }
+        // const municipality = this.getMunicipalities.find(
+        //   (municipality) =>
+        //     municipality.municipality_name === this.data.municipality
+        // );
+        // if (municipality) {
+        //   this.selects.municipality = municipality.id;
+        // }
 
-        const barangay = this.getBarangays.find(
-          (barangay) => barangay.barangay_name === this.data.barangay
-        );
-        if (barangay) {
-          this.selects.barangay = barangay.id;
-        }
+        // const barangay = this.getBarangays.find(
+        //   (barangay) => barangay.barangay_name === this.data.barangay
+        // );
+        // if (barangay) {
+        //   this.selects.barangay = barangay.id;
+        // }
       }
     },
   },
