@@ -57,7 +57,7 @@ export default {
         const constraints = {
           video: {
             width: { ideal: 550 }, // Set the desired width
-            height: { ideal: 700 }, // Set the desired height
+            height: { ideal: 750 }, // Set the desired height
           },
         };
 
