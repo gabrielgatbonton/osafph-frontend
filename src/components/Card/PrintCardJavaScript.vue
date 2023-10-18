@@ -241,7 +241,7 @@ export default {
             context.fillText(this.vaccine_2, 2000, 545, 1700);
 
             //Allow for the Lot numbers to be set to 40px
-            context.font = "bold 50px Arial";
+            context.font = "bold 55px Arial";
             context.fillText(this.lot_number_1, 2000, 320, 1700);
             context.fillText(this.lot_number_2, 2000, 595, 1700);
           }

@@ -153,7 +153,7 @@ export default {
         context.drawImage(frontImg, 0, 0);
 
         // Draw dynamic data on the canvas
-        context.font = "bold 65px Arial";
+        context.font = "bold 75px Arial";
         context.fillStyle = "black";
 
         // Load and draw registrant's portrait image
@@ -166,14 +166,14 @@ export default {
             // Draw portrait image after it's loaded
             context.drawImage(portraitImg, 125, 600);
             // Draw signature image after it's loaded
-            context.drawImage(signatureImg, 125, 1350, 600, 200);
+            context.drawImage(signatureImg, 125, 1370, 600, 200);
 
             // Draw the rest of the data
             context.fillText(this.category, 750, 745, 1700);
             context.fillText(this.fullName, 750, 925, 1700);
             context.fillText(this.birthday, 750, 1105, 1700);
             context.fillText(this.barangay, 750, 1280, 1700);
-            context.fillText(this.municipality, 750, 1340, 1700);
+            context.fillText(this.municipality, 750, 1350, 1700);
           };
         };
       };
@@ -225,7 +225,7 @@ export default {
             context.fillText(this.vaccine_2, 2000, 545, 1700);
 
             //Allow for the Lot numbers to be set to 40px
-            context.font = "bold 50px Arial";
+            context.font = "bold 55px Arial";
             context.fillText(this.lot_number_1, 2000, 320, 1700);
             context.fillText(this.lot_number_2, 2000, 595, 1700);
           }
