@@ -12,6 +12,7 @@ import { consultations } from "./modules/Doctor/consultations";
 import { consultation_enum } from "./modules/Enums/consultation-enum";
 import { admin_consultations } from "./modules/Admin/admin-consultations";
 import { identification_cards } from "./modules/Enums/identification-cards";
+import { professions } from "./modules/Enums/professions";
 
 Vue.use(Vuex);
 
@@ -33,5 +34,6 @@ export default new Vuex.Store({
 
     //Enums
     identification_cards,
+    professions,
   },
 });

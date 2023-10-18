@@ -95,7 +95,7 @@ export default {
   created() {
     this.fetchCategories();
     this.fetchIdentificationCards();
-  }
+  },
 };
 </script>
 
