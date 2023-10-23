@@ -43,6 +43,11 @@ import FormValidation from "@/mixins/FormValidation";
 export default {
   name: "EmergencySection",
   mixins: [FormValidation],
+  props: {
+    editData: {
+      required: false,
+    }
+  },
   data: () => ({
     data: {
       emergency_name: null,
@@ -56,7 +61,11 @@ export default {
       this.$emit("stepper", (this.stepper = 5));
     },
   },
-  computed: {},
+  watch: {
+    editData(value) {
+      this.data = Object.assign({}, this.data, value);
+    }
+  }
 };
 </script>
 

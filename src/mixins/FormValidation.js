@@ -26,7 +26,7 @@ export default {
       civil_status: { required },
       contact_number: { required, minLength: minLength(11) },
       tin_number: { maxLength: maxLength(12), minLength: minLength(9) },
-      passport_number: {},
+      passport_number: { required },
       blood_type: { required },
       emergency_name: { required },
       emergency_number: {

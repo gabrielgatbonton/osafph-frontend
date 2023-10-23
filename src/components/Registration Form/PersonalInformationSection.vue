@@ -127,7 +127,10 @@
         <v-text-field v-model="data.religion" label="Religion"></v-text-field>
       </v-col>
       <v-col cols="12" lg="3" md="3" sm="6">
-        <v-text-field v-model="data.nationality" label="Nationality"></v-text-field>
+        <v-text-field
+          v-model="data.nationality"
+          label="Nationality"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row class="mt-n3">
@@ -168,6 +171,11 @@ import FormValidation from "@/mixins/FormValidation";
 export default {
   name: "PersonalInformationSection",
   mixins: [FormValidation],
+  props: {
+    editData: {
+      required: false,
+    },
+  },
   data: () => ({
     data: {
       last_name: null,
@@ -194,6 +202,13 @@ export default {
   }),
   methods: {
     continueForm() {
+      if (this.data.tin_number === this.editData.tin_number) {
+        delete this.data.tin_number;
+      }
+      if (this.data.passport_number === this.editData.passport_number) {
+        delete this.data.passport_number;
+      }
+
       this.$emit("data", this.data);
       this.$emit("stepper", (this.stepper = 3));
     },
@@ -203,6 +218,12 @@ export default {
       return this.data.birthday
         ? format(parseISO(this.data.birthday), "MMMM d, yyyy")
         : "";
+    },
+  },
+  watch: {
+    editData(value) {
+      console.log("EDIT", value);
+      this.data = Object.assign({}, this.data, value)
     },
   },
 };

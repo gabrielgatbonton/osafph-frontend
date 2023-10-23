@@ -25,32 +25,8 @@ export const registrants = {
     SET_REGISTRANT(state, registrant) {
       state.registrant = registrant;
     },
-    UPDATE_REGISTRANT(state, { id, updateRegistrant }) {
-      // console.log(state.registrant);
-      const registrant = state.registrant;
-      if (registrant && registrant.id === id) {
-        registrant.citizen = {
-          hub_registrant_number: updateRegistrant.hub_registrant_number,
-          passport_number: updateRegistrant.passport_number,
-          last_name: updateRegistrant.last_name,
-          first_name: updateRegistrant.first_name,
-          middle_name: updateRegistrant.middle_name,
-          suffix: updateRegistrant.suffix,
-          gender: updateRegistrant.gender,
-          birthday: updateRegistrant.birthday,
-          civil_status: updateRegistrant.civil_status,
-          contact_number: updateRegistrant.contact_number,
-          tin_number: updateRegistrant.tin_number,
-          blood_type: updateRegistrant.blood_type,
-          emergency_name: updateRegistrant.emergency_name,
-          emergency_number: updateRegistrant.emergency_number,
-          address: updateRegistrant.address,
-          barangay: updateRegistrant.barangay,
-          municipality: updateRegistrant.municipality,
-          province: updateRegistrant.province,
-          region: updateRegistrant.region,
-        };
-      }
+    UPDATE_REGISTRANT() {
+      this.dispatch("fetchRegistrants");
     },
     DELETE_REGISTRANT(state, data) {
       state.registrants = state.registrants.filter(
@@ -157,6 +133,7 @@ export const registrants = {
         });
     },
     updateRegistrant({ commit }, { id, data }) {
+      console.log("CHECK ACTION: ", data);
       return this.$axios
         .put(`/citizens/${id}`, data)
         .then((response) => {

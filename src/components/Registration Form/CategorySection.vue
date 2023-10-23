@@ -83,6 +83,11 @@ import FormValidation from "@/mixins/FormValidation";
 export default {
   name: "CategorySection",
   mixins: [FormValidation],
+  props: {
+    editData: {
+      required: false,
+    },
+  },
   data: () => ({
     data: {
       category: null,
@@ -105,17 +110,28 @@ export default {
     ],
     stepper: 1,
   }),
-  props: {
-    editData: {
-      required: false,
-    }
-  },
   methods: {
     ...mapActions("categories", ["fetchCategories"]),
     ...mapActions("identification_cards", ["fetchIdentificationCards"]),
     continueForm() {
+      // Check if hub_registrant_id is the same as editData, and if it is, remove it
+      console.log(this.data.hub_registrant_number, this.editData.hub_registrant_number)
+      if (
+        this.data.hub_registrant_number === this.editData.hub_registrant_number
+      ) {
+        delete this.data.hub_registrant_number;
+      }
+
       this.$emit("data", this.data);
       this.$emit("stepper", (this.stepper = 2));
+    },
+    findIdentificationCard() {
+      const data = this.getIdentificationCards.find(
+        (card) => card.id === this.editData.identification_card_id
+      );
+      if (data) {
+        this.data.identification_card = data.name;
+      }
     },
   },
   computed: {
@@ -126,12 +142,18 @@ export default {
     this.fetchCategories();
     this.fetchIdentificationCards();
   },
+  watch: {
+    editData(value) {
+      this.data.category = value.category;
+      this.data.type_of_id = value.type_of_id;
+      this.data.other_id = value.other_id;
+      this.data.hub_registrant_number = value.hub_registrant_number;
+      this.data.id_number = value.id_number;
+    },
+  },
   updated() {
-    if(this.editData) {
-      this.data = this.editData
-      console.log("update: ", this.editData)
-    }
-  }
+    this.findIdentificationCard();
+  },
 };
 </script>
 

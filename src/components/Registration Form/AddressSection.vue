@@ -21,7 +21,7 @@
       <v-col cols="12">
         <v-autocomplete
           label="Country"
-          v-model="data.country"
+          v-model="selects.country"
           :items="getCountries"
           item-text="country_name"
           item-value="id"
@@ -102,6 +102,11 @@ import FormValidation from "@/mixins/FormValidation";
 export default {
   name: "AddressSection",
   mixins: [FormValidation],
+  props: {
+    editData: {
+      required: false,
+    },
+  },
   data: () => ({
     data: {
       address: null,
@@ -112,10 +117,11 @@ export default {
       country: null,
     },
     selects: {
+      country: null,
+      region: null,
       province: null,
       municipality: null,
       barangay: null,
-      region: null,
     },
     stepper: 3,
   }),
@@ -133,7 +139,7 @@ export default {
       if (data) {
         this.data.country = data.country_name;
       }
-      console.log(this.data.country)
+      console.log(this.data.country);
     },
     initProvinces(id) {
       this.fetchProvinces(id);
@@ -168,6 +174,39 @@ export default {
       this.$emit("data", this.data);
       this.$emit("stepper", (this.stepper = 4));
     },
+    fetchLocations() {
+      const country = this.getCountries.find(
+        (country) => country.country_name === this.data.country
+      );
+      if (country) {
+        this.selects.country = country.id;
+      }
+      const region = this.getRegions.find(
+        (region) => region.region_name === this.data.region
+      );
+      if (region) {
+        this.selects.region = region.id;
+      }
+      const province = this.getProvinces.find(
+        (province) => province.province_name === this.data.province
+      );
+      if (province) {
+        this.selects.province = province.id;
+      }
+      const municipality = this.getMunicipalities.find(
+        (municipality) =>
+          municipality.municipality_name === this.data.municipality
+      );
+      if (municipality) {
+        this.selects.municipality = municipality.id;
+      }
+      const barangay = this.getBarangays.find(
+        (barangay) => barangay.barangay_name === this.data.barangay
+      );
+      if (barangay) {
+        this.selects.barangay = barangay.id;
+      }
+    },
   },
   computed: {
     ...mapGetters("philippines", [
@@ -181,6 +220,14 @@ export default {
   created() {
     this.fetchCountries();
   },
+  watch: {
+    editData(value) {
+      this.data = value;
+    },
+  },
+  updated() {
+    this.fetchLocations();
+  }
 };
 </script>
 

@@ -43,12 +43,11 @@
     </v-row>
     <v-row class="mt-n3" v-if="data.employment_status === 'OTHERS'">
       <v-col cols="12" lg="12" md="12" sm="12">
-        <v-autocomplete
+        <v-text-field
           :value="data.other_employment_status"
           v-model="data.other_employment_status"
-          label="Other Employemnt Status"
-          :items="statuses"
-        ></v-autocomplete>
+          label="Other Employement Status"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row class="mt-n3">
@@ -102,6 +101,11 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "EmploymentSection",
+  props: {
+    editData: {
+      required: false,
+    },
+  },
   data: () => ({
     data: {
       employer_name: null,
@@ -125,7 +129,18 @@ export default {
   methods: {
     ...mapActions("professions", ["fetchProfessions"]),
     continueForm() {
+      if (this.data.philhealth_id_number === this.editData.philhealth_id_number) {
+        delete this.data.philhealth_id_number;
+      }
       this.$emit("data", this.data);
+    },
+    findProfessionOnEdit() {
+      const data = this.getProfessions.find(
+        (profession) => profession.id === this.editData.profession_id
+      );
+      if (data) {
+        this.data.profession = data.name;
+      }
     },
   },
   computed: {
@@ -134,6 +149,14 @@ export default {
   created() {
     this.fetchProfessions();
   },
+  watch: {
+    editData(value) {
+      this.data = Object.assign({}, this.data, value);
+    },
+  },
+  updated() {
+    this.findProfessionOnEdit();
+  }
 };
 </script>
 
