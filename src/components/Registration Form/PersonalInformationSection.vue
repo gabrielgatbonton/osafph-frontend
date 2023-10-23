@@ -81,7 +81,7 @@
           label="Sex"
           :items="genders"
           @blur="$v.data.sex.$touch()"
-          :error-messages="errorMessages.gender"
+          :error-messages="errorMessages.sex"
         ></v-select>
       </v-col>
       <v-col cols="12" lg="3" md="3" sm="6">
@@ -131,6 +131,8 @@
         <v-text-field
           v-model="data.nationality"
           label="Nationality"
+          @blur="$v.data.nationality.$touch()"
+          :error-messages="errorMessages.nationality"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -168,8 +170,7 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-// import FormValidation from "@/mixins/FormValidation";
-import PersonalInformationSectionValidation from '@/mixins/RegistrationFormValidation/PersonalInformationSectionValidation'
+import PersonalInformationSectionValidation from "@/mixins/RegistrationFormValidation/PersonalInformationSectionValidation";
 export default {
   name: "PersonalInformationSection",
   mixins: [PersonalInformationSectionValidation],
@@ -204,15 +205,17 @@ export default {
   }),
   methods: {
     continueForm() {
-      if (this.data.tin_number === this.editData.tin_number) {
+      this.$v.$touch();
+      if (this.editData && this.editData.tin_number === this.data.tin_number) {
         delete this.data.tin_number;
       }
-      if (this.data.passport_number === this.editData.passport_number) {
+      if (this.editData && this.editData.passport_number === this.data.passport_number) {
         delete this.data.passport_number;
       }
-
-      this.$emit("data", this.data);
-      this.$emit("stepper", (this.stepper = 3));
+      if (!this.$v.$invalid) {
+        this.$emit("data", this.data);
+        this.$emit("stepper", (this.stepper = 3));
+      }
     },
   },
   computed: {
@@ -225,7 +228,7 @@ export default {
   watch: {
     editData(value) {
       console.log("EDIT", value);
-      this.data = Object.assign({}, this.data, value)
+      this.data = Object.assign({}, this.data, value);
     },
   },
 };

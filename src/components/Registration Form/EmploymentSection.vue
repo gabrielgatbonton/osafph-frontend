@@ -12,6 +12,8 @@
           :value="data.employer_name"
           v-model="data.employer_name"
           label="Employer Name"
+          @blur="$v.data.employer_name.$touch()"
+          :error-messages="errorMessages.employer_name"
         ></v-text-field>
       </v-col>
       <v-col cols="12" lg="6" md="6" sm="6">
@@ -19,6 +21,8 @@
           :value="data.employer_address"
           v-model="data.employer_address"
           label="Employer Address"
+          @blur="$v.data.employer_address.$touch()"
+          :error-messages="errorMessages.employer_address"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -67,6 +71,8 @@
           label="Profession"
           item-text="name"
           :items="getProfessions"
+          @blur="$v.data.profession.$touch()"
+          :error-messages="errorMessages.profession"
         ></v-autocomplete>
       </v-col>
     </v-row>
@@ -99,8 +105,10 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import EmploymentSectionValidation from "@/mixins/RegistrationFormValidation/EmploymentSectionValidation";
 export default {
   name: "EmploymentSection",
+  mixins: [EmploymentSectionValidation],
   props: {
     editData: {
       required: false,

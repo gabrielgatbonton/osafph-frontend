@@ -39,10 +39,10 @@
 </template>
 
 <script>
-import FormValidation from "@/mixins/FormValidation";
+import EmergencySectionValidation from '@/mixins/RegistrationFormValidation/EmergencySectionValidation';
 export default {
   name: "EmergencySection",
-  mixins: [FormValidation],
+  mixins: [EmergencySectionValidation],
   props: {
     editData: {
       required: false,

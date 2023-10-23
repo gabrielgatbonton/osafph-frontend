@@ -89,11 +89,9 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CategorySectionValidation from '@/mixins/RegistrationFormValidation/CategorySectionValidation';
-// import FormValidation from "@/mixins/FormValidation";
 export default {
   name: "CategorySection",
   mixins: [CategorySectionValidation],
-  // mixins: [FormValidation],
   props: {
     editData: {
       required: false,

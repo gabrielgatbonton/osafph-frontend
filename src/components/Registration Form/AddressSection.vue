@@ -26,6 +26,8 @@
           item-text="country_name"
           item-value="id"
           @change="(id) => initRegions(id)"
+          @blur="$v.data.country.$touch()"
+          :error-messages="errorMessages.country"
         ></v-autocomplete>
       </v-col>
     </v-row>
@@ -98,10 +100,10 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import FormValidation from "@/mixins/FormValidation";
+import AddressSectionValidation from "@/mixins/RegistrationFormValidation/AddressSectionValidation";
 export default {
   name: "AddressSection",
-  mixins: [FormValidation],
+  mixins: [AddressSectionValidation],
   props: {
     editData: {
       required: false,
@@ -171,8 +173,12 @@ export default {
       }
     },
     continueForm() {
-      this.$emit("data", this.data);
-      this.$emit("stepper", (this.stepper = 4));
+      this.$v.$touch();
+
+      if (!this.$v.$invalid) {
+        this.$emit("data", this.data);
+        this.$emit("stepper", (this.stepper = 4));
+      }
     },
     fetchLocations() {
       const country = this.getCountries.find(
@@ -227,7 +233,7 @@ export default {
   },
   updated() {
     this.fetchLocations();
-  }
+  },
 };
 </script>
 
