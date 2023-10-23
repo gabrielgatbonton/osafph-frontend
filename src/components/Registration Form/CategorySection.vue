@@ -115,7 +115,10 @@ export default {
     ...mapActions("identification_cards", ["fetchIdentificationCards"]),
     continueForm() {
       // Check if hub_registrant_id is the same as editData, and if it is, remove it
-      console.log(this.data.hub_registrant_number, this.editData.hub_registrant_number)
+      console.log(
+        this.data.hub_registrant_number,
+        this.editData.hub_registrant_number
+      );
       if (
         this.data.hub_registrant_number === this.editData.hub_registrant_number
       ) {
@@ -126,11 +129,13 @@ export default {
       this.$emit("stepper", (this.stepper = 2));
     },
     findIdentificationCard() {
-      const data = this.getIdentificationCards.find(
-        (card) => card.id === this.editData.identification_card_id
-      );
-      if (data) {
-        this.data.identification_card = data.name;
+      if (this.editData) {
+        const data = this.getIdentificationCards.find(
+          (card) => card.id === this.editData.identification_card_id
+        );
+        if (data) {
+          this.data.identification_card = data.name;
+        }
       }
     },
   },
@@ -140,19 +145,21 @@ export default {
   },
   created() {
     this.fetchCategories();
-    this.fetchIdentificationCards();
+    this.fetchIdentificationCards().then(() => {
+      this.findIdentificationCard();
+    });
   },
   watch: {
-    editData(value) {
-      this.data.category = value.category;
-      this.data.type_of_id = value.type_of_id;
-      this.data.other_id = value.other_id;
-      this.data.hub_registrant_number = value.hub_registrant_number;
-      this.data.id_number = value.id_number;
+    editData: {
+      handler(value) {
+        this.data.category = value.category;
+        this.data.type_of_id = value.type_of_id;
+        this.data.other_id = value.other_id;
+        this.data.hub_registrant_number = value.hub_registrant_number;
+        this.data.id_number = value.id_number;
+      },
+      deep: true,
     },
-  },
-  updated() {
-    this.findIdentificationCard();
   },
 };
 </script>

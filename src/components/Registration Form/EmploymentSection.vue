@@ -129,17 +129,21 @@ export default {
   methods: {
     ...mapActions("professions", ["fetchProfessions"]),
     continueForm() {
-      if (this.data.philhealth_id_number === this.editData.philhealth_id_number) {
+      if (
+        this.data.philhealth_id_number === this.editData.philhealth_id_number
+      ) {
         delete this.data.philhealth_id_number;
       }
       this.$emit("data", this.data);
     },
     findProfessionOnEdit() {
-      const data = this.getProfessions.find(
-        (profession) => profession.id === this.editData.profession_id
-      );
-      if (data) {
-        this.data.profession = data.name;
+      if (this.editData) {
+        const data = this.getProfessions.find(
+          (profession) => profession.id === this.editData.profession_id
+        );
+        if (data) {
+          this.data.profession = data.name;
+        }
       }
     },
   },
@@ -147,16 +151,15 @@ export default {
     ...mapGetters("professions", ["getProfessions"]),
   },
   created() {
-    this.fetchProfessions();
+    this.fetchProfessions().then(() => {
+      this.findProfessionOnEdit();
+    });
   },
   watch: {
     editData(value) {
       this.data = Object.assign({}, this.data, value);
     },
   },
-  updated() {
-    this.findProfessionOnEdit();
-  }
 };
 </script>
 
