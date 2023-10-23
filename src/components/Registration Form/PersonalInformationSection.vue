@@ -108,6 +108,7 @@
           v-model="data.contact_number"
           label="Contact Number"
           type="number"
+          maxlength="11"
           @blur="$v.data.contact_number.$touch()"
           :error-messages="errorMessages.contact_number"
           counter="11"
@@ -167,10 +168,11 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-import FormValidation from "@/mixins/FormValidation";
+// import FormValidation from "@/mixins/FormValidation";
+import PersonalInformationSectionValidation from '@/mixins/RegistrationFormValidation/PersonalInformationSectionValidation'
 export default {
   name: "PersonalInformationSection",
-  mixins: [FormValidation],
+  mixins: [PersonalInformationSectionValidation],
   props: {
     editData: {
       required: false,

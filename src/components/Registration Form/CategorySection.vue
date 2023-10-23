@@ -24,6 +24,8 @@
           item-text="name"
           label="Identification Card"
           v-model="data.identification_card"
+          @blur="$v.data.identification_card.$touch()"
+          :error-messages="errorMessages.identification_card"
         ></v-autocomplete>
       </v-col>
       <v-col
@@ -37,6 +39,8 @@
           label="Type of Id"
           :items="type_of_ids"
           v-model="data.type_of_id"
+          @blur="$v.data.type_of_id.$touch()"
+          :error-messages="errorMessages.type_of_id"
         ></v-autocomplete>
       </v-col>
       <v-col
@@ -46,7 +50,12 @@
         v-if="data.identification_card === 'OTHERS'"
         class="mt-n3"
       >
-        <v-text-field v-model="data.other_id" label="Other Id"></v-text-field>
+        <v-text-field
+          v-model="data.other_id"
+          label="Other Id"
+          @blur="$v.data.other_id.$touch()"
+          :error-messages="errorMessages.other_id"
+        ></v-text-field>
       </v-col>
       <v-col cols="12" lg="6" md="6" class="mt-n3">
         <v-text-field
@@ -79,10 +88,12 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import FormValidation from "@/mixins/FormValidation";
+import CategorySectionValidation from '@/mixins/RegistrationFormValidation/CategorySectionValidation';
+// import FormValidation from "@/mixins/FormValidation";
 export default {
   name: "CategorySection",
-  mixins: [FormValidation],
+  mixins: [CategorySectionValidation],
+  // mixins: [FormValidation],
   props: {
     editData: {
       required: false,
@@ -114,19 +125,22 @@ export default {
     ...mapActions("categories", ["fetchCategories"]),
     ...mapActions("identification_cards", ["fetchIdentificationCards"]),
     continueForm() {
-      // Check if hub_registrant_id is the same as editData, and if it is, remove it
-      console.log(
-        this.data.hub_registrant_number,
-        this.editData.hub_registrant_number
-      );
+      console.log("Before validation", this.data);
+      this.$v.$touch();
+      console.log("After validation", this.data);
       if (
-        this.data.hub_registrant_number === this.editData.hub_registrant_number
+        this.editData &&
+        this.editData.hub_registrant_number === this.data.hub_registrant_number
       ) {
         delete this.data.hub_registrant_number;
       }
-
-      this.$emit("data", this.data);
-      this.$emit("stepper", (this.stepper = 2));
+      if (!this.$v.$invalid) {
+        console.log("Data is valid");
+        this.$emit("data", this.data);
+        this.$emit("stepper", (this.stepper = 2));
+      } else {
+        console.log("Data is invalid");
+      }
     },
     findIdentificationCard() {
       if (this.editData) {
@@ -165,3 +179,4 @@ export default {
 </script>
 
 <style></style>
+@/mixins/RegistrationFormValidation/CategorySectionValidation
