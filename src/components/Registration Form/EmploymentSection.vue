@@ -137,8 +137,10 @@ export default {
   methods: {
     ...mapActions("professions", ["fetchProfessions"]),
     continueForm() {
+      // console.log(this.data)
       if (
-        this.data.philhealth_id_number === this.editData.philhealth_id_number
+        this.editData &&
+        this.editData.philhealth_id_number === this.data.philhealth_id_number
       ) {
         delete this.data.philhealth_id_number;
       }
