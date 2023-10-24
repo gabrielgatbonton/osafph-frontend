@@ -21,7 +21,7 @@
           <td>{{ item.service_type }}</td>
           <td>{{ item.serviceable_type_name }}</td>
           <td>{{ item.scheduled_date }}</td>
-          <td>{{ item.scheduled_time }}</td>
+          <td>{{ item.hospital }}</td>
           <td>
             <div
               :class="{
@@ -70,7 +70,7 @@
       <ServiceDialog
         :activator="dialog"
         :hospitalService="getHospitalService"
-        v-on:dialogResponse="resetActivator"
+        v-on:dialogResponse="resetEditActivator"
         v-on:updateService="submitForm"
       />
       <ReusableDeleteDialog
@@ -149,8 +149,8 @@ export default {
           value: "scheduled_date",
         },
         {
-          text: "SCHEDULED TIME",
-          value: "scheduled_time",
+          text: "MEDICAL SITE",
+          value: "hospital",
         },
         {
           text: "STATUS",
@@ -176,8 +176,12 @@ export default {
           parseISO(service.scheduled_date),
           "MMMM dd, yyyy"
         ),
+        hospital: service.hospital,
       }));
     },
+    dialog(value) {
+      console.log("edit Change: ", value);
+    }
   },
   updated() {
     this.userRolePermissions();

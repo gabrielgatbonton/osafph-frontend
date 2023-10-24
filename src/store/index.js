@@ -20,14 +20,10 @@ export default new Vuex.Store({
   modules: {
     registrants,
     login,
-    categories,
-    philippines,
     card,
     services,
     alerts,
-    services_choices,
     consultations,
-    consultation_enum,
 
     //Admin Exclusive Stores
     admin_consultations,
@@ -35,5 +31,9 @@ export default new Vuex.Store({
     //Enums
     identification_cards,
     professions,
+    philippines,
+    categories,
+    consultation_enum,
+    services_choices,
   },
 });

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <SubmissionAlert :title="title" v-if="showAlert"/>
-    <ErrorAlert :title="title" v-if="showError"/>
+    <SubmissionAlert :title="title" v-if="showAlert" />
+    <ErrorAlert :title="title" v-if="showError" />
     <v-container fluid class="table-title ma-2">
       <v-row>
         <v-col cols="auto">
@@ -41,7 +41,7 @@ import { mapActions, mapGetters } from "vuex";
 import ServicesTable from "@/components/Hospital-Service/Services-Table.vue";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import addServiceMixin from "@/mixins/Hospital-Service/AddService";
-import ErrorAlertsLogic from "../../mixins/Alerts & Errors/ErrorAlertsLogic"
+import ErrorAlertsLogic from "../../mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
   data: () => ({
     servicesStatus: false,
@@ -71,6 +71,11 @@ export default {
   },
   created() {
     this.requestServices();
+  },
+  watch: {
+    dialog(value) {
+      console.log("add Change: ", value);
+    },
   },
 };
 </script>

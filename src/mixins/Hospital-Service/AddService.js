@@ -17,39 +17,33 @@ export default {
       let data = {};
       if (payload.service_type === "CONSULTATION") {
         data = {
+          hospital: payload.hospital,
           service_type: payload.service_type,
           specialty: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time,
           date_released: null,
-          time_released: null,
           status: "PENDING",
           remarks: payload.remarks,
-          doctor_id: payload.doctor,
         };
       } else if (payload.service_type === "DIAGNOSTIC") {
         data = {
+          hospital: payload.hospital,
           service_type: payload.service_type,
           diagnostic_type: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time,
           date_released: null,
-          time_released: null,
           status: "PENDING",
           remarks: payload.remarks,
-          doctor_id: payload.doctor,
         };
       } else if (payload.service_type === "LABORATORY") {
         data = {
+          hospital: payload.hospital,
           service_type: payload.service_type,
           laboratory_type: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time,
           date_released: null,
-          time_released: null,
           status: "PENDING",
           remarks: payload.remarks,
-          doctor_id: payload.doctor,
         };
       }
 
@@ -62,9 +56,8 @@ export default {
             service_type: null,
             serviceable_type: null,
             scheduled_date: null,
-            scheduled_time: null,
             remarks: null,
-            doctor_id: null,
+            hospital: null,
           };
           this.payload = payload;
         })

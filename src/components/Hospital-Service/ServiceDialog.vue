@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="blue darken-1 pb-4 white--text"
-          ><v-icon dark left>mdi-medical-bag</v-icon>Add Medical
+          ><v-icon dark left>mdi-medical-bag</v-icon>{{hospitalService ? "Edit" : "Add"}} Medical
           Service</v-card-title
         >
         <v-container fluid class="mx-auto">
@@ -22,11 +22,17 @@
                 label="Serviceable Type"
                 :items="services_choices"
                 item-text="name"
-                item-value="id"
-                @change="(value) => filterDoctor(value)"
               ></v-autocomplete>
             </v-col>
             <v-col cols="12">
+              <v-autocomplete
+                v-model="payload.hospital"
+                label="Medical Site"
+                :items="getHospitals"
+                item-text="name"
+              ></v-autocomplete>
+            </v-col>
+            <!-- <v-col cols="12">
               <v-autocomplete
                 v-model="payload.doctor"
                 label="Doctor in Charge"
@@ -34,7 +40,7 @@
                 item-text="full_name"
                 item-value="doctor_id"
               ></v-autocomplete>
-            </v-col>
+            </v-col> -->
             <v-col cols="12">
               <v-menu
                 max-width="290"
@@ -86,9 +92,6 @@
                   @input="menu_3 = false"
                 ></v-date-picker>
               </v-menu>
-            </v-col>
-            <v-col cols="12">
-              <v-autocomplete v-model="payload.service_location" label="Location"></v-autocomplete>
             </v-col>
             <v-col cols="12">
               <v-text-field
@@ -143,9 +146,9 @@ export default {
       service_type: null,
       serviceable_type: null,
       scheduled_date: null,
-      service_location: null,
       remarks: null,
-      doctor: null,
+      hospital: null,
+      // doctor: null,
     },
     date_released: null,
     status: null,
@@ -155,7 +158,7 @@ export default {
     citizen_id: null,
     hospital_service_id: null,
     services_choices: null,
-    doctor_choices: null,
+    hospital_choices: null,
     services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY"],
     statuses: ["PENDING", "UNATTENDED", "COMPLETED"],
     minDate: new Date().toISOString().slice(0, 10),
@@ -171,23 +174,24 @@ export default {
         this.services_choices = this.getLaboratoryTypes;
       }
     },
-    filterDoctor(value) {
-      const serviceable = this.services_choices.find(
-        (serviceable) => serviceable.id === value
-      );
-      if (serviceable) {
-        this.payload.serviceable_type = serviceable.name;
-      }
-      const data = this.getDoctors.find((doctor) => doctor.doctor_id === value);
-      if (data) {
-        this.doctor_choices = [data];
-      }
-    },
+    // filterDoctor(value) {
+    //   const serviceable = this.services_choices.find(
+    //     (serviceable) => serviceable.id === value
+    //   );
+    //   if (serviceable) {
+    //     this.payload.serviceable_type = serviceable.name;
+    //   }
+    //   const data = this.getDoctors.find((doctor) => doctor.doctor_id === value);
+    //   if (data) {
+    //     this.doctor_choices = [data];
+    //   }
+    // },
     submitForm() {
       if (this.hospitalService) {
         //Attached the other variables to payload for updating service.
         this.payload.status = this.status;
         this.payload.date_released = this.date_released;
+        this.payload.serviceable_type = this.selects.serviceable_type;
 
         this.$emit(
           "updateService",
@@ -196,13 +200,14 @@ export default {
           this.hospital_service_id
         );
       } else {
+        this.payload.serviceable_type = this.selects.serviceable_type;
         this.$emit("submitForm", this.payload);
       }
     },
   },
   computed: {
     ...mapGetters("services_choices", [
-      "getDoctors",
+      "getHospitals",
       "getSpecialties",
       "getLaboratoryTypes",
       "getDiagnosticTypes",
@@ -234,6 +239,7 @@ export default {
     },
     hospitalService(value) {
       if (value) {
+        console.log("EDIT: ", value);
         this.citizen_id = value.hospitalService.citizen_id;
         this.hospital_service_id = value.hospitalService.id;
         this.payload.service_type = value.hospitalService.service_type;
@@ -245,19 +251,19 @@ export default {
               serviceable.name === value.hospitalService.serviceable_type_name
           );
           if (serviceable) {
-            this.selects.serviceable_type = serviceable.id;
-            this.filterDoctor(serviceable.id);
+            this.selects.serviceable_type = serviceable.name;
           }
         }
-        this.payload.serviceable_type =
-          value.hospitalService.serviceable_type_name;
+        // this.payload.serviceable_type =
+        //   value.hospitalService.serviceable_type_name;
 
-        const doctor = this.doctor_choices.find(
-          (doctor) => doctor.doctor_id === value.hospitalService.doctor_id
-        );
-        if (doctor) {
-          this.payload.doctor = doctor.doctor_id;
-        }
+        // const doctor = this.doctor_choices.find(
+        //   (doctor) => doctor.doctor_id === value.hospitalService.doctor_id
+        // );
+        // if (doctor) {
+        //   this.payload.doctor = doctor.doctor_id;
+        // }
+        this.payload.hospital = value.hospitalService.hospital;
         this.payload.scheduled_date = value.hospitalService.scheduled_date;
         this.payload.remarks = value.hospitalService.remarks;
         this.date_released = value.hospitalService.date_released;

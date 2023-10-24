@@ -10,7 +10,15 @@ export const services_choices = {
     specialties: [],
     laboratory_types: [],
     diagnostic_types: [],
+    hospitals: [],
   }),
+  getters: {
+    getDoctors: (state) => state.doctors,
+    getSpecialties: (state) => state.specialties,
+    getLaboratoryTypes: (state) => state.laboratory_types,
+    getDiagnosticTypes: (state) => state.diagnostic_types,
+    getHospitals: (state) => state.hospitals,
+  },
   mutations: {
     SET_DOCTORS(state, doctors) {
       state.doctors = doctors.map((doctor) => ({
@@ -30,6 +38,9 @@ export const services_choices = {
       state.diagnostic_types = diagnostic_types;
       // console.log("diagnostic:", state.diagnostic_types);
     },
+    SET_HOSPITALS(state, data) {
+      state.hospitals = data;
+    },
   },
   actions: {
     fetchData({ dispatch }) {
@@ -37,6 +48,7 @@ export const services_choices = {
       dispatch("fetchSpecialties");
       dispatch("fetchLaboratoryTypes");
       dispatch("fetchDiagnosticTypes");
+      dispatch("fetchHospitals");
     },
     fetchDoctors({ commit }) {
       return this.$axios
@@ -82,11 +94,17 @@ export const services_choices = {
           console.error("Error fetching Diagnostic Types: ", error);
         });
     },
-  },
-  getters: {
-    getDoctors: (state) => state.doctors,
-    getSpecialties: (state) => state.specialties,
-    getLaboratoryTypes: (state) => state.laboratory_types,
-    getDiagnosticTypes: (state) => state.diagnostic_types,
+    fetchHospitals({ commit }) {
+      const url = `hospitals`;
+      return this.$axios
+        .get(url)
+        .then((response) => {
+          const data = response.data.hospitals;
+          commit("SET_HOSPITALS", data);
+        })
+        .catch((error) => {
+          console.error("Error Fetching Hospitals Enum: ", error);
+        });
+    },
   },
 };

@@ -1,6 +1,6 @@
 import { mapActions, mapGetters } from "vuex";
-import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
+// import format from "date-fns/format";
+// import parseISO from "date-fns/parseISO";
 export default {
   data: () => ({
     dialog: false,
@@ -23,76 +23,40 @@ export default {
         );
       });
     },
-    resetActivator(data) {
+    resetEditActivator(data) {
       this.dialog = data;
     },
     submitForm(payload, citizen_id, hospital_service_id) {
       let data = {};
       if (payload.service_type === "CONSULTATION") {
         data = {
+          hospital: payload.hospital,
           service_type: payload.service_type,
           specialty: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time
-            ? format(
-                parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-                "HH:mm"
-              )
-            : null,
           date_released: payload.date_released,
-          time_released: payload.time_released
-            ? format(
-                parseISO(`${payload.date_released}T${payload.time_released}`),
-                "HH:mm"
-              )
-            : null,
           status: payload.status,
           remarks: payload.remarks,
-          doctor_id: 1,
         };
       } else if (payload.service_type === "DIAGNOSTIC") {
         data = {
+          hospital: payload.hospital,
           service_type: payload.service_type,
           diagnostic_type: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time
-            ? format(
-                parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-                "HH:mm"
-              )
-            : null,
           date_released: payload.date_released,
-          time_released: payload.time_released
-            ? format(
-                parseISO(`${payload.date_released}T${payload.time_released}`),
-                "HH:mm"
-              )
-            : null,
           status: payload.status,
           remarks: payload.remarks,
-          doctor_id: 1,
         };
       } else if (payload.service_type === "LABORATORY") {
         data = {
+          hospital: payload.hospital,
           service_type: payload.service_type,
           laboratory_type: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
-          scheduled_time: payload.scheduled_time
-            ? format(
-                parseISO(`${payload.scheduled_date}T${payload.scheduled_time}`),
-                "HH:mm"
-              )
-            : null,
           date_released: payload.date_released,
-          time_released: payload.time_released
-            ? format(
-                parseISO(`${payload.date_released}T${payload.time_released}`),
-                "HH:mm"
-              )
-            : null,
           status: payload.status,
           remarks: payload.remarks,
-          doctor_id: 1,
         };
       }
       return this.updateHospitalService({
