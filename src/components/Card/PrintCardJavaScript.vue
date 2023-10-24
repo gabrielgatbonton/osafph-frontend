@@ -96,59 +96,67 @@ export default {
       if (this.registrant) {
         console.log(this.registrant);
         if (
-          this.registrant.citizen.vaccination_stat[0].vaccine_name === "JANSSEN"
+          this.registrant.citizen.vaccination_stat[0] &&
+          this.registrant.citizen.vaccination_stat[1]
         ) {
-          this.date_1 = `-`;
-          this.date_2 = `${format(
-            parseISO(
-              this.registrant.citizen.vaccination_stat[0].vaccination_date
-            ),
-            "MMMM d, yyyy"
-          ).toUpperCase()}`;
-          this.vaccination_site_1 = `-`;
-          this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
-          this.vaccine_1 = `-`;
-          this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
-          this.lot_number_1 = `-`;
-          this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
-        } else {
-          this.date_1 = `${format(
-            parseISO(
-              this.registrant.citizen.vaccination_stat[0].vaccination_date
-            ),
-            "MMMM d, yyyy"
-          ).toUpperCase()}`;
-          this.date_2 = `-`;
-          this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
-          this.vaccination_site_2 = `-`;
-          this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
-          this.vaccine_2 = `-`;
-          this.lot_number_1 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
-          this.lot_number_2 = `-`;
+          if (
+            this.registrant.citizen.vaccination_stat[0].vaccine_name ===
+            "JANSSEN"
+          ) {
+            this.date_1 = `-`;
+            this.date_2 = `${format(
+              parseISO(
+                this.registrant.citizen.vaccination_stat[0].vaccination_date
+              ),
+              "MMMM d, yyyy"
+            ).toUpperCase()}`;
+            this.vaccination_site_1 = `-`;
+            this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
+            this.vaccine_1 = `-`;
+            this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
+            this.lot_number_1 = `-`;
+            this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
+          } else if (
+            this.registrant.citizen.vaccination_stat[0].vaccine_name !== null &&
+            this.registrant.citizen.vaccination_stat[1].vaccine_name === null
+          ) {
+            this.date_1 = `${format(
+              parseISO(
+                this.registrant.citizen.vaccination_stat[0].vaccination_date
+              ),
+              "MMMM d, yyyy"
+            ).toUpperCase()}`;
+            this.date_2 = `-`;
+            this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
+            this.vaccination_site_2 = `-`;
+            this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
+            this.vaccine_2 = `-`;
+            this.lot_number_1 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
+            this.lot_number_2 = `-`;
+          } else if (
+            this.registrant.citizen.vaccination_stat[0].vaccine_name !== null &&
+            this.registrant.citizen.vaccination_stat[1].vaccine_name !== null
+          ) {
+            this.date_1 = `${format(
+              parseISO(
+                this.registrant.citizen.vaccination_stat[0].vaccination_date
+              ),
+              "MMMM d, yyyy"
+            ).toUpperCase()}`;
+            this.date_2 = `${format(
+              parseISO(
+                this.registrant.citizen.vaccination_stat[1].vaccination_date
+              ),
+              "MMMM d, yyyy"
+            ).toUpperCase()}`;
+            this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
+            this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[1].site_name.toUpperCase()}`;
+            this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
+            this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name.toUpperCase()}`;
+            this.lot_number_1 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
+            this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[1].lot_no.toUpperCase()}`;
+          }
         }
-        // if (
-        //   this.registrant.citizen.vaccination_stat[0] &&
-        //   this.registrant.citizen.vaccination_stat[1]
-        // ) {
-        //   this.date_1 = `${format(
-        //     parseISO(
-        //       this.registrant.citizen.vaccination_stat[0].vaccination_date
-        //     ),
-        //     "MMMM d, yyyy"
-        //   ).toUpperCase()}`;
-        //   this.date_2 = `${format(
-        //     parseISO(
-        //       this.registrant.citizen.vaccination_stat[1].vaccination_date
-        //     ),
-        //     "MMMM d, yyyy"
-        //   ).toUpperCase()}`;
-        //   this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
-        //   this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[1].site_name.toUpperCase()}`;
-        //   this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
-        //   this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name.toUpperCase()}`;
-        //   this.lot_number_1 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
-        //   this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[1].lot_no.toUpperCase()}`;
-        // }
         this.category = `${this.registrant.citizen.category.description}`;
         this.fullName = `${this.registrant.citizen.last_name.toUpperCase()}, ${this.registrant.citizen.first_name.toUpperCase()} ${
           this.registrant.citizen.middle_name
