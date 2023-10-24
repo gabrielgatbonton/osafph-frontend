@@ -177,7 +177,6 @@ export default {
       if (!this.data || !Array.isArray(this.data)) {
         return [];
       }
-
       return this.data.map((item) => ({
         consultation_date: format(
           parseISO(item.consultation_date),

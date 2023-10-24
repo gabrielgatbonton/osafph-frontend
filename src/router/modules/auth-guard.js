@@ -44,6 +44,8 @@ function isAllowedRoutes(routeName, userRole) {
       "consultations",
       "add-consultation-form",
       "consultation-form-continuation",
+      "doctor-edit-consultation-form",
+      "doctor-edit-consultation-form-continuation",
       "dashboard",
       "management",
     ];

@@ -21,7 +21,7 @@ const networkURL = 'http://192.168.1.118:8080/'
 
 
 const axiosInstance = axios.create({
-  baseURL: `${baseURL}api`  //Axios baseURL
+  baseURL: `${baseURL}api/`  //Axios baseURL
 })
 
 Vue.prototype.$axios = axiosInstance;

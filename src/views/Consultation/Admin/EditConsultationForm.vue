@@ -28,6 +28,7 @@ export default {
       const data = this.$route.query.data;
       let parsedData = JSON.parse(data);
       let basic_details_data = null;
+      console.log(parsedData)
       if (parsedData) {
         basic_details_data = {
           patient_name: `${parsedData.citizen.last_name}, ${
@@ -50,11 +51,11 @@ export default {
             parseISO(parsedData.hospital_service.scheduled_date),
             "MMMM dd, yyyy"
           ),
-          doctor_name: `${parsedData.doctor.last_name}, ${
-            parsedData.doctor.first_name
-          } ${
-            parsedData.doctor.middle_name ? parsedData.doctor.middle_name : ""
-          }`,
+          // doctor_name: `${parsedData.doctor.last_name}, ${
+          //   parsedData.doctor.first_name
+          // } ${
+          //   parsedData.doctor.middle_name ? parsedData.doctor.middle_name : ""
+          // }`,
         };
       }
       return basic_details_data;
@@ -62,6 +63,7 @@ export default {
     fetchQueryConsultation() {
       const consultation_form = this.$route.query.consultation_form;
       let parsedConsultation = JSON.parse(consultation_form);
+      console.log(parsedConsultation)
       let consultation_form_data = null;
       if (parsedConsultation) {
         consultation_form_data = parsedConsultation;

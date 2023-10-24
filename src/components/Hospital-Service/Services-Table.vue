@@ -179,9 +179,6 @@ export default {
         hospital: service.hospital,
       }));
     },
-    dialog(value) {
-      console.log("edit Change: ", value);
-    }
   },
   updated() {
     this.userRolePermissions();

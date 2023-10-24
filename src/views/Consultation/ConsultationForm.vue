@@ -455,14 +455,26 @@ export default {
       const consultation_id = this.$route.params.consultation_id;
       const hospital_service_id = this.$route.params.hospital_service_id;
       if (this.userRole === "DOCTOR") {
-        this.$router.replace({
-          name: "consultation-form-continuation",
-          query: {
-            consultation_id: consultation_id,
-            hospital_service_id: hospital_service_id,
-            data: JSON.stringify(this.data),
-          },
-        });
+        if (this.consultation_form) {
+          this.$router.replace({
+            name: "doctor-edit-consultation-form-continuation",
+            query: {
+              consultation_id: consultation_id,
+              hospital_service_id: hospital_service_id,
+              data: JSON.stringify(this.data),
+              consultation_form: JSON.stringify(this.consultation_form),
+            },
+          });
+        } else {
+          this.$router.replace({
+            name: "consultation-form-continuation",
+            query: {
+              consultation_id: consultation_id,
+              hospital_service_id: hospital_service_id,
+              data: JSON.stringify(this.data),
+            },
+          });
+        }
       } else if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         this.$router.replace({
           name: "edit-consultation-form-continuation",
@@ -476,7 +488,7 @@ export default {
       }
     },
     assignValues() {
-      console.log(this.consultation_form)
+      console.log("DOCTOR", this.consultation_form);
       if (this.consultation_form && this.checkboxes) {
         this.data.chief_complaint = this.consultation_form.chief_complaint;
         this.data.blood_pressure = this.consultation_form.blood_pressure;

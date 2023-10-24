@@ -25,6 +25,7 @@ export default {
       const data = this.$route.query.data;
       let parsedData = JSON.parse(data);
       let basic_details = null;
+      console.log("PARSED: ", parsedData);
       if (parsedData) {
         basic_details = {
           patient_name: `${parsedData.citizen.last_name}, ${

@@ -72,11 +72,6 @@ export default {
   created() {
     this.requestServices();
   },
-  watch: {
-    dialog(value) {
-      console.log("add Change: ", value);
-    },
-  },
 };
 </script>
 

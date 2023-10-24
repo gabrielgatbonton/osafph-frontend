@@ -232,7 +232,10 @@ export default {
   }),
   methods: {
     ...mapActions("consultation_enum", ["fetchMoreCheckboxes"]),
-    ...mapActions("consultations", ["addConsultationToId"]),
+    ...mapActions("consultations", [
+      "addConsultationToId",
+      "updateConsultationToId",
+    ]),
     ...mapActions("admin_consultations", ["updateAdminConsultationFormById"]),
     pushToHistory() {
       const checkedValuesDiagnostics = this.checkboxes.diagnostics
@@ -263,16 +266,30 @@ export default {
     submitForm() {
       const consultation_id = this.$route.query.consultation_id;
       if (this.userRole === "DOCTOR") {
-        return this.addConsultationToId({
-          consultation_id: consultation_id,
-          data: this.data,
-        })
-          .then(() => {
-            this.$router.replace({ name: "consultation-view" });
+        if (this.consultation_form) {
+          return this.updateConsultationToId({
+            consultation_id: this.consultation_form.consultation_id,
+            consultation_form_id: this.consultation_form.consultation_form_id,
+            data: this.data,
           })
-          .catch((error) => {
-            console.log("Error Submitting Consultation Form: ", error);
-          });
+            .then(() => {
+              this.$router.replace({ name: "consultation-view" });
+            })
+            .catch((error) => {
+              console.log("Error Updating Consultation Form: ", error);
+            });
+        } else {
+          return this.addConsultationToId({
+            consultation_id: consultation_id,
+            data: this.data,
+          })
+            .then(() => {
+              this.$router.replace({ name: "consultation-view" });
+            })
+            .catch((error) => {
+              console.log("Error Submitting Consultation Form: ", error);
+            });
+        }
       } else if (this.userRole === "ADMIN") {
         return this.updateAdminConsultationFormById({
           consultation_id: this.consultation_form.consultation_id,
