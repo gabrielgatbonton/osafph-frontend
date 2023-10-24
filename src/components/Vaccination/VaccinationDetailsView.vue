@@ -251,12 +251,12 @@ export default {
     ]),
   },
   watch: {
-    // getVaccineInformation(value) {
-    //   console.log("VaccineInformation", value);
-    // },
-    // getBoosterInformation(value){
-    //   console.log("BoosterInformation", value);
-    // }
+    getVaccineInformation(value) {
+      console.log("VaccineInformation", value);
+    },
+    getBoosterInformation(value){
+      console.log("BoosterInformation", value);
+    }
   },
 };
 </script>
