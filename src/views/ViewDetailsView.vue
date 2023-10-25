@@ -203,6 +203,7 @@
                         max-height="400"
                         max-width="200"
                       ></v-img> -->
+                      <BiometricComponent />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -251,6 +252,7 @@ import CameraComponent from "@/components/Camera/CameraComponent.vue";
 import SignatureComponent from "@/components/Signature/SignatureComponent.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import PrintCardJavaScript from "@/components/Card/PrintCardJavaScript.vue";
+import BiometricComponent from '@/components/Biometrics/BiometricComponent.vue';
 export default {
   mixins: [ErrorAlertsLogic],
   data: () => ({
@@ -271,6 +273,7 @@ export default {
     CameraComponent,
     SignatureComponent,
     PrintCardJavaScript,
+    BiometricComponent,
   },
   methods: {
     handleImageUpload(file) {
