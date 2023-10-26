@@ -1,4 +1,5 @@
-﻿/*!
+﻿/* eslint-disable */
+/*!
  * https://github.com/paulmillr/es6-shim
  * @license es6-shim Copyright 2013-2015 by Paul Miller (http://paulmillr.com)
  *   and contributors,  MIT License

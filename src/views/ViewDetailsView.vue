@@ -196,14 +196,14 @@
                   >
                   <v-row justify="center" class="ma-2 pb-2">
                     <v-col align-self="center" cols="12">
-                      <!-- <v-img
+                      <v-img
                         class="grey darken-1 mx-auto"
-                        :src="biometrics"
-                        :key="biometrics"
+                        :src="selectedBiometrics"
+                        :key="selectedBiometrics"
                         max-height="400"
                         max-width="200"
-                      ></v-img> -->
-                      <BiometricComponent />
+                      ></v-img>
+                      <BiometricComponent :checkBiometrics="checkBiometrics" v-on:biometrics-taken="handleBiometricsUpload"/>
                     </v-col>
                   </v-row>
                 </v-card>
@@ -260,6 +260,7 @@ export default {
     registrant: null,
     selectedImage: null, // Holds the selected image file
     selectedSignature: null, // Holds the selected signature image file
+    selectedBiometrics: null,
     cardStatus: {
       value: null,
       status: false,
@@ -267,6 +268,7 @@ export default {
     loading: false,
     dynamicBaseURL: null,
     checkSignature: null,
+    checkBiometrics: null,
   }),
   components: {
     VaccinationComponent,
@@ -283,6 +285,9 @@ export default {
     handleSignatureUpload(file) {
       // this.selectedSignature = URL.createObjectURL(file);
       this.submitImage(file, "signature");
+    },
+    handleBiometricsUpload(file) {
+      this.submitImage(file, "biometrics");
     },
     async fetchRegistrant() {
       const id = this.$route.params.id;
@@ -348,7 +353,11 @@ export default {
       this.selectedSignature = this.registrant.citizen.citizen_file.e_signature
         ? baseURL + this.registrant.citizen.citizen_file.e_signature
         : null;
+        this.selectedBiometrics = this.registrant.citizen.citizen_file.biometrics
+        ? baseURL + this.registrant.citizen.citizen_file.biometrics
+        : null;
       this.checkSignature = this.selectedSignature ? true : false;
+      this.checkBiometrics = this.selectedBiometrics ? true : false;
       this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
       if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
         this.cardStatus.status = true;

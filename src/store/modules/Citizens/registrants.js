@@ -39,6 +39,7 @@ export const registrants = {
         registrant.citizen.citizen_file = {
           image_url: files,
           e_signature: files,
+          biometrics: files,
         };
       }
     },
