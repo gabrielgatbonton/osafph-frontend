@@ -1,21 +1,24 @@
 /* eslint-disable */
 
+//Maybe useful, however scripts are now located in public folder.
 // import { Fingerprint } from "./fingerprint.sdk.min.js";
 // import "./websdk.client.bundle.min.js";
 // import "./es6-shim.js";
 
+//Instance of the SDK 
 export var FingerprintSdkTest = (function () {
   function FingerprintSdkTest() {
     this.sdk = new Fingerprint.WebApi();
   }
 
+  //Prototype on Starting Capture of the Fingerprint.
   FingerprintSdkTest.prototype.startCapture = function () {
     return new Promise((resolve, reject) => {
       let data = {
         status: "",
       };
 
-      // Start acquisition and set status
+      // Start acquisition and set status of the SDK
       this.sdk.startAcquisition(Fingerprint.SampleFormat.PngImage).then(
         function () {
           data.status = "You may start scanning your fingerprint.";
@@ -28,7 +31,8 @@ export var FingerprintSdkTest = (function () {
           reject("Error on device and software.");
         }
       );
-
+      
+      //Event on Collecting the Scanned Fingerprint
       this.sdk.on("SamplesAcquired", function (samples) {
         const sampleArray = JSON.parse(samples.samples);
         const concatenatedBase64 = sampleArray.join("");
@@ -45,6 +49,7 @@ export var FingerprintSdkTest = (function () {
     });
   };
 
+  //Prototype on Stopping Capture.
   FingerprintSdkTest.prototype.stopCapture = function () {
     this.sdk.stopAcquisition().then(
       function () {
@@ -56,6 +61,7 @@ export var FingerprintSdkTest = (function () {
     );
   };
 
+  //Prototype on Status of the Devices Connection.
   FingerprintSdkTest.prototype.deviceConnection = function () {
     return new Promise((resolve) => {
       var status = null;
@@ -74,7 +80,7 @@ export var FingerprintSdkTest = (function () {
     });
   };
 
-  // Add event listeners to handle various events
+  // Event Listeners that maybe useful in this application
   FingerprintSdkTest.prototype.addEventListeners = function () {
     this.sdk.on("DeviceConnected", function (deviceUid) {
       console.log("Fingerprint reader connected: ", deviceUid);

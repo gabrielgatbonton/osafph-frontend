@@ -27,7 +27,7 @@
             </v-col>
             <v-col cols="12">
               <v-card-actions>
-                <v-btn color="blue darken-1" dark @click="initFingerprintSdk"
+                <v-btn color="blue darken-1" dark @click="startCapture"
                   >Start</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { FingerprintSdkTest } from "./scripts/app.js";
+import { FingerprintSdkTest } from "./scripts/app.js";  //Import the Instance from app.js
 export default {
   name: "BiometricComponent",
   props: ["checkBiometrics"],
@@ -58,12 +58,14 @@ export default {
     defaultImageSrc: require("@/assets/fingerprint-svgrepo-com.svg"),
   }),
   mounted() {
+    //Scripts loaded first then instance is initialized to a local property.
     this.loadScripts().then(() => {
       this.sdk = new FingerprintSdkTest();
     });
   },
   methods: {
     loadScripts() {
+      //Must load prerequisite scripts before initializing
       return new Promise((resolve) => {
         const script1 = document.createElement("script");
         script1.src = "/scripts/Fingerprint/es6-shim.js"; // Relative path
@@ -82,10 +84,14 @@ export default {
       });
     },
     fingerprintSdk(status) {
+      //This is what controls the fingerprint SDK which controls via instance methods and events.
+
+      //Ensure the Device Connection is Secured
       this.sdk.deviceConnection().then((status) => {
         this.status = status;
       });
 
+      //Will Control the instance in capturing and stopping the sdk in scanning.
       if (status === true) {
         // Start capturing
         this.sdk.startCapture().then((data) => {
@@ -96,7 +102,7 @@ export default {
         this.sdk.stopCapture();
       }
     },
-    initFingerprintSdk() {
+    startCapture() {
       this.fingerprintSdk(true);
     },
     stopCapture() {
@@ -106,7 +112,7 @@ export default {
       // Access the current src attribute
       const currentSrc = fingerprintImage.src;
 
-      // You can use currentSrc as needed in your component.
+      // You can use currentSrc as needed in the component.
       this.fingerprintSdk(false);
       this.$emit("biometrics-taken", currentSrc)
         .then(() => {
@@ -119,6 +125,7 @@ export default {
         });
     },
     cancelScanning() {
+      //Will Reset upon Canceling the Scanning Process.
       this.fingerprintSdk(false);
       this.dialog = false;
       const fingerprintImage = this.$refs.fingerprintImageRef;
