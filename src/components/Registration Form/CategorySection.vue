@@ -28,13 +28,7 @@
           :error-messages="errorMessages.identification_card"
         ></v-autocomplete>
       </v-col>
-      <v-col
-        cols="12"
-        lg="6"
-        md="6"
-        v-if="data.identification_card === 'GOVERNMENT_ISSUED_ID'"
-        class="mt-n3"
-      >
+      <v-col cols="12" lg="6" md="6" class="mt-n3">
         <v-autocomplete
           label="Type of Id"
           :items="type_of_ids"
@@ -47,7 +41,7 @@
         cols="12"
         lg="6"
         md="6"
-        v-if="data.identification_card === 'OTHERS'"
+        v-if="data.type_of_id === 'OTHERS'"
         class="mt-n3"
       >
         <v-text-field
@@ -88,7 +82,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import CategorySectionValidation from '@/mixins/RegistrationFormValidation/CategorySectionValidation';
+import CategorySectionValidation from "@/mixins/RegistrationFormValidation/CategorySectionValidation";
 export default {
   name: "CategorySection",
   mixins: [CategorySectionValidation],
@@ -116,6 +110,7 @@ export default {
       "VOTERS ID",
       "PHILHEALTH",
       "PAG-IBIG",
+      "OTHERS",
     ],
     stepper: 1,
   }),
