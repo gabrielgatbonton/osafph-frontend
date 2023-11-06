@@ -56,8 +56,11 @@
                     >{{ option.text }}</v-list-item-title
                   >
                 </v-list-item>
-                <v-list-item v-if="auth.delete">
-                  <v-list-item-title class="red--text" @click="deleteActivator(item.id)"
+                <v-list-item
+                  v-if="auth.delete"
+                  @click="deleteActivator(item.id)"
+                >
+                  <v-list-item-title class="red--text"
                     ><v-icon dense left color="#F44336"
                       >mdi-delete-alert-outline</v-icon
                     >DELETE</v-list-item-title
@@ -209,7 +212,7 @@ export default {
   },
   updated() {
     this.userRolePermissions();
-  }
+  },
 };
 </script>
 
