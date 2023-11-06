@@ -175,6 +175,14 @@
                         :checkSignature="checkSignature"
                         v-on:signature-taken="handleSignatureUpload"
                       />
+                      <v-btn
+                        v-if="checkSignature !== false"
+                        class="my-2 error"
+                        dark
+                        block
+                        @click="deleteActivator('signature')"
+                        >Delete Signature</v-btn
+                      >
                       <!-- <v-file-input
                         label="File input"
                         color="grey darken-1"
@@ -203,7 +211,18 @@
                         max-height="400"
                         max-width="200"
                       ></v-img>
-                      <BiometricComponent :checkBiometrics="checkBiometrics" v-on:biometrics-taken="handleBiometricsUpload"/>
+                      <BiometricComponent
+                        :checkBiometrics="checkBiometrics"
+                        v-on:biometrics-taken="handleBiometricsUpload"
+                      />
+                      <v-btn
+                        v-if="checkBiometrics !== false"
+                        class="my-2 error"
+                        dark
+                        block
+                        @click="deleteActivator('biometrics')"
+                        >Delete Biometrics</v-btn
+                      >
                     </v-col>
                   </v-row>
                 </v-card>
@@ -242,6 +261,11 @@
       class="mx-5 my-10"
       height="auto"
     ></v-skeleton-loader>
+    <ReusableDeleteDialog
+      :activator="deleteDialog"
+      v-on:dialogResponse="resetActivator"
+      v-on:deleteItem="deleteItem"
+    />
   </div>
 </template>
 
@@ -252,9 +276,11 @@ import CameraComponent from "@/components/Camera/CameraComponent.vue";
 import SignatureComponent from "@/components/Signature/SignatureComponent.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import PrintCardJavaScript from "@/components/Card/PrintCardJavaScript.vue";
-import BiometricComponent from '@/components/Biometrics/BiometricComponent.vue';
+import BiometricComponent from "@/components/Biometrics/BiometricComponent.vue";
+import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
+import DeleteDialogMixin from "@/mixins/Biometrics & Signature/DeleteDialog";
 export default {
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, DeleteDialogMixin],
   data: () => ({
     routeID: null,
     registrant: null,
@@ -276,6 +302,7 @@ export default {
     SignatureComponent,
     PrintCardJavaScript,
     BiometricComponent,
+    ReusableDeleteDialog,
   },
   methods: {
     handleImageUpload(file) {
@@ -353,7 +380,7 @@ export default {
       this.selectedSignature = this.registrant.citizen.citizen_file.e_signature
         ? baseURL + this.registrant.citizen.citizen_file.e_signature
         : null;
-        this.selectedBiometrics = this.registrant.citizen.citizen_file.biometrics
+      this.selectedBiometrics = this.registrant.citizen.citizen_file.biometrics
         ? baseURL + this.registrant.citizen.citizen_file.biometrics
         : null;
       this.checkSignature = this.selectedSignature ? true : false;

@@ -91,7 +91,7 @@ export default {
     VueQrcode,
   },
   methods: {
-    ...mapActions("card", ["fetchImage", "fetchSignature"]),
+    ...mapActions("card", ["fetchImage", "fetchSignature", "fetchBiometrics"]),
     values() {
       if (this.registrant) {
         console.log(this.registrant);
@@ -193,6 +193,7 @@ export default {
     requestImages() {
       this.fetchImage(this.registrant.citizen.id);
       this.fetchSignature(this.registrant.citizen.id);
+      this.fetchBiometrics(this.registrant.citizen.id);
     },
     drawOnCanvasFront() {
       const canvas = this.$refs.frontCardCanvas;
@@ -216,12 +217,30 @@ export default {
         portraitImg.src = this.getImage;
         portraitImg.onload = () => {
           const signatureImg = new Image();
-          signatureImg.src = this.getSignature;
+          //Conditional to check the availability of signature, then otherwise.
+          if (this.getSignature !== null) {
+            signatureImg.src = this.getSignature;
+          } else if (this.getBiometrics !== null) {
+            signatureImg.src = this.getBiometrics;
+          } else {
+            signatureImg.src = "";
+          }
+
           signatureImg.onload = () => {
             // Draw portrait image after it's loaded
             context.drawImage(portraitImg, 125, 600);
-            // Draw signature image after it's loaded
-            context.drawImage(signatureImg, 125, 1370, 600, 200);
+            // // Draw signature image after it's loaded
+            if (this.getBiometrics !== null) {
+              context.drawImage(
+                signatureImg,
+                2135,
+                1140,
+                signatureImg.width - signatureImg.width / 4,
+                signatureImg.height - signatureImg.height / 4
+              );
+            } else {
+              context.drawImage(signatureImg, 125, 1370, 600, 200);
+            }
 
             // Draw the rest of the data
             context.fillText(this.category, 750, 745, 1700);
@@ -367,7 +386,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("card", ["getImage", "getSignature"]),
+    ...mapGetters("card", ["getImage", "getSignature", "getBiometrics"]),
     QRCodeValue() {
       return `${this.$network}vaccination/${this.registrant.citizen.hub_registrant_id}`;
     },
@@ -383,6 +402,15 @@ export default {
       }
     },
     getSignature(value) {
+      if (value) {
+        this.isGetSignatureLoaded = true;
+      }
+
+      if (this.isGetImageLoaded === this.isGetSignatureLoaded) {
+        this.disabledButton = false;
+      }
+    },
+    getBiometrics(value) {
       if (value) {
         this.isGetSignatureLoaded = true;
       }

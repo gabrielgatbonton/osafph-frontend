@@ -32,7 +32,7 @@
                 >
                 <v-spacer></v-spacer>
                 <v-btn color="grey" dark @click="cancelScanning">Cancel</v-btn>
-                <v-btn color="blue darken-4" dark @click="stopCapture"
+                <v-btn color="blue darken-4" dark :class="{'disabled-button' : disabled}" @click="stopCapture"
                   >Save</v-btn
                 >
               </v-card-actions>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { FingerprintSdkTest } from "./scripts/app.js";  //Import the Instance from app.js
+import { FingerprintSdkTest } from "./scripts/app.js"; //Import the Instance from app.js
 export default {
   name: "BiometricComponent",
   props: ["checkBiometrics"],
@@ -53,6 +53,7 @@ export default {
     dialog: false,
     status: null,
     prompt: null,
+    disabled: true,
     imageDataURL: null,
     sdk: null,
     defaultImageSrc: require("@/assets/fingerprint-svgrepo-com.svg"),
@@ -104,6 +105,7 @@ export default {
     },
     startCapture() {
       this.fingerprintSdk(true);
+      this.disabled = false;
     },
     stopCapture() {
       // Get the image element using the ref
@@ -114,15 +116,9 @@ export default {
 
       // You can use currentSrc as needed in the component.
       this.fingerprintSdk(false);
-      this.$emit("biometrics-taken", currentSrc)
-        .then(() => {
-          this.dialog = false;
-          const fingerprintImage = this.$refs.fingerprintImageRef;
-          fingerprintImage.src = this.defaultImageSrc;
-        })
-        .catch((error) => {
-          console.error("Error Emitting Biometrics Component Data: ", error);
-        });
+      this.$emit("biometrics-taken", currentSrc);
+      this.dialog = false;
+      fingerprintImage.src = this.defaultImageSrc;
     },
     cancelScanning() {
       //Will Reset upon Canceling the Scanning Process.
@@ -135,4 +131,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.disabled-button {
+  opacity: 0.5; /* Make it appear faded */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
+}
+</style>
