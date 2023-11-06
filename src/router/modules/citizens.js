@@ -2,7 +2,7 @@ import CitizensView from "@/views/CitizensView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import ViewDetailsView from "@/views/ViewDetailsView.vue";
 import EditView from "@/views/EditView.vue";
-import CitizensConsultationView from "@/views/Consultation/Admin/ConsultationsIndexView.vue";
+import CitizensConsultationView from "@/views/Consultation/Admin/CompletedConsultationsView.vue";
 import CitizensConsultationInformationView from '@/views/Consultation/ConsultationInformationView.vue';
 import EditConsultationForm from '@/views/Consultation/Admin/EditConsultationForm.vue';
 import EditConsultationFormContinuation from '@/views/Consultation/ConsultationFormContinuation.vue';

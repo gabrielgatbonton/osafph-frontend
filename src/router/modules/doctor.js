@@ -1,4 +1,4 @@
-import ConsultationView from '@/views/Consultation/Doctor/ConsultationView.vue';
+import ConsultationView from '@/views/Consultation/Doctor/RequestedConsultationsView.vue';
 import ConsultationInformationView from '@/views/Consultation/ConsultationInformationView.vue'
 import AddConsultationForm from '@/views/Consultation/Doctor/AddConsultationForm.vue'
 import ConsultationFormContinuation from '@/views/Consultation/ConsultationFormContinuation.vue';

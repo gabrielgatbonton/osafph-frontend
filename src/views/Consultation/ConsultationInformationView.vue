@@ -65,13 +65,13 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import ConsultationInformationContinutation from "./ConsultationInformationContinuation.vue";
-import PreviousConsultations from "./components/PreviousConsultations.vue";
+import ConsultationInformationContinutation from "../../components/Consultation/ConsultationInformationContinuation.vue";
+import PreviousConsultations from "../../components/Consultation/PreviousConsultations.vue";
 import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import DeleteDialog from "@/mixins/DeleteDialog";
-import PatientInformation from "./components/PatientInformation.vue";
-import PatientConsultation from "./components/PatientConsultation.vue";
+import PatientInformation from "../../components/Consultation/PatientInformation.vue";
+import PatientConsultation from "../../components/Consultation/PatientConsultation.vue";
 export default {
   name: "ConsultationInformationView",
   mixins: [DeleteDialog, ErrorAlertsLogic],
