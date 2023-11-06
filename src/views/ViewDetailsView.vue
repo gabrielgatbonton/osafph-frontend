@@ -24,96 +24,13 @@
           <v-container fluid class="mx-auto mt-3">
             <v-row>
               <v-col cols="12">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-folder-multiple</v-icon
-                    >Category</v-card-title
-                  >
-                  <v-container fluid class="py-4">
-                    <v-row
-                      v-for="(info, index) in categories"
-                      :key="index"
-                      no-gutters
-                    >
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-subtitle class="py-0">{{
-                          info.title
-                        }}</v-card-subtitle>
-                      </v-col>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-text class="font-weight-bold py-0">{{
-                          info.content
-                        }}</v-card-text>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
+                <CategoryCard :registrant="registrant"/>
               </v-col>
-              <v-col cols="12" class="">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-human-greeting-variant</v-icon
-                    >Personal Information</v-card-title
-                  >
-                  <v-container fluid class="py-4">
-                    <v-row
-                      v-for="(info, index) in personal_informations"
-                      :key="'personal_information-' + index"
-                      no-gutters
-                    >
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-subtitle class="py-0">{{
-                          info.title
-                        }}</v-card-subtitle>
-                      </v-col>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-text class="font-weight-bold py-0">{{
-                          info.content
-                        }}</v-card-text>
-                      </v-col>
-                    </v-row>
-                    <v-divider class="ma-3"></v-divider>
-                    <div class="mx-4">Emergency Information</div>
-                    <v-row
-                      v-for="(info, index) in emergency"
-                      :key="'emergency' + index"
-                      no-gutters
-                    >
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-subtitle class="py-0">{{
-                          info.title
-                        }}</v-card-subtitle>
-                      </v-col>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-text class="font-weight-bold py-0">{{
-                          info.content
-                        }}</v-card-text>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
+              <v-col cols="12">
+                <PersonalInformationCard :registrant="registrant" />
               </v-col>
               <v-col cols="12" class="mt-n1">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-map-marker</v-icon
-                    >Address</v-card-title
-                  >
-                  <v-container fluid class="py-4">
-                    <v-row v-for="info in address" :key="info.title" no-gutters>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-subtitle class="py-0">{{
-                          info.title
-                        }}</v-card-subtitle>
-                      </v-col>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-text class="font-weight-bold py-0">{{
-                          info.content
-                        }}</v-card-text>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
+                <AddressCard :registrant="registrant"/>
               </v-col>
             </v-row>
           </v-container>
@@ -279,6 +196,9 @@ import PrintCardJavaScript from "@/components/Card/PrintCardJavaScript.vue";
 import BiometricComponent from "@/components/Biometrics/BiometricComponent.vue";
 import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import DeleteDialogMixin from "@/mixins/Biometrics & Signature/DeleteDialog";
+import CategoryCard from "@/components/Registrant Details/CategoryCard.vue";
+import PersonalInformationCard from '@/components/Registrant Details/PersonalInformationCard.vue';
+import AddressCard from '@/components/Registrant Details/AddressCard.vue';
 export default {
   mixins: [ErrorAlertsLogic, DeleteDialogMixin],
   data: () => ({
@@ -303,6 +223,9 @@ export default {
     PrintCardJavaScript,
     BiometricComponent,
     ReusableDeleteDialog,
+    CategoryCard,
+    PersonalInformationCard,
+    AddressCard,
   },
   methods: {
     handleImageUpload(file) {
@@ -394,100 +317,6 @@ export default {
   },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
-    categories() {
-      return [
-        {
-          title: "Category of the Target Eligible Population",
-          content: this.registrant.citizen.category.description,
-        },
-        {
-          title: "Hub Id Number",
-          content: this.registrant.citizen.hub_registrant_number,
-        },
-      ];
-    },
-    personal_informations() {
-      return [
-        {
-          title: "Full Name",
-          content: `${this.registrant.citizen.last_name.toUpperCase()}, 
-          ${this.registrant.citizen.first_name.toUpperCase()} 
-          ${
-            this.registrant.citizen.middle_name
-              ? " " + this.registrant.citizen.middle_name.toUpperCase()
-              : ""
-          } 
-          ${
-            this.registrant.citizen.suffix
-              ? " " + this.registrant.citizen.suffix.toUpperCase()
-              : ""
-          }`,
-        },
-        {
-          title: "Date of Birth",
-          content: this.registrant.citizen.birthday,
-        },
-        {
-          title: "Sex",
-          content: this.registrant.citizen.sex,
-        },
-        {
-          title: "Civil Status",
-          content: this.registrant.citizen.civil_status,
-        },
-        {
-          title: "Blood Type",
-          content: this.registrant.citizen.blood_type,
-        },
-        {
-          title: "Contact No",
-          content: this.registrant.citizen.contact_number,
-        },
-        {
-          title: "Tin No",
-          content: this.registrant.citizen.tin_number,
-        },
-        {
-          title: "Passport No",
-          content: this.registrant.citizen.passport_number,
-        },
-      ];
-    },
-    emergency() {
-      return [
-        {
-          title: "Full Name",
-          content: this.registrant.citizen.emergency_name,
-        },
-        {
-          title: "Contact No",
-          content: this.registrant.citizen.emergency_number,
-        },
-      ];
-    },
-    address() {
-      return [
-        {
-          title: "Unit/Building/House No./Purok/Street/Subdivision",
-          content: this.registrant.citizen.address,
-        },
-        {
-          title: "Barangay",
-          content: this.registrant.citizen.barangay.barangay_name,
-        },
-        {
-          title: "Municipality",
-          content:
-            this.registrant.citizen.barangay.municipality.municipality_name,
-        },
-        {
-          title: "Province",
-          content:
-            this.registrant.citizen.barangay.municipality.province
-              .province_name,
-        },
-      ];
-    },
   },
 };
 </script>
