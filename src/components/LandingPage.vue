@@ -42,10 +42,12 @@
               ></v-text-field>
               <v-text-field
                 v-model="password"
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 @blur="$v.password.$touch()"
                 :error-messages="passwordErrors"
                 :success="!$v.password.$invalid && $v.password.$dirty"
-                type="password"
+                :type="show ? 'text' : 'password'"
+                @click:append="show = !show"
                 label="Password"
               ></v-text-field>
               <v-btn class="mt-5 blue darken-2" block dark :loading="loading" @click="handleLogin"
@@ -67,6 +69,7 @@ export default {
     password: "",
     loading: false,
     loginError: null,
+    show: false,
   }),
   validations: {
     username: {
