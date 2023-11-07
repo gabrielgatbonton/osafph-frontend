@@ -27,7 +27,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import ConsultationsTable from '@/components/Hospital-Service/Consultations-Table.vue';
+import ConsultationsTable from '@/components/Consultation/Consultations-Table.vue';
 export default {
   data: () => ({
     consultationsStatus: false,

@@ -22,6 +22,7 @@
           <td>{{ item.patient_name }}</td>
           <td>{{ item.scheduled_date }}</td>
           <td>{{ item.sex }}</td>
+          <td>{{ item.medical_site }}</td>
           <td>
             <div
               :class="{
@@ -103,6 +104,10 @@ export default {
           value: "sex",
         },
         {
+          text: "MEDICAL SITE",
+          value: "medical_site",
+        },
+        {
           text: "STATUS",
           value: "status",
         },
@@ -124,6 +129,7 @@ export default {
           "MMMM dd, yyyy"
         ),
         sex: consultation.citizen.sex,
+        medical_site: consultation.hospital_service.hospital,
         consultation_id: consultation.id,
         hospital_service_id: consultation.hospital_service.id,
       }));

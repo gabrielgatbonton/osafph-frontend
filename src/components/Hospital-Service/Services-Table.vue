@@ -21,7 +21,7 @@
           <td>{{ item.service_type }}</td>
           <td>{{ item.serviceable_type_name }}</td>
           <td>{{ item.scheduled_date }}</td>
-          <td>{{ item.hospital }}</td>
+          <td>{{ item.medical_site }}</td>
           <td>
             <div
               :class="{
@@ -150,7 +150,7 @@ export default {
         },
         {
           text: "MEDICAL SITE",
-          value: "hospital",
+          value: "medical_site",
         },
         {
           text: "STATUS",
@@ -176,7 +176,7 @@ export default {
           parseISO(service.scheduled_date),
           "MMMM dd, yyyy"
         ),
-        hospital: service.hospital,
+        medical_site: service.hospital,
       }));
     },
   },
