@@ -159,13 +159,6 @@ export default {
             ).toUpperCase(),
           },
           {
-            title: "Scheduled Time",
-            content: format(
-              parseISO(`${item.scheduled_date}T${item.scheduled_time}`),
-              "h:mm a"
-            ),
-          },
-          {
             title: "Doctor in Charge",
             content: `${item.doctor_last_name}, ${item.doctor_first_name}`,
           },

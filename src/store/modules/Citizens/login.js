@@ -23,6 +23,7 @@ export const login = {
       state.user.accessToken = null;
       state.user.role = null;
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
     },
   },
   actions: {
