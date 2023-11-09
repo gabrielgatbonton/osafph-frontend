@@ -121,8 +121,15 @@ export default {
   },
   watch: {
     consultations(value) {
+      console.log(value);
       this.data = value.map((consultation) => ({
-        patient_name: `${consultation.citizen.last_name}, ${consultation.citizen.first_name} ${consultation.citizen.middle_name} ${consultation.citizen.suffix}`,
+        patient_name: `${consultation.citizen.last_name}, ${
+          consultation.citizen.first_name
+        } ${
+          consultation.citizen.middle_name
+            ? consultation.citizen.middle_name
+            : ""
+        } ${consultation.citizen.suffix ? consultation.citizen.suffix : ""}`,
         status: consultation.hospital_service.status,
         scheduled_date: format(
           parseISO(consultation.hospital_service.scheduled_date),

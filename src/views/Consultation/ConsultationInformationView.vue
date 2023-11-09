@@ -219,7 +219,6 @@ export default {
     },
     getConsultationForm(value) {
       this.consultation_form = value;
-      console.log(value);
     },
     getAdminConsultation(value) {
       this.consultation = value.consultation;

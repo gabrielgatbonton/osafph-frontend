@@ -133,7 +133,7 @@ export default {
           },
           {
             title: "Occupation",
-            content: this.data.citizen.occupation,
+            content: this.data.citizen.occupation ? this.data.citizen.occupation : "None Specified",
           },
           {
             title: "Nationality",
