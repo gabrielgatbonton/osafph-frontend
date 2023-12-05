@@ -20,9 +20,10 @@
       <v-row dense>
         <v-col cols="12">
           <div v-if="getPublicData && getPublicImage && getPublicSignature" class="my-auto text-center slide-down">
-            <FrontBackCardJavaScript
+            <PublicPrintCardJavaScript
               :getPublicImage="getPublicImage"
               :getPublicSignature="getPublicSignature"
+              :getPublicBiometrics="getPublicBiometrics"
               :registrant="getPublicData"
             />
           </div>
@@ -39,12 +40,12 @@
 
 <script>
 import DataTabs from "./DataTabs.vue";
-import FrontBackCardJavaScript from "../Card/FrontBackCardJavaScript.vue";
+import PublicPrintCardJavaScript from "../Card/PublicPrintCardJavaScript.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     DataTabs,
-    FrontBackCardJavaScript,
+    PublicPrintCardJavaScript,
   },
   methods: {
     ...mapActions("registrants", [
@@ -52,7 +53,7 @@ export default {
       "fetchBoosterInformation",
       "fetchPublicCitizenRecord",
     ]),
-    ...mapActions("card", ["fetchPublicImage", "fetchPublicSignature"]),
+    ...mapActions("card", ["fetchPublicImage", "fetchPublicSignature", "fetchPublicBiometrics"]),
     ...mapActions("services", ["fetchPublicServicesById"]),
     fetchData() {
       const id = this.$route.params.hub_registrant_id;
@@ -73,7 +74,7 @@ export default {
       "getBoosterInformation",
       "getPublicData",
     ]),
-    ...mapGetters("card", ["getPublicImage", "getPublicSignature"]),
+    ...mapGetters("card", ["getPublicImage", "getPublicSignature", "getPublicBiometrics"]),
     ...mapGetters("services", ["getPublicHospitalServices"])
   },
   created() {
@@ -85,6 +86,7 @@ export default {
       if (value.citizen.hub_registrant_id) {
         this.fetchPublicImage(value.citizen.id);
         this.fetchPublicSignature(value.citizen.id);
+        this.fetchPublicBiometrics(value.citizen.id);
         this.fetchPublicServicesById(value.citizen.id);
       }
     },
@@ -94,6 +96,9 @@ export default {
     // getBoosterInformation(value) {
     //   console.log("Booster: ", value);
     // },
+    getPublicBiometrics(value) {
+      console.log(value);
+    }
   },
 };
 </script>

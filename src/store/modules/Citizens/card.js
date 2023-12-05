@@ -19,8 +19,10 @@ export const card = {
     getBiometrics: (state) => state.biometrics,
     getPublicImage: (state) => state.publicImage,
     getPublicSignature: (state) => state.publicSignature,
+    getPublicBiometrics: (state) => state.publicBiometrics,
   },
   mutations: {
+    //Set Images to the Card
     SET_IMAGE(state, imageBase64) {
       state.image = imageBase64;
     },
@@ -30,6 +32,8 @@ export const card = {
     SET_BIOMETRICS(state, imageBase64) {
       state.biometrics = imageBase64;
     },
+
+    //Delete Images from the database
     DELETE_IMAGE(state, targetImage) {
       if (state.image === targetImage) {
         state.image = null;
@@ -45,6 +49,8 @@ export const card = {
         state.biometrics = null;
       }
     },
+
+    //Public Images for Reroute Module.
     SET_PUBLIC_IMAGE(state, imageBase64) {
       state.publicImage = imageBase64;
     },
@@ -56,14 +62,17 @@ export const card = {
     },
   },
   actions: {
+    //Actions for fetching images to overlap in canvas for the printing of card.
     fetchImage({ commit }, id) {
+      const url = `/citizens/${id}/files/image`;
       return this.$axios
-        .get(`/citizens/${id}/files/image`, { responseType: "blob" })
+        .get(url, { responseType: "blob" })
         .then((response) => {
           return new Promise((resolve) => {
             const reader = new FileReader();
             reader.onload = (event) => {
               const imageBase64 = event.target.result;
+              console.log(imageBase64);
               commit("SET_IMAGE", imageBase64);
               resolve();
             };
@@ -81,8 +90,9 @@ export const card = {
         });
     },
     fetchSignature({ commit }, id) {
+      const url = `/citizens/${id}/files/signature`;
       return this.$axios
-        .get(`/citizens/${id}/files/signature`, { responseType: "blob" })
+        .get(url, { responseType: "blob" })
         .then((response) => {
           return new Promise((resolve) => {
             const reader = new FileReader();
@@ -105,8 +115,9 @@ export const card = {
         });
     },
     fetchBiometrics({ commit }, id) {
+      const url = `/citizens/${id}/files/biometrics`;
       return this.$axios
-        .get(`/citizens/${id}/files/biometrics`, { responseType: "blob" })
+        .get(url, { responseType: "blob" })
         .then((response) => {
           return new Promise((resolve) => {
             const reader = new FileReader();
@@ -128,6 +139,8 @@ export const card = {
           commit("SET_BIOMETRICS", null); // Set the value to null when an error occurs
         });
     },
+
+    //Delete Actions for the removal of image in the database.
     deleteImage({ commit }, id) {
       const url = `citizens/${id}/files/image`;
       return this.$axios
@@ -164,9 +177,12 @@ export const card = {
           console.error("Error deleting signature: ", error);
         });
     },
+
+    //Actions for the public images used in the reroute module.
     fetchPublicImage({ commit }, id) {
+      const url = `/citizens/${id}/public-files/image`;
       return this.$axios
-        .get(`/citizens/${id}/public-files/image`, { responseType: "blob" })
+        .get(url, { responseType: "blob" })
         .then((response) => {
           return new Promise((resolve) => {
             const reader = new FileReader();
@@ -189,8 +205,9 @@ export const card = {
         });
     },
     fetchPublicSignature({ commit }, id) {
+      const url = `/citizens/${id}/public-files/signature`;
       return this.$axios
-        .get(`/citizens/${id}/public-files/signature`, { responseType: "blob" })
+        .get(url, { responseType: "blob" })
         .then((response) => {
           return new Promise((resolve) => {
             const reader = new FileReader();
@@ -213,8 +230,9 @@ export const card = {
         });
     },
     fetchPublicBiometrics({ commit }, id) {
+      const url = `/citizens/${id}/public-files/biometrics`;
       return this.$axios
-        .get(`/citizens/${id}/public-files/biometrics`, {
+        .get(url, {
           responseType: "blob",
         })
         .then((response) => {

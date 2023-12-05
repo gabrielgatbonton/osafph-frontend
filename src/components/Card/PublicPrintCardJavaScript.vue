@@ -59,7 +59,7 @@ import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import VueQrcode from "vue-qrcode";
 export default {
-  props: ["registrant", "getPublicImage", "getPublicSignature"],
+  props: ["registrant", "getPublicImage", "getPublicSignature", "getPublicBiometrics"],
   data: () => ({
     dialog: false,
     category: null,
