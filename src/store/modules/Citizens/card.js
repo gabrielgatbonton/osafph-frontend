@@ -110,7 +110,7 @@ export const card = {
           });
         })
         .catch((error) => {
-          console.error("Fetch image error:", error);
+          console.error("Fetch signature image error:", error);
           commit("SET_SIGNATURE", null); // Set the value to null when an error occurs
         });
     },
@@ -200,7 +200,7 @@ export const card = {
           });
         })
         .catch((error) => {
-          console.error("Fetch image error:", error);
+          console.error("Fetch public image error:", error);
           commit("SET_PUBLIC_IMAGE", null); // Set the value to null when an error occurs
         });
     },
@@ -225,7 +225,7 @@ export const card = {
           });
         })
         .catch((error) => {
-          console.error("Fetch image error:", error);
+          console.error("Fetch public signature image error:", error);
           commit("SET_PUBLIC_SIGNATURE", null); // Set the value to null when an error occurs
         });
     },
@@ -244,7 +244,7 @@ export const card = {
               resolve();
             };
             reader.onerror = (error) => {
-              console.error("Error loading biometrics:", error);
+              console.error("Error loading public image biometrics:", error);
               commit("SET_PUBLIC_BIOMETRICS", null); // Set the value to null when an error occurs
               resolve(); // Resolve the promise to prevent uncaught promise rejection
             };

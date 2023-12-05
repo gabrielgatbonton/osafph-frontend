@@ -76,6 +76,10 @@ function isAllowedRoutes(routeName, userRole) {
       "management",
     ];
   }
+
+  //Allow all roles to use these routes:
+  allowedRoutes.push("reroute");
+  
   // Check if the provided routeName is in the restrictedRoutes array
   return allowedRoutes.includes(routeName);
 }

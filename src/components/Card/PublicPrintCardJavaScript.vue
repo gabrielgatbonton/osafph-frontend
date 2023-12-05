@@ -59,7 +59,12 @@ import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import VueQrcode from "vue-qrcode";
 export default {
-  props: ["registrant", "getPublicImage", "getPublicSignature", "getPublicBiometrics"],
+  props: [
+    "registrant",
+    "getPublicImage",
+    "getPublicSignature",
+    "getPublicBiometrics",
+  ],
   data: () => ({
     dialog: false,
     category: null,
@@ -82,6 +87,9 @@ export default {
     emergency_number: null,
     hub_registrant_id: null,
     qrDataURL: null,
+    public_image: null,
+    public_signature: null,
+    public_biometrics: null,
     options: {
       margin: 0,
       quality: 1,
@@ -114,6 +122,8 @@ export default {
           this.lot_number_1 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
           this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[1].lot_no.toUpperCase()}`;
         }
+
+        //Assign Front Card Values
         this.category = `${this.registrant.citizen.category}`;
         this.fullName = `${this.registrant.citizen.full_name.toUpperCase()}`;
         this.birthday = `${format(
@@ -125,6 +135,13 @@ export default {
         this.municipality = `${this.registrant.citizen.municipality.toUpperCase()}, ${
           this.province
         }`;
+
+        //Reassign Image Values in Local Variables
+        this.public_image = this.getPublicImage;
+        this.public_biometrics = this.getPublicBiometrics;
+        this.public_signature = this.getPublicSignature;
+
+        //Assign Back Card Values
         this.tin_number = `${
           this.registrant.citizen.tin_number
             ? this.registrant.citizen.tin_number
@@ -140,6 +157,8 @@ export default {
       this.qrDataURL = dataUrl;
     },
     drawOnCanvasFront() {
+      console.log("Check: ", this.public_image);
+      console.log("Bio", this.public_biometrics);
       const canvas = this.$refs.frontCardCanvas;
       const context = canvas.getContext("2d");
 
@@ -158,15 +177,33 @@ export default {
 
         // Load and draw registrant's portrait image
         const portraitImg = new Image();
-        portraitImg.src = this.getPublicImage;
+        portraitImg.src = this.public_image;
         portraitImg.onload = () => {
           const signatureImg = new Image();
-          signatureImg.src = this.getPublicSignature;
+          //Conditional to check the availability of signature, then otherwise.
+          if (this.public_signature !== null) {
+            signatureImg.src = this.public_signature;
+          } else if (this.public_biometrics !== null) {
+            signatureImg.src = this.public_biometrics;
+          } else {
+            signatureImg.src = "";
+          }
+
           signatureImg.onload = () => {
             // Draw portrait image after it's loaded
             context.drawImage(portraitImg, 125, 600);
-            // Draw signature image after it's loaded
-            context.drawImage(signatureImg, 125, 1370, 600, 200);
+            // // Draw signature image after it's loaded
+            if (this.public_biometrics !== null) {
+              context.drawImage(
+                signatureImg,
+                2135,
+                1140,
+                signatureImg.width - signatureImg.width / 4,
+                signatureImg.height - signatureImg.height / 4
+              );
+            } else {
+              context.drawImage(signatureImg, 125, 1370, 600, 200);
+            }
 
             // Draw the rest of the data
             context.fillText(this.category, 750, 745, 1700);

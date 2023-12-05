@@ -19,7 +19,7 @@
     <v-container>
       <v-row dense>
         <v-col cols="12">
-          <div v-if="getPublicData && getPublicImage && getPublicSignature" class="my-auto text-center slide-down">
+          <div v-if="getPublicData && getPublicImage && getPublicSignature || getPublicBiometrics" class="my-auto text-center slide-down">
             <PublicPrintCardJavaScript
               :getPublicImage="getPublicImage"
               :getPublicSignature="getPublicSignature"
