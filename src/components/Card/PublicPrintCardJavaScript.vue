@@ -315,10 +315,8 @@ export default {
   components: {
     VueQrcode,
   },
-  mounted() {
-    this.values();
-  },
   updated() {
+    this.values();
     this.drawOnCanvasFront();
     this.drawOnCanvasBack();
   },
