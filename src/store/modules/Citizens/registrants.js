@@ -196,7 +196,7 @@ export const registrants = {
     fetchVaccineInformation({ commit }, id) {
       commit("SET_VACCINATION_INFORMATION", null);
       return this.$axios
-        .get(`/citizens/${id}/vaccines/`)
+        .get(`/citizens/${id}/vaccines`)
         .then((response) => {
           const vaccineInformation = response.data;
           commit("SET_VACCINATION_INFORMATION", vaccineInformation);
@@ -246,7 +246,7 @@ export const registrants = {
     fetchBoosterInformation({ commit }, id) {
       commit("SET_BOOSTER_INFORMATION", null);
       return this.$axios
-        .get(`/citizens/${id}/boosters/`)
+        .get(`/citizens/${id}/boosters`)
         .then((response) => {
           const boosterInformation = response.data;
           commit("SET_BOOSTER_INFORMATION", boosterInformation);
