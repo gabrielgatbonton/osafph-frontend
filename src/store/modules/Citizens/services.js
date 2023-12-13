@@ -68,7 +68,7 @@ export const services = {
   actions: {
     fetchServicesById({ commit }, id) {
       return this.$axios
-        .get(`citizens/${id}/hospital-services/`)
+        .get(`citizens/${id}/hospital-services`)
         .then((response) => {
           const services = response.data.hospitalServices;
           commit("SET_HOSPITAL_SERVICES", services);

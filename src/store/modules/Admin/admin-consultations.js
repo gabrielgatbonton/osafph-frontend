@@ -33,7 +33,7 @@ export const admin_consultations = {
   actions: {
     fetchConsultations({ commit }) {
       return this.$axios
-        .get(`admin/consultations/`)
+        .get(`admin/consultations`)
         .then((response) => {
           const consultations = response.data.consultations;
           commit("SET_CONSULTATIONS", consultations);
@@ -55,7 +55,7 @@ export const admin_consultations = {
     },
     fetchAdminConsultationFormById({ commit }, consultation_id) {
       return this.$axios
-        .get(`admin/consultations/${consultation_id}/consultation-forms/`)
+        .get(`admin/consultations/${consultation_id}/consultation-forms`)
         .then((response) => {
           const consultation_form = response.data.consultation_form;
           commit("SET_CONSULTATION_FORM", consultation_form);
@@ -70,7 +70,7 @@ export const admin_consultations = {
     ) {
       return this.$axios
         .put(
-          `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}/`,
+          `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}`,
           data
         )
         .then((response) => {
@@ -95,7 +95,7 @@ export const admin_consultations = {
     ) {
       return this.$axios
         .delete(
-          `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}/`
+          `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}`
         )
         .then((response) => {
           const data = response.data;

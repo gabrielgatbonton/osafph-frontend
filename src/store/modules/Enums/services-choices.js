@@ -52,7 +52,7 @@ export const services_choices = {
     },
     fetchDoctors({ commit }) {
       return this.$axios
-        .get(`account/doctors/`)
+        .get(`account/doctors`)
         .then((response) => {
           const doctors = response.data.doctors;
           commit("SET_DOCTORS", doctors);

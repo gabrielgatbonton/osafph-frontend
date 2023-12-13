@@ -7,27 +7,27 @@ import vuetify from './plugins/vuetify'
 import axios from 'axios'
 import Vuelidate from 'vuelidate'
 
-Vue.config.productionTip = false
-Vue.prototype.$http = axios
-Vue.use(Vuelidate)
+Vue.config.productionTip = false;
+Vue.prototype.$http = axios;
+Vue.use(Vuelidate);
 
 //BaseURLs
-const baseURL = 'http://200.10.77.12/';  //Network BaseURL
+const baseURL = "https://osafphmabalacatcity.com/"; //Deployed BaseURL
+// const baseURL = "http://200.10.77.12/";
 // const baseURL = 'http://127.0.0.1:8000/'; //Local BaseURL
 // const baseURL = 'http://192.168.1.108:80/';
 
 //Network URL for QR code
-const networkURL = 'http://192.168.1.118:8080/'
-
+const networkURL = "http://192.168.1.118:8080/";
 
 const axiosInstance = axios.create({
-  baseURL: `${baseURL}api/`  //Axios baseURL
-})
+  baseURL: `${baseURL}api/`, //Axios baseURL
+});
 
 Vue.prototype.$axios = axiosInstance;
 Vuex.Store.prototype.$axios = axiosInstance;
-Vue.prototype.$url = baseURL
-Vue.prototype.$network = networkURL
+Vue.prototype.$url = baseURL;
+Vue.prototype.$network = networkURL;
 
 axiosInstance.interceptors.request.use((config) => {
   const accessToken = store.getters["login/accessToken"];
@@ -67,5 +67,5 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
