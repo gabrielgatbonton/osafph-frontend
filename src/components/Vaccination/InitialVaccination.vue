@@ -190,7 +190,7 @@
       </v-container>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="submitData" class="blue darken-4" dark> Save </v-btn>
+        <v-btn @click="submitData" :loading="loadingStatus" class="blue darken-4" dark> Save </v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -201,7 +201,7 @@ import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import VaccinationMixin from "@/mixins/VaccinationValidation";
 export default {
-  props: ["payload"],
+  props: ["payload", "loadingStatus"],
   mixins: [VaccinationMixin],
   data: () => ({
     responses: {
@@ -225,7 +225,6 @@ export default {
     menu_1: false,
     menu_2: false,
     checkbox: false,
-    // loading: false,
   }),
   methods: {
     submitData() {

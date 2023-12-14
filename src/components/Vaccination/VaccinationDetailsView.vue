@@ -21,12 +21,14 @@
                   <InitialVaccination
                     v-on:submitData="submitVaccine"
                     :payload="getVaccineInformation"
+                    :loadingStatus="loading_vaccine"
                   />
                 </v-tab-item>
                 <v-tab-item>
                   <BoosterVaccination
                     v-on:submitData="submitBooster"
                     :payload="getBoosterInformation"
+                    :loadingStatus="loading_booster"
                   />
                 </v-tab-item>
               </v-tabs>
@@ -50,7 +52,8 @@ export default {
   },
   data: () => ({
     dialog: false,
-    loading: false,
+    loading_vaccine: false,
+    loading_booster: false,
   }),
   methods: {
     ...mapActions("registrants", [
@@ -60,7 +63,7 @@ export default {
       "updateBoosterInformation",
     ]),
     submitVaccine(data) {
-      this.loading = true;
+      this.loading_vaccine = true;
       let data1 = null;
       let data2 = null;
       if (data.vaccine_id_1 || data.vaccine_id_2) {
@@ -116,11 +119,14 @@ export default {
           console.error("Error submitting vaccine information:", error);
         })
         .finally(() => {
-          (this.loading = false), (this.dialog = false);
+          this.loading_vaccine = false;
+          setTimeout(() => {
+            this.dialog = false;
+          }, 500);
         });
     },
     submitBooster(data) {
-      this.loading = true;
+      this.loading_booster = true;
       let data1 = null;
       let data2 = null;
       if (data.vaccine_id_1 || data.vaccine_id_2) {
@@ -176,7 +182,10 @@ export default {
           console.error("Error submitting vaccine information:", error);
         })
         .finally(() => {
-          (this.loading = false), (this.dialog = false);
+          this.loading_booster = false;
+          setTimeout(() => {
+            this.dialog = false;
+          }, 500);
         });
     },
     // async submit() {
@@ -254,9 +263,9 @@ export default {
     getVaccineInformation(value) {
       console.log("VaccineInformation", value);
     },
-    getBoosterInformation(value){
+    getBoosterInformation(value) {
       console.log("BoosterInformation", value);
-    }
+    },
   },
 };
 </script>
