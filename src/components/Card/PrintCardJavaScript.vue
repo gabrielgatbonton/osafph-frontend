@@ -86,6 +86,7 @@ export default {
     disabledButton: true,
     isGetImageLoaded: false,
     isGetSignatureLoaded: false,
+    isGetBiometricsLoaded: false,
   }),
   components: {
     VueQrcode,
@@ -396,8 +397,10 @@ export default {
       if (value) {
         this.isGetImageLoaded = true;
       }
-
-      if (this.isGetImageLoaded === this.isGetSignatureLoaded) {
+      if (
+        this.isGetImageLoaded === this.isGetSignatureLoaded ||
+        this.isGetImageLoaded === this.isGetBiometricsLoaded
+      ) {
         this.disabledButton = false;
       }
     },
@@ -412,10 +415,10 @@ export default {
     },
     getBiometrics(value) {
       if (value) {
-        this.isGetSignatureLoaded = true;
+        this.isGetBiometricsLoaded = true;
       }
 
-      if (this.isGetImageLoaded === this.isGetSignatureLoaded) {
+      if (this.isGetImageLoaded === this.isGetBiometricsLoaded) {
         this.disabledButton = false;
       }
     },
