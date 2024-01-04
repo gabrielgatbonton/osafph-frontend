@@ -3,10 +3,10 @@
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="blue darken-1 pb-4 white--text"
-          ><v-icon dark left>mdi-medical-bag</v-icon>{{hospitalService ? "Edit" : "Add"}} Medical
-          Service</v-card-title
+          ><v-icon dark left>mdi-medical-bag</v-icon
+          >{{ hospitalService ? "Edit" : "Add" }} Medical Service</v-card-title
         >
-        <v-container fluid class="mx-auto">
+        <v-container fluid class="py-8 mx-auto overflow-scroll">
           <v-row class="mx-4">
             <v-col cols="12">
               <v-autocomplete
@@ -32,17 +32,13 @@
                 item-text="name"
               ></v-autocomplete>
             </v-col>
-            <!-- <v-col cols="12">
-              <v-autocomplete
-                v-model="payload.doctor"
-                label="Doctor in Charge"
-                :items="doctor_choices"
-                item-text="full_name"
-                item-value="doctor_id"
-              ></v-autocomplete>
-            </v-col> -->
             <v-col cols="12">
-              <v-menu
+              <v-text-field
+                v-model="payload.scheduled_date"
+                label="Scheduled Date"
+                hint="Format (January 04, 2023)"
+              ></v-text-field>
+              <!-- <v-menu
                 max-width="290"
                 :close-on-content-click="false"
                 :nudge-right="40"
@@ -65,9 +61,16 @@
                   :min="minDate"
                   @input="menu_1 = false"
                 ></v-date-picker>
-              </v-menu>
+              </v-menu> -->
             </v-col>
-            <v-col cols="12" v-if="hospitalService">
+            <v-col cols="12">
+              <v-autocomplete
+                v-model="payload.crowd_funding"
+                label="Crowd Funding"
+                :items="crowd_funding_choices"
+              ></v-autocomplete>
+            </v-col>
+            <!-- <v-col cols="12" v-if="hospitalService">
               <v-menu
                 max-width="290"
                 :close-on-content-click="false"
@@ -92,7 +95,7 @@
                   @input="menu_3 = false"
                 ></v-date-picker>
               </v-menu>
-            </v-col>
+            </v-col> -->
             <v-col cols="12">
               <v-text-field
                 v-model="payload.remarks"
@@ -106,12 +109,15 @@
                 :items="statuses"
               ></v-autocomplete>
             </v-col>
+            <v-col cols="12">
+              <div class="text-right">
+                <v-btn dark class="blue darken-4" @click="submitForm"
+                  >Submit</v-btn
+                >
+              </div>
+            </v-col>
           </v-row>
         </v-container>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn dark class="blue darken-4" @click="submitForm">Submit</v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -146,9 +152,9 @@ export default {
       service_type: null,
       serviceable_type: null,
       scheduled_date: null,
+      crowd_funding: null,
       remarks: null,
       hospital: null,
-      // doctor: null,
     },
     date_released: null,
     status: null,
@@ -278,4 +284,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.overflow-scroll {
+  max-height: 600px;
+  overflow-y: auto;
+}
+</style>

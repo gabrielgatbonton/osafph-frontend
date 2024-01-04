@@ -21,13 +21,6 @@
               </div>
               <div class="text-subtitle-1 white--text">
                 {{ status.message }}
-                <v-progress-circular
-                  size="18"
-                  width="3"
-                  v-if="isLoading"
-                  indeterminate
-                  color="white"
-                ></v-progress-circular>
               </div>
             </v-col>
           </v-row>
@@ -50,19 +43,11 @@
                   {{ scheduledDate.content }}
                 </div>
               </div>
-              <div class="mt-4">
-                <div class="text-subtitle-2 white--text">
-                  {{ scheduledTime.title }}
-                </div>
-                <div class="text-h4 text-left white--text">
-                  {{ scheduledTime.content }}
-                </div>
-              </div>
             </v-col>
           </v-row>
         </v-card>
       </v-col>
-      <v-col cols="12" class="mt-n4" v-if="dateReleased && timeReleased">
+      <v-col cols="12" class="mt-n4" v-if="dateReleased">
         <v-card class="blue darken-1">
           <v-row justify="center" class="ma-2 pb-2">
             <v-col align-self="center" cols="12">
@@ -77,14 +62,6 @@
                 </div>
                 <div class="text-h4 text-left white--text">
                   {{ dateReleased.content }}
-                </div>
-              </div>
-              <div class="my-4">
-                <div class="text-subtitle-2 white--text">
-                  {{ timeReleased.title }}
-                </div>
-                <div class="text-h4 text-left white--text">
-                  {{ timeReleased.content }}
                 </div>
               </div>
             </v-col>
@@ -116,7 +93,6 @@ export default {
         this.isLoading = false;
         this.iconColor = "success";
       }
-      console.log(this.iconColor);
     },
   },
   computed: {
@@ -148,17 +124,6 @@ export default {
         ),
       };
     },
-    scheduledTime() {
-      return {
-        title: "Scheduled Time",
-        content: format(
-          parseISO(
-            `${this.data.hospitalService.scheduled_date}T${this.data.hospitalService.scheduled_time}`
-          ),
-          "h:mm a"
-        ),
-      };
-    },
     dateReleased() {
       return this.data.hospitalService.date_released
         ? {
@@ -166,19 +131,6 @@ export default {
             content: format(
               parseISO(this.data.hospitalService.date_released),
               "MMMM dd, yyyy"
-            ),
-          }
-        : false;
-    },
-    timeReleased() {
-      return this.data.hospitalService.time_released
-        ? {
-            title: "Time Released",
-            content: format(
-              parseISO(
-                `${this.data.hospitalService.date_released}T${this.data.hospitalService.time_released}`
-              ),
-              "h:mm a"
             ),
           }
         : false;

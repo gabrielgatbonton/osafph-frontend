@@ -72,7 +72,6 @@ export const card = {
             const reader = new FileReader();
             reader.onload = (event) => {
               const imageBase64 = event.target.result;
-              console.log(imageBase64);
               commit("SET_IMAGE", imageBase64);
               resolve();
             };

@@ -6,6 +6,7 @@
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
+    no-data-text="No Services Available"
   >
     <template v-slot:top>
       <v-text-field
@@ -119,6 +120,8 @@ export default {
         this.auth.delete = true;
       } else if (this.userRole === "ENCODER") {
         this.auth.view = true;
+        this.auth.edit = true;
+        this.auth.delete = true;
       }
     },
   },

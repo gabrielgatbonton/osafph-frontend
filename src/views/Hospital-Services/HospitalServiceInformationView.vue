@@ -64,96 +64,7 @@
                 </v-card>
               </v-col>
               <v-col cols="12">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-folder-multiple</v-icon
-                    >Category</v-card-title
-                  >
-                  <v-container fluid class="py-4">
-                    <v-row
-                      v-for="(info, index) in categories"
-                      :key="index"
-                      no-gutters
-                    >
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-subtitle class="py-0">{{
-                          info.title
-                        }}</v-card-subtitle>
-                      </v-col>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-text class="font-weight-bold py-0">{{
-                          info.content
-                        }}</v-card-text>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-col>
-              <v-col cols="12" class="">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-human-greeting-variant</v-icon
-                    >Personal Information</v-card-title
-                  >
-                  <v-container fluid class="py-4">
-                    <v-row
-                      v-for="(info, index) in personal_informations"
-                      :key="'personal_information-' + index"
-                      no-gutters
-                    >
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-subtitle class="py-0">{{
-                          info.title
-                        }}</v-card-subtitle>
-                      </v-col>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-text class="font-weight-bold py-0">{{
-                          info.content
-                        }}</v-card-text>
-                      </v-col>
-                    </v-row>
-                    <v-divider class="ma-3"></v-divider>
-                    <div class="mx-4">Emergency Information</div>
-                    <v-row
-                      v-for="(info, index) in emergency"
-                      :key="'emergency' + index"
-                      no-gutters
-                    >
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-subtitle class="py-0">{{
-                          info.title
-                        }}</v-card-subtitle>
-                      </v-col>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-text class="font-weight-bold py-0">{{
-                          info.content
-                        }}</v-card-text>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-col>
-              <v-col cols="12" class="mt-n1">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-map-marker</v-icon
-                    >Address</v-card-title
-                  >
-                  <v-container fluid class="py-4">
-                    <v-row v-for="info in address" :key="info.title" no-gutters>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-subtitle class="py-0">{{
-                          info.title
-                        }}</v-card-subtitle>
-                      </v-col>
-                      <v-col cols="12" md="6" sm="6">
-                        <v-card-text class="font-weight-bold py-0">{{
-                          info.content
-                        }}</v-card-text>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
+                <PatientInformation :data="registrant" />
               </v-col>
             </v-row>
           </v-container>
@@ -180,6 +91,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import PatientInformation from "../../components/Hospital-Service/PatientInformation.vue";
 import HospitalServiceInformationContinutation from "./HospitalServiceInformationContinuatation.vue";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
@@ -198,6 +110,7 @@ export default {
   components: {
     HospitalServiceInformationContinutation,
     ServiceDialog,
+    PatientInformation,
   },
   methods: {
     ...mapActions("registrants", ["fetchRegistrantId"]),
@@ -254,126 +167,59 @@ export default {
       this.routeID = id;
     },
     getHospitalService(value) {
-      console.log(value);
+      // console.log(value);
       this.service = value;
     },
   },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
     ...mapGetters("login", ["userRole"]),
-    categories() {
-      return [
-        {
-          title: "Category of the Target Eligible Population",
-          content: this.registrant.citizen.category.description,
-        },
-        {
-          title: "Hub Id Number",
-          content: this.registrant.citizen.hub_registrant_number,
-        },
-      ];
-    },
-    personal_informations() {
-      return [
-        {
-          title: "Full Name",
-          content: `${this.registrant.citizen.last_name.toUpperCase()}, 
-          ${this.registrant.citizen.first_name.toUpperCase()} 
-          ${
-            this.registrant.citizen.middle_name
-              ? " " + this.registrant.citizen.middle_name.toUpperCase()
-              : ""
-          } 
-          ${
-            this.registrant.citizen.suffix
-              ? " " + this.registrant.citizen.suffix.toUpperCase()
-              : ""
-          }`,
-        },
-        {
-          title: "Date of Birth",
-          content: this.registrant.citizen.birthday,
-        },
-        {
-          title: "Gender",
-          content: this.registrant.citizen.gender,
-        },
-        {
-          title: "Civil Status",
-          content: this.registrant.citizen.civil_status,
-        },
-        {
-          title: "Blood Type",
-          content: this.registrant.citizen.blood_type,
-        },
-        {
-          title: "Contact No",
-          content: this.registrant.citizen.contact_number,
-        },
-        {
-          title: "Tin No",
-          content: this.registrant.citizen.tin_number,
-        },
-        {
-          title: "Passport No",
-          content: this.registrant.citizen.passport_number,
-        },
-      ];
-    },
-    emergency() {
-      return [
-        {
-          title: "Full Name",
-          content: this.registrant.citizen.emergency_name,
-        },
-        {
-          title: "Contact No",
-          content: this.registrant.citizen.emergency_number,
-        },
-      ];
-    },
-    address() {
-      return [
-        {
-          title: "Unit/Building/House No./Purok/Street/Subdivision",
-          content: this.registrant.citizen.address,
-        },
-        {
-          title: "Barangay",
-          content: this.registrant.citizen.barangay.barangay_name,
-        },
-        {
-          title: "Municipality",
-          content:
-            this.registrant.citizen.barangay.municipality.municipality_name,
-        },
-        {
-          title: "Province",
-          content:
-            this.registrant.citizen.barangay.municipality.province
-              .province_name,
-        },
-      ];
-    },
     serviceInformation() {
-      return [
-        {
-          title: "Service ID",
-          content: this.service.hospitalService.id,
-        },
-        {
-          title: "Health Professional",
-          content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
-        },
-        {
-          title: "Service Availed",
-          content: this.service.hospitalService.service_type,
-        },
-        {
-          title: "Serviceable Availed",
-          content: this.service.hospitalService.serviceable_type_name,
-        },
-      ];
+      let data = null;
+      if (this.service.hospitalService.status === "COMPLETED") {
+        data = [
+          {
+            title: "Service ID",
+            content: this.service.hospitalService.id,
+          },
+          {
+            title: "Health Professional",
+            content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
+          },
+          {
+            title: "Service Availed",
+            content: this.service.hospitalService.service_type,
+          },
+          {
+            title: "Serviceable Availed",
+            content: this.service.hospitalService.serviceable_type_name,
+          },
+          {
+            title: "Consultation Form Status",
+            content: "UNACCOMPLISHED",
+          },
+        ];
+      } else {
+        data = [
+          {
+            title: "Service ID",
+            content: this.service.hospitalService.id,
+          },
+          {
+            title: "Health Professional",
+            content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
+          },
+          {
+            title: "Service Availed",
+            content: this.service.hospitalService.service_type,
+          },
+          {
+            title: "Serviceable Availed",
+            content: this.service.hospitalService.serviceable_type_name,
+          },
+        ];
+      }
+      return data;
     },
     expansionRemarks() {
       return [

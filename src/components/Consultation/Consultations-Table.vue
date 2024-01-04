@@ -6,7 +6,7 @@
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
-    no-data-text="No Service Available"
+    no-data-text="No Consultations Available"
   >
     <template v-slot:top v-if="data.length > 0">
       <v-text-field
