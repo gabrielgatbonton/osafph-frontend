@@ -11,6 +11,7 @@ export const services_choices = {
     laboratory_types: [],
     diagnostic_types: [],
     hospitals: [],
+    crowd_fundings: [],
   }),
   getters: {
     getDoctors: (state) => state.doctors,
@@ -18,6 +19,7 @@ export const services_choices = {
     getLaboratoryTypes: (state) => state.laboratory_types,
     getDiagnosticTypes: (state) => state.diagnostic_types,
     getHospitals: (state) => state.hospitals,
+    getCrowdFundings: (state) => state.crowd_fundings,
   },
   mutations: {
     SET_DOCTORS(state, doctors) {
@@ -41,6 +43,10 @@ export const services_choices = {
     SET_HOSPITALS(state, data) {
       state.hospitals = data;
     },
+    SET_CROWD_FUNDINGS(state, data) {
+      console.log("Check",data);
+      state.crowd_fundings = data;
+    },
   },
   actions: {
     fetchData({ dispatch }) {
@@ -49,6 +55,7 @@ export const services_choices = {
       dispatch("fetchLaboratoryTypes");
       dispatch("fetchDiagnosticTypes");
       dispatch("fetchHospitals");
+      dispatch("fetchCrowdFundings");
     },
     fetchDoctors({ commit }) {
       return this.$axios
@@ -63,7 +70,7 @@ export const services_choices = {
     },
     fetchSpecialties({ commit }) {
       return this.$axios
-        .get(`/specialties`)
+        .get(`specialties`)
         .then((response) => {
           const specialties = response.data.specialty;
           commit("SET_SPECIALTIES", specialties);
@@ -74,7 +81,7 @@ export const services_choices = {
     },
     fetchLaboratoryTypes({ commit }) {
       return this.$axios
-        .get(`/laboratory-types`)
+        .get(`laboratory-types`)
         .then((response) => {
           const laboratory_types = response.data.laboratoryType;
           commit("SET_LABORATORY_TYPES", laboratory_types);
@@ -85,7 +92,7 @@ export const services_choices = {
     },
     fetchDiagnosticTypes({ commit }) {
       return this.$axios
-        .get(`/diagnostic-types`)
+        .get(`diagnostic-types`)
         .then((response) => {
           const diagnostic_types = response.data.diagnosticType;
           commit("SET_DIAGNOSTIC_TYPES", diagnostic_types);
@@ -104,6 +111,18 @@ export const services_choices = {
         })
         .catch((error) => {
           console.error("Error Fetching Hospitals Enum: ", error);
+        });
+    },
+    fetchCrowdFundings({ commit }) {
+      const url = `crowd-fundings`;
+      return this.$axios
+        .get(url)
+        .then((response) => {
+          const data = response.data.crowd_fundings;
+          commit("SET_CROWD_FUNDINGS", data);
+        })
+        .catch((error) => {
+          console.error("Error Fetching Crowd Funding Enums: ", error);
         });
     },
   },

@@ -67,7 +67,8 @@
               <v-autocomplete
                 v-model="payload.crowd_funding"
                 label="Crowd Funding"
-                :items="crowd_funding_choices"
+                :items="getCrowdFundings"
+                item-text="backer"
               ></v-autocomplete>
             </v-col>
             <!-- <v-col cols="12" v-if="hospitalService">
@@ -124,8 +125,7 @@
 </template>
 
 <script>
-import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
+import { format, parse, parseISO } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
@@ -164,7 +164,6 @@ export default {
     citizen_id: null,
     hospital_service_id: null,
     services_choices: null,
-    hospital_choices: null,
     services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY"],
     statuses: ["PENDING", "UNATTENDED", "COMPLETED"],
     minDate: new Date().toISOString().slice(0, 10),
@@ -193,11 +192,20 @@ export default {
     //   }
     // },
     submitForm() {
+      //Parse the String to format the date needed.
+      const parsedDate = parse(
+        this.payload.scheduled_date,
+        "MMMM dd, yyyy",
+        new Date()
+      );
+      const formattedDate = format(parsedDate, "yyyy-MM-d");
+
       if (this.hospitalService) {
         //Attached the other variables to payload for updating service.
         this.payload.status = this.status;
         this.payload.date_released = this.date_released;
         this.payload.serviceable_type = this.selects.serviceable_type;
+        this.payload.scheduled_date = formattedDate;
 
         this.$emit(
           "updateService",
@@ -206,6 +214,7 @@ export default {
           this.hospital_service_id
         );
       } else {
+        this.payload.scheduled_date = formattedDate;
         this.payload.serviceable_type = this.selects.serviceable_type;
         this.$emit("submitForm", this.payload);
       }
@@ -217,6 +226,7 @@ export default {
       "getSpecialties",
       "getLaboratoryTypes",
       "getDiagnosticTypes",
+      "getCrowdFundings",
     ]),
     formattedDate1() {
       return this.payload.scheduled_date
@@ -245,7 +255,6 @@ export default {
     },
     hospitalService(value) {
       if (value) {
-        console.log("EDIT: ", value);
         this.citizen_id = value.hospitalService.citizen_id;
         this.hospital_service_id = value.hospitalService.id;
         this.payload.service_type = value.hospitalService.service_type;
@@ -269,11 +278,11 @@ export default {
         // if (doctor) {
         //   this.payload.doctor = doctor.doctor_id;
         // }
+        this.payload.crowd_funding = value.hospitalService.crowd_funding_backer;
         this.payload.hospital = value.hospitalService.hospital;
-        this.payload.scheduled_date = value.hospitalService.scheduled_date;
+        this.payload.scheduled_date = format(parseISO(value.hospitalService.scheduled_date), "MMMM d, yyyy");
         this.payload.remarks = value.hospitalService.remarks;
         this.date_released = value.hospitalService.date_released;
-        //Add Location Here
         this.status = value.hospitalService.status;
       }
     },

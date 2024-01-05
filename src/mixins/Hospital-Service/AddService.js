@@ -21,6 +21,7 @@ export default {
           service_type: payload.service_type,
           specialty: payload.serviceable_type,
           scheduled_date: payload.scheduled_date,
+          crowd_funding_backer: payload.crowd_funding,
           date_released: null,
           status: "PENDING",
           remarks: payload.remarks,
