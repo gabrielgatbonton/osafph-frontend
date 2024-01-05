@@ -12,10 +12,11 @@
         <v-col cols="auto" v-if="auth.consultationForm">
           <v-btn
             dark
-            class="blue darken-4 mr-3"
+            class="mr-3"
+            :color="buttonColor"
             :class="{ 'disabled-button': disabled }"
             @click="alterConsultation"
-            ><v-icon dark left>mdi-square-edit-outline</v-icon
+            ><v-icon dark left>{{ buttonIcon }}</v-icon
             >{{ formButtonTitle }}</v-btn
           >
         </v-col>
@@ -81,11 +82,13 @@ export default {
     consultation_form: null,
     loading: false,
     auth: {
-      consultationForm: false,
+      consultationForm: true,
       delete: false,
     },
     disabled: false,
     formButtonTitle: null,
+    buttonColor: null,
+    buttonIcon: null,
   }),
   components: {
     ConsultationInformationContinutation,
@@ -95,7 +98,11 @@ export default {
     PatientConsultation,
   },
   methods: {
-    ...mapActions("consultations", ["fetchConsultationById", "fetchConsultationFormById"]),
+    ...mapActions("consultations", [
+      "fetchConsultationById",
+      "fetchConsultationFormById",
+      "completeConsultationToId",
+    ]),
     ...mapActions("admin_consultations", [
       "fetchAdminConsultationById",
       "fetchAdminConsultationFormById",
@@ -113,13 +120,18 @@ export default {
             console.error("Error fetching Consultation Data for Admin:", error);
           });
       } else if (this.userRole === "DOCTOR") {
-        return this.fetchConsultationById(consultation_id).then(() => {
-          if (this.consultation.hospital_service.status === "COMPLETED") {
-            this.fetchConsultationFormById(consultation_id);
-          }
-        }).catch((error) => {
-          console.error("Error fetching Consultation Data for Doctor:", error);
-        });
+        return this.fetchConsultationById(consultation_id)
+          .then(() => {
+            if (this.consultation.hospital_service.status === "COMPLETED") {
+              this.fetchConsultationFormById(consultation_id);
+            }
+          })
+          .catch((error) => {
+            console.error(
+              "Error fetching Consultation Data for Doctor:",
+              error
+            );
+          });
       }
     },
     alterConsultation() {
@@ -133,34 +145,39 @@ export default {
         });
       } else if (this.userRole === "DOCTOR") {
         if (this.consultation.hospital_service.status === "COMPLETED") {
-          return this.$router.push({
-            name: "doctor-edit-consultation-form",
-            query: {
-              data: JSON.stringify(this.consultation),
-              consultation_form: JSON.stringify(this.consultation_form),
-            },
-          });
+          // return this.$router.push({
+          //   name: "doctor-edit-consultation-form",
+          //   query: {
+          //     data: JSON.stringify(this.consultation),
+          //     consultation_form: JSON.stringify(this.consultation_form),
+          //   },
+          // });
         } else {
-          return this.$router.push({
-            name: "add-consultation-form",
-            query: {
-              data: JSON.stringify(this.consultation),
-            },
-          });
+          // return this.$router.push({
+          //   name: "add-consultation-form",
+          //   query: {
+          //     data: JSON.stringify(this.consultation),
+          //   },
+          // });
+          // console.log("Consultation: ",this.consultation);
+          return this.completeConsultationToId(this.consultation.id).catch(
+            (error) => {
+              console.error("Error on Submitting in Component: ", error);
+            }
+          );
         }
       }
     },
     userRolePermissions() {
       if (this.userRole === "ADMIN") {
         this.formButtonTitle = "Edit Consultation Form";
-        this.auth.consultationForm = true;
       } else if (this.userRole === "DOCTOR") {
-        this.auth.consultationForm = true;
+        this.buttonColor = "success";
         if (this.consultation.hospital_service.status === "PENDING") {
-          this.formButtonTitle = "Add Consultation Form";
-        }
-        if (this.consultation.hospital_service.status === "COMPLETED") {
-          this.formButtonTitle = "Edit Consultation Form";
+          this.formButtonTitle = "Complete Consultation";
+          this.buttonIcon = "mdi-check";
+        } else {
+          this.auth.consultationForm = false;
         }
       } else if (this.userRole === "ROOT") {
         this.auth.delete = true;

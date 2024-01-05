@@ -21,13 +21,6 @@
                 </div>
                 <div class="text-subtitle-1 white--text">
                   {{ status.message }}
-                  <v-progress-circular
-                    size="18"
-                    width="3"
-                    v-if="isLoading"
-                    indeterminate
-                    color="white"
-                  ></v-progress-circular>
                 </div>
               </v-col>
             </v-row>

@@ -138,5 +138,17 @@ export const consultations = {
           console.error("Error Updating Consultation Form: ", error);
         });
     },
+    completeConsultationToId({ dispatch }, consultation_id) {
+      const url = `doctors/consultations/${consultation_id}/complete`;
+      return this.$axios
+        .patch(url)
+        .then((response) => {
+          dispatch("fetchConsultationById", consultation_id);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error Completing Consultation: ", error);
+        });
+    },
   },
 };
