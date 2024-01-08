@@ -4,7 +4,7 @@
         <v-col cols="12">
           <v-card
             :class="{
-              warning: status.title === 'PENDING',
+              warning: status.title === 'PENDING' || status.title === 'IN PROGRESS',
               error: status.title === 'UNATTENDED',
               success: status.title === 'COMPLETED',
             }"
@@ -78,20 +78,18 @@
   export default {
     props: ["data"],
     data: () => ({
-      isLoading: false,
       iconColor: null,
     }),
     methods: {
       checkStatus() {
         if (this.data.hospital_service.status === "PENDING") {
-          this.isLoading = true;
           this.iconColor = "warning";
         } else if (this.data.hospital_service.status === "UNATTENDED") {
-          this.isLoading = false;
           this.iconColor = "error";
         } else if (this.data.hospital_service.status === "COMPLETED") {
-          this.isLoading = false;
           this.iconColor = "success";
+        } else if (this.data.hospital_service.status === "IN PROGRESS") {
+          this.iconColor = "warning";
         }
       },
     },
@@ -108,6 +106,9 @@
         } else if (this.data.hospital_service.status === "COMPLETED") {
           status = this.data.hospital_service.status;
           message = "Service was successfully completed...";
+        } else if (this.data.hospital_service.status === "IN PROGRESS") {
+          status = this.data.hospital_service.status;
+          message = "Service is currently in progress...";
         }
   
         return {

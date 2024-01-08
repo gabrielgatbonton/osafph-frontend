@@ -16,7 +16,9 @@
             :color="buttonColor"
             :class="{ 'disabled-button': disabled }"
             @click="alterConsultation"
-            ><v-icon dark left>{{ buttonIcon }}</v-icon
+            ><v-icon dark left v-if="buttonIcon !== null">{{
+              buttonIcon
+            }}</v-icon
             >{{ formButtonTitle }}</v-btn
           >
         </v-col>
@@ -145,26 +147,20 @@ export default {
         });
       } else if (this.userRole === "DOCTOR") {
         if (this.consultation.hospital_service.status === "COMPLETED") {
-          // return this.$router.push({
-          //   name: "doctor-edit-consultation-form",
-          //   query: {
-          //     data: JSON.stringify(this.consultation),
-          //     consultation_form: JSON.stringify(this.consultation_form),
-          //   },
-          // });
+          return this.$router.push({
+            name: "doctor-edit-consultation-form",
+            query: {
+              data: JSON.stringify(this.consultation),
+              consultation_form: JSON.stringify(this.consultation_form),
+            },
+          });
         } else {
-          // return this.$router.push({
-          //   name: "add-consultation-form",
-          //   query: {
-          //     data: JSON.stringify(this.consultation),
-          //   },
-          // });
-          // console.log("Consultation: ",this.consultation);
-          return this.completeConsultationToId(this.consultation.id).catch(
-            (error) => {
-              console.error("Error on Submitting in Component: ", error);
-            }
-          );
+          return this.$router.push({
+            name: "add-consultation-form",
+            query: {
+              data: JSON.stringify(this.consultation),
+            },
+          });
         }
       }
     },
@@ -172,10 +168,10 @@ export default {
       if (this.userRole === "ADMIN") {
         this.formButtonTitle = "Edit Consultation Form";
       } else if (this.userRole === "DOCTOR") {
-        this.buttonColor = "success";
-        if (this.consultation.hospital_service.status === "PENDING") {
-          this.formButtonTitle = "Complete Consultation";
-          this.buttonIcon = "mdi-check";
+        this.buttonColor = "blue darken-4";
+        if (this.consultation.hospital_service.status === "IN PROGRESS") {
+          this.formButtonTitle = "Add Consultation Form";
+          this.buttonIcon = null;
         } else {
           this.auth.consultationForm = false;
         }
@@ -233,6 +229,7 @@ export default {
   watch: {
     getConsultation(value) {
       this.consultation = value.consultation;
+      console.log(this.consultation);
     },
     getConsultationForm(value) {
       this.consultation_form = value;

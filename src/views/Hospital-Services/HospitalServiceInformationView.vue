@@ -5,8 +5,8 @@
     <v-container fluid class="ma-1" v-if="registrant && service">
       <v-row>
         <v-col cols="auto">
-          <!-- <v-icon left>mdi-account-box-multiple</v-icon> -->
-          <span class="title">Registrant Hospital Service Information</span>
+          <v-icon left>mdi-account-box-multiple</v-icon>
+          <span class="title">Hospital Service</span>
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto" v-if="auth.edit">

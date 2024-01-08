@@ -13,6 +13,7 @@ import { consultation_enum } from "./modules/Enums/consultation-enum";
 import { admin_consultations } from "./modules/Admin/admin-consultations";
 import { identification_cards } from "./modules/Enums/identification-cards";
 import { professions } from "./modules/Enums/professions";
+import { consultation_form } from "./modules/Encoder/consultation-form";
 
 Vue.use(Vuex);
 
@@ -27,6 +28,9 @@ export default new Vuex.Store({
 
     //Admin Exclusive Stores
     admin_consultations,
+
+    //Encoder
+    consultation_form,
 
     //Enums
     identification_cards,
