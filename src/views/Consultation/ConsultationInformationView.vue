@@ -27,6 +27,19 @@
             ><v-icon>mdi-trash-can</v-icon>Delete Form</v-btn
           >
         </v-col>
+        <v-col cols="auto" v-if="auth.files">
+          <v-btn
+            dark
+            class="mr-3"
+            :color="filesButtonColor"
+            :class="{ 'disabled-button': disabled }"
+            @click="proceedToFiles"
+            ><v-icon dark left v-if="filesButtonIcon !== null">{{
+              filesButtonIcon
+            }}</v-icon
+            >{{ filesButtonTitle }}</v-btn
+          >
+        </v-col>
       </v-row>
       <v-divider class="my-4"></v-divider>
       <v-row no-gutters>
@@ -86,11 +99,15 @@ export default {
     auth: {
       consultationForm: true,
       delete: false,
+      files: true,
     },
     disabled: false,
     formButtonTitle: null,
     buttonColor: null,
     buttonIcon: null,
+    filesButtonTitle: null,
+    filesButtonColor: null,
+    filesButtonIcon: null,
   }),
   components: {
     ConsultationInformationContinutation,
@@ -164,16 +181,30 @@ export default {
         }
       }
     },
+    proceedToFiles() {
+      if (this.userRole === "DOCTOR") {
+        return this.$router.push({
+          name: "consultation-files",
+        });
+      }
+    },
     userRolePermissions() {
       if (this.userRole === "ADMIN") {
         this.formButtonTitle = "Edit Consultation Form";
       } else if (this.userRole === "DOCTOR") {
         this.buttonColor = "blue darken-4";
+        this.filesButtonColor = "blue darken-4";
         if (this.consultation.hospital_service.status === "IN PROGRESS") {
           this.formButtonTitle = "Add Consultation Form";
           this.buttonIcon = null;
+          this.auth.files = false;
+        } else if (this.consultation.hospital_service.status === "COMPLETED") {
+          this.auth.consultationForm = false;
+          this.filesButtonTitle = "Upload Files";
+          this.filesButtonIcon = null;
         } else {
           this.auth.consultationForm = false;
+          this.auth.files = false;
         }
       } else if (this.userRole === "ROOT") {
         this.auth.delete = true;

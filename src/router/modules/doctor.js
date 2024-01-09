@@ -3,7 +3,8 @@ import ConsultationInformationView from '@/views/Consultation/ConsultationInform
 import AddConsultationForm from '@/views/Consultation/Doctor/AddConsultationForm.vue'
 import ConsultationFormContinuation from '@/views/Consultation/ConsultationFormContinuation.vue';
 import EditConsultationFormView from '@/views/Consultation/Admin/EditConsultationForm.vue';
-import EditConsultationFormContinuation from '@/views/Consultation/ConsultationFormContinuation.vue'
+import EditConsultationFormContinuation from '@/views/Consultation/ConsultationFormContinuation.vue';
+import ConsultationFiles from '@/views/Consultation/ConsultationFiles.vue';
 import { checkLoggedIn } from "./auth-guard";
 export default [
   {
@@ -54,4 +55,12 @@ export default [
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
   },
+  {
+    path: "/consultations/:consultation_id/view/:hospital_service_id/files",
+    name: "consultation-files",
+    component: ConsultationFiles,
+    props: true,
+    meta: { requiresAuth: true },
+    beforeEnter: checkLoggedIn,
+  }
 ];

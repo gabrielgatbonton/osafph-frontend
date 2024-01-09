@@ -12,12 +12,14 @@ export const consultations = {
     consultation: null,
     doctorConsultationForms: [],
     consultation_form: null,
+    consultation_files: null,
   }),
   getters: {
     getPendingConsultations: (state) => state.pendingConsultations,
     getArchivedConsultations: (state) => state.archivedConsultations,
     getConsultation: (state) => state.consultation,
     getConsultationForm: (state) => state.consultation_form,
+    getConsultationFiles: (state) => state.consultation_files,
   },
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
@@ -63,6 +65,9 @@ export const consultations = {
     },
     SET_CONSULTATION_FORM(state, consultation_form) {
       state.consultation_form = consultation_form;
+    },
+    SET_CONSULTATION_FILES(state, files) {
+      state.consultation_files = files;
     },
   },
   actions: {
@@ -149,6 +154,37 @@ export const consultations = {
         .catch((error) => {
           console.error("Error Completing Consultation: ", error);
         });
+    },
+    fetchConsultationFiles({ commit }, hospital_service_id) {
+      const url = `doctors/hospital-services/${hospital_service_id}/files`;
+      return this.$axios
+        .get(url)
+        .then((response) => {
+          const files = response.data.data;
+          commit("SET_CONSULTATION_FILES", files);
+        })
+        .catch((error) => {
+          console.error("Error Fetching Consultation Files", error);
+        });
+    },
+    uploadConsultationFile({ dispatch }, { hospital_service_id, file }) {
+      const url = `doctors/hospital-services/${hospital_service_id}/files`;
+      return this.$axios
+        .post(url, file)
+        .then((response) => {
+          dispatch("fetchConsultationFiles", hospital_service_id);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error Uploading Consultation File", error);
+        });
+    },
+    deleteConsultationFile({ dispatch }, { hospital_service_id, file_id }) {
+      const url = `doctors/hospital-services/${hospital_service_id}/files/${file_id}`;
+      return this.$axios.delete(url).then((response) => {
+        dispatch("fetchConsultationFiles", hospital_service_id);
+        console.log(response.data);
+      });
     },
   },
 };
