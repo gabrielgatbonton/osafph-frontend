@@ -37,7 +37,11 @@
             <v-container class="ml-n8" style="width: 120px">
               <v-row no-gutters justify="center">
                 <v-col cols="auto" align-self="center">
-                  <v-icon class="mx-1" color="grey darken-1" dense
+                  <v-icon
+                    class="mx-1"
+                    color="grey darken-1"
+                    dense
+                    @click="activator(item.file_id, item.hospital_service_id)"
                     >mdi-eye</v-icon
                   >
                 </v-col>
@@ -67,6 +71,7 @@
         v-on:dialogResponse="resetActivator"
         v-on:deleteItem="deleteItem"
       />
+      <PdfViewer v-on:overlayResponse="resetOverlayActivator" :activator="overlay" :base64="getConsultationFile"/>
     </template>
   </v-data-table>
 </template>
@@ -76,12 +81,15 @@
 //   import parseISO from "date-fns/parseISO";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import DeleteFilesMixin from "../../mixins/Consultation Files/DeleteFiles";
+import ViewFileMixin from "../../mixins/Consultation Files/ViewFile";
+import PdfViewer from '../PdfViewer.vue';
 export default {
   name: "Files-Table",
   props: ["files", "routeName"],
-  mixins: [DeleteFilesMixin],
+  mixins: [DeleteFilesMixin, ViewFileMixin],
   components: {
     ReusableDeleteDialog,
+    PdfViewer,
   },
   data: () => ({
     search: "",
@@ -97,6 +105,7 @@ export default {
         value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
     },
+
     //   viewRegistrantService(consultation_id, hospital_service_id) {
     //     this.$router.push({
     //       name: this.routeName,

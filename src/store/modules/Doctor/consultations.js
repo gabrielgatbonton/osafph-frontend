@@ -13,6 +13,7 @@ export const consultations = {
     doctorConsultationForms: [],
     consultation_form: null,
     consultation_files: null,
+    consultation_file: null,
   }),
   getters: {
     getPendingConsultations: (state) => state.pendingConsultations,
@@ -20,6 +21,7 @@ export const consultations = {
     getConsultation: (state) => state.consultation,
     getConsultationForm: (state) => state.consultation_form,
     getConsultationFiles: (state) => state.consultation_files,
+    getConsultationFile: (state) => state.consultation_file,
   },
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
@@ -68,6 +70,9 @@ export const consultations = {
     },
     SET_CONSULTATION_FILES(state, files) {
       state.consultation_files = files;
+    },
+    SET_CONSULTATION_FILE(state, file) {
+      state.consultation_file = file;
     },
   },
   actions: {
@@ -186,5 +191,40 @@ export const consultations = {
         console.log(response.data);
       });
     },
+    fetchConsultationFile({ commit }, { hospital_service_id, file_id }) {
+      const url = `doctors/hospital-services/${hospital_service_id}/files/${file_id}`;
+      return this.$axios.get(url, { responseType: "blob" }).then((response) => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const imageBase64 = event.target.result;
+            commit("SET_CONSULTATION_FILE", imageBase64);
+            console.log(imageBase64);
+            resolve();
+          };
+          reader.onerror = (error) => {
+            console.error("Error Loading Consultation File: ", error);
+            commit("SET_CONSULTATION_FILE", null);
+            resolve();
+          };
+          reader.readAsDataURL(response.data);
+        });
+      });
+    },
+    // fetchConsultationFile({ commit }, { hospital_service_id, file_id }) {
+    //   const url = `doctors/hospital-services/${hospital_service_id}/files/${file_id}`;
+    //   return this.$axios
+    //     .get(url, { responseType: "arraybuffer" })
+    //     .then((response) => {
+    //       const base64 = btoa(
+    //         new Uint8Array(response.data).reduce(
+    //           (data, byte) => data + String.fromCharCode(byte),
+    //           ""
+    //         )
+    //       );
+    //       commit("SET_CONSULTATION_FILE", base64);
+    //       console.log(base64);
+    //     });
+    // },
   },
 };
