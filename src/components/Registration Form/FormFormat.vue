@@ -119,7 +119,6 @@ export default {
           identification_card_id: this.category.citizen.identification_card_id,
           type_of_id: this.category.citizen.type_of_id,
           other_id: this.category.citizen.other_id,
-          hub_registrant_number: this.category.citizen.hub_registrant_number,
           id_number: this.category.citizen.id_number,
         };
         return data;

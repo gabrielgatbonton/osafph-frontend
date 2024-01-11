@@ -17,8 +17,8 @@
     </template>
     <template v-slot:body="{ items }">
       <tbody>
-        <tr v-for="item in items" :key="item.hub_registrant_number">
-          <td>{{ item.hub_registrant_number }}</td>
+        <tr v-for="item in items" :key="item.hub_registrant_id">
+          <td>{{ item.hub_registrant_id }}</td>
           <td>
             {{ item.full_name }}
           </td>
@@ -157,10 +157,10 @@ export default {
     headers() {
       return [
         {
-          text: "REGISTRANTS NO.",
+          text: "HUB REGISTRANT ID",
           align: "start",
           sortable: false,
-          value: "hub_registrant_number",
+          value: "hub_registrant_id",
         },
         {
           text: "FULL NAME",
@@ -198,7 +198,7 @@ export default {
     registrants(value) {
       this.data = value.map((registrant) => ({
         id: registrant.id,
-        hub_registrant_number: registrant.hub_registrant_number,
+        hub_registrant_id: registrant.hub_registrant_id,
         full_name: `${registrant.last_name}, ${registrant.first_name} ${
           registrant.middle_name ? " " + registrant.middle_name : ""
         } ${registrant.suffix ? " " + registrant.suffix : ""}`,

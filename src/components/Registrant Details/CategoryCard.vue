@@ -30,8 +30,8 @@ export default {
           content: this.registrant.citizen.category.description,
         },
         {
-          title: "Hub Id Number",
-          content: this.registrant.citizen.hub_registrant_number,
+          title: "Hub Registrant Number",
+          content: this.registrant.citizen.hub_registrant_id,
         },
       ];
     },

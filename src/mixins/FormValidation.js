@@ -12,9 +12,6 @@ export default {
       category: {
         required,
       },
-      hub_registrant_number: {
-        required,
-      },
       identification_card: { required },
       type_of_id: {
         required: requiredIf((value) => {
@@ -75,13 +72,6 @@ export default {
       if (this.$v.data.identification_card.$dirty) {
         !this.$v.data.identification_card.required &&
           errors.identification_card.push("Identification Card is required");
-      }
-      errors.hub_registrant_number = [];
-      if (this.$v.data.hub_registrant_number.$dirty) {
-        !this.$v.data.hub_registrant_number.required &&
-          errors.hub_registrant_number.push(
-            "HUB Registrant Number is required"
-          );
       }
       errors.id_number = [];
       if (this.$v.data.id_number.$dirty) {

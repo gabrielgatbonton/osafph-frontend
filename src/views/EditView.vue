@@ -34,7 +34,6 @@ export default {
         // Prepare the data object to be sent in the POST request
         // const collection = {
         //   category: data.category,
-        //   hub_registrant_number: data.hub_registrant_number,
         //   passport_number: data.passport_number,
         //   last_name: data.last_name,
         //   first_name: data.first_name,

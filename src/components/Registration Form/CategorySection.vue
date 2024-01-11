@@ -60,15 +60,6 @@
           :error-messages="errorMessages.id_number"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" lg="6" md="6" class="mt-n3">
-        <v-text-field
-          :value="data.hub_registrant_number"
-          v-model="data.hub_registrant_number"
-          label="HUB Registrant Number"
-          @blur="$v.data.hub_registrant_number.$touch()"
-          :error-messages="errorMessages.hub_registrant_number"
-        ></v-text-field>
-      </v-col>
     </v-row>
     <v-row class="mt-n3">
       <v-col cols="12">
@@ -97,7 +88,6 @@ export default {
       identification_card: null,
       type_of_id: null,
       other_id: null,
-      hub_registrant_number: null,
       id_number: null,
     },
     type_of_ids: [
@@ -121,12 +111,12 @@ export default {
       console.log("Before validation", this.data);
       this.$v.$touch();
       console.log("After validation", this.data);
-      if (
-        this.editData &&
-        this.editData.hub_registrant_number === this.data.hub_registrant_number
-      ) {
-        delete this.data.hub_registrant_number;
-      }
+      // if (
+      //   this.editData &&
+      //   this.editData.hub_registrant_number === this.data.hub_registrant_number
+      // ) {
+      //   delete this.data.hub_registrant_number;
+      // }
       if (!this.$v.$invalid) {
         console.log("Data is valid");
         this.$emit("data", this.data);
@@ -162,7 +152,6 @@ export default {
         this.data.category = value.category;
         this.data.type_of_id = value.type_of_id;
         this.data.other_id = value.other_id;
-        this.data.hub_registrant_number = value.hub_registrant_number;
         this.data.id_number = value.id_number;
       },
       deep: true,
