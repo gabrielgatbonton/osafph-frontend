@@ -9,7 +9,10 @@
         <v-icon @click="printPDF" color="white">mdi-printer</v-icon>
         <v-icon @click="downloadPDF" color="white">mdi-download</v-icon>
       </div>
-      <div v-else></div>
+      <div class="flex-items" v-else>
+        <v-icon @click="printImage" color="white">mdi-printer</v-icon>
+        <v-icon @click="downloadImage" color="white">mdi-download</v-icon>
+      </div>
     </div>
   </div>
 </template>
@@ -34,6 +37,12 @@ export default {
     },
     downloadPDF() {
         this.$emit("download", true);
+    },
+    downloadImage() {
+        this.$emit("downloadImage", true);
+    },
+    printImage() {
+        this.$emit("printImage", true);
     }
   },
 };

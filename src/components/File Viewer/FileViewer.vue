@@ -3,6 +3,8 @@
     <NavbarComponent
       v-on:print="handlePrinting"
       v-on:download="handleDownloading"
+      v-on:downloadImage="handleImageDownload"
+      v-on:printImage="handleImagePrint"
       :type="data.file_type"
     />
     <v-container fluid class="background-scroll">
@@ -81,6 +83,7 @@ export default {
     handleDocumentRender() {
       this.pageCount = this.$refs.pdfRef.pageCount;
     },
+    //PDF
     handleDownloading(value) {
       if (value) {
         this.$refs.pdfRef.download("download");
@@ -90,7 +93,26 @@ export default {
       if (value) {
         this.$refs.pdfRef.print(1080, "download", true);
       }
-    }
+    },
+    //Image
+    handleImageDownload(value) {
+      if (value) {
+        const linkSource = this.data.base64;
+        const downloadLink = document.createElement("a");
+        downloadLink.href = linkSource;
+        downloadLink.download = "download";
+
+        downloadLink.click();
+      }
+    },
+    handleImagePrint(value) {
+      if (value) {
+        const image = this.data.base64;
+        const window = window.open("", "download");
+        window.document.write("<img src='"+image+"''>")
+        window.print();
+      }
+    },
   },
   watch: {
     // activator(value) {
