@@ -26,8 +26,10 @@ export const consultations = {
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
       const pendingConsultations = consultations.consultations
-        .filter((consultation) =>
-          consultation.hospital_service.status.includes("PENDING") || consultation.hospital_service.status.includes("IN PROGRESS")
+        .filter(
+          (consultation) =>
+            consultation.hospital_service.status.includes("PENDING") ||
+            consultation.hospital_service.status.includes("IN PROGRESS")
         )
         .sort((a, b) => {
           //Filter to Older to Newest Dates
@@ -71,8 +73,12 @@ export const consultations = {
     SET_CONSULTATION_FILES(state, files) {
       state.consultation_files = files;
     },
-    SET_CONSULTATION_FILE(state, file) {
-      state.consultation_file = file;
+    SET_CONSULTATION_FILE(state, { file, file_type }) {
+      console.log("CHECK", file);
+      state.consultation_file = {
+        file: file,
+        file_type: file_type,
+      };
     },
   },
   actions: {
@@ -194,12 +200,25 @@ export const consultations = {
     fetchConsultationFile({ commit }, { hospital_service_id, file_id }) {
       const url = `doctors/hospital-services/${hospital_service_id}/files/${file_id}`;
       return this.$axios.get(url, { responseType: "blob" }).then((response) => {
+        const contentType = response.headers["content-type"];
+        let file_type = null;
+
+        // Check the Content-Type to determine the type of content
+        if (contentType.startsWith("image/")) {
+          file_type = "Image";
+          console.log("IMAGE");
+        } else if (contentType === "application/pdf") {
+          file_type = "PDF";
+          console.log("PDF");
+        } else {
+          console.log("Cannot Handle These File Types");
+        }
+
         return new Promise((resolve) => {
           const reader = new FileReader();
           reader.onload = (event) => {
-            const imageBase64 = event.target.result;
-            commit("SET_CONSULTATION_FILE", imageBase64);
-            console.log(imageBase64);
+            const file = event.target.result;
+            commit("SET_CONSULTATION_FILE", { file, file_type });
             resolve();
           };
           reader.onerror = (error) => {

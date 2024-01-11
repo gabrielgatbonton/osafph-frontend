@@ -1,27 +1,35 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   data: () => ({
-    // hospital_service_id: null,
-    // file_id: null,
-    overlay: false,
+    data: {
+      base64: null,
+      file_type: null,
+    },
   }),
   methods: {
     ...mapActions("consultations", ["fetchConsultationFile"]),
     activator(file_id, hospital_service_id) {
-      this.fetchConsultationFile({
-        file_id: file_id,
-        hospital_service_id: hospital_service_id,
-      }).catch((error) => {
-        console.log("Error Proceding with fetch:", error);
-      });
-      this.overlay = !this.overlay;
+      this.$router
+        .push({
+          name: "consultation-files-view",
+          query: {
+            file_id: JSON.stringify(file_id),
+            hospital_service_id: JSON.stringify(hospital_service_id),
+          },
+        })
+        .catch((error) => {
+          console.log("Error Moving to Next Route:", error);
+        });
     },
-    resetOverlayActivator(value) {
-        this.overlay = value;
-    }
   },
   computed: {
     ...mapGetters("consultations", ["getConsultationFile"]),
+  },
+  watch: {
+    getConsultationFile(value) {
+      this.data.base64 = value.file;
+      this.data.file_type = value.file_type;
+    },
   },
   // resetActivator(data) {
   //   this.deleteDialog = data;

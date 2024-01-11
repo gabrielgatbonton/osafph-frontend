@@ -48,7 +48,8 @@ function isAllowedRoutes(routeName, userRole) {
       "doctor-edit-consultation-form-continuation",
       "dashboard",
       "management",
-      "consultation-files"
+      "consultation-files",
+      "consultation-files-view"
     ];
   } else if (userRole === "ADMIN" || userRole === "ROOT") {
     allowedRoutes = [

@@ -71,7 +71,6 @@
         v-on:dialogResponse="resetActivator"
         v-on:deleteItem="deleteItem"
       />
-      <PdfViewer v-on:overlayResponse="resetOverlayActivator" :activator="overlay" :base64="getConsultationFile"/>
     </template>
   </v-data-table>
 </template>
@@ -82,14 +81,12 @@
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import DeleteFilesMixin from "../../mixins/Consultation Files/DeleteFiles";
 import ViewFileMixin from "../../mixins/Consultation Files/ViewFile";
-import PdfViewer from '../PdfViewer.vue';
 export default {
   name: "Files-Table",
   props: ["files", "routeName"],
   mixins: [DeleteFilesMixin, ViewFileMixin],
   components: {
     ReusableDeleteDialog,
-    PdfViewer,
   },
   data: () => ({
     search: "",

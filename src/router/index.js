@@ -8,7 +8,7 @@ import managementRoute from "./modules/management";
 import LogInLayout from "../components/LandingPage.vue";
 import { checkLoggedIn } from "./modules/auth-guard";
 import ReroutePage from "./modules/reroute";
-import html2pdfPage from "../components/PdfViewer.vue"
+// import html2pdfPage from "../components/File Viewer/FileViewer.vue"
 import hospitalServicesRoute from "./modules/hospital-services";
 import doctorRoute from './modules/doctor'
 
@@ -24,11 +24,11 @@ const routes = [
     name: "login",
     component: LogInLayout,
   },
-  {
-    path: "/test",
-    name: "test",
-    component: html2pdfPage,
-  },
+  // {
+  //   path: "/test",
+  //   name: "test",
+  //   component: html2pdfPage,
+  // },
   ...dashboardRoute,
   ...citizensRoute,
   ...managementRoute,
