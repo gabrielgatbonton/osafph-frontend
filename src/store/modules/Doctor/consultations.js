@@ -27,7 +27,7 @@ export const consultations = {
     SET_CONSULTATIONS(state, consultations) {
       const pendingConsultations = consultations.consultations
         .filter((consultation) =>
-          consultation.hospital_service.status.includes("PENDING")
+          consultation.hospital_service.status.includes("PENDING") || consultation.hospital_service.status.includes("IN PROGRESS")
         )
         .sort((a, b) => {
           //Filter to Older to Newest Dates
