@@ -5,6 +5,11 @@
         <v-icon @click="returnToRoute" color="white">mdi-arrow-left</v-icon>
         <h2>FileViewer</h2>
       </div>
+      <div class="flex-items" v-if="type === 'PDF'">
+        <v-icon @click="printPDF" color="white">mdi-printer</v-icon>
+        <v-icon @click="downloadPDF" color="white">mdi-download</v-icon>
+      </div>
+      <div v-else></div>
     </div>
   </div>
 </template>
@@ -12,6 +17,7 @@
 <script>
 export default {
   name: "NavbarComponent",
+  props: ["type"],
   data: () => ({}),
   methods: {
     returnToRoute() {
@@ -23,6 +29,12 @@ export default {
           console.error("Error Returning to Route: ", error);
         });
     },
+    printPDF() {
+        this.$emit("print", true);
+    },
+    downloadPDF() {
+        this.$emit("download", true);
+    }
   },
 };
 </script>
@@ -38,8 +50,9 @@ export default {
   height: 60px;
   line-height: 1.6;
   padding: 0 10px;
-  background: #333;
+  background: #323639;
   color: white;
+  box-shadow: 1px 1px 3px #212426;
 }
 .flex-items {
   display: flex;

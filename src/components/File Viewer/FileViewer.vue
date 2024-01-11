@@ -1,6 +1,10 @@
 <template>
   <div>
-    <NavbarComponent />
+    <NavbarComponent
+      v-on:print="handlePrinting"
+      v-on:download="handleDownloading"
+      :type="data.file_type"
+    />
     <v-container fluid class="background-scroll">
       <v-row justify="center" v-if="data.file_type === 'PDF'">
         <v-col cols="auto">
@@ -26,7 +30,11 @@
       </v-row>
       <v-row v-else justify="center">
         <v-col cols="auto">
-          <v-img class="mx-auto mt-8" max-width="900" :src="data.base64"></v-img>
+          <v-img
+            class="mx-auto mt-8"
+            max-width="900"
+            :src="data.base64"
+          ></v-img>
         </v-col>
       </v-row>
       <!-- <v-row justify="center">
@@ -73,6 +81,16 @@ export default {
     handleDocumentRender() {
       this.pageCount = this.$refs.pdfRef.pageCount;
     },
+    handleDownloading(value) {
+      if (value) {
+        this.$refs.pdfRef.download("download");
+      }
+    },
+    handlePrinting(value) {
+      if (value) {
+        this.$refs.pdfRef.print(1080, "download", true);
+      }
+    }
   },
   watch: {
     // activator(value) {
