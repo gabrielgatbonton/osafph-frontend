@@ -108,9 +108,47 @@ export default {
     handleImagePrint(value) {
       if (value) {
         const image = this.data.base64;
-        const window = window.open("", "download");
-        window.document.write("<img src='"+image+"''>")
-        window.print();
+        // Open a new window
+        const printWindow = window.open("", "_blank");
+
+        // Create a new document within the print window
+        const printDocument = printWindow.document;
+
+        // Set up the document's head with custom styles
+        const head = printDocument.head;
+        const style = printDocument.createElement("style");
+        style.innerHTML = `
+      @page {
+        size: portrait;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+      }
+      img {
+        max-width: 100%;
+      }
+      .image-class {
+        display: block;
+      }
+    `;
+        head.appendChild(style);
+
+        // Add the front image to the document
+        const imgElement = printDocument.createElement("img");
+        imgElement.className = "image-class";
+        imgElement.src = image;
+        printDocument.body.appendChild(imgElement);
+
+        // Add a slight delay before triggering print (optional)
+        setTimeout(() => {
+          // Print the document directly
+          printWindow.print();
+
+          // Close the print window (optional)
+          printWindow.close();
+        }, 1000); // Adjust the delay as needed
       }
     },
   },

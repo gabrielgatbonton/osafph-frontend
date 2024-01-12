@@ -46,7 +46,13 @@
                   >
                 </v-col>
                 <v-col cols="auto" align-self="center">
-                  <v-icon class="mx-1" color="blue darken-4" dense
+                  <v-icon
+                    class="mx-1"
+                    color="blue darken-4"
+                    dense
+                    @click="
+                      downloadTrigger(item.file_id, item.hospital_service_id)
+                    "
                     >mdi-download</v-icon
                   >
                 </v-col>
@@ -76,8 +82,8 @@
 </template>
 
 <script>
-//   import format from "date-fns/format";
-//   import parseISO from "date-fns/parseISO";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import DeleteFilesMixin from "../../mixins/Consultation Files/DeleteFiles";
 import ViewFileMixin from "../../mixins/Consultation Files/ViewFile";
@@ -102,7 +108,6 @@ export default {
         value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
     },
-
     //   viewRegistrantService(consultation_id, hospital_service_id) {
     //     this.$router.push({
     //       name: this.routeName,
@@ -151,7 +156,7 @@ export default {
         file_name: file.file_name,
         document_type: file.document_type,
         uploaded_by: file.uploaded_by,
-        date_uploaded: file.date_uploaded,
+        date_uploaded: format(parseISO(file.date_uploaded), "MMMM d, yyyy"),
         upload_status: file.upload_status,
         file_id: file.id,
         hospital_service_id: file.hospital_service_id,
