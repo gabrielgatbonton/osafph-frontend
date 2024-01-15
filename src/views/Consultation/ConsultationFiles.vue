@@ -34,7 +34,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import FilesTable from "@/components/Consultation/Files-Table.vue";
-import UploadDialog from "@/components/UploadDialog.vue";
+import UploadDialog from "../../components/Upload/UploadDialog.vue";
 export default {
   name: "ConsultationFiles",
   data: () => ({
