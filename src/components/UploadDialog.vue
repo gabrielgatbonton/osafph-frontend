@@ -25,7 +25,9 @@
               <v-file-input
                 label="File Input"
                 @change="handleFileUpload"
+                :value="payload.file"
               ></v-file-input>
+              <UploadArea v-on:file="handleFileUpload"/>
             </v-col>
             <v-col cols="12">
               <div class="text-right">
@@ -44,6 +46,7 @@
 <script>
 // import { format, parse, parseISO } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
+import UploadArea from './UploadArea.vue';
 export default {
   name: "UploadDialog",
   props: {
@@ -66,6 +69,9 @@ export default {
     citizen_id: null,
     hospital_service_id: null,
   }),
+  components: {
+    UploadArea,
+  },
   methods: {
     ...mapActions("file_types", ["fetchFileTypes"]),
     handleFileUpload(file) {
@@ -85,34 +91,6 @@ export default {
 
       this.$emit("uploadFiles", formData);
     },
-    // submitForm() {
-    //   //Parse the String to format the date needed.
-    //   const parsedDate = parse(
-    //     this.payload.scheduled_date,
-    //     "MMMM dd, yyyy",
-    //     new Date()
-    //   );
-    //   const formattedDate = format(parsedDate, "yyyy-MM-d");
-
-    //   if (this.hospitalService) {
-    //     //Attached the other variables to payload for updating service.
-    //     this.payload.status = this.status;
-    //     this.payload.date_released = this.date_released;
-    //     this.payload.serviceable_type = this.selects.serviceable_type;
-    //     this.payload.scheduled_date = formattedDate;
-
-    //     this.$emit(
-    //       "updateService",
-    //       this.payload,
-    //       this.citizen_id,
-    //       this.hospital_service_id
-    //     );
-    //   } else {
-    //     this.payload.scheduled_date = formattedDate;
-    //     this.payload.serviceable_type = this.selects.serviceable_type;
-    //     this.$emit("submitForm", this.payload);
-    //   }
-    // },
   },
   computed: {
     ...mapGetters("file_types", ["getFileTypes"]),
