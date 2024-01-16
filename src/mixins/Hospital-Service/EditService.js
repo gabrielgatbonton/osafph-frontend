@@ -1,6 +1,5 @@
 import { mapActions, mapGetters } from "vuex";
-// import format from "date-fns/format";
-// import parseISO from "date-fns/parseISO";
+import { format, parse } from "date-fns";
 export default {
   data: () => ({
     dialog: false,
@@ -33,8 +32,14 @@ export default {
           hospital: payload.hospital,
           service_type: payload.service_type,
           specialty: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          date_released: payload.date_released,
+          scheduled_date: format(
+            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
+          date_released: format(
+            parse(payload.date_released, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           status: payload.status,
           remarks: payload.remarks,
           crowd_funding_backer: payload.crowd_funding,
@@ -44,8 +49,14 @@ export default {
           hospital: payload.hospital,
           service_type: payload.service_type,
           diagnostic_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          date_released: payload.date_released,
+          scheduled_date: format(
+            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
+          date_released: format(
+            parse(payload.date_released, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           status: payload.status,
           remarks: payload.remarks,
           crowd_funding_backer: payload.crowd_funding,
@@ -55,8 +66,14 @@ export default {
           hospital: payload.hospital,
           service_type: payload.service_type,
           laboratory_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
-          date_released: payload.date_released,
+          scheduled_date: format(
+            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
+          date_released: format(
+            parse(payload.date_released, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           status: payload.status,
           remarks: payload.remarks,
           crowd_funding_backer: payload.crowd_funding,

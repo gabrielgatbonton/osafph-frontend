@@ -36,7 +36,7 @@
           @input="pushToParent"
         ></v-text-field>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" v-if="hospitalService">
         <v-text-field
           v-model="date_released"
           label="Date Released"

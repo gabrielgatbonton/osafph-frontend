@@ -27,6 +27,15 @@
               :hospitalService="hospitalService"
               v-on:payload="assignPayload"
             />
+            <DialysisFormat
+              v-if="
+                payload.service_type === 'DIALYSIS' &&
+                payload.service_type !== null
+              "
+              :crowd_fundings="getCrowdFundings"
+              :medical_sites="getHospitals"
+              v-on:payload="assignPayload"
+            />
             <v-col cols="12">
               <div class="text-right">
                 <v-btn dark class="blue darken-4" @click="submitForm"
@@ -42,9 +51,10 @@
 </template>
 
 <script>
-import { format, parse } from "date-fns";
+// import { format, parse } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
 import GeneralFormat from "./Service Format/GeneralFormat.vue";
+import DialysisFormat from "./Service Format/DialysisFormat.vue";
 export default {
   props: {
     activator: {
@@ -73,6 +83,7 @@ export default {
   }),
   components: {
     GeneralFormat,
+    DialysisFormat,
   },
   methods: {
     ...mapActions("services_choices", ["fetchData"]),
@@ -94,22 +105,7 @@ export default {
       console.log("Passed Data", this.payload);
     },
     submitForm() {
-      const parsedDate = parse(
-        this.payload.scheduled_date,
-        "MMMM dd, yyyy",
-        new Date()
-      );
-      const parsedDate_2 = parse(
-        this.payload.date_released,
-        "MMMM dd, yyyy",
-        new Date()
-      );
-      const formattedDate = format(parsedDate, "yyyy-MM-d");
-      const formattedDate_2 = format(parsedDate_2, "yyyy-MM-d");
-
       if (this.hospitalService) {
-        this.payload.scheduled_date = formattedDate;
-        this.payload.date_released = formattedDate_2;
         this.$emit(
           "updateService",
           this.payload,
@@ -117,7 +113,6 @@ export default {
           this.hospital_service_id
         );
       } else {
-        this.payload.scheduled_date = formattedDate;
         this.$emit("submitForm", this.payload);
       }
     },

@@ -15,6 +15,7 @@ import { identification_cards } from "./modules/Enums/identification-cards";
 import { professions } from "./modules/Enums/professions";
 import { consultation_form } from "./modules/Encoder/consultation-form";
 import { file_types } from "./modules/Enums/file-types";
+import { dialysis } from "./modules/Enums/dialysis";
 
 Vue.use(Vuex);
 
@@ -41,5 +42,6 @@ export default new Vuex.Store({
     consultation_enum,
     services_choices,
     file_types,
+    dialysis,
   },
 });

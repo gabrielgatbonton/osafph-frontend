@@ -1,9 +1,10 @@
 import { mapActions } from "vuex";
+import { format, parse } from "date-fns";
 export default {
-    data: () => ({
-        payload: null,
-        dialog: false,
-    }),
+  data: () => ({
+    payload: null,
+    dialog: false,
+  }),
   methods: {
     ...mapActions("services", ["addHospitalService"]),
     activator() {
@@ -20,7 +21,10 @@ export default {
           hospital: payload.hospital,
           service_type: payload.service_type,
           specialty: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
+          scheduled_date: format(
+            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           crowd_funding_backer: payload.crowd_funding,
           date_released: null,
           status: "PENDING",
@@ -31,20 +35,47 @@ export default {
           hospital: payload.hospital,
           service_type: payload.service_type,
           diagnostic_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
+          scheduled_date: format(
+            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           date_released: null,
           status: "PENDING",
           remarks: payload.remarks,
+          crowd_funding_backer: payload.crowd_funding,
         };
       } else if (payload.service_type === "LABORATORY") {
         data = {
           hospital: payload.hospital,
           service_type: payload.service_type,
           laboratory_type: payload.serviceable_type,
-          scheduled_date: payload.scheduled_date,
+          scheduled_date: format(
+            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           date_released: null,
           status: "PENDING",
           remarks: payload.remarks,
+          crowd_funding_backer: payload.crowd_funding,
+        };
+      } else if (payload.service_type === "DIALYSIS") {
+        data = {
+          service_type: payload.service_type,
+          crowd_funding: payload.crowd_funding,
+          total_sessions: payload.total_sessions,
+          hospital: payload.hospital,
+          schedule: payload.schedule.map((item) => ({
+            date: format(
+              parse(item.date, "MMMM dd, yyyy", new Date()),
+              "yyyy-MM-d"
+            ),
+            session: item.session,
+          })),
+          dialysis_items: payload.dialysis_items,
+          all_items_sponsored: payload.all_items_sponsored,
+          dialysis_machine: payload.dialysis_machine,
+          all_sessions_sponsored: payload.all_sessions_sponsored,
+          status: "PENDING",
         };
       }
 
