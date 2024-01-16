@@ -16,100 +16,17 @@
                 @change="(value) => initService(value)"
               ></v-autocomplete>
             </v-col>
-            <v-col cols="12">
-              <v-autocomplete
-                v-model="selects.serviceable_type"
-                label="Serviceable Type"
-                :items="services_choices"
-                item-text="name"
-              ></v-autocomplete>
-            </v-col>
-            <v-col cols="12">
-              <v-autocomplete
-                v-model="payload.hospital"
-                label="Medical Site"
-                :items="getHospitals"
-                item-text="name"
-              ></v-autocomplete>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field
-                v-model="payload.scheduled_date"
-                label="Scheduled Date"
-                hint="Format (January 04, 2023)"
-              ></v-text-field>
-              <!-- <v-menu
-                max-width="290"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-                v-model="menu_1"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    :value="formattedDate1"
-                    v-on="on"
-                    v-bind="attrs"
-                    label="Scheduled Date"
-                    readonly
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="payload.scheduled_date"
-                  :min="minDate"
-                  @input="menu_1 = false"
-                ></v-date-picker>
-              </v-menu> -->
-            </v-col>
-            <v-col cols="12">
-              <v-autocomplete
-                v-model="payload.crowd_funding"
-                label="Crowd Funding"
-                :items="getCrowdFundings"
-                item-text="backer"
-              ></v-autocomplete>
-            </v-col>
-            <!-- <v-col cols="12" v-if="hospitalService">
-              <v-menu
-                max-width="290"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-                v-model="menu_3"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    :value="formattedDate2"
-                    v-on="on"
-                    v-bind="attrs"
-                    label="Date Released"
-                    readonly
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="date_released"
-                  :min="minDate"
-                  @input="menu_3 = false"
-                ></v-date-picker>
-              </v-menu>
-            </v-col> -->
-            <v-col cols="12">
-              <v-text-field
-                v-model="payload.remarks"
-                label="Remarks"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" v-if="hospitalService">
-              <v-autocomplete
-                v-model="status"
-                label="Status"
-                :items="statuses"
-              ></v-autocomplete>
-            </v-col>
+            <GeneralFormat
+              v-if="
+                payload.service_type !== 'DIALYSIS' &&
+                payload.service_type !== null
+              "
+              :services_choices="services_choices"
+              :crowd_fundings="getCrowdFundings"
+              :medical_sites="getHospitals"
+              :hospitalService="hospitalService"
+              v-on:payload="assignPayload"
+            />
             <v-col cols="12">
               <div class="text-right">
                 <v-btn dark class="blue darken-4" @click="submitForm"
@@ -125,8 +42,9 @@
 </template>
 
 <script>
-import { format, parse, parseISO } from "date-fns";
+import { format, parse } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
+import GeneralFormat from "./Service Format/GeneralFormat.vue";
 export default {
   props: {
     activator: {
@@ -144,30 +62,18 @@ export default {
   },
   data: () => ({
     dialog: false,
-    menu_1: false,
-    menu_2: false,
-    menu_3: false,
-    menu_4: false,
     payload: {
       service_type: null,
-      serviceable_type: null,
-      scheduled_date: null,
-      crowd_funding: null,
-      remarks: null,
-      hospital: null,
-    },
-    date_released: null,
-    status: null,
-    selects: {
-      serviceable_type: null,
     },
     citizen_id: null,
     hospital_service_id: null,
     services_choices: null,
-    services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY"],
-    statuses: ["PENDING", "UNATTENDED", "COMPLETED"],
+    services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY", "DIALYSIS"],
     minDate: new Date().toISOString().slice(0, 10),
   }),
+  components: {
+    GeneralFormat,
+  },
   methods: {
     ...mapActions("services_choices", ["fetchData"]),
     initService(service) {
@@ -179,34 +85,31 @@ export default {
         this.services_choices = this.getLaboratoryTypes;
       }
     },
-    // filterDoctor(value) {
-    //   const serviceable = this.services_choices.find(
-    //     (serviceable) => serviceable.id === value
-    //   );
-    //   if (serviceable) {
-    //     this.payload.serviceable_type = serviceable.name;
-    //   }
-    //   const data = this.getDoctors.find((doctor) => doctor.doctor_id === value);
-    //   if (data) {
-    //     this.doctor_choices = [data];
-    //   }
-    // },
+    assignPayload(payload) {
+      for (const key in payload) {
+        if (Object.hasOwnProperty.call(payload, key)) {
+          this.payload[key] = payload[key];
+        }
+      }
+      console.log("Passed Data", this.payload);
+    },
     submitForm() {
-      //Parse the String to format the date needed.
       const parsedDate = parse(
         this.payload.scheduled_date,
         "MMMM dd, yyyy",
         new Date()
       );
+      const parsedDate_2 = parse(
+        this.payload.date_released,
+        "MMMM dd, yyyy",
+        new Date()
+      );
       const formattedDate = format(parsedDate, "yyyy-MM-d");
+      const formattedDate_2 = format(parsedDate_2, "yyyy-MM-d");
 
       if (this.hospitalService) {
-        //Attached the other variables to payload for updating service.
-        this.payload.status = this.status;
-        this.payload.date_released = this.date_released;
-        this.payload.serviceable_type = this.selects.serviceable_type;
         this.payload.scheduled_date = formattedDate;
-
+        this.payload.date_released = formattedDate_2;
         this.$emit(
           "updateService",
           this.payload,
@@ -215,7 +118,6 @@ export default {
         );
       } else {
         this.payload.scheduled_date = formattedDate;
-        this.payload.serviceable_type = this.selects.serviceable_type;
         this.$emit("submitForm", this.payload);
       }
     },
@@ -228,16 +130,6 @@ export default {
       "getDiagnosticTypes",
       "getCrowdFundings",
     ]),
-    formattedDate1() {
-      return this.payload.scheduled_date
-        ? format(parseISO(this.payload.scheduled_date), "MMMM d, yyyy")
-        : "";
-    },
-    formattedDate2() {
-      return this.date_released
-        ? format(parseISO(this.date_released), "MMMM d, yyyy")
-        : "";
-    },
   },
   watch: {
     activator(newValue) {
@@ -259,31 +151,6 @@ export default {
         this.hospital_service_id = value.hospitalService.id;
         this.payload.service_type = value.hospitalService.service_type;
         this.initService(value.hospitalService.service_type);
-
-        if (this.services_choices) {
-          const serviceable = this.services_choices.find(
-            (serviceable) =>
-              serviceable.name === value.hospitalService.serviceable_type_name
-          );
-          if (serviceable) {
-            this.selects.serviceable_type = serviceable.name;
-          }
-        }
-        // this.payload.serviceable_type =
-        //   value.hospitalService.serviceable_type_name;
-
-        // const doctor = this.doctor_choices.find(
-        //   (doctor) => doctor.doctor_id === value.hospitalService.doctor_id
-        // );
-        // if (doctor) {
-        //   this.payload.doctor = doctor.doctor_id;
-        // }
-        this.payload.crowd_funding = value.hospitalService.crowd_funding_backer;
-        this.payload.hospital = value.hospitalService.hospital;
-        this.payload.scheduled_date = format(parseISO(value.hospitalService.scheduled_date), "MMMM d, yyyy");
-        this.payload.remarks = value.hospitalService.remarks;
-        this.date_released = value.hospitalService.date_released;
-        this.status = value.hospitalService.status;
       }
     },
   },

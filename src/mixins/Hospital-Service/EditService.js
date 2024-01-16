@@ -48,6 +48,7 @@ export default {
           date_released: payload.date_released,
           status: payload.status,
           remarks: payload.remarks,
+          crowd_funding_backer: payload.crowd_funding,
         };
       } else if (payload.service_type === "LABORATORY") {
         data = {
@@ -58,6 +59,7 @@ export default {
           date_released: payload.date_released,
           status: payload.status,
           remarks: payload.remarks,
+          crowd_funding_backer: payload.crowd_funding,
         };
       }
       return this.updateHospitalService({
