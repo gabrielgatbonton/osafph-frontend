@@ -21,47 +21,7 @@
           <v-container fluid class="mx-auto mt-3">
             <v-row>
               <v-col cols="12" class="mt-n1">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-medical-bag</v-icon>Hospital Service
-                    Information</v-card-title
-                  >
-                  <v-container fluid class="py-4">
-                    <v-row no-gutters>
-                      <v-col
-                        cols="12"
-                        md="6"
-                        sm="6"
-                        v-for="(info, index) in serviceInformation"
-                        :key="index"
-                      >
-                        <div class="ma-2">
-                          <div class="text-subtitle-2 grey--text">
-                            {{ info.title }}
-                          </div>
-                          <div class="text-h5">{{ info.content }}</div>
-                        </div>
-                      </v-col>
-                      <v-col cols="12" class="mt-3">
-                        <v-expansion-panels>
-                          <v-expansion-panel
-                            v-for="(info, index) in expansionRemarks"
-                            :key="index"
-                          >
-                            <v-expansion-panel-header>
-                              <div class="text-subtitle-1 font-weight-bold">
-                                {{ info.title }}
-                              </div>
-                            </v-expansion-panel-header>
-                            <v-expansion-panel-content>
-                              {{ info.content }}
-                            </v-expansion-panel-content>
-                          </v-expansion-panel>
-                        </v-expansion-panels>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
+                <PatientHospitalService :data="service"/>
               </v-col>
               <v-col cols="12">
                 <PatientInformation :data="registrant" />
@@ -70,7 +30,7 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="4">
-          <HospitalServiceInformationContinutation :data="getHospitalService" />
+          <HospitalServiceInformationContinutation :data="service" />
         </v-col>
       </v-row>
     </v-container>
@@ -82,7 +42,7 @@
     ></v-skeleton-loader>
     <ServiceDialog
       :activator="dialog"
-      :hospitalService="getHospitalService"
+      :hospitalService="service"
       v-on:dialogResponse="resetActivator"
       v-on:updateService="submitForm"
     />
@@ -91,6 +51,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import PatientHospitalService from '@/components/Hospital-Service/PatientHospitalService.vue';
 import PatientInformation from "../../components/Hospital-Service/PatientInformation.vue";
 import HospitalServiceInformationContinutation from "./HospitalServiceInformationContinuatation.vue";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
@@ -111,6 +72,7 @@ export default {
     HospitalServiceInformationContinutation,
     ServiceDialog,
     PatientInformation,
+    PatientHospitalService,
   },
   methods: {
     ...mapActions("registrants", ["fetchRegistrantId"]),
@@ -148,7 +110,7 @@ export default {
       });
     },
     userRolePermissions() {
-      if (this.userRole === "ADMIN") {
+      if (this.userRole === "ADMIN" || this.userRole === "ENCODER") {
         this.auth.edit = true;
       }
     },
@@ -167,68 +129,13 @@ export default {
       this.routeID = id;
     },
     getHospitalService(value) {
-      // console.log(value);
+      console.log(value);
       this.service = value;
     },
   },
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
     ...mapGetters("login", ["userRole"]),
-    serviceInformation() {
-      let data = null;
-      if (this.service.hospitalService.status === "COMPLETED") {
-        data = [
-          {
-            title: "Service ID",
-            content: this.service.hospitalService.id,
-          },
-          {
-            title: "Health Professional",
-            content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
-          },
-          {
-            title: "Service Availed",
-            content: this.service.hospitalService.service_type,
-          },
-          {
-            title: "Serviceable Availed",
-            content: this.service.hospitalService.serviceable_type_name,
-          },
-          {
-            title: "Consultation Form Status",
-            content: "UNACCOMPLISHED",
-          },
-        ];
-      } else {
-        data = [
-          {
-            title: "Service ID",
-            content: this.service.hospitalService.id,
-          },
-          {
-            title: "Health Professional",
-            content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
-          },
-          {
-            title: "Service Availed",
-            content: this.service.hospitalService.service_type,
-          },
-          {
-            title: "Serviceable Availed",
-            content: this.service.hospitalService.serviceable_type_name,
-          },
-        ];
-      }
-      return data;
-    },
-    expansionRemarks() {
-      return [
-        {
-          title: "Remarks",
-          content: this.service.hospitalService.remarks,
-        },
-      ];
-    },
   },
 };
 </script>

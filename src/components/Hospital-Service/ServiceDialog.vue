@@ -33,6 +33,7 @@
                 payload.service_type !== null
               "
               :crowd_fundings="getCrowdFundings"
+              :hospitalService="hospitalService"
               :medical_sites="getHospitals"
               v-on:payload="assignPayload"
             />

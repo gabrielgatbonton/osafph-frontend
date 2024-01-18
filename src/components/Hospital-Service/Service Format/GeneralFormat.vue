@@ -21,7 +21,7 @@
       </v-col>
       <v-col cols="12">
         <v-autocomplete
-          v-model="payload.crowd_funding"
+          v-model="payload.crowd_funding_backer"
           label="Crowd Funding"
           :items="crowd_fundings"
           item-text="backer"
@@ -88,7 +88,7 @@ export default {
     payload: {
       serviceable_type: null,
       scheduled_date: null,
-      crowd_funding: null,
+      crowd_funding_backer: null,
       remarks: null,
       hospital: null,
     },

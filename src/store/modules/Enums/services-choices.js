@@ -44,7 +44,6 @@ export const services_choices = {
       state.hospitals = data;
     },
     SET_CROWD_FUNDINGS(state, data) {
-      console.log("Check",data);
       state.crowd_fundings = data;
     },
   },

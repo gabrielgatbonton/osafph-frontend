@@ -14,7 +14,6 @@ export const services = {
   }),
   mutations: {
     SET_HOSPITAL_SERVICES(state, services) {
-      console.log(services)
       const pendingServices = services
         .filter((service) => {
           return service.status.includes("PENDING");
@@ -45,7 +44,6 @@ export const services = {
 
       // Replace the contents of the archivedServices state variable
       state.archivedServices = archivedServices;
-      console.log(state.archivedServices);
     },
     SET_HOSPITAL_SERVICE(state, service) {
       state.hospitalService = service;

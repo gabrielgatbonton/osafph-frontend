@@ -25,7 +25,7 @@ export default {
             parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
             "yyyy-MM-d"
           ),
-          crowd_funding_backer: payload.crowd_funding,
+          crowd_funding_backer: payload.crowd_funding_backer,
           date_released: null,
           status: "PENDING",
           remarks: payload.remarks,
@@ -42,7 +42,7 @@ export default {
           date_released: null,
           status: "PENDING",
           remarks: payload.remarks,
-          crowd_funding_backer: payload.crowd_funding,
+          crowd_funding_backer: payload.crowd_funding_backer,
         };
       } else if (payload.service_type === "LABORATORY") {
         data = {
@@ -56,12 +56,12 @@ export default {
           date_released: null,
           status: "PENDING",
           remarks: payload.remarks,
-          crowd_funding_backer: payload.crowd_funding,
+          crowd_funding_backer: payload.crowd_funding_backer,
         };
       } else if (payload.service_type === "DIALYSIS") {
         data = {
           service_type: payload.service_type,
-          crowd_funding: payload.crowd_funding,
+          crowd_funding_backer: payload.crowd_funding_backer,
           total_sessions: payload.total_sessions,
           hospital: payload.hospital,
           schedule: payload.schedule.map((item) => ({

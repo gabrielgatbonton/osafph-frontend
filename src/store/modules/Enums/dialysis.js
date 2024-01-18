@@ -19,7 +19,6 @@ export const dialysis = {
     },
     SET_DIALYSIS_ITEMS(state, items) {
       state.dialysis_items = items;
-      console.log(state.dialysis_items);
     },
   },
   actions: {

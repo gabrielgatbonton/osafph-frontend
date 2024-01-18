@@ -42,7 +42,7 @@ export default {
           ),
           status: payload.status,
           remarks: payload.remarks,
-          crowd_funding_backer: payload.crowd_funding,
+          crowd_funding_backer: payload.crowd_funding_backer,
         };
       } else if (payload.service_type === "DIAGNOSTIC") {
         data = {
@@ -59,7 +59,7 @@ export default {
           ),
           status: payload.status,
           remarks: payload.remarks,
-          crowd_funding_backer: payload.crowd_funding,
+          crowd_funding_backer: payload.crowd_funding_backer,
         };
       } else if (payload.service_type === "LABORATORY") {
         data = {
@@ -76,7 +76,24 @@ export default {
           ),
           status: payload.status,
           remarks: payload.remarks,
-          crowd_funding_backer: payload.crowd_funding,
+          crowd_funding_backer: payload.crowd_funding_backer,
+        };
+      } else if (payload.service_type === "DIALYSIS") {
+        data = {
+          service_type: payload.service_type,
+          hospital: payload.hospital,
+          dialysis_machine: payload.dialysis_machine,
+          scheduled_date: format(
+            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
+          scheduled_session: payload.scheduled_session,
+          date_released: payload.date_released ? format(
+            parse(payload.date_released, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ) : null,
+          status: payload.status,
+          remarks: payload.remarks,
         };
       }
       return this.updateHospitalService({
