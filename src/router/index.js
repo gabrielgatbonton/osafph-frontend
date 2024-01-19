@@ -10,7 +10,8 @@ import { checkLoggedIn } from "./modules/auth-guard";
 import ReroutePage from "./modules/reroute";
 // import html2pdfPage from "../components/File Viewer/FileViewer.vue"
 import hospitalServicesRoute from "./modules/hospital-services";
-import doctorRoute from './modules/doctor'
+import doctorRoute from './modules/doctor';
+import dialysisRoute from './modules/dialysis';
 
 Vue.use(VueRouter);
 
@@ -35,6 +36,7 @@ const routes = [
   ...ReroutePage,
   ...hospitalServicesRoute,
   ...doctorRoute,
+  ...dialysisRoute,
 ]
 
 const router = new VueRouter({

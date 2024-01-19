@@ -143,6 +143,20 @@ export default {
             route: "/citizens",
           },
         ];
+      } else if (this.userRole === "DIALYSIS_ENCODER") {
+        links = [
+          {
+            icon: "mdi-view-dashboard",
+            text: "Dashboard",
+            route: "/dashboard",
+          },
+          {
+            icon: "mdi-medical-bag",
+            text: "Dialysis",
+            route: "/dialysis",
+          },
+          { icon: "mdi-cog", text: "Management", route: "/management" },
+        ];
       }
 
       this.links = links;
