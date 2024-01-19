@@ -41,7 +41,7 @@
                       :key="index"
                     >
                       <ul>
-                        <li>{{ item }}</li>
+                        <li class="text-h5">{{ item }}</li>
                       </ul>
                     </v-col>
                   </v-row>

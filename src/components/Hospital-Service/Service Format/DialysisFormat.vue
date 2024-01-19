@@ -212,6 +212,9 @@ export default {
   mounted() {
     this.checkEditData();
   },
+  updated() {
+    this.checkEditData();
+  },
 };
 </script>
 
