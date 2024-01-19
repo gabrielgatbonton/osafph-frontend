@@ -192,10 +192,13 @@ export default {
           parseISO(this.hospitalService.hospitalService.scheduled_date),
           "MMMM dd, yyyy"
         );
-        this.payload.date_released = this.hospitalService.hospitalService.date_released ? format(
-          parseISO(this.hospitalService.hospitalService.date_released),
-          "MMMM dd, yyyy"
-        ) : null;
+        this.payload.date_released = this.hospitalService.hospitalService
+          .date_released
+          ? format(
+              parseISO(this.hospitalService.hospitalService.date_released),
+              "MMMM dd, yyyy"
+            )
+          : null;
         this.payload.scheduled_session =
           this.hospitalService.hospitalService.session;
         this.payload.status = this.hospitalService.hospitalService.status;
@@ -212,8 +215,15 @@ export default {
   mounted() {
     this.checkEditData();
   },
-  updated() {
-    this.checkEditData();
+  watch: {
+    hospitalService: {
+      handler(newVal) {
+        if (newVal) {
+          this.checkEditData();
+        }
+      },
+      deep: true,
+    },
   },
 };
 </script>

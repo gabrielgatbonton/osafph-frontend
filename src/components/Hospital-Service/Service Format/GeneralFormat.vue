@@ -166,8 +166,15 @@ export default {
   mounted() {
     this.checkEditData();
   },
-  updated() {
-    this.checkEditData();
+  watch: {
+    hospitalService: {
+      handler(newVal) {
+        if (newVal) {
+          this.checkEditData();
+        }
+      },
+      deep: true,
+    },
   },
 };
 </script>
