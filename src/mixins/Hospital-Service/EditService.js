@@ -94,6 +94,7 @@ export default {
           ) : null,
           status: payload.status,
           remarks: payload.remarks,
+          // crowd_funding_backer: payload.crowd_funding_backer,
         };
       }
       return this.updateHospitalService({

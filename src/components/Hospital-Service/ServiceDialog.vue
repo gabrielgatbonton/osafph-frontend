@@ -25,6 +25,7 @@
               :crowd_fundings="getCrowdFundings"
               :medical_sites="getHospitals"
               :hospitalService="hospitalService"
+              :type="payload.service_type"
               v-on:payload="assignPayload"
             />
             <DialysisFormat

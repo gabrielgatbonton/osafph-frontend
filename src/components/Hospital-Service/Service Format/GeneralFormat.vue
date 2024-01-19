@@ -19,7 +19,7 @@
           @input="pushToParent"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" v-if="type !== 'CONSULTATION'">
         <v-autocomplete
           v-model="payload.crowd_funding_backer"
           label="Crowd Funding"
@@ -83,6 +83,10 @@ export default {
       type: Object,
       required: false,
     },
+    type: {
+      type: String, 
+      required: true,
+    },
   },
   data: () => ({
     payload: {
@@ -133,7 +137,7 @@ export default {
         // if (doctor) {
         //   this.payload.doctor = doctor.doctor_id;
         // }
-        this.payload.crowd_funding =
+        this.payload.crowd_funding_backer =
           this.hospitalService.hospitalService.crowd_funding_backer;
         this.payload.hospital = this.hospitalService.hospitalService.hospital;
         this.payload.scheduled_date = format(

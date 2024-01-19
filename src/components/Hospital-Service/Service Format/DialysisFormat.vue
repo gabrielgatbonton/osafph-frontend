@@ -10,7 +10,7 @@
           @input="pushToParent"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" v-if="!hospitalService">
         <v-autocomplete
           v-model="payload.crowd_funding_backer"
           label="Crowd Funding"
@@ -183,8 +183,8 @@ export default {
     },
     checkEditData() {
       if (this.hospitalService) {
-        this.payload.crowd_funding_backer =
-          this.hospitalService.hospitalService.crowd_funding_backer;
+        // this.payload.crowd_funding_backer =
+        //   this.hospitalService.hospitalService.crowd_funding_backer;
         this.payload.hospital = this.hospitalService.hospitalService.hospital;
         this.payload.dialysis_machine =
           this.hospitalService.hospitalService.dialysis_machine.name;
