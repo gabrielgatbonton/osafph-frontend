@@ -121,6 +121,10 @@ export const services = {
             message: "Updated Service",
           });
           dispatch("fetchServicesById", id);
+          dispatch("fetchHospitalServiceById", {
+            id: id,
+            hospital_service_id: hospital_service_id,
+          });
         })
         .catch((error) => {
           store.commit("alerts/SET_SHOW_ERROR", {

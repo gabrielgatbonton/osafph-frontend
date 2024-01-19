@@ -105,6 +105,7 @@
           v-model="payload.status"
           label="Status"
           :items="statuses"
+          @input="pushToParent"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12" v-if="hospitalService">

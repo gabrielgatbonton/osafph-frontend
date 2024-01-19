@@ -43,7 +43,7 @@
     <ServiceDialog
       :activator="dialog"
       :hospitalService="service"
-      v-on:dialogResponse="resetActivator"
+      v-on:dialogResponse="resetEditActivator"
       v-on:updateService="submitForm"
     />
   </div>
