@@ -36,10 +36,12 @@ export default {
             parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
             "yyyy-MM-d"
           ),
-          date_released: format(
-            parse(payload.date_released, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          date_released: payload.date_released
+            ? format(
+                parse(payload.date_released, "MMMM dd, yyyy", new Date()),
+                "yyyy-MM-d"
+              )
+            : null,
           status: payload.status,
           remarks: payload.remarks,
           crowd_funding_backer: payload.crowd_funding_backer,
@@ -53,10 +55,12 @@ export default {
             parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
             "yyyy-MM-d"
           ),
-          date_released: format(
-            parse(payload.date_released, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          date_released: payload.date_released
+            ? format(
+                parse(payload.date_released, "MMMM dd, yyyy", new Date()),
+                "yyyy-MM-d"
+              )
+            : null,
           status: payload.status,
           remarks: payload.remarks,
           crowd_funding_backer: payload.crowd_funding_backer,
@@ -70,10 +74,12 @@ export default {
             parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
             "yyyy-MM-d"
           ),
-          date_released: format(
-            parse(payload.date_released, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          date_released: payload.date_released
+            ? format(
+                parse(payload.date_released, "MMMM dd, yyyy", new Date()),
+                "yyyy-MM-d"
+              )
+            : null,
           status: payload.status,
           remarks: payload.remarks,
           crowd_funding_backer: payload.crowd_funding_backer,
@@ -88,10 +94,12 @@ export default {
             "yyyy-MM-d"
           ),
           scheduled_session: payload.scheduled_session,
-          date_released: payload.date_released ? format(
-            parse(payload.date_released, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ) : null,
+          date_released: payload.date_released
+            ? format(
+                parse(payload.date_released, "MMMM dd, yyyy", new Date()),
+                "yyyy-MM-d"
+              )
+            : null,
           status: payload.status,
           remarks: payload.remarks,
           // crowd_funding_backer: payload.crowd_funding_backer,
