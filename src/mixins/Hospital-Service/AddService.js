@@ -27,7 +27,7 @@ export default {
           ),
           crowd_funding_backer: payload.crowd_funding_backer,
           date_released: null,
-          status: "PENDING",
+          status: payload.status,
           remarks: payload.remarks,
         };
       } else if (payload.service_type === "DIAGNOSTIC") {
@@ -40,7 +40,7 @@ export default {
             "yyyy-MM-d"
           ),
           date_released: null,
-          status: "PENDING",
+          status: payload.status,
           remarks: payload.remarks,
           crowd_funding_backer: payload.crowd_funding_backer,
         };
@@ -54,7 +54,7 @@ export default {
             "yyyy-MM-d"
           ),
           date_released: null,
-          status: "PENDING",
+          status: payload.status,
           remarks: payload.remarks,
           crowd_funding_backer: payload.crowd_funding_backer,
         };

@@ -51,11 +51,12 @@
           @input="pushToParent"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" v-if="hospitalService">
+      <v-col cols="12">
         <v-autocomplete
-          v-model="status"
+          v-model="payload.status"
           label="Status"
           :items="statuses"
+          @input="pushToParent"
         ></v-autocomplete>
       </v-col>
     </v-row>
@@ -84,7 +85,7 @@ export default {
       required: false,
     },
     type: {
-      type: String, 
+      type: String,
       required: true,
     },
   },
@@ -95,19 +96,17 @@ export default {
       crowd_funding_backer: null,
       remarks: null,
       hospital: null,
+      status: null,
     },
     date_released: null,
-    status: null,
     selects: {
       serviceable_type: null,
     },
-    statuses: ["PENDING", "UNATTENDED", "COMPLETED"],
   }),
   methods: {
     pushToParent() {
       //Parse the String to format the date needed.
       if (this.hospitalService) {
-        this.payload.status = this.status;
         this.payload.date_released = this.date_released;
         this.payload.serviceable_type = this.selects.serviceable_type;
         this.$emit("payload", this.payload);
@@ -166,6 +165,13 @@ export default {
     //     this.doctor_choices = [data];
     //   }
     // },
+  },
+  computed: {
+    statuses() {
+      return this.hospitalService
+        ? ["UNATTENDED", "COMPLETED"]
+        : ["PENDING", "WALK IN"];
+    },
   },
   mounted() {
     this.checkEditData();
