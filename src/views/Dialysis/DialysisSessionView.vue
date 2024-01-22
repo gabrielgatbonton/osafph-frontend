@@ -30,7 +30,7 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="4">
-          <!-- <HospitalServiceInformationContinutation :data="service" /> -->
+          <ServiceStatusComponent :serviceStatus="serviceStatus" />
         </v-col>
       </v-row>
     </v-container>
@@ -48,6 +48,7 @@ import { mapActions, mapGetters } from "vuex";
 import { format, parseISO } from "date-fns";
 import PatientServiceComponent from "@/components/Reusable/PatientServiceComponent.vue";
 import PatientInformationComponent from "@/components/Reusable/PatientInformationComponent.vue";
+import ServiceStatusComponent from "@/components/Reusable/ServiceStatusComponent.vue";
 export default {
   name: "DialysisSessionView",
   data: () => ({
@@ -56,6 +57,7 @@ export default {
   components: {
     PatientServiceComponent,
     PatientInformationComponent,
+    ServiceStatusComponent,
   },
   methods: {
     ...mapActions("dialysis_sessions", ["fetchDialysisSessionById"]),
@@ -135,12 +137,12 @@ export default {
               "MMMM dd, yyyy"
             ),
           },
-        ],
-        additional_info: [
           {
             title: "Address",
             content: this.session.citizen.address,
           },
+        ],
+        additional_info: [
           {
             title: "Civil Status",
             content: this.session.citizen.civil_status,
@@ -162,11 +164,40 @@ export default {
         ],
       };
     },
+    serviceStatus() {
+      //Assign Date Released Value and Logic.
+      let date_released_data = this.session.hospital_service.date_released
+        ? {
+            title: "Date Released",
+            content: format(
+              parseISO(this.session.hospital_service.date_released),
+              "MMMM dd, yyyy"
+            ),
+          }
+        : false;
+
+      return {
+        status: this.session.hospital_service.status,
+        scheduledDate: {
+          title: "Scheduled Date",
+          content: format(
+            parseISO(this.session.hospital_service.scheduled_date),
+            "MMMM dd, yyyy"
+          ),
+        },
+        dateReleased: date_released_data,
+        messages: {
+          pending: "Dialysis session is pending...",
+          inProgress: "Dialysis session is in progress...",
+          unattended: "Dialysis session was unattended...",
+          completed: "Dialysis session was successfully completed...",
+        },
+      };
+    },
   },
   watch: {
     getDialysisSession(value) {
       this.session = value;
-      console.log(this.session);
     },
   },
   created() {

@@ -8,7 +8,7 @@
     >
     <v-container fluid class="py-4">
       <v-row no-gutters>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="4" align-self="center">
           <div class="text-center">
             <v-avatar
               rounded="lg"
@@ -28,8 +28,8 @@
           <v-row no-gutters>
             <v-col
               cols="12"
-              md="6"
-              sm="6"
+              :md="info.title !== 'Address' ? 6 : 12"
+              :sm="info.title !== 'Address' ? 6 : 12"
               v-for="(info, index) in patientInformation.info"
               :key="index"
             >
