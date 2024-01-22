@@ -87,17 +87,8 @@ export default {
             text: "Dashboard",
             route: "/dashboard",
           },
-          { icon: "mdi-cog", text: "Management", route: "/management" },
-        ];
-        //Configuration for the Citizen Dropdown NavDrawer
-        this.auth.citizen = true;
-        this.citizen.dropDownData = {
-          icon: "mdi-account-group",
-          title: "Citizens",
-        };
-        this.citizen.citizensSublinks = [
           {
-            icon: "mdi-account",
+            icon: "mdi-account-group",
             text: "Registrants",
             route: "/citizens",
           },
@@ -106,7 +97,26 @@ export default {
             text: "Consultations",
             route: "/citizens-consultations",
           },
+          { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
+        // //Configuration for the Citizen Dropdown NavDrawer
+        // this.auth.citizen = true;
+        // this.citizen.dropDownData = {
+        //   icon: "mdi-account-group",
+        //   title: "Citizens",
+        // };
+        // this.citizen.citizensSublinks = [
+        //   {
+        //     icon: "mdi-account",
+        //     text: "Registrants",
+        //     route: "/citizens",
+        //   },
+        //   {
+        //     icon: "mdi-medical-bag",
+        //     text: "Consultations",
+        //     route: "/citizens-consultations",
+        //   },
+        // ];
       } else if (this.userRole === "DOCTOR") {
         links = [
           {
@@ -128,21 +138,26 @@ export default {
             text: "Dashboard",
             route: "/dashboard",
           },
-          { icon: "mdi-cog", text: "Management", route: "/management" },
-        ];
-        //Configuration for the Citizen Dropdown NavDrawer
-        this.auth.citizen = true;
-        this.citizen.dropDownData = {
-          icon: "mdi-account-group",
-          title: "Citizens",
-        };
-        this.citizen.citizensSublinks = [
           {
-            icon: "mdi-account",
+            icon: "mdi-account-group",
             text: "Registrants",
             route: "/citizens",
           },
+          { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
+        // //Configuration for the Citizen Dropdown NavDrawer
+        // this.auth.citizen = true;
+        // this.citizen.dropDownData = {
+        //   icon: "mdi-account-group",
+        //   title: "Citizens",
+        // };
+        // this.citizen.citizensSublinks = [
+        //   {
+        //     icon: "mdi-account",
+        //     text: "Registrants",
+        //     route: "/citizens",
+        //   },
+        // ];
       } else if (this.userRole === "DIALYSIS_ENCODER") {
         links = [
           {
