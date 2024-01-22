@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-autocomplete
           v-model="selects.serviceable_type"
-          label="Serviceable Type"
+          label="Specialty"
           :items="services_choices"
           item-text="name"
           @input="pushToParent"

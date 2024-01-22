@@ -20,7 +20,7 @@
       <tbody>
         <tr v-for="(item, index) in items" :key="index">
           <td>{{ item.service_type }}</td>
-          <td>{{ item.serviceable_type_name }}</td>
+          <td>{{ item.specialty }}</td>
           <td>{{ item.scheduled_date }}</td>
           <td>{{ item.medical_site }}</td>
           <td>
@@ -144,8 +144,8 @@ export default {
           value: "service_type",
         },
         {
-          text: "SERVICEABLE TYPE",
-          value: "serviceable_type_name",
+          text: "SPECIALTY",
+          value: "specialty",
         },
         {
           text: "SCHEDULED DATE",
@@ -173,7 +173,7 @@ export default {
         id: service.id,
         citizen_id: service.citizen_id,
         service_type: service.service_type,
-        serviceable_type_name: service.serviceable_type_name,
+        specialty: service.serviceable_type_name,
         status: service.status,
         scheduled_date: format(
           parseISO(service.scheduled_date),
