@@ -47,10 +47,14 @@
           <v-container fluid class="mx-auto mt-3">
             <v-row>
               <v-col cols="12" class="mt-n1">
-                <PatientConsultation :data="consultation" />
+                <PatientServiceComponent
+                  :serviceInformation="serviceInformation"
+                />
               </v-col>
               <v-col cols="12">
-                <PatientInformation :data="consultation" />
+                <PatientInformationComponent
+                  :patientInformation="patientInformation"
+                />
               </v-col>
               <v-col cols="12">
                 <PreviousConsultations
@@ -61,7 +65,7 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="4">
-          <ConsultationInformationContinutation :data="consultation" />
+          <ServiceStatusComponent :serviceStatus="serviceStatus" />
         </v-col>
       </v-row>
     </v-container>
@@ -81,13 +85,14 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import ConsultationInformationContinutation from "../../components/Consultation/ConsultationInformationContinuation.vue";
+import { format, parseISO } from "date-fns";
 import PreviousConsultations from "../../components/Consultation/PreviousConsultations.vue";
 import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import DeleteDialog from "@/mixins/DeleteDialog";
-import PatientInformation from "../../components/Consultation/PatientInformation.vue";
-import PatientConsultation from "../../components/Consultation/PatientConsultation.vue";
+import ServiceStatusComponent from "@/components/Reusable/ServiceStatusComponent.vue";
+import PatientInformationComponent from "@/components/Reusable/PatientInformationComponent.vue";
+import PatientServiceComponent from "@/components/Reusable/PatientServiceComponent.vue";
 export default {
   name: "ConsultationInformationView",
   mixins: [DeleteDialog, ErrorAlertsLogic],
@@ -110,11 +115,11 @@ export default {
     filesButtonIcon: null,
   }),
   components: {
-    ConsultationInformationContinutation,
     ReusableDeleteDialog,
     PreviousConsultations,
-    PatientInformation,
-    PatientConsultation,
+    ServiceStatusComponent,
+    PatientInformationComponent,
+    PatientServiceComponent,
   },
   methods: {
     ...mapActions("consultations", [
@@ -260,14 +265,13 @@ export default {
   watch: {
     getConsultation(value) {
       this.consultation = value.consultation;
-      console.log(this.consultation);
     },
     getConsultationForm(value) {
       this.consultation_form = value;
     },
     getAdminConsultation(value) {
       this.consultation = value.consultation;
-      // console.log(value.consultation);
+      console.log(value.consultation);
     },
     getAdminConsultationForm(value) {
       this.consultation_form = value;
@@ -281,6 +285,152 @@ export default {
       "getAdminConsultation",
       "getAdminConsultationForm",
     ]),
+    serviceInformation() {
+      return {
+        header: {
+          title: "Patient Consultation",
+          icon: "mdi-account",
+        },
+        info: [
+          {
+            title: "Consultation ID",
+            content: this.consultation.id,
+          },
+          {
+            title: "Status",
+            content: this.consultation.hospital_service.status,
+          },
+          {
+            title: "Service Availed",
+            content: this.consultation.hospital_service.service_type,
+          },
+          {
+            title: "Serviceable Availed",
+            content: this.consultation.specialty.name,
+          },
+        ],
+        remarks: [
+          {
+            title: "Remarks",
+            content: this.consultation.hospital_service.remarks
+              ? this.consultation.hospital_service.remarks
+              : "None",
+          },
+        ],
+        items_availed: {
+          service_type: false,
+          items: null,
+        },
+      };
+    },
+    patientInformation() {
+      return {
+        header: {
+          title: "Patient Information",
+          icon: "mdi-folder-multiple",
+        },
+        image_url: this.$url + this.consultation.citizen.image_url,
+        info: [
+          {
+            title: "Patient Name",
+            content: `${this.consultation.citizen.last_name}, ${
+              this.consultation.citizen.first_name
+            } ${
+              this.consultation.citizen.middle_name
+                ? this.consultation.citizen.middle_name
+                : ""
+            } ${
+              this.consultation.citizen.suffix
+                ? this.consultation.citizen.suffix
+                : ""
+            }`,
+          },
+          {
+            title: "Age",
+            content: this.consultation.citizen.age,
+          },
+          {
+            title: "Sex",
+            content: this.consultation.citizen.sex,
+          },
+          {
+            title: "Date Of Birth",
+            content: format(
+              parseISO(this.consultation.citizen.birthday),
+              "MMMM dd, yyyy"
+            ),
+          },
+          {
+            title: "Address",
+            content: this.consultation.citizen.address,
+          },
+        ],
+        additional_info: [
+          {
+            title: "Civil Status",
+            content: this.consultation.citizen.civil_status,
+          },
+          {
+            title: "Religion",
+            content: this.consultation.citizen.religion,
+          },
+          {
+            title: "Occupation",
+            content: this.consultation.citizen.occupation
+              ? this.consultation.citizen.occupation
+              : "None Specified",
+          },
+          {
+            title: "Nationality",
+            content: this.consultation.citizen.nationality,
+          },
+        ],
+      };
+    },
+    serviceStatus() {
+      //Assign Date Released Value and Logic.
+      let date_released_data = this.consultation.hospital_service.date_released
+        ? {
+            title: "Date Released",
+            content: format(
+              parseISO(this.consultation.hospital_service.date_released),
+              "MMMM dd, yyyy"
+            ),
+          }
+        : false;
+
+      //Conditional for General Format and Dialysis Format Messages
+      let messages = null;
+
+      if (this.consultation.hospital_service.status !== "DIALYSIS") {
+        messages = {
+          pending: "Requested Service is pending...",
+          inProgress: "Requested Service is in progress...",
+          unattended: "Requested Service was unattended...",
+          completed: "Requested Service was successfully completed...",
+        };
+      } else {
+        messages = {
+          pending: "Consultation is pending...",
+          inProgress: "Consultation is in progress...",
+          unattended: "Consultation was unattended...",
+          completed: "Consultation was successfully completed...",
+        };
+      }
+
+      return {
+        status: this.consultation.hospital_service.status,
+        scheduledDate: {
+          title: "Scheduled Date",
+          content: format(
+            parseISO(this.consultation.hospital_service.scheduled_date),
+            "MMMM dd, yyyy"
+          ),
+        },
+        dateReleased: date_released_data,
+        messages: messages,
+      };
+    },
   },
 };
 </script>
