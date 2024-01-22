@@ -63,6 +63,7 @@
             <v-text-field
               v-model="session.date"
               :label="`Schedule Date ${index + 1}`"
+              hint="Format (January 04, 2023)"
               @input="pushToParent"
             ></v-text-field>
           </v-col>
@@ -141,7 +142,7 @@ export default {
   data: () => ({
     payload: {
       crowd_funding_backer: null,
-      total_sessions: 0,
+      total_sessions: null,
       hospital: null,
       schedule: [],
       dialysis_items: [],
@@ -180,6 +181,30 @@ export default {
         (_, index) =>
           this.payload.schedule[index] || { date: null, session: null }
       );
+    },
+    setupSessionWatchers(schedule) {
+      if (this.payload.total_sessions > 0) {
+        schedule.forEach((session, index) => {
+          this.$watch(
+            () => this.payload.schedule[index].session,
+            (newVal) => {
+              this.updateOtherSessions(newVal, index);
+            }
+          );
+        });
+      }
+    },
+    updateOtherSessions(updatedSession, currentIndex) {
+      if (this.payload.total_sessions > 0) {
+        this.payload.schedule.forEach((session, index) => {
+          if (index !== currentIndex && session.session !== updatedSession) {
+            this.$set(this.payload.schedule, index, {
+              ...session,
+              session: updatedSession,
+            });
+          }
+        });
+      }
     },
     checkEditData() {
       if (this.hospitalService) {
@@ -221,6 +246,12 @@ export default {
         if (newVal) {
           this.checkEditData();
         }
+      },
+      deep: true,
+    },
+    "payload.schedule": {
+      handler(newVal) {
+        this.setupSessionWatchers(newVal);
       },
       deep: true,
     },
