@@ -7,7 +7,8 @@
           label="Specialty"
           :items="services_choices"
           item-text="name"
-          @input="pushToParent"
+          @blur="$v.selects.serviceable_type.$touch()"
+          :error-messages="errorMessages.serviceable_type"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
@@ -16,7 +17,8 @@
           label="Medical Site"
           :items="medical_sites"
           item-text="name"
-          @input="pushToParent"
+          @blur="$v.payload.hospital.$touch()"
+          :error-messages="errorMessages.hospital"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12" v-if="type !== 'CONSULTATION'">
@@ -25,7 +27,8 @@
           label="Crowd Funding"
           :items="crowd_fundings"
           item-text="backer"
-          @input="pushToParent"
+          @blur="$v.payload.crowd_funding_backer.$touch()"
+          :error-messages="errorMessages.crowd_funding_backer"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
@@ -33,7 +36,8 @@
           v-model="payload.scheduled_date"
           label="Scheduled Date"
           hint="Format (January 04, 2023)"
-          @input="pushToParent"
+          @blur="$v.payload.scheduled_date.$touch()"
+          :error-messages="errorMessages.scheduled_date"
         ></v-text-field>
       </v-col>
       <v-col cols="12" v-if="hospitalService">
@@ -41,14 +45,16 @@
           v-model="date_released"
           label="Date Released"
           hint="Format (January 04, 2023)"
-          @input="pushToParent"
+          @blur="$v.date_released.$touch()"
+          :error-messages="errorMessages.date_released"
         ></v-text-field>
       </v-col>
       <v-col cols="12">
         <v-text-field
           v-model="payload.remarks"
           label="Remarks"
-          @input="pushToParent"
+          @blur="$v.payload.remarks.$touch()"
+          :error-messages="errorMessages.remarks"
         ></v-text-field>
       </v-col>
       <v-col cols="12">
@@ -56,7 +62,8 @@
           v-model="payload.status"
           label="Status"
           :items="statuses"
-          @input="pushToParent"
+          @blur="$v.payload.status.$touch()"
+          :error-messages="errorMessages.status"
         ></v-autocomplete>
       </v-col>
     </v-row>
@@ -65,8 +72,10 @@
 
 <script>
 import { format, parseISO } from "date-fns";
+import GeneralFormatMixin from "@/mixins/ServiceRequestValidation/GeneralFormat";
 export default {
   name: "GeneralFormat",
+  mixins: [GeneralFormatMixin],
   props: {
     services_choices: {
       type: Array,
@@ -104,6 +113,13 @@ export default {
     },
   }),
   methods: {
+    touchValidations() {
+      this.$v.$touch(); // Touch the validations in GeneralFormat component
+      if (!this.$v.$invalid) {
+        this.pushToParent();
+        this.$emit("touchValidationsSuccess");
+      }
+    },
     pushToParent() {
       //Parse the String to format the date needed.
       if (this.hospitalService) {

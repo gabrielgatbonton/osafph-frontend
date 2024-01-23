@@ -14,6 +14,8 @@
                 label="Service Type"
                 :items="services"
                 @change="(value) => initService(value)"
+                @blur="$v.payload.service_type.$touch()"
+                :error-messages="errorMessages.service_type"
               ></v-autocomplete>
             </v-col>
             <GeneralFormat
@@ -21,6 +23,7 @@
                 payload.service_type !== 'DIALYSIS' &&
                 payload.service_type !== null
               "
+              ref="generalFormat"
               :services_choices="services_choices"
               :crowd_fundings="getCrowdFundings"
               :medical_sites="getHospitals"
@@ -57,7 +60,9 @@
 import { mapActions, mapGetters } from "vuex";
 import GeneralFormat from "./Service Format/GeneralFormat.vue";
 import DialysisFormat from "./Service Format/DialysisFormat.vue";
+import ServiceDialogMixin from "../../mixins/ServiceRequestValidation/ServiceDialog";
 export default {
+  mixins: [ServiceDialogMixin],
   props: {
     activator: {
       type: Boolean,
@@ -115,9 +120,18 @@ export default {
           this.hospital_service_id
         );
       } else {
-        this.$emit("submitForm", this.payload);
+        this.$v.$touch();
+
+        if (this.payload.service_type !== null) {
+          // Call the touchValidations method in the child component
+          this.$refs.generalFormat.touchValidations();
+        }
+        if (!this.$v.$invalid) {
+          // this.$emit("submitForm", this.payload);
+        }
       }
     },
+
   },
   computed: {
     ...mapGetters("services_choices", [
