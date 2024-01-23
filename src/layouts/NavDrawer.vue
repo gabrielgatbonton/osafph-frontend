@@ -89,7 +89,7 @@ export default {
           },
           {
             icon: "mdi-account-group",
-            text: "Registrants",
+            text: "Citizens",
             route: "/citizens",
           },
           {
@@ -140,7 +140,7 @@ export default {
           },
           {
             icon: "mdi-account-group",
-            text: "Registrants",
+            text: "Citizens",
             route: "/citizens",
           },
           { icon: "mdi-cog", text: "Management", route: "/management" },

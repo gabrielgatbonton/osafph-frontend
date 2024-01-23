@@ -16,7 +16,11 @@ export const services = {
     SET_HOSPITAL_SERVICES(state, services) {
       const pendingServices = services
         .filter((service) => {
-          return service.status.includes("PENDING");
+          return (
+            service.status.includes("PENDING") ||
+            service.status.includes("WALK-IN") ||
+            service.status.includes("IN PROGRESS")
+          );
         })
         .sort((a, b) => {
           //Filter to Older to Newest Dates
