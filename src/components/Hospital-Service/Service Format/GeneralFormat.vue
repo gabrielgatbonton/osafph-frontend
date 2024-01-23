@@ -170,7 +170,7 @@ export default {
     statuses() {
       return this.hospitalService
         ? ["UNATTENDED", "COMPLETED"]
-        : ["PENDING", "WALK IN"];
+        : ["PENDING", "WALK-IN"];
     },
   },
   mounted() {
