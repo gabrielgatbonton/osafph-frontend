@@ -167,7 +167,7 @@ export const consultations = {
         });
     },
     fetchConsultationFiles({ commit }, hospital_service_id) {
-      const url = `doctors/hospital-services/${hospital_service_id}/files`;
+      const url = `hospital-services/${hospital_service_id}/files`;
       return this.$axios
         .get(url)
         .then((response) => {
@@ -179,7 +179,7 @@ export const consultations = {
         });
     },
     uploadConsultationFile({ dispatch }, { hospital_service_id, file }) {
-      const url = `doctors/hospital-services/${hospital_service_id}/files`;
+      const url = `hospital-services/${hospital_service_id}/files`;
       return this.$axios
         .post(url, file)
         .then((response) => {
@@ -191,14 +191,14 @@ export const consultations = {
         });
     },
     deleteConsultationFile({ dispatch }, { hospital_service_id, file_id }) {
-      const url = `doctors/hospital-services/${hospital_service_id}/files/${file_id}`;
+      const url = `hospital-services/${hospital_service_id}/files/${file_id}`;
       return this.$axios.delete(url).then((response) => {
         dispatch("fetchConsultationFiles", hospital_service_id);
         console.log(response.data);
       });
     },
     fetchConsultationFile({ commit }, { hospital_service_id, file_id }) {
-      const url = `doctors/hospital-services/${hospital_service_id}/files/${file_id}`;
+      const url = `hospital-services/${hospital_service_id}/files/${file_id}`;
       return this.$axios.get(url, { responseType: "blob" }).then((response) => {
         const contentType = response.headers["content-type"];
         let file_type = null;

@@ -9,35 +9,29 @@
           <span class="title">Consultations</span>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="auto" v-if="auth.consultationForm">
+        <v-col cols="auto" v-if="buttonPermissions.form">
           <v-btn
             dark
             class="mr-3"
-            :color="buttonColor"
+            :color="buttonProperties.consultationForm.color"
             :class="{ 'disabled-button': disabled }"
             @click="alterConsultation"
-            ><v-icon dark left v-if="buttonIcon !== null">{{
-              buttonIcon
-            }}</v-icon
-            >{{ formButtonTitle }}</v-btn
+            >{{ buttonProperties.consultationForm.title }}</v-btn
           >
         </v-col>
-        <v-col cols="auto" v-if="auth.delete">
+        <v-col cols="auto" v-if="buttonPermissions.delete">
           <v-btn class="error" @click="deleteActivator" dark
             ><v-icon>mdi-trash-can</v-icon>Delete Form</v-btn
           >
         </v-col>
-        <v-col cols="auto" v-if="auth.files">
+        <v-col cols="auto" v-if="buttonPermissions.files">
           <v-btn
             dark
             class="mr-3"
-            :color="filesButtonColor"
+            :color="buttonProperties.files.color"
             :class="{ 'disabled-button': disabled }"
             @click="proceedToFiles"
-            ><v-icon dark left v-if="filesButtonIcon !== null">{{
-              filesButtonIcon
-            }}</v-icon
-            >{{ filesButtonTitle }}</v-btn
+            >{{ buttonProperties.files.title }}</v-btn
           >
         </v-col>
       </v-row>
@@ -57,8 +51,8 @@
                 />
               </v-col>
               <v-col cols="12">
-                <PreviousConsultations
-                  :data="consultation.previous_consultation_forms"
+                <PreviousConsultationsComponent
+                  :previousConsultations="previousConsultations"
                 />
               </v-col>
             </v-row>
@@ -86,40 +80,30 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { format, parseISO } from "date-fns";
-import PreviousConsultations from "../../components/Consultation/PreviousConsultations.vue";
 import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import DeleteDialog from "@/mixins/DeleteDialog";
 import ServiceStatusComponent from "@/components/Reusable/ServiceStatusComponent.vue";
 import PatientInformationComponent from "@/components/Reusable/PatientInformationComponent.vue";
 import PatientServiceComponent from "@/components/Reusable/PatientServiceComponent.vue";
+import PreviousConsultationsComponent from "@/components/Reusable/PreviousConsultationsComponent.vue";
 export default {
   name: "ConsultationInformationView",
   mixins: [DeleteDialog, ErrorAlertsLogic],
   data: () => ({
     routeID: null,
     consultation: null,
+    previous_consultations: null,
     consultation_form: null,
     loading: false,
-    auth: {
-      consultationForm: true,
-      delete: false,
-      files: true,
-    },
     disabled: false,
-    formButtonTitle: null,
-    buttonColor: null,
-    buttonIcon: null,
-    filesButtonTitle: null,
-    filesButtonColor: null,
-    filesButtonIcon: null,
   }),
   components: {
     ReusableDeleteDialog,
-    PreviousConsultations,
     ServiceStatusComponent,
     PatientInformationComponent,
     PatientServiceComponent,
+    PreviousConsultationsComponent,
   },
   methods: {
     ...mapActions("consultations", [
@@ -193,31 +177,6 @@ export default {
         });
       }
     },
-    userRolePermissions() {
-      if (this.userRole === "ADMIN") {
-        this.formButtonTitle = "Edit Consultation Form";
-      } else if (this.userRole === "DOCTOR") {
-        this.buttonColor = "blue darken-4";
-        this.filesButtonColor = "blue darken-4";
-        if (this.consultation.hospital_service.status === "IN PROGRESS") {
-          this.formButtonTitle = "Add Consultation Form";
-          this.buttonIcon = null;
-          this.auth.files = false;
-        } else if (this.consultation.hospital_service.status === "COMPLETED") {
-          this.auth.consultationForm = false;
-          this.filesButtonTitle = "Upload Files";
-          this.filesButtonIcon = null;
-        } else {
-          this.auth.consultationForm = false;
-          this.auth.files = false;
-        }
-      } else if (this.userRole === "ROOT") {
-        this.auth.delete = true;
-        if (this.consultation.hospital_service.status === "PENDING") {
-          this.auth.delete = false;
-        }
-      }
-    },
     deleteConsultationForm() {
       this.loading = true;
       this.deleteAdminConsultationFormById({
@@ -259,19 +218,19 @@ export default {
   mounted() {
     this.checkAlerts();
   },
-  updated() {
-    this.userRolePermissions();
-  },
   watch: {
     getConsultation(value) {
       this.consultation = value.consultation;
+      this.previous_consultations =
+        value.consultation.previous_consultation_forms;
     },
     getConsultationForm(value) {
       this.consultation_form = value;
     },
     getAdminConsultation(value) {
       this.consultation = value.consultation;
-      console.log(value.consultation);
+      this.previous_consultations =
+        value.consultation.previous_consultation_forms;
     },
     getAdminConsultationForm(value) {
       this.consultation_form = value;
@@ -285,6 +244,68 @@ export default {
       "getAdminConsultation",
       "getAdminConsultationForm",
     ]),
+    buttonProperties() {
+      let consultation_title = null;
+      let consultation_color = null;
+      let files_title = null;
+      let files_color = null;
+      if (this.userRole === "ADMIN") {
+        consultation_title = "Edit Consultation Form";
+        consultation_color = "blue darken-4";
+      } else if (this.userRole === "DOCTOR") {
+        files_color = "blue darken-4";
+        consultation_color = "blue darken-4";
+        if (this.consultation.hospital_service.status === "IN PROGRESS") {
+          consultation_title = "Add Consultation Form";
+        } else if (this.consultation.hospital_service.status === "COMPLETED") {
+          files_title = "Upload Files";
+        }
+      }
+      return {
+        consultationForm: {
+          title: consultation_title,
+          color: consultation_color,
+        },
+        files: {
+          title: files_title,
+          color: files_color,
+        },
+      };
+    },
+    buttonPermissions() {
+      let form = true;
+      let files = true;
+      let remove = true;
+
+      if (this.userRole === "ADMIN") {
+        files = false;
+        if (this.consultation.hospital_service.status === "PENDING") {
+          remove = false;
+        }
+      } else if (this.userRole === "DOCTOR") {
+        remove = false;
+        if (this.consultation.hospital_service.status === "IN PROGRESS") {
+          files = false;
+        } else if (this.consultation.hospital_service.status === "COMPLETED") {
+          form = false;
+        } else {
+          form = false;
+          files = false;
+        }
+      } else if (this.userRole === "ROOT") {
+        form = false;
+        files = false;
+        if (this.consultation.hospital_service.status === "PENDING") {
+          remove = false;
+        }
+      }
+
+      return {
+        form: form,
+        files: files,
+        delete: remove,
+      };
+    },
     serviceInformation() {
       return {
         header: {
@@ -386,6 +407,129 @@ export default {
           },
         ],
       };
+    },
+    previousConsultations() {
+      if (
+        !this.previous_consultations ||
+        !Array.isArray(this.previous_consultations)
+      ) {
+        return [];
+      }
+      return this.previous_consultations.map((item) => ({
+        consultation_date: format(
+          parseISO(item.consultation_date),
+          "MMMM dd, yyyy"
+        ),
+        subjectives: [
+          {
+            title: "Chief Complaint",
+            content: item.chief_complaint
+              ? item.chief_complaint
+              : "None Specified",
+          },
+          {
+            title: "History Of Present Illness",
+            content: Array.isArray(item.history_of_present_illness)
+              ? item.history_of_present_illness.join(", ")
+              : item.history_of_present_illness,
+          },
+          {
+            title: "Past Medical History",
+            content: Array.isArray(item.past_medical_history)
+              ? item.past_medical_history.join(", ")
+              : item.past_medical_history,
+          },
+          {
+            title: "Family Medical History",
+            content: Array.isArray(item.family_medical_history)
+              ? item.family_medical_history.join(", ")
+              : item.family_medical_history,
+          },
+        ],
+        objectives: [
+          {
+            title: "Blood Pressure",
+            content: item.blood_pressure,
+          },
+          {
+            title: "Heart Rate",
+            content: item.heart_rate,
+          },
+          {
+            title: "Respiratory Rate",
+            content: item.respiratory_rate,
+          },
+          {
+            title: "Temperature",
+            content: item.temperature,
+          },
+          {
+            title: "Oxygen Saturation",
+            content: item.oxygen_saturation,
+          },
+          {
+            title: "Weight",
+            content: item.weight,
+          },
+          {
+            title: "height",
+            content: item.height,
+          },
+          {
+            title: "Body Mass Index",
+            content: item.body_mass_index,
+          },
+          {
+            title: "Pertinent Findings",
+            content: item.pertinent_findings,
+          },
+        ],
+        assessments: [
+          {
+            title: "Diagnosis",
+            content: item.diagnosis,
+          },
+        ],
+        plans: [
+          {
+            title: "Diagnostics",
+            content: Array.isArray(item.diagnostic_type)
+              ? item.diagnostic_type.join(", ")
+              : item.diagnostic_type,
+          },
+          {
+            title: "Medications",
+            content: item.medications,
+          },
+          {
+            title: "Referrals",
+            content: item.referral,
+          },
+          {
+            title: "Others",
+            content: item.others ? item.others : "None Specified",
+          },
+          {
+            title: "",
+            content: "",
+          },
+          {
+            title: "Follow Up Date",
+            content: format(parseISO(item.follow_up_date), "MMMM dd, yyyy"),
+          },
+          {
+            title: "Fit To Work Starting",
+            content: format(
+              parseISO(item.fit_to_work_starting),
+              "MMMM dd, yyyy"
+            ),
+          },
+          {
+            title: "May Rest For",
+            content: item.may_rest_for,
+          },
+        ],
+      }));
     },
     serviceStatus() {
       //Assign Date Released Value and Logic.
