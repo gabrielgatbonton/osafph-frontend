@@ -238,7 +238,7 @@ export default {
         ? {
             title: "Date Released",
             content: format(
-              parseISO(this.session.hospital_service.date_released),
+              parseISO(this.service.hospitalService.date_released),
               "MMMM dd, yyyy"
             ),
           }

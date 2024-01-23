@@ -150,7 +150,7 @@ export default {
               "MMMM d, yyyy"
             )
           : null;
-        this.status = this.hospitalService.hospitalService.status;
+        this.payload.status = this.hospitalService.hospitalService.status;
       }
     },
     // filterDoctor(value) {

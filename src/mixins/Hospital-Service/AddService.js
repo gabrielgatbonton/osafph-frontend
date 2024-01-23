@@ -25,7 +25,6 @@ export default {
             parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
             "yyyy-MM-d"
           ),
-          crowd_funding_backer: payload.crowd_funding_backer,
           date_released: null,
           status: payload.status,
           remarks: payload.remarks,
