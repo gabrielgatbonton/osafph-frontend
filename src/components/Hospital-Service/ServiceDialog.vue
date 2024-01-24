@@ -164,10 +164,19 @@ export default {
     },
     dialog(value) {
       if (value === false) {
-        //Reset Validations prior closing.
         this.$v.$reset();
-        this.$refs.dialysisFormat.resetValidations();
-        this.$refs.generalFormat.resetValidations();
+        //Reset Validations prior closing.
+        if (
+          this.payload.service_type !== null &&
+          this.payload.service_type !== "DIALYSIS"
+        ) {
+          this.$refs.generalFormat.resetValidations();
+        } else if (
+          this.payload.service_type !== null &&
+          this.payload.service_type === "DIALYSIS"
+        ) {
+          this.$refs.dialysisFormat.resetValidations();
+        }
 
         //Emit Update to Parent Component
         this.$emit("dialogResponse", value);

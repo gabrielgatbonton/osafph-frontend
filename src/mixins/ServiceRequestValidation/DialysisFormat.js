@@ -11,19 +11,14 @@ export default {
       all_items_sponsored: {},
       dialysis_machine: { required },
       all_sessions_sponsored: {},
-      status: {},   //?
+
       remarks: {},
 
       //Edit
-      scheduled_date: {
-        //?
-      },
-      date_released: {
-        //?
-      },
-      scheduled_session: {
-        //?
-      },
+      scheduled_date: {},
+      date_released: {},
+      scheduled_session: {},
+      status: {}, //?
     },
   },
   computed: {
@@ -43,11 +38,11 @@ export default {
           errors.hospital.push("Medical Site is required");
       }
 
-    //   errors.schedule = [];
-    //   if (this.$v.payload.schedule.$dirty) {
-    //     !this.$v.payload.schedule.required &&
-    //       errors.schedule.push("Schedule is required");
-    //   }
+      //   errors.schedule = [];
+      //   if (this.$v.payload.schedule.$dirty) {
+      //     !this.$v.payload.schedule.required &&
+      //       errors.schedule.push("Schedule is required");
+      //   }
 
       errors.dialysis_items = [];
       if (this.$v.payload.dialysis_items.$dirty) {
