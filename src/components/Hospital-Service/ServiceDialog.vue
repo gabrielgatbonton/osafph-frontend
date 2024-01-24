@@ -130,13 +130,13 @@ export default {
           // Call the touchValidations method in the child component
           this.$refs.generalFormat.touchValidations();
         } else {
-          console.log("Check")
           this.$refs.dialysisFormat.touchValidations();
         }
 
         if (!this.$v.$invalid && this.validation) {
           this.$emit("submitForm", this.payload);
           this.validation = false;
+          this.$v.$reset();
         }
       }
     },
@@ -164,6 +164,12 @@ export default {
     },
     dialog(value) {
       if (value === false) {
+        //Reset Validations prior closing.
+        this.$v.$reset();
+        this.$refs.dialysisFormat.resetValidations();
+        this.$refs.generalFormat.resetValidations();
+
+        //Emit Update to Parent Component
         this.$emit("dialogResponse", value);
       }
     },
