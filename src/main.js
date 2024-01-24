@@ -12,8 +12,8 @@ Vue.prototype.$http = axios;
 Vue.use(Vuelidate);
 
 //BaseURLs
-// const baseURL = "https://osafphmabalacatcity.com/"; //Deployed BaseURL
-const baseURL = "http://200.10.77.12/";
+const baseURL = "https://osafphmabalacatcity.com/"; //Deployed BaseURL
+// const baseURL = "http://200.10.77.12/";
 // const baseURL = 'http://127.0.0.1:8000/'; //Local BaseURL
 // const baseURL = 'http://192.168.1.108:80/';
 

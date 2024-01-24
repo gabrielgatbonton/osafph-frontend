@@ -16,7 +16,7 @@
         <v-card-title class="blue darken-1 pb-4 white--text"
           >ID Card Generator</v-card-title
         >
-        <div class="text-center mx-4 mt-4 scroll-overflow">
+        <div class="text-center mx-4 mt-4">
           <canvas
             ref="frontCardCanvas"
             class="canvas-border"
@@ -37,13 +37,13 @@
             :width="options.width"
             :margin="options.margin"
           ></vue-qrcode>
-          <!-- Button to trigger generating and printing the ID -->
-          <v-card-actions>
-            <v-btn dark class="blue darken-4" block @click="generateAndPrintID"
-              >Print ID</v-btn
-            >
-          </v-card-actions>
         </div>
+        <!-- Button to trigger generating and printing the ID -->
+        <v-card-actions>
+          <v-btn dark class="blue darken-4" block @click="generateAndPrintID"
+            >Print ID</v-btn
+          >
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -395,7 +395,6 @@ export default {
   watch: {
     getImage(value) {
       if (value) {
-        console.log("Image", value);
         this.isGetImageLoaded = true;
       }
       if (
@@ -403,7 +402,6 @@ export default {
         this.isGetImageLoaded === this.isGetBiometricsLoaded
       ) {
         this.disabledButton = false;
-        console.log(this.disabledButton);
       }
     },
     getSignature(value) {
@@ -422,8 +420,6 @@ export default {
 
       if (this.isGetImageLoaded === this.isGetBiometricsLoaded) {
         this.disabledButton = false;
-        console.log("Test: ", this.isGetImageLoaded);
-        console.log(this.disabledButton);
       }
     },
   },
@@ -447,23 +443,5 @@ export default {
 .disabled-button {
   opacity: 0.5; /* Make it appear faded */
   pointer-events: none; /* Disable pointer events to prevent interaction */
-}
-
-.scroll-overflow {
-  height: 600px;
-  overflow-y: auto;
-}
-
-.scroll-overflow::-webkit-scrollbar {
-  width: 0; /* Remove scrollbar width */
-}
-
-/* Optional: Style for track and handle */
-.scroll-overflow::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Light gray track */
-}
-
-.scroll-overflow::-webkit-scrollbar-thumb {
-  background-color: #888; /* Darker gray handle */
 }
 </style>

@@ -173,11 +173,7 @@ export default {
       if (!this.$v.$invalid) {
         this.pushToParent();
         this.$emit("validationSuccess", true);
-        this.$v.$reset();
       }
-    },
-    resetValidations() {
-      this.$v.$reset();
     },
     pushToParent() {
       //Parse the String to format the date needed.
