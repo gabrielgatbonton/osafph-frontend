@@ -7,7 +7,8 @@
           label="Medical Site"
           :items="medical_sites"
           item-text="name"
-          @input="pushToParent"
+          @blur="$v.payload.hospital.$touch()"
+          :error-messages="errorMessages.hospital"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12" v-if="!hospitalService">
@@ -16,16 +17,16 @@
           label="Crowd Funding"
           :items="crowd_fundings"
           item-text="backer"
-          @input="pushToParent"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
         <v-autocomplete
           v-model="payload.dialysis_machine"
           label="Dialysis Machine"
-          @input="pushToParent"
           :items="getDialysisMachines"
           item-text="name"
+          @blur="$v.payload.dialysis_machine.$touch()"
+          :error-messages="errorMessages.dialysis_machine"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12" v-if="!hospitalService">
@@ -41,7 +42,8 @@
           label="Select Items to avail"
           :items="getDialysisItems"
           item-text="name"
-          @input="pushToParent"
+          @blur="$v.payload.dialysis_items.$touch()"
+          :error-messages="errorMessages.dialysis_items"
         ></v-select>
       </v-col>
       <v-col cols="12" v-if="!hospitalService">
@@ -55,6 +57,8 @@
           v-model="payload.total_sessions"
           label="Total Sessions"
           @input="updateSessions"
+          @blur="$v.payload.total_sessions.$touch()"
+          :error-messages="errorMessages.total_sessions"
         ></v-text-field>
       </v-col>
       <v-col cols="12" v-if="!hospitalService">
@@ -64,7 +68,8 @@
               v-model="session.date"
               :label="`Schedule Date ${index + 1}`"
               hint="Format (January 04, 2023)"
-              @input="pushToParent"
+              @blur="$v.payload.schedule.$touch()"
+              :error-messages="errorMessages.schedule"
             ></v-text-field>
           </v-col>
           <v-col cols="6">
@@ -72,7 +77,8 @@
               v-model="session.session"
               :label="`Session ${index + 1}`"
               :items="session_choices"
-              @input="pushToParent"
+              @blur="$v.payload.schedule.$touch()"
+              :error-messages="errorMessages.schedule"
             ></v-select>
           </v-col>
         </v-row>
@@ -82,7 +88,8 @@
           v-model="payload.scheduled_date"
           label="Scheduled Date"
           hint="Format (January 04, 2023)"
-          @input="pushToParent"
+          @blur="$v.payload.scheduled_date.$touch()"
+          :error-messages="errorMessages.scheduled_date"
         ></v-text-field>
       </v-col>
       <v-col cols="6" v-if="hospitalService">
@@ -90,7 +97,8 @@
           :items="session_choices"
           label="Schedule Session"
           v-model="payload.scheduled_session"
-          @input="pushToParent"
+          @blur="$v.payload.scheduled_session.$touch()"
+          :error-messages="errorMessages.scheduled_session"
         ></v-select>
       </v-col>
       <v-col cols="6" v-if="hospitalService">
@@ -98,7 +106,8 @@
           v-model="payload.date_released"
           label="Date Released"
           hint="Format (January 04, 2023)"
-          @input="pushToParent"
+          @blur="$v.payload.date_released.$touch()"
+          :error-messages="errorMessages.date_released"
         ></v-text-field>
       </v-col>
       <v-col cols="6" v-if="hospitalService">
@@ -106,15 +115,12 @@
           v-model="payload.status"
           label="Status"
           :items="statuses"
-          @input="pushToParent"
+          @blur="$v.payload.status.$touch()"
+          :error-messages="errorMessages.status"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12" v-if="hospitalService">
-        <v-text-field
-          v-model="payload.remarks"
-          label="Remarks"
-          @input="pushToParent"
-        ></v-text-field>
+        <v-text-field v-model="payload.remarks" label="Remarks"></v-text-field>
       </v-col>
     </v-row>
   </v-container>
@@ -123,8 +129,10 @@
 <script>
 import { format, parseISO } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
+import DialysisFormatMixin from "@/mixins/ServiceRequestValidation/DialysisFormat";
 export default {
   name: "DialysisFormat",
+  mixins: [DialysisFormatMixin],
   props: {
     crowd_fundings: {
       type: Array,
@@ -160,6 +168,13 @@ export default {
   }),
   methods: {
     ...mapActions("dialysis", ["fetchEnums"]),
+    touchValidations() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.pushToParent();
+        this.$emit("validationSuccess", true);
+      }
+    },
     pushToParent() {
       //Parse the String to format the date needed.
       //   if (this.hospitalService) {

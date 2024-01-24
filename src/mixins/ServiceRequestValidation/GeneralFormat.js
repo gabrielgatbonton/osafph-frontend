@@ -1,13 +1,9 @@
-import { required, requiredIf } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 export default {
   validations: {
     payload: {
       scheduled_date: { required },
-      crowd_funding_backer: {
-        required: requiredIf((value) => {
-          return value && value.service_type === "CONSULTATION";
-        }),
-      },
+      crowd_funding_backer: {},
       remarks: {},
       hospital: { required },
       status: { required },
@@ -32,11 +28,11 @@ export default {
           errors.scheduled_date.push("Scheduled Date is required");
       }
 
-      errors.crowd_funding_backer = [];
-      if (this.$v.payload.crowd_funding_backer.$dirty) {
-        !this.$v.payload.crowd_funding_backer.required &&
-          errors.crowd_funding_backer.push("Crowd Funding is required");
-      }
+      // errors.crowd_funding_backer = [];
+      // if (this.$v.payload.crowd_funding_backer.$dirty) {
+      //   !this.$v.payload.crowd_funding_backer.required &&
+      //     errors.crowd_funding_backer.push("Crowd Funding is required");
+      // }
 
       errors.hospital = [];
       if (this.$v.payload.hospital.$dirty) {

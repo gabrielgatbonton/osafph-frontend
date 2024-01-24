@@ -30,16 +30,19 @@
               :hospitalService="hospitalService"
               :type="payload.service_type"
               v-on:payload="assignPayload"
+              v-on:validationSuccess="checkValidation"
             />
             <DialysisFormat
               v-if="
                 payload.service_type === 'DIALYSIS' &&
                 payload.service_type !== null
               "
+              ref="dialysisFormat"
               :crowd_fundings="getCrowdFundings"
               :hospitalService="hospitalService"
               :medical_sites="getHospitals"
               v-on:payload="assignPayload"
+              v-on:validationSuccess="checkValidation"
             />
             <v-col cols="12">
               <div class="text-right">
@@ -85,6 +88,7 @@ export default {
     citizen_id: null,
     hospital_service_id: null,
     services_choices: null,
+    validation: false,
     services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY", "DIALYSIS"],
     minDate: new Date().toISOString().slice(0, 10),
   }),
@@ -122,16 +126,23 @@ export default {
       } else {
         this.$v.$touch();
 
-        if (this.payload.service_type !== null) {
+        if (this.payload.service_type !== "DIALYSIS") {
           // Call the touchValidations method in the child component
           this.$refs.generalFormat.touchValidations();
+        } else {
+          console.log("Check")
+          this.$refs.dialysisFormat.touchValidations();
         }
-        if (!this.$v.$invalid) {
-          // this.$emit("submitForm", this.payload);
+
+        if (!this.$v.$invalid && this.validation) {
+          this.$emit("submitForm", this.payload);
+          this.validation = false;
         }
       }
     },
-
+    checkValidation(value) {
+      this.validation = value;
+    },
   },
   computed: {
     ...mapGetters("services_choices", [

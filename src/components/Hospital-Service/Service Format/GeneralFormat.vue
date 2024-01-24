@@ -27,8 +27,6 @@
           label="Crowd Funding"
           :items="crowd_fundings"
           item-text="backer"
-          @blur="$v.payload.crowd_funding_backer.$touch()"
-          :error-messages="errorMessages.crowd_funding_backer"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
@@ -117,7 +115,7 @@ export default {
       this.$v.$touch(); // Touch the validations in GeneralFormat component
       if (!this.$v.$invalid) {
         this.pushToParent();
-        this.$emit("touchValidationsSuccess");
+        this.$emit("validationSuccess", true);
       }
     },
     pushToParent() {
