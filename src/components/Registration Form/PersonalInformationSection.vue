@@ -170,7 +170,7 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-import PersonalInformationSectionValidation from "@/mixins/RegistrationFormValidation/PersonalInformationSectionValidation";
+import PersonalInformationSectionValidation from "@/mixins/Validation/RegistrationFormValidation/PersonalInformationSectionValidation";
 export default {
   name: "PersonalInformationSection",
   mixins: [PersonalInformationSectionValidation],
@@ -235,3 +235,4 @@ export default {
 </script>
 
 <style></style>
+@/mixins/Validation/RegistrationFormValidation/PersonalInformationSectionValidation

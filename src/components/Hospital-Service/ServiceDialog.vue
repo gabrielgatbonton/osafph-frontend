@@ -63,7 +63,7 @@
 import { mapActions, mapGetters } from "vuex";
 import GeneralFormat from "./Service Format/GeneralFormat.vue";
 import DialysisFormat from "./Service Format/DialysisFormat.vue";
-import ServiceDialogMixin from "../../mixins/ServiceRequestValidation/ServiceDialog";
+import ServiceDialogMixin from "../../mixins/Validation/ServiceRequestValidation/ServiceDialog";
 export default {
   mixins: [ServiceDialogMixin],
   props: {
@@ -203,3 +203,4 @@ export default {
   overflow-y: auto;
 }
 </style>
+../../mixins/Validation/ServiceRequestValidation/ServiceDialog

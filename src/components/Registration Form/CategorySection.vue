@@ -73,7 +73,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import CategorySectionValidation from "@/mixins/RegistrationFormValidation/CategorySectionValidation";
+import CategorySectionValidation from "@/mixins/Validation/RegistrationFormValidation/CategorySectionValidation";
 export default {
   name: "CategorySection",
   mixins: [CategorySectionValidation],
@@ -162,3 +162,4 @@ export default {
 
 <style></style>
 @/mixins/RegistrationFormValidation/CategorySectionValidation
+@/mixins/Validation/RegistrationFormValidation/CategorySectionValidation

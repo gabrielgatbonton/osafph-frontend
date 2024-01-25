@@ -100,7 +100,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import AddressSectionValidation from "@/mixins/RegistrationFormValidation/AddressSectionValidation";
+import AddressSectionValidation from "@/mixins/Validation/RegistrationFormValidation/AddressSectionValidation";
 export default {
   name: "AddressSection",
   mixins: [AddressSectionValidation],
@@ -238,3 +238,4 @@ export default {
 </script>
 
 <style scoped></style>
+@/mixins/Validation/RegistrationFormValidation/AddressSectionValidation

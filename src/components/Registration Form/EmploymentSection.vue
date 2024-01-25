@@ -105,7 +105,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import EmploymentSectionValidation from "@/mixins/RegistrationFormValidation/EmploymentSectionValidation";
+import EmploymentSectionValidation from "@/mixins/Validation/RegistrationFormValidation/EmploymentSectionValidation";
 export default {
   name: "EmploymentSection",
   mixins: [EmploymentSectionValidation],
@@ -174,3 +174,4 @@ export default {
 </script>
 
 <style scoped></style>
+@/mixins/Validation/RegistrationFormValidation/EmploymentSectionValidation

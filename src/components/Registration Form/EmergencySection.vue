@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import EmergencySectionValidation from '@/mixins/RegistrationFormValidation/EmergencySectionValidation';
+import EmergencySectionValidation from '@/mixins/Validation/RegistrationFormValidation/EmergencySectionValidation';
 export default {
   name: "EmergencySection",
   mixins: [EmergencySectionValidation],
@@ -70,3 +70,4 @@ export default {
 </script>
 
 <style scoped></style>
+@/mixins/Validation/RegistrationFormValidation/EmergencySectionValidation

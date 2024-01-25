@@ -129,7 +129,7 @@
 <script>
 import { format, parseISO } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
-import DialysisFormatMixin from "@/mixins/ServiceRequestValidation/DialysisFormat";
+import DialysisFormatMixin from "@/mixins/Validation/ServiceRequestValidation/DialysisFormat";
 export default {
   name: "DialysisFormat",
   mixins: [DialysisFormatMixin],
@@ -279,3 +279,4 @@ export default {
 </script>
 
 <style scoped></style>
+@/mixins/Validation/ServiceRequestValidation/DialysisFormat

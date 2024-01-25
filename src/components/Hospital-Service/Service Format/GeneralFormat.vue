@@ -70,7 +70,7 @@
 
 <script>
 import { format, parseISO } from "date-fns";
-import GeneralFormatMixin from "@/mixins/ServiceRequestValidation/GeneralFormat";
+import GeneralFormatMixin from "@/mixins/Validation/ServiceRequestValidation/GeneralFormat";
 export default {
   name: "GeneralFormat",
   mixins: [GeneralFormatMixin],
@@ -208,3 +208,4 @@ export default {
 </script>
 
 <style scoped></style>
+@/mixins/Validation/ServiceRequestValidation/GeneralFormat
