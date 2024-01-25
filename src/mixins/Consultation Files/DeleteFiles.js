@@ -6,7 +6,7 @@ export default {
     file_id: null,
   }),
   methods: {
-    ...mapActions("consultations", ["deleteConsultationFile"]),
+    ...mapActions("files", ["deleteFile"]),
     deleteActivator(file_id, hospital_service_id) {
       this.deleteDialog = !this.deleteDialog;
       this.file_id = file_id;
@@ -16,7 +16,7 @@ export default {
       this.deleteDialog = data;
     },
     deleteItem() {
-      this.deleteConsultationFile({
+      this.deleteFile({
         file_id: this.file_id,
         hospital_service_id: this.hospital_service_id,
       })

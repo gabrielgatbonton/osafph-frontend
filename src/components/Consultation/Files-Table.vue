@@ -151,7 +151,6 @@ export default {
   },
   watch: {
     files(value) {
-      console.log(value);
       this.data = value.map((file) => ({
         file_name: file.file_name,
         document_type: file.document_type,

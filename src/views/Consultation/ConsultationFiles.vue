@@ -8,13 +8,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn
-            dark
-            class="mr-3"
-            color="blue darken-4"
-            :class="{ 'disabled-button': disabled }"
-            @click="activator"
-          >
+          <v-btn dark class="mr-3" color="blue darken-4" @click="activator">
             Upload</v-btn
           >
         </v-col>
@@ -47,19 +41,16 @@ export default {
     UploadDialog,
   },
   methods: {
-    ...mapActions("consultations", [
-      "fetchConsultationFiles",
-      "uploadConsultationFile",
-    ]),
+    ...mapActions("files", ["fetchFiles", "uploadFile"]),
     fetchData() {
       const hospital_service_id = this.$route.params.hospital_service_id;
-      this.fetchConsultationFiles(hospital_service_id).catch((error) => {
+      this.fetchFiles(hospital_service_id).catch((error) => {
         console.error("Error Fetching Data: ", error);
       });
     },
     uploadFiles(data) {
       const hospital_service_id = this.$route.params.hospital_service_id;
-      this.uploadConsultationFile({
+      this.uploadFile({
         hospital_service_id: hospital_service_id,
         file: data,
       })
@@ -84,10 +75,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("consultations", ["getConsultationFiles"]),
+    ...mapGetters("files", ["getFiles"]),
   },
   watch: {
-    getConsultationFiles(value) {
+    getFiles(value) {
       this.files = value;
     },
   },

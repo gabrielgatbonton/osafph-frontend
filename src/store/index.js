@@ -17,6 +17,7 @@ import { consultation_form } from "./modules/Encoder/consultation-form";
 import { file_types } from "./modules/Enums/file-types";
 import { dialysis } from "./modules/Enums/dialysis";
 import { dialysis_sessions } from "./modules/Encoder/dialysis";
+import { files } from "./modules/General/files";
 
 Vue.use(Vuex);
 
@@ -45,5 +46,8 @@ export default new Vuex.Store({
     services_choices,
     file_types,
     dialysis,
+
+    //General
+    files,
   },
 });

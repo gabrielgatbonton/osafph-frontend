@@ -7,7 +7,7 @@ export default {
     },
   }),
   methods: {
-    ...mapActions("consultations", ["fetchConsultationFile"]),
+    ...mapActions("files", ["fetchFile"]),
     activator(file_id, hospital_service_id) {
       this.$router
         .push({
@@ -22,7 +22,7 @@ export default {
         });
     },
     downloadTrigger(file_id, hospital_service_id) {
-      this.fetchConsultationFile({
+      this.fetchFile({
         file_id: file_id,
         hospital_service_id: hospital_service_id,
       })
@@ -35,7 +35,6 @@ export default {
     },
     //Image
     handleImageDownload(value) {
-      console.log(value);
       if (value === "Image") {
         //Declare Base64 to a variable.
         const linkSource = this.data.base64;
@@ -64,10 +63,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("consultations", ["getConsultationFile"]),
+    ...mapGetters("files", ["getFile"]),
   },
   watch: {
-    getConsultationFile(value) {
+    getFile(value) {
       this.data.base64 = value.file;
       this.data.file_type = value.file_type;
     },

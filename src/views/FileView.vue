@@ -25,7 +25,7 @@ export default {
       const hospital_service_id = JSON.parse(
         this.$route.query.hospital_service_id
       );
-      this.fetchConsultationFile({
+      this.fetchFile({
         hospital_service_id: hospital_service_id,
         file_id: file_id,
       }).catch((error) => {
@@ -35,9 +35,6 @@ export default {
   },
   mounted() {
     this.fetchQuery();
-    // Set the height of PdfViewer to the height of the route component viewport
-    const pdfViewer = this.$refs.pdfViewer;
-    pdfViewer.style.height = `${window.innerHeight}px`;
   },
 };
 </script>
