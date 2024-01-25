@@ -19,6 +19,8 @@
                 label="Document Type"
                 :items="getFileTypes"
                 item-text="name"
+                @blur="$v.payload.document_type.$touch()"
+                :error-messages="errorMessages.document_type"
               ></v-autocomplete>
             </v-col>
             <v-col cols="12">
@@ -26,8 +28,10 @@
                 label="File Input"
                 @change="handleFileUpload"
                 :value="payload.file"
+                @blur="$v.payload.file.$touch()"
+                :error-messages="errorMessages.file"
               ></v-file-input>
-              <UploadArea v-on:file="handleFileUpload"/>
+              <UploadArea v-on:file="handleFileUpload" />
             </v-col>
             <v-col cols="12">
               <div class="text-right">
@@ -46,9 +50,11 @@
 <script>
 // import { format, parse, parseISO } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
-import UploadArea from './UploadArea.vue';
+import UploadArea from "./UploadArea.vue";
+import UploadDialogMixin from "@/mixins/Validation/UploadForm/UploadDialog";
 export default {
   name: "UploadDialog",
+  mixins: [UploadDialogMixin],
   props: {
     activator: {
       type: Boolean,
