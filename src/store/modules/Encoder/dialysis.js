@@ -15,7 +15,10 @@ export const dialysis_sessions = {
       if (state.dialysis_sessions) {
         const pendingSessions = state.dialysis_sessions
           .filter((dialysis) => {
-            return dialysis.status.includes("PENDING");
+            return (
+              dialysis.status.includes("PENDING") ||
+              dialysis.status.includes("IN PROGRESS")
+            );
           })
           .sort((a, b) => {
             //Filter to Older to Newest Dates
@@ -77,6 +80,17 @@ export const dialysis_sessions = {
         })
         .catch((error) => {
           console.error("Error Fetching Dialysis Session", error);
+        });
+    },
+    completeDialysisSessionById({ dispatch }, id) {
+      const url = `encoder/dialysis/sessions/${id}/complete`;
+      return this.$axios
+        .patch(url)
+        .then(() => {
+          dispatch("fetchDialysisSessionById", id);
+        })
+        .catch((error) => {
+          console.error("Error Patching Dialysis Session: ", error);
         });
     },
   },

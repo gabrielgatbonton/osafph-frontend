@@ -7,8 +7,17 @@
           <span class="title">Dialysis Center</span>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="auto">
-          <v-btn dark class="blue darken-4 mr-3">Upload Files</v-btn>
+        <v-col
+          cols="auto"
+          v-if="buttonPermissions.complete"
+          @click="completeDialysisSession"
+        >
+          <v-btn dark color="success">Complete Session</v-btn>
+        </v-col>
+        <v-col cols="auto" v-if="buttonPermissions.files">
+          <v-btn dark color="blue darken-4" class="mr-3" @click="proceedToFiles"
+            >Upload Files</v-btn
+          >
         </v-col>
       </v-row>
       <v-divider class="my-4"></v-divider>
@@ -60,16 +69,54 @@ export default {
     ServiceStatusComponent,
   },
   methods: {
-    ...mapActions("dialysis_sessions", ["fetchDialysisSessionById"]),
+    ...mapActions("dialysis_sessions", [
+      "fetchDialysisSessionById",
+      "completeDialysisSessionById",
+    ]),
     fetchSessionData() {
       const id = this.$route.params.id;
       this.fetchDialysisSessionById(id).catch((error) => {
         console.error("Error Fetching Session Data", error);
       });
     },
+    proceedToFiles() {
+      if (this.userRole === "DIALYSIS_ENCODER") {
+        return this.$router.push({
+          name: "dialysis-files",
+          params: { hospital_service_id: this.session.hospital_service.id },
+        });
+      }
+    },
+    completeDialysisSession() {
+      this.completeDialysisSessionById(this.session.dialysis_session_id).catch(
+        (error) => {
+          console.error("Error Clicking Complete Button: ", error);
+        }
+      );
+    },
   },
   computed: {
     ...mapGetters("dialysis_sessions", ["getDialysisSession"]),
+    ...mapGetters("login", ["userRole"]),
+    buttonPermissions() {
+      let files = false;
+      let complete = false;
+
+      if (this.userRole === "DIALYSIS_ENCODER") {
+        if (this.session.hospital_service.status === "IN PROGRESS") {
+          complete = true;
+        } else if (this.session.hospital_service.status === "COMPLETED") {
+          files = true;
+        } else {
+          files = false;
+          complete = false;
+        }
+      }
+      return {
+        files: files,
+        complete: complete,
+      };
+    },
     serviceInformation() {
       return {
         header: {
