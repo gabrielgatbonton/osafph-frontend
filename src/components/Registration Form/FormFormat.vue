@@ -190,7 +190,6 @@ export default {
           other_profession: this.employment.citizen.other_profession,
           philhealth_id_number: this.employment.citizen.philhealth_id_number,
         };
-        console.log("Employment",data)
         return data;
       }
       return null;
@@ -235,12 +234,12 @@ export default {
   },
   watch: {
     getRegistrant(value) {
+      console.log(value);
       this.category = value;
       this.personal_information = value;
       this.address = value;
       this.emergency = value;
       this.employment = value;
-      console.log("watch:", value);
     },
   },
   created() {

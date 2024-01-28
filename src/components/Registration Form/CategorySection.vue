@@ -153,6 +153,7 @@ export default {
         this.data.type_of_id = value.type_of_id;
         this.data.other_id = value.other_id;
         this.data.id_number = value.id_number;
+        // console.log("Category",value);
       },
       deep: true,
     },
@@ -161,5 +162,3 @@ export default {
 </script>
 
 <style></style>
-@/mixins/RegistrationFormValidation/CategorySectionValidation
-@/mixins/Validation/RegistrationFormValidation/CategorySectionValidation

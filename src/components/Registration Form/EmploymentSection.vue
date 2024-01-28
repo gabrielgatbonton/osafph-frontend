@@ -174,4 +174,3 @@ export default {
 </script>
 
 <style scoped></style>
-@/mixins/Validation/RegistrationFormValidation/EmploymentSectionValidation

@@ -227,7 +227,6 @@ export default {
   },
   watch: {
     editData(value) {
-      console.log("EDIT", value);
       this.data = Object.assign({}, this.data, value);
     },
   },
@@ -235,4 +234,3 @@ export default {
 </script>
 
 <style></style>
-@/mixins/Validation/RegistrationFormValidation/PersonalInformationSectionValidation

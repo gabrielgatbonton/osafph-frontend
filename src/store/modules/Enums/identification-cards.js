@@ -11,7 +11,6 @@ export const identification_cards = {
   mutations: {
     SET_IDENTIFICATION_CARDS(state, identification_cards) {
       state.identification_cards = identification_cards;
-      console.log(state.identification_cards);
     },
   },
   actions: {
