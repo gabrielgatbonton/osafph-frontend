@@ -55,7 +55,7 @@ import parseISO from "date-fns/parseISO";
 import VueQrcode from "vue-qrcode";
 import { mapActions, mapGetters } from "vuex";
 export default {
-  props: ["registrant"],
+  props: ["registrant", "requirements"],
   data: () => ({
     dialog: false,
     category: null,
@@ -83,10 +83,6 @@ export default {
       quality: 1,
       width: 930,
     },
-    disabledButton: true,
-    isGetImageLoaded: false,
-    isGetSignatureLoaded: false,
-    isGetBiometricsLoaded: false,
   }),
   components: {
     VueQrcode,
@@ -95,7 +91,6 @@ export default {
     ...mapActions("card", ["fetchImage", "fetchSignature", "fetchBiometrics"]),
     values() {
       if (this.registrant) {
-        console.log(this.registrant);
         if (
           this.registrant.citizen.vaccination_stat[0] &&
           this.registrant.citizen.vaccination_stat[1]
@@ -391,40 +386,20 @@ export default {
     QRCodeValue() {
       return `${this.$network}vaccination/${this.registrant.citizen.hub_registrant_id}`;
     },
-  },
-  watch: {
-    getImage(value) {
-      if (value) {
-        console.log("Image", value);
-        this.isGetImageLoaded = true;
-      }
+    disabledButton() {
+      let disabled = true;
       if (
-        this.isGetImageLoaded === this.isGetSignatureLoaded ||
-        this.isGetImageLoaded === this.isGetBiometricsLoaded
+        this.requirements.checkImage !== false &&
+        this.requirements.checkSignature !== false
       ) {
-        this.disabledButton = false;
-        console.log(this.disabledButton);
+        disabled = false;
+      } else if (
+        this.requirements.checkImage !== false &&
+        this.requirements.checkBiometrics !== false
+      ) {
+        disabled = false;
       }
-    },
-    getSignature(value) {
-      if (value) {
-        this.isGetSignatureLoaded = true;
-      }
-
-      if (this.isGetImageLoaded === this.isGetSignatureLoaded) {
-        this.disabledButton = false;
-      }
-    },
-    getBiometrics(value) {
-      if (value) {
-        this.isGetBiometricsLoaded = true;
-      }
-
-      if (this.isGetImageLoaded === this.isGetBiometricsLoaded) {
-        this.disabledButton = false;
-        console.log("Test: ", this.isGetImageLoaded);
-        console.log(this.disabledButton);
-      }
+      return disabled;
     },
   },
   created() {

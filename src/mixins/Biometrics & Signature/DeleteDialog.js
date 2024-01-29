@@ -32,7 +32,6 @@ export default {
             this.deleteDialog = false;
           });
       } else if (this.deletion === "biometrics") {
-        console.log("CHECK");
         this.deleteBiometrics(this.registrant.citizen.id) //registrant.citizen.id came from the component which this mixin is imported to.
           .then(() => {
             this.fetchRegistrant();

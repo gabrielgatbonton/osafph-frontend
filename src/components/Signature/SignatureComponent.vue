@@ -2,8 +2,15 @@
   <div>
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="blue darken-4" block dark v-bind="attrs" v-on="on">
-          {{ checkSignature ? "Edit" : "Add" }} Signature
+        <v-btn
+          color="blue darken-4"
+          :class="{ 'disabled-button': checkDisabledButton }"
+          block
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          {{ requirements.checkSignature ? "Edit" : "Add" }} Signature
         </v-btn>
       </template>
       <v-card>
@@ -58,10 +65,15 @@
 </template>
 
 <script>
-import { initSigWeb, onSign, onClear, onDone } from "@/components/Signature/scripts/SigWebLogic";
+import {
+  initSigWeb,
+  onSign,
+  onClear,
+  onDone,
+} from "@/components/Signature/scripts/SigWebLogic";
 import { mapActions } from "vuex";
 export default {
-  props: ["checkSignature"],
+  props: ["requirements"],
   data: () => ({
     dialog: false,
     buttonStart: true,
@@ -88,8 +100,8 @@ export default {
       const ctx = document.getElementById("cnv").getContext("2d");
       onSign(ctx, this.tmr)
         .then((tmr) => {
-          this.status = "You may now start signing."
-          this.tmr = tmr
+          this.status = "You may now start signing.";
+          this.tmr = tmr;
         })
         .catch((error) => {
           console.log("Error initializing the signature", error);
@@ -120,6 +132,15 @@ export default {
         });
     },
   },
+  computed: {
+    checkDisabledButton() {
+      let disabled = false;
+      if (this.requirements.checkBiometrics) {
+        disabled = true;
+      }
+      return disabled;
+    },
+  },
   created() {
     this.initializeService();
   },
@@ -127,6 +148,10 @@ export default {
 </script>
 
 <style scoped>
+.disabled-button {
+  opacity: 0.5; /* Make it appear faded */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
+}
 .canvas-border {
   border: 3px solid black;
 }

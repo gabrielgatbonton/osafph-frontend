@@ -165,6 +165,7 @@ export const registrants = {
           //Store dispatch so that images will be updated
           store.dispatch("card/fetchImage", id);
           store.dispatch("card/fetchSignature", id);
+          store.dispatch("card/fetchBiometrics", id);
 
           //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ALERT", {

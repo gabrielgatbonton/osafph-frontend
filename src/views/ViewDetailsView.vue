@@ -24,13 +24,13 @@
           <v-container fluid class="mx-auto mt-3">
             <v-row>
               <v-col cols="12">
-                <CategoryCard :registrant="registrant"/>
+                <CategoryCard :registrant="registrant" />
               </v-col>
               <v-col cols="12">
                 <PersonalInformationCard :registrant="registrant" />
               </v-col>
               <v-col cols="12" class="mt-n1">
-                <AddressCard :registrant="registrant"/>
+                <AddressCard :registrant="registrant" />
               </v-col>
             </v-row>
           </v-container>
@@ -89,11 +89,11 @@
                         max-width="300"
                       ></v-img>
                       <SignatureComponent
-                        :checkSignature="checkSignature"
+                        :requirements="requirements"
                         v-on:signature-taken="handleSignatureUpload"
                       />
                       <v-btn
-                        v-if="checkSignature !== false"
+                        v-if="requirements.checkSignature !== false"
                         class="my-2 error"
                         dark
                         block
@@ -129,11 +129,11 @@
                         max-width="200"
                       ></v-img>
                       <BiometricComponent
-                        :checkBiometrics="checkBiometrics"
+                        :requirements="requirements"
                         v-on:biometrics-taken="handleBiometricsUpload"
                       />
                       <v-btn
-                        v-if="checkBiometrics !== false"
+                        v-if="requirements.checkBiometrics !== false"
                         class="my-2 error"
                         dark
                         block
@@ -162,7 +162,7 @@
                       >
                         {{ cardStatus.value }}
                       </v-btn>
-                      <PrintCardJavaScript :registrant="getRegistrant" />
+                      <PrintCardJavaScript :requirements="requirements" :registrant="getRegistrant" />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -197,8 +197,8 @@ import BiometricComponent from "@/components/Biometrics/BiometricComponent.vue";
 import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import DeleteDialogMixin from "@/mixins/Biometrics & Signature/DeleteDialog";
 import CategoryCard from "@/components/Registrant Details/CategoryCard.vue";
-import PersonalInformationCard from '@/components/Registrant Details/PersonalInformationCard.vue';
-import AddressCard from '@/components/Registrant Details/AddressCard.vue';
+import PersonalInformationCard from "@/components/Registrant Details/PersonalInformationCard.vue";
+import AddressCard from "@/components/Registrant Details/AddressCard.vue";
 export default {
   mixins: [ErrorAlertsLogic, DeleteDialogMixin],
   data: () => ({
@@ -213,8 +213,11 @@ export default {
     },
     loading: false,
     dynamicBaseURL: null,
-    checkSignature: null,
-    checkBiometrics: null,
+    requirements: {
+      checkImage: null,
+      checkSignature: null,
+      checkBiometrics: null,
+    },
   }),
   components: {
     VaccinationComponent,
@@ -306,8 +309,11 @@ export default {
       this.selectedBiometrics = this.registrant.citizen.citizen_file.biometrics
         ? baseURL + this.registrant.citizen.citizen_file.biometrics
         : null;
-      this.checkSignature = this.selectedSignature ? true : false;
-      this.checkBiometrics = this.selectedBiometrics ? true : false;
+      this.requirements.checkImage = this.selectedImage ? true : false;
+      this.requirements.checkSignature = this.selectedSignature ? true : false;
+      this.requirements.checkBiometrics = this.selectedBiometrics
+        ? true
+        : false;
       this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
       if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
         this.cardStatus.status = true;

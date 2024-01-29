@@ -2,8 +2,15 @@
   <div>
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="blue darken-4" block dark v-bind="attrs" v-on="on">
-          {{ checkBiometrics ? "Edit" : "Add" }} Biometrics
+        <v-btn
+          color="blue darken-4"
+          :class="{ 'disabled-button': checkDisabledButton }"
+          block
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          {{ requirements.checkBiometrics ? "Edit" : "Add" }} Biometrics
         </v-btn>
       </template>
       <v-card>
@@ -32,7 +39,11 @@
                 >
                 <v-spacer></v-spacer>
                 <v-btn color="grey" dark @click="cancelScanning">Cancel</v-btn>
-                <v-btn color="blue darken-4" dark :class="{'disabled-button' : disabled}" @click="stopCapture"
+                <v-btn
+                  color="blue darken-4"
+                  dark
+                  :class="{ 'disabled-button': disabled }"
+                  @click="stopCapture"
                   >Save</v-btn
                 >
               </v-card-actions>
@@ -48,7 +59,7 @@
 import { FingerprintSdkTest } from "./scripts/app.js"; //Import the Instance from app.js
 export default {
   name: "BiometricComponent",
-  props: ["checkBiometrics"],
+  props: ["requirements"],
   data: () => ({
     dialog: false,
     status: null,
@@ -126,6 +137,15 @@ export default {
       this.dialog = false;
       const fingerprintImage = this.$refs.fingerprintImageRef;
       fingerprintImage.src = this.defaultImageSrc;
+    },
+  },
+  computed: {
+    checkDisabledButton() {
+      let disabled = false;
+      if (this.requirements.checkSignature) {
+        disabled = true;
+      }
+      return disabled;
     },
   },
 };

@@ -39,15 +39,11 @@ export const card = {
         state.image = null;
       }
     },
-    DELETE_SIGNATURE(state, targetImage) {
-      if (state.signature === targetImage) {
-        state.signature = null;
-      }
+    DELETE_SIGNATURE(state, value) {
+        state.signature = value;
     },
-    DELETE_BIOMETRICS(state, targetImage) {
-      if (state.biometrics === targetImage) {
-        state.biometrics = null;
-      }
+    DELETE_BIOMETRICS(state, value) {
+        state.biometrics = value;
     },
 
     //Public Images for Reroute Module.
@@ -156,9 +152,10 @@ export const card = {
       const url = `citizens/${id}/files/signature`;
       return this.$axios
         .delete(url)
-        .then((response) => {
-          const targetImage = response.data;
-          commit("DELETE_SIGNATURE", targetImage);
+        .then(() => {
+          // const targetImage = response.data;
+          // console.log(targetImage);
+          commit("DELETE_SIGNATURE", null);
         })
         .catch((error) => {
           console.error("Error deleting signature: ", error);
@@ -168,9 +165,9 @@ export const card = {
       const url = `citizens/${id}/files/biometrics`;
       return this.$axios
         .delete(url)
-        .then((response) => {
-          const targetImage = response.data;
-          commit("DELETE_BIOMETRICS", targetImage);
+        .then(() => {
+          // const targetImage = response.data;
+          commit("DELETE_BIOMETRICS", null);
         })
         .catch((error) => {
           console.error("Error deleting signature: ", error);
