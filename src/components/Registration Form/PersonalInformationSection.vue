@@ -209,12 +209,30 @@ export default {
       if (this.editData && this.editData.tin_number === this.data.tin_number) {
         delete this.data.tin_number;
       }
-      if (this.editData && this.editData.passport_number === this.data.passport_number) {
+      if (
+        this.editData &&
+        this.editData.passport_number === this.data.passport_number
+      ) {
         delete this.data.passport_number;
       }
       if (!this.$v.$invalid) {
         this.$emit("data", this.data);
         this.$emit("stepper", (this.stepper = 3));
+      }
+    },
+    asyncPayload() {
+      //Call to delete to avoid duplicates
+      if (this.editData && this.editData.tin_number === this.data.tin_number) {
+        delete this.data.tin_number;
+      }
+      if (
+        this.editData &&
+        this.editData.passport_number === this.data.passport_number
+      ) {
+        delete this.data.passport_number;
+      }
+      if (this.editData) {
+        this.$emit("data", this.data);
       }
     },
   },

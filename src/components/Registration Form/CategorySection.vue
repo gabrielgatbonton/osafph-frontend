@@ -108,9 +108,7 @@ export default {
     ...mapActions("categories", ["fetchCategories"]),
     ...mapActions("identification_cards", ["fetchIdentificationCards"]),
     continueForm() {
-      console.log("Before validation", this.data);
       this.$v.$touch();
-      console.log("After validation", this.data);
       // if (
       //   this.editData &&
       //   this.editData.hub_registrant_number === this.data.hub_registrant_number
@@ -135,6 +133,11 @@ export default {
         }
       }
     },
+    asyncPayload() {
+      if (this.editData) {
+        this.$emit("data", this.data);
+      }
+    }
   },
   computed: {
     ...mapGetters("categories", ["getCategories"]),
@@ -153,7 +156,6 @@ export default {
         this.data.type_of_id = value.type_of_id;
         this.data.other_id = value.other_id;
         this.data.id_number = value.id_number;
-        // console.log("Category",value);
       },
       deep: true,
     },

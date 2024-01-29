@@ -213,6 +213,11 @@ export default {
         this.selects.barangay = barangay.id;
       }
     },
+    asyncPayload() {
+      if (this.editData) {
+        this.$emit("data", this.data);
+      }
+    }
   },
   computed: {
     ...mapGetters("philippines", [

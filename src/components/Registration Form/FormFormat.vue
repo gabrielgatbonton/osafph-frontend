@@ -25,6 +25,7 @@
       <v-stepper-items>
         <v-stepper-content step="1">
           <CategorySection
+            ref="category"
             :editData="CategorySectionEditData"
             v-on:data="updatedData"
             v-on:stepper="updateStepper"
@@ -32,6 +33,7 @@
         </v-stepper-content>
         <v-stepper-content step="2">
           <PersonalInformationSection
+            ref="personalInformation"
             :editData="PersonalInformationSectionEditData"
             v-on:data="updatedData"
             v-on:stepper="updateStepper"
@@ -39,6 +41,7 @@
         </v-stepper-content>
         <v-stepper-content step="3">
           <AddressSection
+            ref="address"
             :editData="AddressSectionEditData"
             v-on:data="updatedData"
             v-on:stepper="updateStepper"
@@ -46,13 +49,17 @@
         </v-stepper-content>
         <v-stepper-content step="4">
           <EmergencySection
+            ref="emergency"
             :editData="EmergencySectionEditData"
             v-on:data="updatedData"
             v-on:stepper="updateStepper"
           />
         </v-stepper-content>
         <v-stepper-content step="5">
-          <EmploymentSection :editData="EmploymentSectionEditData" v-on:data="submitForm" />
+          <EmploymentSection
+            :editData="EmploymentSectionEditData"
+            v-on:data="submitForm"
+          />
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -182,9 +189,11 @@ export default {
         const data = {
           employer_name: this.employment.citizen.employer_name,
           employer_address: this.employment.citizen.employer_address,
-          employer_contact_number: this.employment.citizen.employer_contact_number,
+          employer_contact_number:
+            this.employment.citizen.employer_contact_number,
           employment_status: this.employment.citizen.employment_status,
-          other_employment_status: this.employment.citizen.other_employment_status,
+          other_employment_status:
+            this.employment.citizen.other_employment_status,
           occupation: this.employment.citizen.occupation,
           profession_id: this.employment.citizen.profession_id,
           other_profession: this.employment.citizen.other_profession,
@@ -206,18 +215,30 @@ export default {
       }
     },
     submitForm(data) {
-      // this.$v.$touch();
+      if (this.getRegistrant) {
+        //Call all payloads
+        this.$refs.category.asyncPayload();
+        this.$refs.personalInformation.asyncPayload();
+        this.$refs.address.asyncPayload();
+        this.$refs.emergency.asyncPayload();
 
-      const parsedData = data;
-      for (const key in parsedData) {
-        if (Object.hasOwnProperty.call(parsedData, key)) {
-          this.data[key] = parsedData[key];
+        //Finish the Editing Process
+        const parsedData = data;
+        for (const key in parsedData) {
+          if (Object.hasOwnProperty.call(parsedData, key)) {
+            this.data[key] = parsedData[key];
+          }
         }
+        this.$emit("submitData", this.data);
+      } else {
+        const parsedData = data;
+        for (const key in parsedData) {
+          if (Object.hasOwnProperty.call(parsedData, key)) {
+            this.data[key] = parsedData[key];
+          }
+        }
+        this.$emit("submitData", this.data);
       }
-
-      // if (!this.$v.$invalid) {
-      this.$emit("submitData", this.data);
-      // }
     },
     updatedData(data) {
       const parsedData = data;
@@ -234,7 +255,6 @@ export default {
   },
   watch: {
     getRegistrant(value) {
-      console.log(value);
       this.category = value;
       this.personal_information = value;
       this.address = value;

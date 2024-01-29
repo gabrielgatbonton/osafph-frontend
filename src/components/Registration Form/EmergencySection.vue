@@ -60,6 +60,11 @@ export default {
       this.$emit("data", this.data);
       this.$emit("stepper", (this.stepper = 5));
     },
+    asyncPayload() {
+      if (this.editData) {
+        this.$emit("data", this.data);
+      }
+    }
   },
   watch: {
     editData(value) {
