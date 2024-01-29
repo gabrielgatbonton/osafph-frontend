@@ -3,7 +3,7 @@
     <SubmissionAlert :title="title" v-if="showAlert" />
     <ErrorAlert :title="title" v-if="showError" />
     <v-container fluid class="table-title ma-2">
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Acquired Services</span>
@@ -19,6 +19,8 @@
               servicesStatus ? "Pending Services" : "Archived Services"
             }}</v-btn
           >
+        </v-col>
+        <v-col cols="auto">
           <v-btn class="mr-3" color="blue darken-4" dark @click="activator">
             Add Service
           </v-btn>
