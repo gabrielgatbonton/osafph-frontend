@@ -15,7 +15,7 @@
         prepend-icon="mdi-magnify"
       ></v-text-field>
     </template>
-    <template v-slot:item.mcg_cares_card="{ item }">
+    <template v-slot:[`item.mcg_cares_card`]="{ item }">
       <div
         :class="{
           'text-green': item.mcg_cares_card === 'CLAIMED',
@@ -25,7 +25,7 @@
         {{ item.mcg_cares_card }}
       </div>
     </template>
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:[`item.actions`]="{ item }">
       <!-- Icon button for options -->
       <v-menu left :offset-x="offset">
         <template v-slot:activator="{ on, attrs }">

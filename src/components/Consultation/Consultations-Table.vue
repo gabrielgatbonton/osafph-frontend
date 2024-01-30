@@ -16,7 +16,7 @@
         prepend-icon="mdi-magnify"
       ></v-text-field>
     </template>
-    <template v-slot:item.status="{ item }">
+    <template v-slot:[`item.status`]="{ item }">
       <div
         :class="{
           'text-green': item.status === 'COMPLETED',
@@ -26,7 +26,7 @@
         {{ item.status }}
       </div>
     </template>
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:[`item.actions`]="{ item }">
       <v-container class="ml-n8" style="width: 120px">
         <v-row no-gutters justify="center">
           <v-col cols="auto" align-self="center">
