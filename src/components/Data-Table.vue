@@ -15,68 +15,54 @@
         prepend-icon="mdi-magnify"
       ></v-text-field>
     </template>
-    <template v-slot:body="{ items }">
-      <tbody>
-        <tr v-for="item in items" :key="item.hub_registrant_id">
-          <td>{{ item.hub_registrant_id }}</td>
-          <td>
-            {{ item.full_name }}
-          </td>
-          <td>{{ item.sex }}</td>
-          <td>{{ item.birthday }}</td>
-          <td>{{ item.barangay }}</td>
-          <td>{{ item.municipality }}</td>
-          <td>
-            <div
-              :class="{
-                'text-green': item.mcg_cares_card === 'CLAIMED',
-                'text-red': item.mcg_cares_card !== 'CLAIMED',
-              }"
-            >
-              {{ item.mcg_cares_card }}
-            </div>
-          </td>
-          <td>
-            <!-- Icon button for options -->
-            <v-menu left :offset-x="offset">
-              <template v-slot:activator="{ on, attrs }">
-                <v-icon class="ml-n8" v-bind="attrs" v-on="on"
-                  >mdi-dots-vertical</v-icon
-                >
-              </template>
-
-              <v-list dense>
-                <v-list-item
-                  v-for="(option, index) in getOptions(item)"
-                  :key="index"
-                  @click="executeAction(option)"
-                >
-                  <v-list-item-title
-                    ><v-icon dense left>{{ option.icon }}</v-icon
-                    >{{ option.text }}</v-list-item-title
-                  >
-                </v-list-item>
-                <v-list-item
-                  v-if="auth.delete"
-                  @click="deleteActivator(item.id)"
-                >
-                  <v-list-item-title class="red--text"
-                    ><v-icon dense left color="#F44336"
-                      >mdi-delete-alert-outline</v-icon
-                    >DELETE</v-list-item-title
-                  >
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </td>
-        </tr>
-      </tbody>
-      <ReusableDeleteDialog
-        :activator="deleteDialog"
-        v-on:dialogResponse="resetActivator"
-        v-on:deleteItem="deleteItem"
-      />
+    <template v-slot:item.mcg_cares_card="{ item }">
+      <div
+        :class="{
+          'text-green': item.mcg_cares_card === 'CLAIMED',
+          'text-red': item.mcg_cares_card !== 'CLAIMED',
+        }"
+      >
+        {{ item.mcg_cares_card }}
+      </div>
     </template>
+    <template v-slot:item.actions="{ item }">
+      <!-- Icon button for options -->
+      <v-menu left :offset-x="offset">
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon class="ml-n8" v-bind="attrs" v-on="on"
+            >mdi-dots-vertical</v-icon
+          >
+        </template>
+
+        <v-list dense>
+          <v-list-item
+            v-for="(option, index) in getOptions(item)"
+            :key="index"
+            @click="executeAction(option)"
+          >
+            <v-list-item-title
+              ><v-icon dense left>{{ option.icon }}</v-icon
+              >{{ option.text }}</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            v-if="menuPermissions.delete"
+            @click="deleteActivator(item.id)"
+          >
+            <v-list-item-title class="red--text"
+              ><v-icon dense left color="#F44336"
+                >mdi-delete-alert-outline</v-icon
+              >DELETE</v-list-item-title
+            >
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
+    <ReusableDeleteDialog
+      :activator="deleteDialog"
+      v-on:dialogResponse="resetActivator"
+      v-on:deleteItem="deleteItem"
+    />
   </v-data-table>
 </template>
 
@@ -92,6 +78,11 @@ export default {
   components: {
     ReusableDeleteDialog,
   },
+  data: () => ({
+    search: "",
+    offset: true,
+    data: [],
+  }),
   methods: {
     filterOnlyCapsText(value, search) {
       return (
@@ -136,22 +127,7 @@ export default {
         this.$router.push(option.route);
       }
     },
-    userRolePermissions() {
-      if (this.userRole === "ADMIN") {
-        this.auth.delete = true;
-      } else if (this.userRole === "ENCODER") {
-        this.auth.delete = false;
-      }
-    },
   },
-  data: () => ({
-    search: "",
-    offset: true,
-    data: [],
-    auth: {
-      delete: null,
-    },
-  }),
   computed: {
     ...mapGetters("login", ["userRole"]),
     headers() {
@@ -193,6 +169,17 @@ export default {
         },
       ];
     },
+    menuPermissions() {
+      let remove = false;
+      if (this.userRole === "ADMIN") {
+        remove = true;
+      } else if (this.userRole === "ENCODER") {
+        remove = false;
+      }
+      return {
+        delete: remove,
+      };
+    },
   },
   watch: {
     registrants(value) {
@@ -209,9 +196,6 @@ export default {
         mcg_cares_card: registrant.mcg_cares_card,
       }));
     },
-  },
-  updated() {
-    this.userRolePermissions();
   },
 };
 </script>
