@@ -8,32 +8,43 @@
         <v-row class="mx-4">
           <v-col cols="12">
             <v-select
-              v-model="payload.filter_type"
+              v-model="filter_type"
               label="Filter Type"
               multiple
               :items="filters"
             ></v-select>
           </v-col>
           <v-col cols="12" v-if="filterInputs.category">
-            <v-autocomplete
+            <v-select
+              v-model="category"
               label="Category"
               :items="getCategories"
-            ></v-autocomplete>
+              multiple
+            ></v-select>
           </v-col>
           <v-col cols="12" v-if="filterInputs.sex">
-            <v-select label="Sex" :items="sexes"></v-select>
+            <v-select v-model="sex" label="Sex" :items="sexes"></v-select>
           </v-col>
-          <v-col cols="12" v-if="filterInputs.hospital">
-            <v-autocomplete
-              label="Medical Site"
-              :items="getHospitals"
-              item-text="name"
-            ></v-autocomplete>
+          <v-col cols="12" v-if="filterInputs.barangay">
+            <v-select
+              v-model="barangay"
+              label="Barangay"
+              :items="getBarangays"
+              item-text="barangay_name"
+              multiple
+            ></v-select>
           </v-col>
-          <v-col cols="12" v-if="filterInputs.submit">
-            <div class="text-right">
-              <v-btn dark class="blue darken-4">Submit</v-btn>
-            </div>
+          <v-col cols="12">
+            <v-row dense justify="end">
+              <v-col cols="auto">
+                <v-btn color="error" @click="resetFilter">Reset</v-btn>
+              </v-col>
+              <v-col cols="auto" v-if="filterInputs.submit">
+                <v-btn dark class="blue darken-4" @click="submitFilter"
+                  >Submit</v-btn
+                >
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-container>
@@ -57,33 +68,60 @@ export default {
   },
   data: () => ({
     dialog: false,
-    payload: {
-      filter_type: [],
-      category: null,
-      sex: null,
-      hospital: null,
-    },
+    filter_type: [],
+    category: [],
+    sex: null,
+    barangay: [],
+    payload: {},
     sexes: ["MALE", "FEMALE"],
-    filters: ["CATEGORY", "SEX", "MEDICAL SITE"],
+    filters: ["CATEGORY", "SEX", "BARANGAY"],
   }),
   methods: {
     ...mapActions("categories", ["fetchCategories"]),
-    ...mapActions("services_choices", ["fetchHospitals"]),
+    ...mapActions("philippines", ["fetchBarangays"]),
     fetchEnums() {
       this.fetchCategories();
-      this.fetchHospitals();
+      this.fetchBarangays();
+    },
+    submitFilter() {
+      this.filter_type.forEach((element) => {
+        if (element === "CATEGORY") {
+          if (this.category.length > 0) {
+            this.payload.category = this.category;
+          }
+        }
+        if (element === "SEX") {
+          console.log("Check")
+          if (this.sex) {
+            this.payload.sex = this.sex;
+          }
+        }
+        if (element === "BARANGAY") {
+          if (this.barangay.length > 0) {
+            this.payload.barangay = this.barangay;
+          }
+        }
+      });
+
+      this.$emit("filterQuery", this.payload);
+      this.payload = {};
+      this.dialog = false;
+    },
+    resetFilter() {
+      this.$emit("filterQuery", {});
+      this.dialog = false;
     },
   },
   computed: {
     ...mapGetters("categories", ["getCategories"]),
-    ...mapGetters("services_choices", ["getHospitals"]),
+    ...mapGetters("philippines", ["getBarangays"]),
     filterInputs() {
       let category = false;
       let sex = false;
-      let hospital = false;
       let submit = false;
+      let barangay = false;
 
-      this.payload.filter_type.forEach((element) => {
+      this.filter_type.forEach((element) => {
         if (element === "CATEGORY") {
           category = true;
           submit = true;
@@ -92,8 +130,8 @@ export default {
           sex = true;
           submit = true;
         }
-        if (element === "MEDICAL SITE") {
-          hospital = true;
+        if (element === "BARANGAY") {
+          barangay = true;
           submit = true;
         }
       });
@@ -101,8 +139,8 @@ export default {
       return {
         category: category,
         sex: sex,
-        hospital: hospital,
         submit: submit,
+        barangay: barangay,
       };
     },
   },
@@ -119,9 +157,6 @@ export default {
         this.$emit("dialogResponse", value);
       }
     },
-    // "payload.filter_type"(value) {
-    //   console.log("Filter: ", value);
-    // },
   },
   created() {
     this.fetchEnums();

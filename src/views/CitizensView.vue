@@ -23,7 +23,7 @@
     </v-container>
     <v-divider class="mx-3"></v-divider>
     <DataTable :registrants="allRegistrants" />
-    <FilterDialog :activator="dialog" v-on:dialogResponse="resetActivator" />
+    <FilterDialog v-on:filterQuery="filterQuery" :activator="dialog" v-on:dialogResponse="resetActivator" />
   </div>
 </template>
 
@@ -59,6 +59,9 @@ export default {
     resetActivator(data) {
       this.dialog = data;
     },
+    filterQuery(value) {
+      this.fetchRegistrants(value);
+    }
   },
   computed: {
     ...mapGetters("registrants", ["allRegistrants"]),

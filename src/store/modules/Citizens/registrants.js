@@ -15,6 +15,13 @@ export const registrants = {
     boosterDetails: null,
     publicData: null,
   }),
+  getters: {
+    allRegistrants: (state) => state.registrants,
+    getRegistrant: (state) => state.registrant,
+    getVaccineInformation: (state) => state.vaccinationDetails,
+    getBoosterInformation: (state) => state.boosterDetails,
+    getPublicData: (state) => state.publicData,
+  },
   mutations: {
     SET_REGISTRANTS(state, registrants) {
       state.registrants = registrants;
@@ -81,19 +88,24 @@ export const registrants = {
       state.publicData = publicData;
     },
   },
-  getters: {
-    allRegistrants: (state) => state.registrants,
-    getRegistrant: (state) => state.registrant,
-    getVaccineInformation: (state) => state.vaccinationDetails,
-    getBoosterInformation: (state) => state.boosterDetails,
-    getPublicData: (state) => state.publicData,
-  },
   actions: {
-    fetchRegistrants({ commit }) {
+    fetchRegistrants({ commit }, queryParams = {}) {
+      // Construct the query string from the queryParams object
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
+
+      // Add the query string to the URL if it exists
+      let url = "citizens";
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
       return this.$axios
-        .get("/citizens")
+        .get(url)
         .then((response) => {
           const registrants = response.data.citizens;
+          console.log(registrants);
           commit("SET_REGISTRANTS", registrants);
         })
         .catch((error) => {
@@ -102,7 +114,7 @@ export const registrants = {
     },
     addRegistrant({ commit, dispatch }, data) {
       return this.$axios
-        .post("/citizens/create", data)
+        .post("citizens/create", data)
         .then((response) => {
           const registrant = response.data;
           commit("ADD_REGISTRANT", registrant);
@@ -124,7 +136,7 @@ export const registrants = {
     },
     fetchRegistrantId({ commit }, id) {
       return this.$axios
-        .get(`/citizens/${id}`)
+        .get(`citizens/${id}`)
         .then((response) => {
           const registrant = response.data;
           commit("SET_REGISTRANT", registrant);
@@ -136,7 +148,7 @@ export const registrants = {
     updateRegistrant({ commit }, { id, data }) {
       console.log("CHECK ACTION: ", data);
       return this.$axios
-        .put(`/citizens/${id}`, data)
+        .put(`citizens/${id}`, data)
         .then((response) => {
           const updateRegistrant = response.data;
           commit("UPDATE_REGISTRANT", { id, updateRegistrant });
@@ -157,7 +169,7 @@ export const registrants = {
     },
     updateRegistrantFiles({ commit, dispatch }, { id, data }) {
       return this.$axios
-        .post(`/citizens/${id}/files`, data)
+        .post(`citizens/${id}/files`, data)
         .then((response) => {
           const files = response.data;
           commit("UPDATE_REGISTRANT_FILES", { id, files });
@@ -185,7 +197,7 @@ export const registrants = {
     },
     claimCard({ commit }, { id, data }) {
       return this.$axios
-        .put(`/citizens/${id}/card`, data)
+        .put(`citizens/${id}/card`, data)
         .then((response) => {
           const claim = response.data;
           commit("UPDATE_CARD_STATUS", { id, claim });
@@ -197,7 +209,7 @@ export const registrants = {
     fetchVaccineInformation({ commit }, id) {
       commit("SET_VACCINATION_INFORMATION", null);
       return this.$axios
-        .get(`/citizens/${id}/vaccines`)
+        .get(`citizens/${id}/vaccines`)
         .then((response) => {
           const vaccineInformation = response.data;
           commit("SET_VACCINATION_INFORMATION", vaccineInformation);
@@ -210,7 +222,7 @@ export const registrants = {
       const promises = data.map(async (vaccineData, index) => {
         return this.$axios
           .put(
-            `/citizens/${id}/vaccines/${data[index].id}/addOrUpdate`,
+            `citizens/${id}/vaccines/${data[index].id}/addOrUpdate`,
             vaccineData
           )
           .then((response) => {
@@ -247,7 +259,7 @@ export const registrants = {
     fetchBoosterInformation({ commit }, id) {
       commit("SET_BOOSTER_INFORMATION", null);
       return this.$axios
-        .get(`/citizens/${id}/boosters`)
+        .get(`citizens/${id}/boosters`)
         .then((response) => {
           const boosterInformation = response.data;
           commit("SET_BOOSTER_INFORMATION", boosterInformation);
@@ -260,7 +272,7 @@ export const registrants = {
       const promises = data.map(async (boosterData, index) => {
         return this.$axios
           .put(
-            `/citizens/${id}/boosters/${data[index].id}/addOrUpdate`,
+            `citizens/${id}/boosters/${data[index].id}/addOrUpdate`,
             boosterData
           )
           .then((response) => {
@@ -296,7 +308,7 @@ export const registrants = {
     },
     deleteRegistrant({ commit, dispatch }, id) {
       return this.$axios
-        .delete(`/citizens/${id}`)
+        .delete(`citizens/${id}`)
         .then((response) => {
           const data = response.data;
           commit("DELETE_REGISTRANT", data);
@@ -318,7 +330,7 @@ export const registrants = {
     },
     fetchPublicCitizenRecord({ commit }, hub_registrant_id) {
       return this.$axios
-        .get(`/public-citizen/${hub_registrant_id}`)
+        .get(`public-citizen/${hub_registrant_id}`)
         .then((response) => {
           const publicData = response.data;
           commit("SET_PUBLIC_DATA", publicData);

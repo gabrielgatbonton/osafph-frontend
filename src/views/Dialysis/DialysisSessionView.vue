@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-container fluid class="ma-1" v-if="session">
-      <v-row>
+    <v-container fluid class="ma-2" v-if="session">
+      <v-row no-gutters>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Dialysis Center</span>
@@ -11,6 +11,7 @@
           cols="auto"
           v-if="buttonPermissions.complete"
           @click="completeDialysisSession"
+          class="mr-3"
         >
           <v-btn dark color="success">Complete Session</v-btn>
         </v-col>
