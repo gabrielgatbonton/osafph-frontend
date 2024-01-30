@@ -6,7 +6,6 @@
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
-    no-data-text="No Services Available"
   >
     <template v-slot:top>
       <v-text-field
@@ -16,40 +15,30 @@
         prepend-icon="mdi-magnify"
       ></v-text-field>
     </template>
-    <template v-slot:body="{ items }">
-      <tbody>
-        <tr v-for="(item, index) in items" :key="index">
-          <td>{{ item.dialysis_id }}</td>
-          <td>{{ item.dialysis_machine }}</td>
-          <td>{{ item.session }}</td>
-          <td>{{ item.scheduled_date }}</td>
-          <td>
-            <div
-              :class="{
-                'text-green': item.status === 'COMPLETED',
-                'text-red': item.status !== 'COMPLETED',
-              }"
+    <template v-slot:item.status="{ item }">
+      <div
+        :class="{
+          'text-green': item.status === 'COMPLETED',
+          'text-red': item.status !== 'COMPLETED',
+        }"
+      >
+        {{ item.status }}
+      </div>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-container class="ml-n8" style="width: 120px">
+        <v-row no-gutters justify="center">
+          <v-col cols="auto" v-if="iconPermissions.view" align-self="center">
+            <v-icon
+              @click="viewDialysisSession(item.dialysis_id)"
+              class="mx-1"
+              color="grey darken-1"
+              dense
+              >mdi-eye</v-icon
             >
-              {{ item.status }}
-            </div>
-          </td>
-          <td>
-            <v-container class="ml-n8" style="width: 120px">
-              <v-row no-gutters justify="center">
-                <v-col cols="auto" v-if="auth.view" align-self="center">
-                  <v-icon
-                    @click="viewDialysisSession(item.dialysis_id)"
-                    class="mx-1"
-                    color="grey darken-1"
-                    dense
-                    >mdi-eye</v-icon
-                  >
-                </v-col>
-              </v-row>
-            </v-container>
-          </td>
-        </tr>
-      </tbody>
+          </v-col>
+        </v-row>
+      </v-container>
     </template>
   </v-data-table>
 </template>
@@ -61,6 +50,11 @@ import { mapGetters } from "vuex";
 export default {
   name: "Dialysis-Table",
   props: ["dialysis"],
+  data: () => ({
+    search: "",
+    offset: true,
+    data: [],
+  }),
   methods: {
     filterOnlyCapsText(value, search) {
       return (
@@ -76,24 +70,7 @@ export default {
         params: { id: id },
       });
     },
-    userRolePermissions() {
-      if (this.userRole === "ADMIN") {
-        this.auth.view = true;
-      } else if (this.userRole === "ENCODER") {
-        this.auth.view = true;
-      } else if (this.userRole === "DIALYSIS_ENCODER") {
-        this.auth.view = true;
-      }
-    },
   },
-  data: () => ({
-    search: "",
-    offset: true,
-    data: [],
-    auth: {
-      view: false,
-    },
-  }),
   computed: {
     ...mapGetters("login", ["userRole"]),
     headers() {
@@ -125,6 +102,19 @@ export default {
         },
       ];
     },
+    iconPermissions() {
+      let view = false;
+      if (this.userRole === "ADMIN") {
+        view = true;
+      } else if (this.userRole === "ENCODER") {
+        view = true;
+      } else if (this.userRole === "DIALYSIS_ENCODER") {
+        view = true;
+      }
+      return {
+        view: view,
+      }
+    },
   },
   watch: {
     dialysis(value) {
@@ -139,9 +129,6 @@ export default {
         status: dialysis.status,
       }));
     },
-  },
-  updated() {
-    this.userRolePermissions();
   },
 };
 </script>

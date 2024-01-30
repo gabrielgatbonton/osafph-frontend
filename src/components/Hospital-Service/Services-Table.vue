@@ -6,7 +6,6 @@
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
-    no-data-text="No Services Available"
   >
     <template v-slot:top>
       <v-text-field
@@ -16,70 +15,60 @@
         prepend-icon="mdi-magnify"
       ></v-text-field>
     </template>
-    <template v-slot:body="{ items }">
-      <tbody>
-        <tr v-for="(item, index) in items" :key="index">
-          <td>{{ item.service_type }}</td>
-          <td>{{ item.specialty }}</td>
-          <td>{{ item.scheduled_date }}</td>
-          <td>{{ item.medical_site }}</td>
-          <td>
-            <div
-              :class="{
-                'text-green': item.status === 'COMPLETED',
-                'text-red': item.status !== 'COMPLETED',
-              }"
-            >
-              {{ item.status }}
-            </div>
-          </td>
-          <td>
-            <v-container class="ml-n8" style="width: 120px;">
-              <v-row no-gutters justify="center">
-                <v-col cols="auto" v-if="auth.view" align-self="center">
-                  <v-icon
-                    @click="viewRegistrantService(item.citizen_id, item.id)"
-                    class="mx-1"
-                    color="grey darken-1"
-                    dense
-                    >mdi-eye</v-icon
-                  >
-                </v-col>
-                <v-col cols="auto" v-if="auth.edit" align-self="center">
-                  <v-icon
-                    class="mx-1"
-                    color="blue darken-4"
-                    dense
-                    @click="activator(item.citizen_id, item.id)"
-                    >mdi-pencil</v-icon
-                  >
-                </v-col>
-                <v-col cols="auto" v-if="auth.delete" align-self="center">
-                  <v-icon
-                    class="mx-1"
-                    color="error"
-                    dense
-                    @click="deleteActivator(item.citizen_id, item.id)"
-                    >mdi-trash-can</v-icon
-                  >
-                </v-col>
-              </v-row>
-            </v-container>
-          </td>
-        </tr>
-      </tbody>
-      <ServiceDialog
-        :activator="dialog"
-        :hospitalService="getHospitalService"
-        v-on:dialogResponse="resetEditActivator"
-        v-on:updateService="submitForm"
-      />
-      <ReusableDeleteDialog
-        :activator="deleteDialog"
-        v-on:dialogResponse="resetActivator"
-        v-on:deleteItem="deleteItem"
-      />
+    <template v-slot:item.status="{ item }">
+      <div
+        :class="{
+          'text-green': item.status === 'COMPLETED',
+          'text-red': item.status !== 'COMPLETED',
+        }"
+      >
+        {{ item.status }}
+      </div>
     </template>
+    <template v-slot:item.actions="{ item }">
+      <v-container class="ml-n8" style="width: 120px">
+        <v-row no-gutters justify="center">
+          <v-col cols="auto" v-if="iconPermissions.view" align-self="center">
+            <v-icon
+              @click="viewRegistrantService(item.citizen_id, item.id)"
+              class="mx-1"
+              color="grey darken-1"
+              dense
+              >mdi-eye</v-icon
+            >
+          </v-col>
+          <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
+            <v-icon
+              class="mx-1"
+              color="blue darken-4"
+              dense
+              @click="activator(item.citizen_id, item.id)"
+              >mdi-pencil</v-icon
+            >
+          </v-col>
+          <v-col cols="auto" v-if="iconPermissions.delete" align-self="center">
+            <v-icon
+              class="mx-1"
+              color="error"
+              dense
+              @click="deleteActivator(item.citizen_id, item.id)"
+              >mdi-trash-can</v-icon
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+    </template>
+    <ServiceDialog
+      :activator="dialog"
+      :hospitalService="getHospitalService"
+      v-on:dialogResponse="resetEditActivator"
+      v-on:updateService="submitForm"
+    />
+    <ReusableDeleteDialog
+      :activator="deleteDialog"
+      v-on:dialogResponse="resetActivator"
+      v-on:deleteItem="deleteItem"
+    />
   </v-data-table>
 </template>
 
@@ -98,6 +87,11 @@ export default {
     ReusableDeleteDialog,
     ServiceDialog,
   },
+  data: () => ({
+    search: "",
+    offset: true,
+    data: [],
+  }),
   methods: {
     filterOnlyCapsText(value, search) {
       return (
@@ -113,28 +107,7 @@ export default {
         params: { id: id, hospital_service_id: hospital_service_id },
       });
     },
-    userRolePermissions() {
-      if (this.userRole === "ADMIN") {
-        this.auth.view = true;
-        this.auth.edit = true;
-        this.auth.delete = true;
-      } else if (this.userRole === "ENCODER") {
-        this.auth.view = true;
-        this.auth.edit = true;
-        this.auth.delete = true;
-      }
-    },
   },
-  data: () => ({
-    search: "",
-    offset: true,
-    data: [],
-    auth: {
-      view: false,
-      edit: false,
-      delete: false,
-    },
-  }),
   computed: {
     ...mapGetters("login", ["userRole"]),
     headers() {
@@ -166,6 +139,25 @@ export default {
         },
       ];
     },
+    iconPermissions() {
+      let view = false;
+      let edit = false;
+      let remove = false;
+      if (this.userRole === "ADMIN") {
+        view = true;
+        edit = true;
+        remove = true;
+      } else if (this.userRole === "ENCODER") {
+        view = true;
+        edit = true;
+        remove = true;
+      }
+      return {
+        view: view,
+        edit: edit,
+        delete: remove,
+      };
+    },
   },
   watch: {
     services(value) {
@@ -182,9 +174,6 @@ export default {
         medical_site: service.hospital,
       }));
     },
-  },
-  updated() {
-    this.userRolePermissions();
   },
 };
 </script>
