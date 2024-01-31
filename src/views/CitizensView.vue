@@ -23,7 +23,12 @@
     </v-container>
     <v-divider class="mx-3"></v-divider>
     <DataTable :registrants="allRegistrants" />
-    <FilterDialog v-on:filterQuery="filterQuery" :activator="dialog" v-on:dialogResponse="resetActivator" />
+    <FilterDialog
+      @filterQuery="filterQuery"
+      :activator="dialog"
+      @dialogResponse="resetActivator"
+      :type_of_filter="type_of_filter"
+    />
   </div>
 </template>
 
@@ -46,6 +51,7 @@ export default {
       showError: false,
       title: null,
       dialog: false,
+      type_of_filter: "CITIZENS INDEX",
     };
   },
   methods: {
@@ -61,7 +67,7 @@ export default {
     },
     filterQuery(value) {
       this.fetchRegistrants(value);
-    }
+    },
   },
   computed: {
     ...mapGetters("registrants", ["allRegistrants"]),

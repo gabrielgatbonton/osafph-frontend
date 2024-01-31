@@ -6,7 +6,7 @@
       >
       <v-container fluid class="py-8 mx-auto overflow-scroll">
         <v-row class="mx-4">
-          <v-col cols="12">
+          <v-col cols="12" v-if="filterInputs.filter_type">
             <v-select
               v-model="filter_type"
               label="Filter Type"
@@ -18,7 +18,7 @@
             <v-select
               v-model="category"
               label="Category"
-              :items="getCategories"
+              :items="categories"
               multiple
             ></v-select>
           </v-col>
@@ -29,8 +29,17 @@
             <v-select
               v-model="barangay"
               label="Barangay"
-              :items="getBarangays"
+              :items="barangays"
               item-text="barangay_name"
+              multiple
+            ></v-select>
+          </v-col>
+          <v-col cols="12" v-if="filterInputs.dialysis_machine">
+            <v-select
+              v-model="dialysis_machine"
+              label="Dialysis Machine"
+              :items="dialysis_machines"
+              item-text="name"
               multiple
             ></v-select>
           </v-col>
@@ -53,7 +62,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "FilterDialog",
   props: {
@@ -65,6 +74,10 @@ export default {
       type: Object,
       required: false,
     },
+    type_of_filter: {
+      type: String,
+      required: true,
+    },
   },
   data: () => ({
     dialog: false,
@@ -72,6 +85,7 @@ export default {
     category: [],
     sex: null,
     barangay: [],
+    dialysis_machine: [],
     payload: {},
     sexes: ["MALE", "FEMALE"],
     filters: ["CATEGORY", "SEX", "BARANGAY"],
@@ -79,30 +93,36 @@ export default {
   methods: {
     ...mapActions("categories", ["fetchCategories"]),
     ...mapActions("philippines", ["fetchBarangays"]),
+    ...mapActions("dialysis", ["fetchDialysisMachines"]),
     fetchEnums() {
       this.fetchCategories();
       this.fetchBarangays();
+      this.fetchDialysisMachines();
     },
     submitFilter() {
-      this.filter_type.forEach((element) => {
-        if (element === "CATEGORY") {
-          if (this.category.length > 0) {
-            this.payload.category = this.category;
+      if (this.type_of_filter === "CITIZENS INDEX") {
+        this.filter_type.forEach((element) => {
+          if (element === "CATEGORY") {
+            if (this.category.length > 0) {
+              this.payload.category = this.category;
+            }
           }
-        }
-        if (element === "SEX") {
-          console.log("Check")
-          if (this.sex) {
-            this.payload.sex = this.sex;
+          if (element === "SEX") {
+            if (this.sex) {
+              this.payload.sex = this.sex;
+            }
           }
-        }
-        if (element === "BARANGAY") {
-          if (this.barangay.length > 0) {
-            this.payload.barangay = this.barangay;
+          if (element === "BARANGAY") {
+            if (this.barangay.length > 0) {
+              this.payload.barangay = this.barangay;
+            }
           }
+        });
+      } else if (this.type_of_filter === "DIALYSIS INDEX") {
+        if (this.dialysis_machine.length > 0) {
+          this.payload.dialysis_machine = this.dialysis_machine;
         }
-      });
-
+      }
       this.$emit("filterQuery", this.payload);
       this.payload = {};
       this.dialog = false;
@@ -113,34 +133,43 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("categories", ["getCategories"]),
-    ...mapGetters("philippines", ["getBarangays"]),
+    ...mapState("categories", ["categories"]),
+    ...mapState("philippines", ["barangays"]),
+    ...mapState("dialysis", ["dialysis_machines"]),
     filterInputs() {
+      let filter_type = false;
       let category = false;
       let sex = false;
       let submit = false;
       let barangay = false;
+      let dialysis_machine = false;
 
-      this.filter_type.forEach((element) => {
-        if (element === "CATEGORY") {
-          category = true;
+      if (this.type_of_filter === "CITIZENS INDEX") {
+        filter_type = true;
+        this.filter_type.forEach((element) => {
+          if (element === "CATEGORY") {
+            category = true;
+          }
+          if (element === "SEX") {
+            sex = true;
+          }
+          if (element === "BARANGAY") {
+            barangay = true;
+          }
           submit = true;
-        }
-        if (element === "SEX") {
-          sex = true;
-          submit = true;
-        }
-        if (element === "BARANGAY") {
-          barangay = true;
-          submit = true;
-        }
-      });
+        });
+      } else if (this.type_of_filter === "DIALYSIS INDEX") {
+        dialysis_machine = true;
+        submit = true;
+      }
 
       return {
+        filter_type: filter_type,
         category: category,
         sex: sex,
         submit: submit,
         barangay: barangay,
+        dialysis_machine: dialysis_machine,
       };
     },
   },

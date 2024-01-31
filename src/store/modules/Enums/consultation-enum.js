@@ -12,6 +12,13 @@ export const consultation_enum = {
     diagnosis: [],
     diagnostics: [],
   }),
+  getters: {
+    getHistory: (state) => state.history_of_present_illnesses,
+    getPastMedicalHistories: (state) => state.past_medical_histories,
+    getFamilyMedicalHistories: (state) => state.family_medical_histories,
+    getDiagnosis: (state) => state.diagnosis,
+    getDiagnostics: (state) => state.diagnostics,
+  },
   mutations: {
     SET_HISTORY(state, history) {
       state.history_of_present_illnesses = history;
@@ -105,12 +112,5 @@ export const consultation_enum = {
           console.error("Error Fetching Diagnostics ENUM: ", error);
         });
     },
-  },
-  getters: {
-    getHistory: (state) => state.history_of_present_illnesses,
-    getPastMedicalHistories: (state) => state.past_medical_histories,
-    getFamilyMedicalHistories: (state) => state.family_medical_histories,
-    getDiagnosis: (state) => state.diagnosis,
-    getDiagnostics: (state) => state.diagnostics,
   },
 };

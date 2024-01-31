@@ -58,8 +58,18 @@ export const dialysis_sessions = {
     },
   },
   actions: {
-    fetchDialysisSessions({ commit }) {
-      const url = `encoder/dialysis/sessions`;
+    fetchDialysisSessions({ commit }, queryParams = {}) {
+      // Construct the query string from the queryParams object
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
+
+      // Add the query string to the URL if it exists
+      let url = `encoder/dialysis/sessions`;
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
       return this.$axios
         .get(url)
         .then((response) => {
