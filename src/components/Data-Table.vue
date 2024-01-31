@@ -14,6 +14,11 @@
         class="mx-4"
         prepend-icon="mdi-magnify"
       ></v-text-field>
+      <ReusableDeleteDialog
+        :activator="deleteDialog"
+        v-on:dialogResponse="resetActivator"
+        v-on:deleteItem="deleteItem"
+      />
     </template>
     <template v-slot:[`item.mcg_cares_card`]="{ item }">
       <div
@@ -58,11 +63,6 @@
         </v-list>
       </v-menu>
     </template>
-    <ReusableDeleteDialog
-      :activator="deleteDialog"
-      v-on:dialogResponse="resetActivator"
-      v-on:deleteItem="deleteItem"
-    />
   </v-data-table>
 </template>
 

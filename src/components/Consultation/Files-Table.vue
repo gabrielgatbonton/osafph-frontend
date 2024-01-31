@@ -14,6 +14,11 @@
         class="mx-4"
         prepend-icon="mdi-magnify"
       ></v-text-field>
+      <ReusableDeleteDialog
+        :activator="deleteDialog"
+        v-on:dialogResponse="resetActivator"
+        v-on:deleteItem="deleteItem"
+      />
     </template>
     <template v-slot:[`item.upload_status`]="{ item }">
       <div
@@ -58,11 +63,6 @@
         </v-row>
       </v-container>
     </template>
-    <ReusableDeleteDialog
-      :activator="deleteDialog"
-      v-on:dialogResponse="resetActivator"
-      v-on:deleteItem="deleteItem"
-    />
   </v-data-table>
 </template>
 

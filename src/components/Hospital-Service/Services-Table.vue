@@ -14,6 +14,17 @@
         class="mx-4"
         prepend-icon="mdi-magnify"
       ></v-text-field>
+      <ServiceDialog
+        :activator="dialog"
+        :hospitalService="getHospitalService"
+        v-on:dialogResponse="resetEditActivator"
+        v-on:updateService="submitForm"
+      />
+      <ReusableDeleteDialog
+        :activator="deleteDialog"
+        v-on:dialogResponse="resetActivator"
+        v-on:deleteItem="deleteItem"
+      />
     </template>
     <template v-slot:[`item.status`]="{ item }">
       <div
@@ -58,17 +69,6 @@
         </v-row>
       </v-container>
     </template>
-    <ServiceDialog
-      :activator="dialog"
-      :hospitalService="getHospitalService"
-      v-on:dialogResponse="resetEditActivator"
-      v-on:updateService="submitForm"
-    />
-    <ReusableDeleteDialog
-      :activator="deleteDialog"
-      v-on:dialogResponse="resetActivator"
-      v-on:deleteItem="deleteItem"
-    />
   </v-data-table>
 </template>
 
