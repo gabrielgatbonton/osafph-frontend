@@ -64,11 +64,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("services", ["getHospitalServices", "getArchivedServices"]),
+    ...mapGetters("services", ["getPendingServices", "getArchivedServices"]),
     switchData() {
       return this.servicesStatus
         ? this.getArchivedServices
-        : this.getHospitalServices;
+        : this.getPendingServices;
     },
   },
   created() {

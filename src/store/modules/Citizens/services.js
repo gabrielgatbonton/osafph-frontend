@@ -9,59 +9,57 @@ export const services = {
   state: () => ({
     hospitalServices: [],
     hospitalService: null,
-    archivedServices: [],
     publicHospitalServices: [],
   }),
+  getters: {
+    getPendingServices: (state) => {
+      if (state.hospitalServices) {
+        // Use filter to keep only services with 'PENDING', 'WALK IN', or 'IN PROGRESS' status
+        const pendingServices = state.hospitalServices
+          .filter((service) => {
+            return (
+              service.status.includes("PENDING") ||
+              service.status.includes("WALK-IN") ||
+              service.status.includes("IN PROGRESS")
+            );
+          })
+          .sort((a, b) => {
+            //Filter to Older to Newest Dates
+            const dateA = new Date(a.scheduled_date);
+            const dateB = new Date(b.scheduled_date);
+            return dateA - dateB;
+          });
+        return pendingServices;
+      }
+    },
+    getArchivedServices: (state) => {
+      if (state.hospitalServices) {
+        // Use filter to keep only services with 'COMPLETED' or 'UNATTENDED' status
+        const archivedServices = state.hospitalServices
+          .filter((service) => {
+            return (
+              service.status.includes("COMPLETED") ||
+              service.status.includes("UNATTENDED")
+            );
+          })
+          .sort((a, b) => {
+            //Filter to Newer to Oldest Dates
+            const dateA = new Date(b.scheduled_date);
+            const dateB = new Date(a.scheduled_date);
+            return dateA - dateB;
+          });
+        return archivedServices;
+      }
+    },
+    getHospitalService: (state) => state.hospitalService,
+    getPublicHospitalServices: (state) => state.publicHospitalServices,
+  },
   mutations: {
     SET_HOSPITAL_SERVICES(state, services) {
-      const pendingServices = services
-        .filter((service) => {
-          return (
-            service.status.includes("PENDING") ||
-            service.status.includes("WALK-IN") ||
-            service.status.includes("IN PROGRESS")
-          );
-        })
-        .sort((a, b) => {
-          //Filter to Older to Newest Dates
-          const dateA = new Date(a.scheduled_date);
-          const dateB = new Date(b.scheduled_date);
-          return dateA - dateB;
-        });
-      state.hospitalServices = pendingServices;
-    },
-    SET_ARCHIVED_HOSPITAL_SERVICES(state, services) {
-      // Use filter to keep only services with 'PENDING' or 'UNATTENDED' status
-      const archivedServices = services
-        .filter((service) => {
-          return (
-            service.status.includes("COMPLETED") ||
-            service.status.includes("UNATTENDED")
-          );
-        })
-        .sort((a, b) => {
-          //Filter to Newer to Oldest Dates
-          const dateA = new Date(b.scheduled_date);
-          const dateB = new Date(a.scheduled_date);
-          return dateA - dateB;
-        });
-
-      // Replace the contents of the archivedServices state variable
-      state.archivedServices = archivedServices;
+      state.hospitalServices = services;
     },
     SET_HOSPITAL_SERVICE(state, service) {
       state.hospitalService = service;
-    },
-    ADD_HOSPITAL_SERVICE(state, service) {
-      state.hospitalServices.push(service);
-    },
-    UPDATE_HOSPITAL_SERVICE(state, service) {
-      state.hospitalService = service;
-    },
-    DELETE_HOSPITAL_SERVICE(state, target) {
-      state.hospitalServices = state.hospitalServices.filter(
-        (service) => service.id !== target.id
-      );
     },
     SET_PUBLIC_HOSPITAL_SERVICES(state, publicServices) {
       state.publicHospitalServices = publicServices;
@@ -69,20 +67,21 @@ export const services = {
   },
   actions: {
     fetchServicesById({ commit }, id) {
+      const url = `citizens/${id}/hospital-services`;
       return this.$axios
-        .get(`citizens/${id}/hospital-services`)
+        .get(url)
         .then((response) => {
           const services = response.data.hospitalServices;
           commit("SET_HOSPITAL_SERVICES", services);
-          commit("SET_ARCHIVED_HOSPITAL_SERVICES", services);
         })
         .catch((error) => {
           console.error("Error requesting services: ", error);
         });
     },
     fetchHospitalServiceById({ commit }, { id, hospital_service_id }) {
+      const url = `citizens/${id}/hospital-services/${hospital_service_id}`;
       return this.$axios
-        .get(`citizens/${id}/hospital-services/${hospital_service_id}`)
+        .get(url)
         .then((response) => {
           const service = response.data;
           commit("SET_HOSPITAL_SERVICE", service);
@@ -91,17 +90,16 @@ export const services = {
           console.error("Error requesting service: ", error);
         });
     },
-    addHospitalService({ commit, dispatch }, { id, data }) {
+    addHospitalService({ dispatch }, { id, data }) {
+      const url = `citizens/${id}/hospital-services`;
       return this.$axios
-        .post(`citizens/${id}/hospital-services`, data)
-        .then((response) => {
-          const service = response.data;
-          commit("ADD_HOSPITAL_SERVICE", service);
+        .post(url, data)
+        .then(() => {
+          dispatch("fetchServicesById", id);
           store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Added Service",
           });
-          dispatch("fetchServicesById", id);
         })
         .catch((error) => {
           store.commit("alerts/SET_SHOW_ERROR", {
@@ -111,23 +109,19 @@ export const services = {
           console.error("Error adding services: ", error);
         });
     },
-    updateHospitalService(
-      { commit, dispatch },
-      { id, hospital_service_id, data }
-    ) {
+    updateHospitalService({ dispatch }, { id, hospital_service_id, data }) {
+      const url = `citizens/${id}/hospital-services/${hospital_service_id}`;
       return this.$axios
-        .put(`citizens/${id}/hospital-services/${hospital_service_id}`, data)
-        .then((response) => {
-          const updatedHospitalService = response.data;
-          commit("UPDATE_HOSPITAL_SERVICE", updatedHospitalService);
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Updated Service",
-          });
+        .put(url, data)
+        .then(() => {
           dispatch("fetchServicesById", id);
           dispatch("fetchHospitalServiceById", {
             id: id,
             hospital_service_id: hospital_service_id,
+          });
+          store.commit("alerts/SET_SHOW_ALERT", {
+            alert: true,
+            message: "Updated Service",
           });
         })
         .catch((error) => {
@@ -138,17 +132,16 @@ export const services = {
           console.error("Error Updating Hospital Service: ", error);
         });
     },
-    deleteHospitalService({ commit, dispatch }, { id, hospital_service_id }) {
+    deleteHospitalService({ dispatch }, { id, hospital_service_id }) {
+      const url = `citizens/${id}/hospital-services/${hospital_service_id}`;
       return this.$axios
-        .delete(`citizens/${id}/hospital-services/${hospital_service_id}`)
-        .then((response) => {
-          const data = response.data;
-          commit("DELETE_HOSPITAL_SERVICE", data);
+        .delete(url)
+        .then(() => {
+          dispatch("fetchServicesById", id);
           store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Deleted Service",
           });
-          dispatch("fetchServicesById", id);
         })
         .catch((error) => {
           store.commit("alerts/SET_SHOW_ERROR", {
@@ -159,8 +152,9 @@ export const services = {
         });
     },
     fetchPublicServicesById({ commit }, id) {
+      const url = `citizens/${id}/public/hospital-services`;
       return this.$axios
-        .get(`citizens/${id}/public/hospital-services`)
+        .get(url)
         .then((response) => {
           const publicServices = response.data.hospitalServices;
           commit("SET_PUBLIC_HOSPITAL_SERVICES", publicServices);
@@ -169,11 +163,5 @@ export const services = {
           console.error("Error requesting public services: ", error);
         });
     },
-  },
-  getters: {
-    getHospitalServices: (state) => state.hospitalServices,
-    getHospitalService: (state) => state.hospitalService,
-    getArchivedServices: (state) => state.archivedServices,
-    getPublicHospitalServices: (state) => state.publicHospitalServices,
   },
 };
