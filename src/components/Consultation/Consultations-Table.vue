@@ -8,7 +8,7 @@
     :custom-filter="filterOnlyCapsText"
     no-data-text="No Consultations Available"
   >
-    <template v-slot:top v-if="data.length > 0">
+    <template v-slot:top>
       <v-text-field
         v-model="search"
         label="Search"
@@ -16,45 +16,35 @@
         prepend-icon="mdi-magnify"
       ></v-text-field>
     </template>
-    <template v-slot:body="{ items }" v-if="data.length > 0">
-      <tbody>
-        <tr v-for="(item, index) in items" :key="index">
-          <td>{{ item.patient_name }}</td>
-          <td>{{ item.scheduled_date }}</td>
-          <td>{{ item.sex }}</td>
-          <td>{{ item.medical_site }}</td>
-          <td>
-            <div
-              :class="{
-                'text-green': item.status === 'COMPLETED',
-                'text-red': item.status !== 'COMPLETED',
-              }"
+    <template v-slot:[`item.status`]="{ item }">
+      <div
+        :class="{
+          'text-green': item.status === 'COMPLETED',
+          'text-red': item.status !== 'COMPLETED',
+        }"
+      >
+        {{ item.status }}
+      </div>
+    </template>
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-container class="ml-n8" style="width: 120px">
+        <v-row no-gutters justify="center">
+          <v-col cols="auto" align-self="center">
+            <v-icon
+              @click="
+                viewRegistrantService(
+                  item.consultation_id,
+                  item.hospital_service_id
+                )
+              "
+              class="mx-1"
+              color="grey darken-1"
+              dense
+              >mdi-eye</v-icon
             >
-              {{ item.status }}
-            </div>
-          </td>
-          <td>
-            <v-container class="ml-n8" style="width: 120px">
-              <v-row no-gutters justify="center">
-                <v-col cols="auto" align-self="center">
-                  <v-icon
-                    @click="
-                      viewRegistrantService(
-                        item.consultation_id,
-                        item.hospital_service_id
-                      )
-                    "
-                    class="mx-1"
-                    color="grey darken-1"
-                    dense
-                    >mdi-eye</v-icon
-                  >
-                </v-col>
-              </v-row>
-            </v-container>
-          </td>
-        </tr>
-      </tbody>
+          </v-col>
+        </v-row>
+      </v-container>
     </template>
   </v-data-table>
 </template>
@@ -121,7 +111,6 @@ export default {
   },
   watch: {
     consultations(value) {
-      console.log(value);
       this.data = value.map((consultation) => ({
         patient_name: `${consultation.citizen.last_name}, ${
           consultation.citizen.first_name

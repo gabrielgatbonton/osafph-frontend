@@ -6,9 +6,8 @@
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
-    no-data-text="No Files Available"
   >
-    <template v-slot:top v-if="data.length > 0">
+    <template v-slot:top>
       <v-text-field
         v-model="search"
         label="Search"
@@ -16,68 +15,54 @@
         prepend-icon="mdi-magnify"
       ></v-text-field>
     </template>
-    <template v-slot:body="{ items }" v-if="data.length > 0">
-      <tbody>
-        <tr v-for="(item, index) in items" :key="index">
-          <td>{{ item.file_name }}</td>
-          <td>{{ item.document_type }}</td>
-          <td>{{ item.uploaded_by }}</td>
-          <td>{{ item.date_uploaded }}</td>
-          <td>
-            <div
-              :class="{
-                'text-green': item.upload_status === 'COMPLETED',
-                'text-red': item.upload_status !== 'COMPLETED',
-              }"
-            >
-              {{ item.upload_status }}
-            </div>
-          </td>
-          <td>
-            <v-container class="ml-n8" style="width: 120px">
-              <v-row no-gutters justify="center">
-                <v-col cols="auto" align-self="center">
-                  <v-icon
-                    class="mx-1"
-                    color="grey darken-1"
-                    dense
-                    @click="activator(item.file_id, item.hospital_service_id)"
-                    >mdi-eye</v-icon
-                  >
-                </v-col>
-                <v-col cols="auto" align-self="center">
-                  <v-icon
-                    class="mx-1"
-                    color="blue darken-4"
-                    dense
-                    @click="
-                      downloadTrigger(item.file_id, item.hospital_service_id)
-                    "
-                    >mdi-download</v-icon
-                  >
-                </v-col>
-                <v-col cols="auto" align-self="center">
-                  <v-icon
-                    @click="
-                      deleteActivator(item.file_id, item.hospital_service_id)
-                    "
-                    class="mx-1"
-                    color="error"
-                    dense
-                    >mdi-trash-can</v-icon
-                  >
-                </v-col>
-              </v-row>
-            </v-container>
-          </td>
-        </tr>
-      </tbody>
-      <ReusableDeleteDialog
-        :activator="deleteDialog"
-        v-on:dialogResponse="resetActivator"
-        v-on:deleteItem="deleteItem"
-      />
+    <template v-slot:[`item.upload_status`]="{ item }">
+      <div
+        :class="{
+          'text-green': item.upload_status === 'COMPLETED',
+          'text-red': item.upload_status !== 'COMPLETED',
+        }"
+      >
+        {{ item.upload_status }}
+      </div>
     </template>
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-container class="ml-n8" style="width: 120px">
+        <v-row no-gutters justify="center">
+          <v-col cols="auto" align-self="center">
+            <v-icon
+              class="mx-1"
+              color="grey darken-1"
+              dense
+              @click="activator(item.file_id, item.hospital_service_id)"
+              >mdi-eye</v-icon
+            >
+          </v-col>
+          <v-col cols="auto" align-self="center">
+            <v-icon
+              class="mx-1"
+              color="blue darken-4"
+              dense
+              @click="downloadTrigger(item.file_id, item.hospital_service_id)"
+              >mdi-download</v-icon
+            >
+          </v-col>
+          <v-col cols="auto" align-self="center">
+            <v-icon
+              @click="deleteActivator(item.file_id, item.hospital_service_id)"
+              class="mx-1"
+              color="error"
+              dense
+              >mdi-trash-can</v-icon
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+    </template>
+    <ReusableDeleteDialog
+      :activator="deleteDialog"
+      v-on:dialogResponse="resetActivator"
+      v-on:deleteItem="deleteItem"
+    />
   </v-data-table>
 </template>
 
