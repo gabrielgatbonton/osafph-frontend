@@ -15,8 +15,9 @@ export const categories = {
   },
   actions: {
     fetchCategories({ commit }) {
+      const url = `enums/categories`;
       return this.$axios
-        .get("/categories")
+        .get(url)
         .then((response) => {
           const categories = response.data.categories;
           const descriptions = categories.map((categories) => categories.description);

@@ -10,13 +10,14 @@ export const professions = {
   }),
   mutations: {
     SET_PROFESSIONS(state, professions) {
-        state.professions = professions;
-    }
+      state.professions = professions;
+    },
   },
   actions: {
     fetchProfessions({ commit }) {
+      const url = `enums/professions`;
       return this.$axios
-        .get(`professions`)
+        .get(url)
         .then((response) => {
           const professions = response.data.professions;
           commit("SET_PROFESSIONS", professions);

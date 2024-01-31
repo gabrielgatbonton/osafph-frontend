@@ -12,7 +12,8 @@
               <v-autocomplete
                 v-model="payload.service_type"
                 label="Service Type"
-                :items="services"
+                :items="getServiceTypes"
+                item-text="name"
                 @change="(value) => initService(value)"
                 @blur="$v.payload.service_type.$touch()"
                 :error-messages="errorMessages.service_type"
@@ -89,7 +90,6 @@ export default {
     hospital_service_id: null,
     services_choices: null,
     validation: false,
-    services: ["CONSULTATION", "DIAGNOSTIC", "LABORATORY", "DIALYSIS"],
     minDate: new Date().toISOString().slice(0, 10),
   }),
   components: {
@@ -151,6 +151,7 @@ export default {
       "getLaboratoryTypes",
       "getDiagnosticTypes",
       "getCrowdFundings",
+      "getServiceTypes",
     ]),
   },
   watch: {

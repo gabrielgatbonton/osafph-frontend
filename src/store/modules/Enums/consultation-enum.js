@@ -27,7 +27,7 @@ export const consultation_enum = {
     },
     SET_DIAGNOSTICS(state, diagnostics) {
       state.diagnostics = diagnostics;
-    }
+    },
   },
   actions: {
     fetchCheckboxes({ dispatch }) {
@@ -37,11 +37,12 @@ export const consultation_enum = {
     },
     fetchMoreCheckboxes({ dispatch }) {
       dispatch("fetchDiagnosis");
-      dispatch("fetchDiagnostics")
+      dispatch("fetchDiagnostics");
     },
     fetchHistoryOfPresentIllnesses({ commit }) {
+      const url = `enums/consultation-forms/history-of-present-illnesses`;
       return this.$axios
-        .get(`consultation-forms/history-of-present-illnesses`)
+        .get(url)
         .then((response) => {
           const history = response.data.history_of_present_illnesses;
           commit("SET_HISTORY", history);
@@ -54,8 +55,9 @@ export const consultation_enum = {
         });
     },
     fetchPastMedicalHistories({ commit }) {
+      const url = `enums/consultation-forms/past-medical-histories`;
       return this.$axios
-        .get(`consultation-forms/past-medical-histories`)
+        .get(url)
         .then((response) => {
           const history = response.data.past_medical_histories;
           commit("SET_PAST_MEDICAL_HISTORY", history);
@@ -65,37 +67,43 @@ export const consultation_enum = {
         });
     },
     fetchFamilyMedicalHistories({ commit }) {
+      const url = `enums/consultation-forms/family-medical-histories`;
       return this.$axios
-        .get(`consultation-forms/family-medical-histories`)
+        .get(url)
         .then((response) => {
           const history = response.data.family_medical_histories;
           commit("SET_FAMILY_MEDICAL_HISTORY", history);
         })
         .catch((error) => {
-          console.error("Error Fetching Family Medical Histories ENUM: ", error);
+          console.error(
+            "Error Fetching Family Medical Histories ENUM: ",
+            error
+          );
         });
     },
     fetchDiagnosis({ commit }) {
+      const url = `enums/consultation-forms/diagnosis`;
       return this.$axios
-      .get(`consultation-forms/diagnosis`)
-      .then((response) => {
-        const diagnosis = response.data.diagnosis;
-        commit("SET_DIAGNOSIS", diagnosis);
-      })
-      .catch((error) => {
-        console.error("Error Fetching Diagnosis ENUM: ", error);
-      });
+        .get(url)
+        .then((response) => {
+          const diagnosis = response.data.diagnosis;
+          commit("SET_DIAGNOSIS", diagnosis);
+        })
+        .catch((error) => {
+          console.error("Error Fetching Diagnosis ENUM: ", error);
+        });
     },
     fetchDiagnostics({ commit }) {
+      const url = `enums/diagnostic-types`;
       return this.$axios
-      .get(`diagnostic-types`)
-      .then((response) => {
-        const diagnostics = response.data.diagnosticType;
-        commit("SET_DIAGNOSTICS", diagnostics);
-      })
-      .catch((error) => {
-        console.error("Error Fetching Diagnostics ENUM: ", error);
-      });
+        .get(url)
+        .then((response) => {
+          const diagnostics = response.data.diagnosticType;
+          commit("SET_DIAGNOSTICS", diagnostics);
+        })
+        .catch((error) => {
+          console.error("Error Fetching Diagnostics ENUM: ", error);
+        });
     },
   },
   getters: {

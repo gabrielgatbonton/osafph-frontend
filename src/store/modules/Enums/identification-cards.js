@@ -15,8 +15,9 @@ export const identification_cards = {
   },
   actions: {
     fetchIdentificationCards({ commit }) {
+      const url = `enums/identification-cards`;
       return this.$axios
-        .get(`identification-cards`)
+        .get(url)
         .then((response) => {
           const identification_cards = response.data.identificationCards;
           commit("SET_IDENTIFICATION_CARDS", identification_cards);

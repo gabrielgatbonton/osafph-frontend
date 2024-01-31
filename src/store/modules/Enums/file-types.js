@@ -18,7 +18,7 @@ export const file_types = {
   },
   actions: {
     fetchFileTypes({ commit }) {
-      const url = `hospital-services/files/document-types`;
+      const url = `enums/hospital-services/files/document-types`;
       return this.$axios
         .get(url)
         .then((response) => {
