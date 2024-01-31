@@ -12,7 +12,7 @@
               <v-autocomplete
                 v-model="payload.service_type"
                 label="Service Type"
-                :items="getServiceTypes"
+                :items="service_types"
                 item-text="name"
                 @change="(value) => initService(value)"
                 @blur="$v.payload.service_type.$touch()"
@@ -26,8 +26,8 @@
               "
               ref="generalFormat"
               :services_choices="services_choices"
-              :crowd_fundings="getCrowdFundings"
-              :medical_sites="getHospitals"
+              :crowd_fundings="crowd_fundings"
+              :medical_sites="hospitals"
               :hospitalService="hospitalService"
               :type="payload.service_type"
               v-on:payload="assignPayload"
@@ -39,9 +39,9 @@
                 payload.service_type !== null
               "
               ref="dialysisFormat"
-              :crowd_fundings="getCrowdFundings"
+              :crowd_fundings="crowd_fundings"
               :hospitalService="hospitalService"
-              :medical_sites="getHospitals"
+              :medical_sites="hospitals"
               v-on:payload="assignPayload"
               v-on:validationSuccess="checkValidation"
             />
@@ -61,7 +61,7 @@
 
 <script>
 // import { format, parse } from "date-fns";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import GeneralFormat from "./Service Format/GeneralFormat.vue";
 import DialysisFormat from "./Service Format/DialysisFormat.vue";
 import ServiceDialogMixin from "../../mixins/Validation/ServiceRequestValidation/ServiceDialog";
@@ -100,11 +100,11 @@ export default {
     ...mapActions("services_choices", ["fetchData"]),
     initService(service) {
       if (service === "CONSULTATION") {
-        this.services_choices = this.getSpecialties;
+        this.services_choices = this.specialties;
       } else if (service === "DIAGNOSTIC") {
-        this.services_choices = this.getDiagnosticTypes;
+        this.services_choices = this.diagnostic_types;
       } else if (service === "LABORATORY") {
-        this.services_choices = this.getLaboratoryTypes;
+        this.services_choices = this.laboratory_types;
       }
     },
     assignPayload(payload) {
@@ -145,13 +145,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("services_choices", [
-      "getHospitals",
-      "getSpecialties",
-      "getLaboratoryTypes",
-      "getDiagnosticTypes",
-      "getCrowdFundings",
-      "getServiceTypes",
+    ...mapState("services_choices", [
+      "service_types",
+      "specialties",
+      "laboratory_types",
+      "diagnostic_types",
+      "hospitals",
+      "crowd_fundings",
     ]),
   },
   watch: {

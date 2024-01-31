@@ -16,12 +16,6 @@ export const services_choices = {
   }),
   getters: {
     getDoctors: (state) => state.doctors,
-    getSpecialties: (state) => state.specialties,
-    getLaboratoryTypes: (state) => state.laboratory_types,
-    getDiagnosticTypes: (state) => state.diagnostic_types,
-    getHospitals: (state) => state.hospitals,
-    getCrowdFundings: (state) => state.crowd_fundings,
-    getServiceTypes: (state) => state.service_types,
   },
   mutations: {
     SET_DOCTORS(state, doctors) {
@@ -54,7 +48,7 @@ export const services_choices = {
   },
   actions: {
     fetchData({ dispatch }) {
-      dispatch("fetchDoctors");
+      // dispatch("fetchDoctors");
       dispatch("fetchSpecialties");
       dispatch("fetchLaboratoryTypes");
       dispatch("fetchDiagnosticTypes");
