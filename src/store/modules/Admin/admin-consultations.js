@@ -11,6 +11,11 @@ export const admin_consultations = {
     consultation: null,
     consultation_form: null,
   }),
+  getters: {
+    getAdminConsultations: (state) => state.consultations,
+    getAdminConsultation: (state) => state.consultation,
+    getAdminConsultationForm: (state) => state.consultation_form,
+  },
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
       state.consultations = consultations;
@@ -25,15 +30,16 @@ export const admin_consultations = {
       state.consultation_form = consultation_form;
     },
     DELETE_CONSULTATION_FORM(state, target) {
-      if(state.consultation_form.consultation_id === target.consultation_id) {
+      if (state.consultation_form.consultation_id === target.consultation_id) {
         state.consultation_form = null;
       }
     },
   },
   actions: {
     fetchConsultations({ commit }) {
+      const url = `admin/consultations`;
       return this.$axios
-        .get(`admin/consultations`)
+        .get(url)
         .then((response) => {
           const consultations = response.data.consultations;
           commit("SET_CONSULTATIONS", consultations);
@@ -43,8 +49,9 @@ export const admin_consultations = {
         });
     },
     fetchAdminConsultationById({ commit }, consultation_id) {
+      const url = `admin/consultations/${consultation_id}`;
       return this.$axios
-        .get(`admin/consultations/${consultation_id}`)
+        .get(url)
         .then((response) => {
           const consultation = response.data;
           commit("SET_CONSULTATION", consultation);
@@ -54,8 +61,9 @@ export const admin_consultations = {
         });
     },
     fetchAdminConsultationFormById({ commit }, consultation_id) {
+      const url = `admin/consultations/${consultation_id}/consultation-forms`;
       return this.$axios
-        .get(`admin/consultations/${consultation_id}/consultation-forms`)
+        .get(url)
         .then((response) => {
           const consultation_form = response.data.consultation_form;
           commit("SET_CONSULTATION_FORM", consultation_form);
@@ -68,11 +76,9 @@ export const admin_consultations = {
       { commit },
       { consultation_id, consultation_form_id, data }
     ) {
+      const url = `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}`;
       return this.$axios
-        .put(
-          `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}`,
-          data
-        )
+        .put(url, data)
         .then((response) => {
           const updatedConsultationForm = response.data;
           commit("UPDATE_CONSULTATION_FORM", updatedConsultationForm);
@@ -90,13 +96,12 @@ export const admin_consultations = {
         });
     },
     deleteAdminConsultationFormById(
-      { commit, dispatch},
+      { commit, dispatch },
       { consultation_id, consultation_form_id }
     ) {
+      const url = `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}`;
       return this.$axios
-        .delete(
-          `admin/consultations/${consultation_id}/consultation-forms/${consultation_form_id}`
-        )
+        .delete(url)
         .then((response) => {
           const data = response.data;
           commit("DELETE_CONSULTATION_FORM", data);
@@ -114,10 +119,5 @@ export const admin_consultations = {
           console.error("Error Deleting Consultation Form: ", error);
         });
     },
-  },
-  getters: {
-    getAdminConsultations: (state) => state.consultations,
-    getAdminConsultation: (state) => state.consultation,
-    getAdminConsultationForm: (state) => state.consultation_form,
   },
 };
