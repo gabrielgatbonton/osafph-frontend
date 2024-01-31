@@ -94,7 +94,7 @@ export const consultation_enum = {
         });
     },
     fetchDiagnostics({ commit }) {
-      const url = `enums/diagnostic-types`;
+      const url = `enums/hospital-services/diagnostic-types`;
       return this.$axios
         .get(url)
         .then((response) => {

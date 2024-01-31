@@ -7,53 +7,55 @@ Vue.use(Vuex);
 export const consultations = {
   namespaced: true,
   state: () => ({
-    pendingConsultations: [],
-    archivedConsultations: [],
+    consultations: [],
     consultation: null,
     doctorConsultationForms: [],
     consultation_form: null,
   }),
   getters: {
-    getPendingConsultations: (state) => state.pendingConsultations,
-    getArchivedConsultations: (state) => state.archivedConsultations,
+    getPendingConsultations: (state) => {
+      if (state.consultations.consultations) {
+        const pendingConsultations = state.consultations.consultations
+          .filter(
+            (consultation) =>
+              consultation.hospital_service.status.includes("PENDING") ||
+              consultation.hospital_service.status.includes("IN PROGRESS")
+          )
+          .sort((a, b) => {
+            //Filter to Older to Newest Dates
+            const dateA = new Date(a.hospital_service.scheduled_date);
+            const dateB = new Date(b.hospital_service.scheduled_date);
+            return dateA - dateB;
+          });
+        return pendingConsultations;
+      }
+    },
+    getArchivedConsultations: (state) => {
+      if (state.consultations.consultations) {
+        const archivedConsultations = state.consultations.consultations
+          .filter(
+            (consultation) =>
+              consultation.hospital_service.status.includes("COMPLETED") ||
+              consultation.hospital_service.status.includes("UNATTENDED")
+          )
+          .sort((a, b) => {
+            //Filter to Newer to Oldest Dates
+            const dateA = new Date(b.hospital_service.scheduled_date);
+            const dateB = new Date(a.hospital_service.scheduled_date);
+            return dateA - dateB;
+          });
+        return archivedConsultations;
+      }
+    },
     getConsultation: (state) => state.consultation,
     getConsultationForm: (state) => state.consultation_form,
   },
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
-      const pendingConsultations = consultations.consultations
-        .filter(
-          (consultation) =>
-            consultation.hospital_service.status.includes("PENDING") ||
-            consultation.hospital_service.status.includes("IN PROGRESS")
-        )
-        .sort((a, b) => {
-          //Filter to Older to Newest Dates
-          const dateA = new Date(a.hospital_service.scheduled_date);
-          const dateB = new Date(b.hospital_service.scheduled_date);
-          return dateA - dateB;
-        });
-      state.pendingConsultations = pendingConsultations;
-
-      const archivedConsultations = consultations.consultations
-        .filter(
-          (consultation) =>
-            consultation.hospital_service.status.includes("COMPLETED") ||
-            consultation.hospital_service.status.includes("UNATTENDED")
-        )
-        .sort((a, b) => {
-          //Filter to Newer to Oldest Dates
-          const dateA = new Date(b.hospital_service.scheduled_date);
-          const dateB = new Date(a.hospital_service.scheduled_date);
-          return dateA - dateB;
-        });
-      state.archivedConsultations = archivedConsultations;
+      state.consultations = consultations;
     },
     SET_CONSULTATION(state, consultation) {
       state.consultation = consultation;
-    },
-    ADD_DOCTOR_CONSULTATION(state, consultation) {
-      state.doctorConsultationForms.push(consultation);
     },
     UPDATE_CONSULTATION_FORM(state, { data }) {
       // const consultation_form = state.doctorConsultationForms.find((form) => {
@@ -69,8 +71,9 @@ export const consultations = {
   },
   actions: {
     fetchConsultations({ commit }) {
+      const url = `doctors/consultations`;
       return this.$axios
-        .get(`doctors/consultations`)
+        .get(url)
         .then((response) => {
           const consultations = response.data;
           commit("SET_CONSULTATIONS", consultations);
@@ -80,8 +83,9 @@ export const consultations = {
         });
     },
     fetchConsultationById({ commit }, consultation_id) {
+      const url = `doctors/consultations/${consultation_id}`;
       return this.$axios
-        .get(`doctors/consultations/${consultation_id}`)
+        .get(url)
         .then((response) => {
           const consultation = response.data;
           commit("SET_CONSULTATION", consultation);
@@ -91,7 +95,6 @@ export const consultations = {
         });
     },
     fetchConsultationFormById({ commit }, consultation_id) {
-      console.log(consultation_id);
       const url = `/doctors/consultations/${consultation_id}/consultation-forms`;
       return this.$axios
         .get(url)
@@ -103,15 +106,13 @@ export const consultations = {
           console.error("Error Fetching Consultation Form: ", error);
         });
     },
-    addConsultationToId({ commit }, { consultation_id, data }) {
+    addConsultationToId({ dispatch }, { consultation_id, data }) {
+      const url = `doctors/consultations/${consultation_id}/consultation-forms`;
       return this.$axios
-        .post(
-          `doctors/consultations/${consultation_id}/consultation-forms`,
-          data
-        )
-        .then((response) => {
-          const consultation = response.data;
-          commit("ADD_DOCTOR_CONSULTATION", consultation);
+        .post(url, data)
+        .then(() => {
+          dispatch("fetchConsultations");
+          dispatch("fetchConsultationById", consultation_id);
           store.commit("alerts/SET_SHOW_ALERT", {
             alert: true,
             message: "Added Consultation Form",
