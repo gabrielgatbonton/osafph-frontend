@@ -14,7 +14,7 @@
       <v-col cols="12" v-if="!hospitalService">
         <v-autocomplete
           v-model="payload.crowd_funding_backer"
-          label="Crowd Funding"
+          label="Funding"
           :items="crowd_fundings"
           item-text="backer"
         ></v-autocomplete>
@@ -23,7 +23,7 @@
         <v-autocomplete
           v-model="payload.dialysis_machine"
           label="Dialysis Machine"
-          :items="getDialysisMachines"
+          :items="dialysis_machines"
           item-text="name"
           @blur="$v.payload.dialysis_machine.$touch()"
           :error-messages="errorMessages.dialysis_machine"
@@ -32,16 +32,16 @@
       <v-col cols="12" v-if="!hospitalService">
         <v-checkbox
           v-model="payload.all_items_sponsored"
-          label="Items included are sponsored by Crowd Funding"
+          label="Items included are sponsored by Funding"
           @change="pushToParent"
         ></v-checkbox>
         <v-select
           v-model="payload.dialysis_items"
           chips
           multiple
-          label="Select Items to avail"
-          :items="getDialysisItems"
-          item-text="name"
+          label="Select Packages to avail"
+          :items="dialysis_packages"
+          item-text="package_name"
           @blur="$v.payload.dialysis_items.$touch()"
           :error-messages="errorMessages.dialysis_items"
         ></v-select>
@@ -49,7 +49,7 @@
       <v-col cols="12" v-if="!hospitalService">
         <v-checkbox
           v-model="payload.all_sessions_sponsored"
-          label="Sessions sponsored by Crowd Funding"
+          label="Sessions sponsored by Funding"
           @change="pushToParent"
         ></v-checkbox>
         <v-text-field
@@ -128,7 +128,7 @@
 
 <script>
 import { format, parseISO } from "date-fns";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import DialysisFormatMixin from "@/mixins/Validation/ServiceRequestValidation/DialysisFormat";
 export default {
   name: "DialysisFormat",
@@ -251,7 +251,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("dialysis", ["getDialysisMachines", "getDialysisItems"]),
+    ...mapState("dialysis", ["dialysis_machines", "dialysis_packages"]),
   },
   created() {
     this.fetchEnums();
@@ -279,4 +279,3 @@ export default {
 </script>
 
 <style scoped></style>
-@/mixins/Validation/ServiceRequestValidation/DialysisFormat

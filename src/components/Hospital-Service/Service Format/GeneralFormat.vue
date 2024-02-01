@@ -24,7 +24,7 @@
       <v-col cols="12" v-if="type !== 'CONSULTATION'">
         <v-autocomplete
           v-model="payload.crowd_funding_backer"
-          label="Crowd Funding"
+          label="Funding"
           :items="crowd_fundings"
           item-text="backer"
         ></v-autocomplete>

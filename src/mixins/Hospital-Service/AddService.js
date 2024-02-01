@@ -70,7 +70,7 @@ export default {
             ),
             session: item.session,
           })),
-          dialysis_items: payload.dialysis_items,
+          dialysis_package: payload.dialysis_items,
           all_items_sponsored: payload.all_items_sponsored,
           dialysis_machine: payload.dialysis_machine,
           all_sessions_sponsored: payload.all_sessions_sponsored,

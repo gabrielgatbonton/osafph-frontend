@@ -29,7 +29,7 @@ export const dialysis = {
   actions: {
     fetchEnums({ dispatch }) {
       dispatch("fetchDialysisMachines");
-      dispatch("fetchDialysisItems");
+      dispatch("fetchDialysisPackages");
     },
     fetchDialysisMachines({ commit }) {
       const url = `enums/hospital-services/dialysis/machines`;
