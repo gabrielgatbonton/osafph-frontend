@@ -62,9 +62,9 @@ import { format, parseISO } from "date-fns";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-import PatientInformationComponent from "@/components/Reusable/PatientInformationComponent.vue";
-import PatientServiceComponent from "@/components/Reusable/PatientServiceComponent.vue";
-import ServiceStatusComponent from "@/components/Reusable/ServiceStatusComponent.vue";
+import PatientInformationComponent from "@/components/Reusable Components/PatientInformationComponent.vue";
+import PatientServiceComponent from "@/components/Reusable Components/PatientServiceComponent.vue";
+import ServiceStatusComponent from "@/components/Reusable Components/ServiceStatusComponent.vue";
 export default {
   mixins: [EditServiceMixin, ErrorAlertsLogic],
   data: () => ({

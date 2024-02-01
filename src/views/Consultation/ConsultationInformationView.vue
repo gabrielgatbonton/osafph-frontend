@@ -83,10 +83,10 @@ import { format, parseISO } from "date-fns";
 import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import DeleteDialog from "@/mixins/DeleteDialog";
-import ServiceStatusComponent from "@/components/Reusable/ServiceStatusComponent.vue";
-import PatientInformationComponent from "@/components/Reusable/PatientInformationComponent.vue";
-import PatientServiceComponent from "@/components/Reusable/PatientServiceComponent.vue";
-import PreviousConsultationsComponent from "@/components/Reusable/PreviousConsultationsComponent.vue";
+import ServiceStatusComponent from "@/components/Reusable Components/ServiceStatusComponent.vue";
+import PatientInformationComponent from "@/components/Reusable Components/PatientInformationComponent.vue";
+import PatientServiceComponent from "@/components/Reusable Components/PatientServiceComponent.vue";
+import PreviousConsultationsComponent from "@/components/Reusable Components/PreviousConsultationsComponent.vue";
 export default {
   name: "ConsultationInformationView",
   mixins: [DeleteDialog, ErrorAlertsLogic],

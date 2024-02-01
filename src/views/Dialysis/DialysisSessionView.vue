@@ -56,9 +56,9 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { format, parseISO } from "date-fns";
-import PatientServiceComponent from "@/components/Reusable/PatientServiceComponent.vue";
-import PatientInformationComponent from "@/components/Reusable/PatientInformationComponent.vue";
-import ServiceStatusComponent from "@/components/Reusable/ServiceStatusComponent.vue";
+import PatientServiceComponent from "@/components/Reusable Components/PatientServiceComponent.vue";
+import PatientInformationComponent from "@/components/Reusable Components/PatientInformationComponent.vue";
+import ServiceStatusComponent from "@/components/Reusable Components/ServiceStatusComponent.vue";
 export default {
   name: "DialysisSessionView",
   data: () => ({
