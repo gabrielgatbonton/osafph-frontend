@@ -37,8 +37,6 @@
         ></v-checkbox>
         <v-select
           v-model="payload.dialysis_items"
-          chips
-          multiple
           label="Select Packages to avail"
           :items="dialysis_packages"
           item-text="package_name"
@@ -46,6 +44,7 @@
           :error-messages="errorMessages.dialysis_items"
         ></v-select>
       </v-col>
+      <!-- multiple and chips ^ -->
       <v-col cols="12" v-if="!hospitalService">
         <v-checkbox
           v-model="payload.all_sessions_sponsored"
@@ -153,7 +152,8 @@ export default {
       total_sessions: null,
       hospital: null,
       schedule: [],
-      dialysis_items: [],
+      // dialysis_items = [],
+      dialysis_items: null,
       all_items_sponsored: false,
       dialysis_machine: null,
       all_sessions_sponsored: false,

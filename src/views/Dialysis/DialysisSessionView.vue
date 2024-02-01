@@ -186,6 +186,14 @@ export default {
             ),
           },
           {
+            title: "Municipality",
+            content: this.session.citizen.municipality,
+          },
+          {
+            title: "Barangay",
+            content: this.session.citizen.barangay,
+          },
+          {
             title: "Address",
             content: this.session.citizen.address,
           },

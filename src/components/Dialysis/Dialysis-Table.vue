@@ -76,8 +76,8 @@ export default {
     headers() {
       return [
         {
-          text: "DIALYSIS ID",
-          value: "dialysis_id",
+          text: "PATIENT NAME",
+          value: "patient_name",
         },
         {
           text: "DIALYSIS MACHINE",
@@ -118,8 +118,10 @@ export default {
   },
   watch: {
     dialysis(value) {
+      console.log(value);
       this.data = value.map((dialysis) => ({
         dialysis_id: dialysis.dialysis_session_id,
+        patient_name: dialysis.citizen_full_name,
         dialysis_machine: dialysis.dialysis_machine,
         session: dialysis.session,
         scheduled_date: format(

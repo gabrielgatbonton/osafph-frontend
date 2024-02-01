@@ -382,6 +382,14 @@ export default {
             ),
           },
           {
+            title: "Municipality",
+            content: this.consultation.citizen.municipality,
+          },
+          {
+            title: "Barangay",
+            content: this.consultation.citizen.barangay,
+          },
+          {
             title: "Address",
             content: this.consultation.citizen.address,
           },

@@ -206,6 +206,14 @@ export default {
             ),
           },
           {
+            title: "Municipality",
+            content: this.registrant.citizen.barangay.municipality.municipality_name,
+          },
+          {
+            title: "Barangay",
+            content: this.registrant.citizen.barangay.barangay_name,
+          },
+          {
             title: "Address",
             content: this.registrant.citizen.address,
           },
