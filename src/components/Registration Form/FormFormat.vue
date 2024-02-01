@@ -1,24 +1,44 @@
 <template>
   <div>
-    <v-stepper v-model="stepper" elevation="0" non-linear>
+    <v-stepper v-model="stepper" elevation="0" :non-linear="nonLinearFunction">
       <v-stepper-header>
-        <v-stepper-step :complete="stepper > 1" step="1" editable>
+        <v-stepper-step
+          :complete="stepper > 1"
+          step="1"
+          :editable="nonLinearFunction"
+        >
           Category
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :complete="stepper > 2" step="2" editable>
+        <v-stepper-step
+          :complete="stepper > 2"
+          step="2"
+          :editable="nonLinearFunction"
+        >
           Personal Details
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :complete="stepper > 3" step="3" editable>
+        <v-stepper-step
+          :complete="stepper > 3"
+          step="3"
+          :editable="nonLinearFunction"
+        >
           Address
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :complete="stepper > 4" step="4" editable>
+        <v-stepper-step
+          :complete="stepper > 4"
+          step="4"
+          :editable="nonLinearFunction"
+        >
           Emergency Contact
         </v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step :complete="stepper > 5" step="5" editable>
+        <v-stepper-step
+          :complete="stepper > 5"
+          step="5"
+          :editable="nonLinearFunction"
+        >
           Employment Details
         </v-stepper-step>
       </v-stepper-header>
@@ -202,6 +222,9 @@ export default {
         return data;
       }
       return null;
+    },
+    nonLinearFunction() {
+      return this.id ? true : false;
     },
   },
   methods: {

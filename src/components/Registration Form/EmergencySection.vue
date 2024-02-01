@@ -39,14 +39,14 @@
 </template>
 
 <script>
-import EmergencySectionValidation from '@/mixins/Validation/RegistrationFormValidation/EmergencySectionValidation';
+import EmergencySectionValidation from "@/mixins/Validation/RegistrationFormValidation/EmergencySectionValidation";
 export default {
   name: "EmergencySection",
   mixins: [EmergencySectionValidation],
   props: {
     editData: {
       required: false,
-    }
+    },
   },
   data: () => ({
     data: {
@@ -57,20 +57,24 @@ export default {
   }),
   methods: {
     continueForm() {
-      this.$emit("data", this.data);
-      this.$emit("stepper", (this.stepper = 5));
+      this.$v.$touch();
+
+      if (!this.$v.$invalid) {
+        this.$emit("data", this.data);
+        this.$emit("stepper", (this.stepper = 5));
+      }
     },
     asyncPayload() {
       if (this.editData) {
         this.$emit("data", this.data);
       }
-    }
+    },
   },
   watch: {
     editData(value) {
       this.data = Object.assign({}, this.data, value);
-    }
-  }
+    },
+  },
 };
 </script>
 
