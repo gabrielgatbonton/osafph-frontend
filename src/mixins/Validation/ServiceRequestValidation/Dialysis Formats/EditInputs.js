@@ -4,7 +4,7 @@ export default {
     payload: {
       //Edit
       scheduled_date: { required },
-      date_released: { required },
+      date_released: {},
       scheduled_session: { required },
       status: { required },
       remarks: {},
@@ -26,11 +26,11 @@ export default {
           errors.scheduled_date.push("Scheduled Date is required");
       }
 
-      errors.date_released = [];
-      if (this.$v.payload.date_released.$dirty) {
-        !this.$v.payload.date_released.required &&
-          errors.date_released.push("Date Released is required");
-      }
+      // errors.date_released = [];
+      // if (this.$v.payload.date_released.$dirty) {
+      //   !this.$v.payload.date_released.required &&
+      //     errors.date_released.push("Date Released is required");
+      // }
 
       errors.scheduled_session = [];
       if (this.$v.payload.scheduled_session.$dirty) {

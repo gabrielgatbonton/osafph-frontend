@@ -43,7 +43,7 @@ export default {
               )
             : null,
           status: payload.status,
-          remarks: payload.remarks,
+          remarks: payload.remarks !== "" ? payload.remarks : null,
         };
       } else if (payload.service_type === "DIAGNOSTIC") {
         data = {
@@ -61,7 +61,7 @@ export default {
               )
             : null,
           status: payload.status,
-          remarks: payload.remarks,
+          remarks: payload.remarks !== "" ? payload.remarks : null,
           crowd_funding_backer: payload.crowd_funding_backer,
         };
       } else if (payload.service_type === "LABORATORY") {
@@ -80,7 +80,7 @@ export default {
               )
             : null,
           status: payload.status,
-          remarks: payload.remarks,
+          remarks: payload.remarks !== "" ? payload.remarks : null,
           crowd_funding_backer: payload.crowd_funding_backer,
         };
       } else if (payload.service_type === "DIALYSIS") {
@@ -100,7 +100,7 @@ export default {
               )
             : null,
           status: payload.status,
-          remarks: payload.remarks,
+          remarks: payload.remarks !== "" ? payload.remarks : null,
           // crowd_funding_backer: payload.crowd_funding_backer,
         };
       }
