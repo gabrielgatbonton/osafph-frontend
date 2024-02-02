@@ -135,7 +135,7 @@ export default {
           },
           {
             title: "Dialysis Machine",
-            content: this.session.dialysis_machine,
+            content: this.session.machine,
           },
           {
             title: "Cost of Service",
@@ -154,7 +154,8 @@ export default {
         ],
         items_availed: {
           service_type: this.session.hospital_service.service_type,
-          items: this.session.dialysis_items,
+          package_name: this.session.dialysis_package.name,
+          items: this.session.dialysis_package.dialysis_items,
         },
       };
     },

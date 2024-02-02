@@ -164,7 +164,8 @@ export default {
         ],
         items_availed: {
           service_type: this.service.hospitalService.service_type,
-          items: this.service.dialysis_items,
+          package_name: this.service.hospitalService.dialysis_package.name,
+          items: this.service.hospitalService.dialysis_package.dialysis_items,
         },
       };
     },

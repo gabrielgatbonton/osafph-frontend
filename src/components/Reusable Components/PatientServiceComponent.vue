@@ -32,7 +32,7 @@
               <v-expansion-panel-header
                 class="text-subtitle-1 font-weight-bold"
               >
-                Items Availed
+                {{ serviceInformation.items_availed.package_name }}
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-container fluid>
