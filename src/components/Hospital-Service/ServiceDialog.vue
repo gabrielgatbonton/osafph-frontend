@@ -113,16 +113,29 @@ export default {
           this.payload[key] = payload[key];
         }
       }
-      console.log("Passed Data", this.payload);
+      // console.log("Passed Data", this.payload);
     },
     submitForm() {
       if (this.hospitalService) {
-        this.$emit(
-          "updateService",
-          this.payload,
-          this.citizen_id,
-          this.hospital_service_id
-        );
+        this.$v.$touch();
+
+        if (this.payload.service_type !== "DIALYSIS") {
+          // Call the touchValidations method in the child component
+          this.$refs.generalFormat.touchValidations();
+        } else {
+          this.$refs.dialysisFormat.touchValidations();
+        }
+
+        if (!this.$v.$invalid && this.validation) {
+          this.$emit(
+            "updateService",
+            this.payload,
+            this.citizen_id,
+            this.hospital_service_id
+          );
+          this.validation = false;
+          this.$v.$reset();
+        }
       } else {
         this.$v.$touch();
 
@@ -204,4 +217,3 @@ export default {
   overflow-y: auto;
 }
 </style>
-../../mixins/Validation/ServiceRequestValidation/ServiceDialog

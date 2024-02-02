@@ -133,7 +133,6 @@ export const services_choices = {
         .get(url)
         .then((response) => {
           const types = response.data.service_types;
-          console.log(types);
           commit("SET_SERVICE_TYPES", types);
         })
         .catch((error) => {

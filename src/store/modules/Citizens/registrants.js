@@ -105,7 +105,6 @@ export const registrants = {
         .get(url)
         .then((response) => {
           const registrants = response.data.citizens;
-          console.log(registrants);
           commit("SET_REGISTRANTS", registrants);
         })
         .catch((error) => {
