@@ -128,7 +128,17 @@ export default {
       this.dialog = false;
     },
     resetFilter() {
+      //Reset Query
       this.$emit("filterQuery", {});
+
+      //Reset Local Values
+      this.filter_type = [];
+      this.sex = [];
+      this.category = [];
+      this.barangay = [];
+      this.dialysis_machine = [];
+
+      //Close Values
       this.dialog = false;
     },
   },
