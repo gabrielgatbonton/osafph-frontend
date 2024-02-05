@@ -1,7 +1,27 @@
 <template>
-  <v-container fluid class="mx-auto">
+  <v-container fluid class="mx-auto pa-0">
+    <v-row no-gutters justify="center" class="pa-0">
+      <v-col cols="auto">
+        <v-tabs centered>
+          <v-tab>Information</v-tab>
+          <v-tab>Sessions</v-tab>
+          <v-tab-item>
+            <InformationInputs
+              v-if="!hospitalService && dialysis_packages"
+              :crowd_fundings="crowd_fundings"
+              :medical_sites="medical_sites"
+              :dialysis_machines="dialysis_machines"
+              :dialysis_packages="dialysis_packages"
+            />
+          </v-tab-item>
+          <v-tab-item>
+            <SessionInputs />
+          </v-tab-item>
+        </v-tabs>
+      </v-col>
+    </v-row>
     <v-row>
-      <v-col cols="12">
+      <!-- <v-col cols="12">
         <v-autocomplete
           v-model="payload.hospital"
           label="Medical Site"
@@ -20,22 +40,22 @@
           @blur="$v.payload.dialysis_machine.$touch()"
           :error-messages="errorMessages.dialysis_machine"
         ></v-autocomplete>
-      </v-col>
-      <CreateInputs
+      </v-col> -->
+      <!-- <CreateInputs
         v-if="!hospitalService && dialysis_packages"
         :crowd_fundings="crowd_fundings"
         :dialysis_packages="dialysis_packages"
         @payload="assignPayload"
         @validationSuccess="checkValidation"
         ref="createInputs"
-      />
-      <EditInputs
+      /> -->
+      <!-- <EditInputs
         v-if="hospitalService"
         :hospitalService="hospitalService"
         @payload="assignPayload"
         @validationSuccess="checkValidation"
         ref="editInputs"
-      />
+      /> -->
     </v-row>
   </v-container>
 </template>
@@ -43,8 +63,10 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import DialysisFormatMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/DialysisFormat";
-import CreateInputs from "./Dialysis Formats/CreateInputs.vue";
-import EditInputs from "./Dialysis Formats/EditInputs.vue";
+// import CreateInputs from "./Dialysis Formats/CreateInputs.vue";
+// import EditInputs from "./Dialysis Formats/EditInputs.vue";
+import InformationInputs from "./Dialysis Formats/InformationInputs.vue";
+import SessionInputs from "./Dialysis Formats/SessionInputs.vue";
 export default {
   name: "DialysisFormat",
   mixins: [DialysisFormatMixin],
@@ -63,8 +85,10 @@ export default {
     },
   },
   components: {
-    CreateInputs,
-    EditInputs,
+    // CreateInputs,
+    // EditInputs,
+    InformationInputs,
+    SessionInputs,
   },
   data: () => ({
     payload: {

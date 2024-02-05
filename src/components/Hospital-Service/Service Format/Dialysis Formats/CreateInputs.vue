@@ -20,9 +20,25 @@
           label="Select Packages to avail"
           :items="dialysis_packages"
           item-text="package_name"
+          item-value="package_name"
           @blur="$v.payload.dialysis_items.$touch()"
           :error-messages="errorMessages.dialysis_items"
-        ></v-select>
+        >
+          <template v-slot:item="{ item }">
+            <div id="packages-flex">
+              <div>{{ item.package_name }}</div>
+              <div class="packages-description">
+                <span
+                  v-for="(dialysisItem, index) in item.dialysis_items"
+                  :key="index"
+                >
+                  {{ dialysisItem
+                  }}{{ index < item.dialysis_items.length - 1 ? ", " : "" }}
+                </span>
+              </div>
+            </div>
+          </template>
+        </v-select>
       </v-col>
       <!-- multiple and chips ^ -->
       <v-col cols="12">
@@ -155,4 +171,14 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#packages-flex {
+  display: flex;
+  flex-direction: column;
+}
+.packages-description {
+  font-size: 12px;
+  color: #333;
+  font-weight: bold;
+}
+</style>
