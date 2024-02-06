@@ -111,7 +111,6 @@ export default {
           this.payload[key] = payload[key];
         }
       }
-      console.log(this.payload);
     },
     pushToParent() {
       this.$emit("payload", this.payload);

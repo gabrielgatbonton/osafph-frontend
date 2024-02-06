@@ -56,6 +56,8 @@
                   v-bind="attrs"
                   :label="`Scheduled Date ${index + 1}`"
                   readonly
+                  @blur="$v.payload.schedule.$each.$iter[index].date.$touch()"
+                  :error-messages="errorMessages.schedule_date[index]"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -70,13 +72,12 @@
               v-model="session.session"
               :label="`Session ${index + 1}`"
               :items="session_choices"
+              @blur="$v.payload.schedule.$each.$iter[index].session.$touch()"
+              :error-messages="errorMessages.schedule_session[index]"
             ></v-select>
           </v-col>
         </v-row>
       </v-col>
-      <!-- <v-col cols="12">
-        <v-btn color="blue darken-4" @click="pushToParent">Test</v-btn>
-      </v-col> -->
     </v-row>
   </v-container>
 </template>
@@ -168,6 +169,28 @@ export default {
           : null;
       });
     },
+    // errorMessagesDate() {
+    //   // // Loop through each session in the schedule array
+    //   // this.payload.schedule.forEach((session, index) => {
+    //   //   errors[index] = []; // Initialize error array for each session
+
+    //   //   console.log(this.$v.payload.schedule[index].date.$error);
+    //   //   console.log(session.date === null);
+    //   //   // Check if the session date is null and the field is touched
+    //   //   if (
+    //   //     this.$v.payload.schedule[index].date.$error &&
+    //   //     session.date === null
+    //   //   ) {
+    //   //     errors[index].push("Date is required for this session");
+    //   //   }
+    //   // });
+
+    //   return this.payload.schedule.map((session) => {
+    //     return session.date !== null
+    //       ? ""
+    //       : "Date is required for this session";
+    //   });
+    // },
   },
   watch: {
     "payload.schedule": {
