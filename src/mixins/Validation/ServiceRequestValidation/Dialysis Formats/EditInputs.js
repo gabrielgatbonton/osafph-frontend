@@ -2,7 +2,8 @@ import { required } from "vuelidate/lib/validators";
 export default {
   validations: {
     payload: {
-      //Edit
+      hospital: { required },
+      dialysis_machine: { required },
       scheduled_date: { required },
       date_released: {},
       scheduled_session: { required },
@@ -36,6 +37,18 @@ export default {
       if (this.$v.payload.scheduled_session.$dirty) {
         !this.$v.payload.scheduled_session.required &&
           errors.scheduled_session.push("Schedule Session is required");
+      }
+
+      errors.dialysis_machine = [];
+      if (this.$v.payload.dialysis_machine.$dirty) {
+        !this.$v.payload.dialysis_machine.required &&
+          errors.dialysis_machine.push("Dialysis Machine is required");
+      }
+
+      errors.hospital = [];
+      if (this.$v.payload.hospital.$dirty) {
+        !this.$v.payload.hospital.required &&
+          errors.hospital.push("Medical Site is required");
       }
 
       return errors;

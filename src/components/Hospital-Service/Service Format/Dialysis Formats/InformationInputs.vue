@@ -7,14 +7,8 @@
           label="Medical Site"
           :items="medical_sites"
           item-text="name"
-        ></v-autocomplete>
-      </v-col>
-      <v-col cols="12">
-        <v-autocomplete
-          v-model="payload.dialysis_machine"
-          label="Dialysis Machine"
-          :items="dialysis_machines"
-          item-text="name"
+          @blur="$v.payload.hospital.$touch()"
+          :error-messages="errorMessages.hospital"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
@@ -37,6 +31,8 @@
           :items="dialysis_packages"
           item-text="package_name"
           item-value="package_name"
+          @blur="$v.payload.dialysis_items.$touch()"
+          :error-messages="errorMessages.dialysis_items"
         >
           <template v-slot:item="{ item }">
             <div id="packages-flex">
@@ -60,18 +56,16 @@
 </template>
 
 <script>
+import InformationInputsMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/InformationInputs";
 export default {
   name: "InformationInputs",
+  mixins: [InformationInputsMixin],
   props: {
     crowd_fundings: {
       type: Array,
       required: true,
     },
     medical_sites: {
-      type: Array,
-      required: true,
-    },
-    dialysis_machines: {
       type: Array,
       required: true,
     },
@@ -83,15 +77,24 @@ export default {
   data: () => ({
     payload: {
       hospital: null,
-      dialysis_machine: null,
       crowd_funding_backer: null,
       // dialysis_items = [],
       dialysis_items: null,
       all_items_sponsored: false,
-      all_sessions_sponsored: false,
     },
   }),
   methods: {
+    touchValidations() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.pushToParent();
+        this.$emit("validationSuccess", true);
+        this.$v.$reset();
+      }
+    },
+    resetValidations() {
+      this.$v.$reset();
+    },
     pushToParent() {
       this.$emit("payload", this.payload);
     },
@@ -103,6 +106,8 @@ export default {
 #packages-flex {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 .packages-description {
   font-size: 12px;

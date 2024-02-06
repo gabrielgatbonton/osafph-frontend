@@ -63,13 +63,7 @@ export default {
           crowd_funding_backer: payload.crowd_funding_backer,
           total_sessions: payload.total_sessions,
           hospital: payload.hospital,
-          schedule: payload.schedule.map((item) => ({
-            date: format(
-              parse(item.date, "MMMM dd, yyyy", new Date()),
-              "yyyy-MM-d"
-            ),
-            session: item.session,
-          })),
+          schedule: payload.schedule,
           dialysis_package: payload.dialysis_items,
           all_items_sponsored: payload.all_items_sponsored,
           dialysis_machine: payload.dialysis_machine,

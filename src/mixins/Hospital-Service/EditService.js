@@ -88,17 +88,9 @@ export default {
           service_type: payload.service_type,
           hospital: payload.hospital,
           dialysis_machine: payload.dialysis_machine,
-          scheduled_date: format(
-            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          scheduled_date: payload.scheduled_date,
           scheduled_session: payload.scheduled_session,
-          date_released: payload.date_released
-            ? format(
-                parse(payload.date_released, "MMMM dd, yyyy", new Date()),
-                "yyyy-MM-d"
-              )
-            : null,
+          date_released: payload.date_released,
           status: payload.status,
           remarks: payload.remarks !== "" ? payload.remarks : null,
           // crowd_funding_backer: payload.crowd_funding_backer,
