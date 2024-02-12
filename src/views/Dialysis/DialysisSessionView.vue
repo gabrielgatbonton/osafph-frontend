@@ -1,5 +1,7 @@
 <template>
   <div>
+    <SubmissionAlert v-if="success.alert" :message="success.message" />
+    <ErrorAlert v-if="failed.alert" :message="failed.message" />
     <v-container fluid class="ma-2" v-if="session">
       <v-row no-gutters>
         <v-col cols="auto">
@@ -59,8 +61,10 @@ import { format, parseISO } from "date-fns";
 import PatientServiceComponent from "@/components/Reusable Components/PatientServiceComponent.vue";
 import PatientInformationComponent from "@/components/Reusable Components/PatientInformationComponent.vue";
 import ServiceStatusComponent from "@/components/Reusable Components/ServiceStatusComponent.vue";
+import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
   name: "DialysisSessionView",
+  mixins: [ErrorAlertsLogic],
   data: () => ({
     session: null,
   }),

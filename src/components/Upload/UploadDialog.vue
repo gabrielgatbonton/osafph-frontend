@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="600">
+    <v-dialog v-model="dialog" max-width="600" scrollable>
       <v-card>
         <v-card-title class="blue darken-1 pb-4 white--text"
           ><v-icon dark left>mdi-file-upload</v-icon>Upload File</v-card-title

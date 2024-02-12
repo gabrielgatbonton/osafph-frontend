@@ -98,6 +98,8 @@
         <v-text-field
           label="Place of Birth"
           v-model="data.place_of_birth"
+          @blur="$v.data.place_of_birth.$touch()"
+          :error-messages="errorMessages.place_of_birth"
         ></v-text-field>
       </v-col>
     </v-row>

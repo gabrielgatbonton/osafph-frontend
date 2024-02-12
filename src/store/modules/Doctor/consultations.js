@@ -62,7 +62,6 @@ export const consultations = {
       //   form.consultation_form_id === consultation_form_id;
       // });
       // console.log("Consultation Found! ", consultation_form);
-      console.log("Consultation Update Data! ", data);
       state.consultation_form = data;
     },
     SET_CONSULTATION_FORM(state, consultation_form) {
@@ -110,19 +109,16 @@ export const consultations = {
       const url = `doctors/consultations/${consultation_id}/consultation-forms`;
       return this.$axios
         .post(url, data)
-        .then(() => {
+        .then((response) => {
           dispatch("fetchConsultations");
           dispatch("fetchConsultationById", consultation_id);
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Added Consultation Form",
-          });
+
+          //Success Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Adding",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+          //Failed Alert
           console.log("Error Adding Consultation by Doctor", error);
         });
     },
@@ -136,9 +132,13 @@ export const consultations = {
         .then((response) => {
           const data = response.data;
           commit("UPDATE_CONSULATION_FORM", { data });
+          //Sucess Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
           console.error("Error Updating Consultation Form: ", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
     completeConsultationToId({ dispatch }, consultation_id) {
@@ -147,10 +147,13 @@ export const consultations = {
         .patch(url)
         .then((response) => {
           dispatch("fetchConsultationById", consultation_id);
-          console.log(response.data);
+          //Success Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
           console.error("Error Completing Consultation: ", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
   },

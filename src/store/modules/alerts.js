@@ -10,28 +10,20 @@ export const alerts = {
     showError: null,
   }),
   mutations: {
-    SET_SHOW_ALERT(state, { alert, message }) {
-      state.showAlert = {
-        alert: alert,
-        message: message,
-      };
+    SET_SHOW_ALERT(state, message) {
+      state.showAlert = message;
       setTimeout(() => {
         state.showAlert = null;
-      }, 5000);
+      }, 3500);
     },
-    SET_SHOW_ERROR(state, { alert, message }) {
-      state.showError = {
-        alert: alert,
-        message: message,
-      };
+    SET_SHOW_ERROR(state, message) {
+      state.showError = message;
       setTimeout(() => {
         state.showError = null;
-      }, 5000);
+      }, 3500);
     },
   },
-  actions: {
-    
-  },
+  actions: {},
   getters: {
     getShowAlert: (state) => state.showAlert,
     getShowError: (state) => state.showError,

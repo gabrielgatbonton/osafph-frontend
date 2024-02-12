@@ -1,7 +1,5 @@
 <template>
   <div>
-    <SubmissionAlert :title="title" v-if="showAlert" />
-    <ErrorAlert :title="title" v-if="showError" />
     <v-container fluid class="table-title ma-2">
       <v-row no-gutters>
         <v-col cols="auto">
@@ -40,7 +38,6 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import ErrorAlertsLogic from "../../mixins/Alerts & Errors/ErrorAlertsLogic";
 import DialysisTable from "@/components/Dialysis/Dialysis-Table.vue";
 import FilterDialog from "@/components/Filter/FilterDialog.vue"
 export default {
@@ -50,7 +47,6 @@ export default {
     sessionStatus: false,
     type_of_filter: "DIALYSIS INDEX",
   }),
-  mixins: [ErrorAlertsLogic],
   components: {
     DialysisTable,
     FilterDialog,

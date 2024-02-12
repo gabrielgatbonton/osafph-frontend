@@ -1,5 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
+import store from "../../";
 
 Vue.use(Vuex);
 
@@ -41,19 +42,31 @@ export const files = {
       const url = `hospital-services/${hospital_service_id}/files`;
       return this.$axios
         .post(url, file)
-        .then(() => {
+        .then((response) => {
           dispatch("fetchFiles", hospital_service_id);
-
+          //Success Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
           console.error("Error Uploading Consultation File", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
     deleteFile({ dispatch }, { hospital_service_id, file_id }) {
       const url = `hospital-services/${hospital_service_id}/files/${file_id}`;
-      return this.$axios.delete(url).then(() => {
-        dispatch("fetchFiles", hospital_service_id);
-      });
+      return this.$axios
+        .delete(url)
+        .then((response) => {
+          dispatch("fetchFiles", hospital_service_id);
+          //Success Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+        })
+        .catch((error) => {
+          console.error("Error Deleting Consultation File", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+        });
     },
     fetchFile({ commit }, { hospital_service_id, file_id }) {
       const url = `hospital-services/${hospital_service_id}/files/${file_id}`;

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <SubmissionAlert :title="title" v-if="showAlert" />
-    <ErrorAlert :title="title" v-if="showError" />
+    <SubmissionAlert v-if="success.alert" :message="success.message" />
+    <ErrorAlert v-if="failed.alert" :message="failed.message" />
     <v-container fluid class="table-title ma-2">
       <v-row no-gutters>
         <v-col cols="auto">

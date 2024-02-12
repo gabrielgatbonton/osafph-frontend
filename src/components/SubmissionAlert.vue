@@ -3,15 +3,14 @@
     <v-alert
       type="success"
       dismissible
-      @input="showAlert = false"
-      >Successfully {{ title }} Information</v-alert
+      >{{ message }}</v-alert
     >
   </div>
 </template>
 
 <script>
 export default {
-    props: ['title'],
+    props: ['message'],
 };
 </script>
 

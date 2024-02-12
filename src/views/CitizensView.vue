@@ -1,7 +1,7 @@
 <template>
   <div>
-    <SubmissionAlert :title="title" v-if="showAlert" />
-    <ErrorAlert :title="title" v-if="showError" />
+    <SubmissionAlert :message="success.message" v-if="success.alert" />
+    <ErrorAlert :message="failed.message" v-if="failed.alert" />
     <v-container fluid class="ma-2">
       <v-row no-gutters>
         <v-col cols="auto">
@@ -49,7 +49,6 @@ export default {
       search: "",
       showAlert: false,
       showError: false,
-      title: null,
       dialog: false,
       type_of_filter: "CITIZENS INDEX",
     };

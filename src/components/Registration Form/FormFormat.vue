@@ -270,7 +270,7 @@ export default {
           this.data[key] = parsedData[key];
         }
       }
-      console.log("Passed Data", this.data);
+      // console.log("Passed Data", this.data);
     },
     updateStepper(stepper) {
       this.stepper = stepper;

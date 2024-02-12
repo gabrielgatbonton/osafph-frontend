@@ -90,6 +90,13 @@ export default {
           errors.civil_status.push("Civil Status is required");
       }
 
+      // Place of Birth field errors
+      errors.place_of_birth = [];
+      if (this.$v.data.place_of_birth.$dirty) {
+        !this.$v.data.place_of_birth.required &&
+          errors.place_of_birth.push("Place of Birth is required");
+      }
+
       // Contact Number field errors
       errors.contact_number = [];
       if (this.$v.data.contact_number.$dirty) {

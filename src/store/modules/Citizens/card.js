@@ -1,5 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
+import store from "../..";
 
 Vue.use(Vuex);
 
@@ -40,10 +41,10 @@ export const card = {
       }
     },
     DELETE_SIGNATURE(state, value) {
-        state.signature = value;
+      state.signature = value;
     },
     DELETE_BIOMETRICS(state, value) {
-        state.biometrics = value;
+      state.biometrics = value;
     },
 
     //Public Images for Reroute Module.
@@ -143,34 +144,46 @@ export const card = {
         .then((response) => {
           const targetImage = response.data;
           commit("DELETE_IMAGE", targetImage);
+          // Success Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
           console.error("Error deleting image: ", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
     deleteSignature({ commit }, id) {
       const url = `citizens/${id}/files/signature`;
       return this.$axios
         .delete(url)
-        .then(() => {
+        .then((response) => {
           // const targetImage = response.data;
           // console.log(targetImage);
           commit("DELETE_SIGNATURE", null);
+          // Success Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
           console.error("Error deleting signature: ", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
     deleteBiometrics({ commit }, id) {
       const url = `citizens/${id}/files/biometrics`;
       return this.$axios
         .delete(url)
-        .then(() => {
+        .then((response) => {
           // const targetImage = response.data;
           commit("DELETE_BIOMETRICS", null);
+          // Success Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
           console.error("Error deleting signature: ", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
 

@@ -116,7 +116,6 @@ export default {
       //   delete this.data.hub_registrant_number;
       // }
       if (!this.$v.$invalid) {
-        console.log("Data is valid");
         this.$emit("data", this.data);
         this.$emit("stepper", (this.stepper = 2));
       } else {

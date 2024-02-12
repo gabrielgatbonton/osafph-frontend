@@ -117,20 +117,18 @@ export const registrants = {
         .then((response) => {
           const registrant = response.data;
           commit("ADD_REGISTRANT", registrant);
+
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Saved Registrant",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+
+          //Call Again Fetch Registrants
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
-          //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Register",
-          });
           console.error("Error adding citizen:", error);
+
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
     fetchRegistrantId({ commit }, id) {
@@ -145,24 +143,17 @@ export const registrants = {
         });
     },
     updateRegistrant({ commit }, { id, data }) {
-      console.log("CHECK ACTION: ", data);
       return this.$axios
         .put(`citizens/${id}`, data)
         .then((response) => {
           const updateRegistrant = response.data;
           commit("UPDATE_REGISTRANT", { id, updateRegistrant });
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Updated Registrant",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Update",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error updating request to registrant vuex:", error);
         });
     },
@@ -179,18 +170,12 @@ export const registrants = {
           store.dispatch("card/fetchBiometrics", id);
 
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Updated Image",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Update",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error updating registrant files:", error);
         });
     },
@@ -248,10 +233,7 @@ export const registrants = {
         })
         .catch((error) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Update",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error requesting vaccination update:", error);
         });
     },
@@ -298,10 +280,7 @@ export const registrants = {
         })
         .catch((error) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Update",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error requesting vaccination update:", error);
         });
     },
@@ -312,18 +291,12 @@ export const registrants = {
           const data = response.data;
           commit("DELETE_REGISTRANT", data);
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Deleted Registrant",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Delete",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error deleting registrant:", error);
         });
     },

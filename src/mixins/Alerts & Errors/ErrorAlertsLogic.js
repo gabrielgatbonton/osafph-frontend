@@ -2,34 +2,41 @@ import { mapGetters } from "vuex";
 import SubmissionAlert from "@/components/SubmissionAlert.vue";
 import ErrorAlert from "@/components/ErrorAlert.vue";
 export default {
-  data: () => ({
-    showAlert: false,
-    showError: false,
-    title: null,
-  }),
   components: {
     SubmissionAlert,
     ErrorAlert,
   },
   computed: {
     ...mapGetters("alerts", ["getShowAlert", "getShowError"]),
-  },
-  watch: {
-    getShowAlert(value) {
-      console.log("alert", value);
-      this.showAlert = value.alert;
-      this.title = value.message;
+    success() {
+      let alert = false;
+      let message = null;
+      if (this.getShowAlert) {
+        message = this.getShowAlert;
+        alert = true;
+      }
       setTimeout(() => {
-        this.showAlert = false;
-      }, 5000);
+        alert = false;
+      }, 3000);
+      return {
+        alert: alert,
+        message: message,
+      };
     },
-    getShowError(value) {
-      console.log("error", value);
-      this.showError = value.alert;
-      this.title = value.message;
+    failed() {
+      let alert = false;
+      let message = null;
+      if (this.getShowError) {
+        message = this.getShowError;
+        alert = true;
+      }
       setTimeout(() => {
-        this.showError = false;
-      }, 5000);
+        alert = false;
+      }, 3000);
+      return {
+        alert: alert,
+        message: message,
+      };
     },
   },
 };

@@ -82,16 +82,10 @@ export const admin_consultations = {
         .then((response) => {
           const updatedConsultationForm = response.data;
           commit("UPDATE_CONSULTATION_FORM", updatedConsultationForm);
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Updated Service",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Updating",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.log("Error updating Consultation Form", error);
         });
     },
@@ -106,16 +100,10 @@ export const admin_consultations = {
           const data = response.data;
           commit("DELETE_CONSULTATION_FORM", data);
           dispatch("fetchAdminConsultationById", consultation_id);
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Deleted Consultation Form",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Deleted",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error Deleting Consultation Form: ", error);
         });
     },

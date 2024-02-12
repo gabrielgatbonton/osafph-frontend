@@ -1,6 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
-// import store from "../../";
+import store from "../../";
 
 Vue.use(Vuex);
 
@@ -96,11 +96,15 @@ export const dialysis_sessions = {
       const url = `encoder/dialysis/sessions/${id}/complete`;
       return this.$axios
         .patch(url)
-        .then(() => {
+        .then((response) => {
           dispatch("fetchDialysisSessionById", id);
+          //Success Alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
           console.error("Error Patching Dialysis Session: ", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
   },

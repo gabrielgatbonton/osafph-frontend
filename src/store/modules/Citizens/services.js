@@ -94,18 +94,12 @@ export const services = {
       const url = `citizens/${id}/hospital-services`;
       return this.$axios
         .post(url, data)
-        .then(() => {
+        .then((response) => {
           dispatch("fetchServicesById", id);
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Added Service",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Adding",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error adding services: ", error);
         });
     },
@@ -113,22 +107,16 @@ export const services = {
       const url = `citizens/${id}/hospital-services/${hospital_service_id}`;
       return this.$axios
         .put(url, data)
-        .then(() => {
+        .then((response) => {
           dispatch("fetchServicesById", id);
           dispatch("fetchHospitalServiceById", {
             id: id,
             hospital_service_id: hospital_service_id,
           });
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Updated Service",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Updating",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error Updating Hospital Service: ", error);
         });
     },
@@ -136,18 +124,12 @@ export const services = {
       const url = `citizens/${id}/hospital-services/${hospital_service_id}`;
       return this.$axios
         .delete(url)
-        .then(() => {
+        .then((response) => {
           dispatch("fetchServicesById", id);
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Deleted Service",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
-          store.commit("alerts/SET_SHOW_ERROR", {
-            alert: true,
-            message: "Deleting",
-          });
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error Deleting Service: ", error);
         });
     },

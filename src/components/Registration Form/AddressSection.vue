@@ -141,7 +141,6 @@ export default {
       if (data) {
         this.data.country = data.country_name;
       }
-      console.log(this.data.country);
     },
     initProvinces(id) {
       this.fetchProvinces(id);

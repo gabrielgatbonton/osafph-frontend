@@ -1,5 +1,7 @@
 <template>
   <div>
+    <SubmissionAlert v-if="success.alert" :message="success.message" />
+    <ErrorAlert v-if="failed.alert" :message="failed.message" />
     <v-container fluid class="ma-1">
       <v-row no-gutters>
         <v-col cols="auto">
@@ -29,8 +31,10 @@
 import { mapActions, mapGetters } from "vuex";
 import FilesTable from "@/components/Consultation/Files-Table.vue";
 import UploadDialog from "../../components/Upload/UploadDialog.vue";
+import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
   name: "ConsultationFiles",
+  mixins: [ErrorAlertsLogic],
   data: () => ({
     payload: null,
     dialog: false,
