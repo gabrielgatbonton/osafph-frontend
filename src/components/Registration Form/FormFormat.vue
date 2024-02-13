@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-stepper v-model="stepper" elevation="0" :non-linear="nonLinearFunction">
+    <v-stepper v-model="stepper" flat :non-linear="nonLinearFunction.linear">
       <v-stepper-header>
         <v-stepper-step
           :complete="stepper > 1"
           step="1"
-          :editable="nonLinearFunction"
+          :editable="nonLinearFunction.category"
         >
           Category
         </v-stepper-step>
@@ -13,7 +13,7 @@
         <v-stepper-step
           :complete="stepper > 2"
           step="2"
-          :editable="nonLinearFunction"
+          :editable="nonLinearFunction.personal_information"
         >
           Personal Details
         </v-stepper-step>
@@ -21,7 +21,7 @@
         <v-stepper-step
           :complete="stepper > 3"
           step="3"
-          :editable="nonLinearFunction"
+          :editable="nonLinearFunction.address"
         >
           Address
         </v-stepper-step>
@@ -29,7 +29,7 @@
         <v-stepper-step
           :complete="stepper > 4"
           step="4"
-          :editable="nonLinearFunction"
+          :editable="nonLinearFunction.emergency"
         >
           Emergency Contact
         </v-stepper-step>
@@ -37,7 +37,7 @@
         <v-stepper-step
           :complete="stepper > 5"
           step="5"
-          :editable="nonLinearFunction"
+          :editable="nonLinearFunction.employment"
         >
           Employment Details
         </v-stepper-step>
@@ -224,7 +224,46 @@ export default {
       return null;
     },
     nonLinearFunction() {
-      return this.id ? true : false;
+      let linear = false;
+      let category = false;
+      let personal_information = false;
+      let address = false;
+      let emergency = false;
+      let employment = false;
+      // return this.id ? true : false;
+
+      if (this.id) {
+        linear = true;
+        category = true;
+        personal_information = true;
+        address = true;
+        emergency = true;
+        employment = true;
+      } else {
+        linear = true;
+        if (this.stepper > 1) {
+          category = true;
+        }
+        if (this.stepper > 2) {
+          personal_information = true;
+        }
+        if (this.stepper > 3) {
+          address = true;
+        }
+        if (this.stepper > 4) {
+          emergency = true;
+          employment = true;
+        }
+      }
+
+      return {
+        linear: linear,
+        category: category,
+        personal_information: personal_information,
+        address: address,
+        emergency: emergency,
+        employment: employment,
+      };
     },
   },
   methods: {
