@@ -86,16 +86,21 @@ export default {
       this.payload.file = file;
     },
     uploadFiles() {
-      const formData = new FormData();
+      this.$v.$touch();
 
-      // Append file to FormData
-      formData.append("file", this.payload.file);
+      if (!this.$v.$invalid) {
+        const formData = new FormData();
 
-      // Append other fields to FormData
-      formData.append("file_name", this.payload.file_name);
-      formData.append("document_type", this.payload.document_type);
+        // Append file to FormData
+        formData.append("file", this.payload.file);
 
-      this.$emit("uploadFiles", formData);
+        // Append other fields to FormData
+        formData.append("file_name", this.payload.file_name);
+        formData.append("document_type", this.payload.document_type);
+
+        this.$emit("uploadFiles", formData);
+        this.$v.$reset();
+      }
     },
   },
   computed: {

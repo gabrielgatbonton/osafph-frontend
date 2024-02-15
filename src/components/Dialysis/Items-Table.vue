@@ -1,0 +1,136 @@
+<template>
+  <v-data-table
+    :headers="headers"
+    :items="data"
+    item-key="name"
+    class="elevation-0"
+    :search="search"
+    :custom-filter="filterOnlyCapsText"
+  >
+    <template v-slot:top>
+      <v-text-field
+        v-model="search"
+        label="Search"
+        class="mx-4"
+        prepend-icon="mdi-magnify"
+      ></v-text-field>
+      <ReusableDeleteDialog
+        :activator="deleteDialog"
+        @dialogResponse="resetActivator"
+        @deleteItem="deleteItem"
+      />
+      <ItemDialog
+        :activator="dialog"
+        @dialogResponse="resetEditActivator"
+        :item="dialysis_item"
+        @submitForm="submitForm"
+      />
+    </template>
+    <template v-slot:[`item.item_price`]="{ item }">
+      <div>PHP {{ item.item_price }}</div>
+    </template>
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-container class="ml-n8" style="width: 120px">
+        <v-row no-gutters justify="center">
+          <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
+            <v-icon
+              class="mx-1"
+              color="blue darken-4"
+              dense
+              @click="activator(item.item_id)"
+              >mdi-pencil</v-icon
+            >
+          </v-col>
+          <v-col cols="auto" v-if="iconPermissions.delete" align-self="center">
+            <v-icon
+              class="mx-1"
+              color="error"
+              dense
+              @click="deleteActivator(item.item_id)"
+              >mdi-trash-can</v-icon
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+    </template>
+  </v-data-table>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
+import DeleteItem from "@/mixins/Admin/Dialysis/DeleteItem";
+import ItemDialog from "./ItemDialog.vue";
+import EditItem from "@/mixins/Admin/Dialysis/EditItem";
+export default {
+  name: "Items-Table",
+  mixins: [DeleteItem, EditItem],
+  props: ["items"],
+  data: () => ({
+    search: "",
+    offset: true,
+    data: [],
+  }),
+  components: {
+    ReusableDeleteDialog,
+    ItemDialog,
+  },
+  methods: {
+    filterOnlyCapsText(value, search) {
+      return (
+        value != null &&
+        search != null &&
+        typeof value === "string" &&
+        value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
+      );
+    },
+  },
+  computed: {
+    ...mapGetters("login", ["userRole"]),
+    headers() {
+      return [
+        {
+          text: "ITEM ID",
+          value: "item_id",
+        },
+        {
+          text: "DIALYSIS ITEM NAME",
+          value: "dialysis_item_name",
+        },
+        {
+          text: "ITEM PRICE",
+          value: "item_price",
+        },
+        {
+          text: "ACTIONS",
+          value: "actions",
+          sortable: false,
+        },
+      ];
+    },
+    iconPermissions() {
+      let edit = false;
+      let remove = false;
+      if (this.userRole === "ADMIN") {
+        edit = true;
+        remove = true;
+      }
+      return {
+        edit: edit,
+        delete: remove,
+      };
+    },
+  },
+  watch: {
+    items(value) {
+      this.data = value.map((item) => ({
+        item_id: item.id,
+        dialysis_item_name: item.name,
+        item_price: item.price,
+      }));
+    },
+  },
+};
+</script>
+
+<style scoped></style>

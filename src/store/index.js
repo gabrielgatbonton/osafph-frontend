@@ -18,6 +18,8 @@ import { file_types } from "./modules/Enums/file-types";
 import { dialysis } from "./modules/Enums/dialysis";
 import { dialysis_sessions } from "./modules/Encoder/dialysis";
 import { files } from "./modules/General/files";
+import { dialysis_packages } from "./modules/Admin/dialysis_packages";
+import { dialysis_items } from "./modules/Admin/dialysis_items";
 
 Vue.use(Vuex);
 
@@ -32,6 +34,8 @@ export default new Vuex.Store({
 
     //Admin Exclusive Stores
     admin_consultations,
+    dialysis_packages,
+    dialysis_items,
 
     //Encoder
     consultation_form,

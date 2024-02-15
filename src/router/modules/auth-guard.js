@@ -65,6 +65,8 @@ function isAllowedRoutes(routeName, userRole) {
       "hospital-services",
       "hospital-services-information",
       "management",
+      "dialysis-packages",
+      "dialysis-items",
     ];
   } else if (userRole === "ENCODER") {
     allowedRoutes = [
