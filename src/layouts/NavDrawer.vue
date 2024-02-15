@@ -21,50 +21,18 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-list nav dense>
-        <v-list-item
-          v-for="link in links"
-          :key="link.text"
-          router
-          :to="link.route"
-        >
-          <v-list-item-icon>
-            <v-icon>{{ link.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ link.text }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <DropdownDrawer
-          v-if="auth.citizen"
-          :content="citizen.dropDownData"
-          :sublinks="citizen.citizensSublinks"
-        />
-      </v-list>
+     <LinkComponent :links="navLinks"/>
     </v-navigation-drawer>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import DropdownDrawer from "./Dropdown/DropdownDrawer.vue";
+import LinkComponent from './LinkComponent.vue';
 export default {
-  data: () => ({
-    links: null,
-    citizen: {
-      dropDownData: {
-        icon: null,
-        title: null,
-      },
-      citizensSublinks: [],
-    },
-    auth: {
-      citizen: false,
-    },
-  }),
   props: ["drawer"],
   components: {
-    DropdownDrawer,
+    LinkComponent,
   },
   computed: {
     ...mapGetters("login", ["userRole"]),
@@ -76,9 +44,7 @@ export default {
         this.$emit("update-drawer", value);
       },
     },
-  },
-  methods: {
-    setLinks() {
+    navLinks() {
       let links = [];
       if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         links = [
@@ -93,30 +59,30 @@ export default {
             route: "/citizens",
           },
           {
+            dropdown: {
+              icon: "mdi-blood-bag",
+              title: "Dialysis",
+            },
+            subroutes: [
+              {
+                icon: "mdi-package-up",
+                text: "Dialysis Packages",
+                route: "/dialysis-packages",
+              },
+              {
+                icon: "mdi-needle",
+                text: "Dialysis Items",
+                route: "/dialysis-items",
+              },
+            ],
+          },
+          {
             icon: "mdi-medical-bag",
             text: "Consultations",
             route: "/citizens-consultations",
           },
           { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
-        // //Configuration for the Citizen Dropdown NavDrawer
-        // this.auth.citizen = true;
-        // this.citizen.dropDownData = {
-        //   icon: "mdi-account-group",
-        //   title: "Citizens",
-        // };
-        // this.citizen.citizensSublinks = [
-        //   {
-        //     icon: "mdi-account",
-        //     text: "Registrants",
-        //     route: "/citizens",
-        //   },
-        //   {
-        //     icon: "mdi-medical-bag",
-        //     text: "Consultations",
-        //     route: "/citizens-consultations",
-        //   },
-        // ];
       } else if (this.userRole === "DOCTOR") {
         links = [
           {
@@ -145,19 +111,6 @@ export default {
           },
           { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
-        // //Configuration for the Citizen Dropdown NavDrawer
-        // this.auth.citizen = true;
-        // this.citizen.dropDownData = {
-        //   icon: "mdi-account-group",
-        //   title: "Citizens",
-        // };
-        // this.citizen.citizensSublinks = [
-        //   {
-        //     icon: "mdi-account",
-        //     text: "Registrants",
-        //     route: "/citizens",
-        //   },
-        // ];
       } else if (this.userRole === "DIALYSIS_ENCODER") {
         links = [
           {
@@ -173,13 +126,8 @@ export default {
           { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
       }
-
-      this.links = links;
+      return links;
     },
-  },
-  mounted() {
-    console.log(this.userRole);
-    this.setLinks();
   },
 };
 </script>
