@@ -44,13 +44,21 @@
               :medical_sites="hospitals"
               v-on:payload="assignPayload"
               v-on:validationSuccess="checkValidation"
+              @submitForm="submitForm"
             />
-            <v-col cols="12">
-              <div class="text-right">
-                <v-btn dark class="blue darken-4" @click="submitForm"
-                  >Submit</v-btn
-                >
-              </div>
+            <v-col
+              cols="12"
+              v-if="
+                (payload.service_type !== null &&
+                  payload.service_type === 'DIALYSIS' &&
+                  hospitalService) ||
+                (payload.service_type !== 'DIALYSIS' &&
+                  payload.service_type !== null)
+              "
+            >
+              <v-btn dark block color="blue darken-4" @click="submitForm"
+                >Submit</v-btn
+              >
             </v-col>
           </v-row>
         </v-container>

@@ -3,59 +3,65 @@
     <v-row>
       <v-col cols="12">
         <v-autocomplete
-          v-model="payload.hospital"
-          label="Medical Site"
-          :items="medical_sites"
-          item-text="name"
-          @blur="$v.payload.hospital.$touch()"
-          :error-messages="errorMessages.hospital"
-        ></v-autocomplete>
-      </v-col>
-      <v-col cols="12">
-        <v-autocomplete
           v-model="payload.crowd_funding_backer"
           label="Funding"
           :items="crowd_fundings"
           item-text="backer"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12">
-        <v-checkbox
-          v-model="payload.all_items_sponsored"
-          label="Items included are sponsored by Funding"
-          @change="pushToParent"
-        ></v-checkbox>
-        <v-select
-          v-model="payload.dialysis_items"
-          label="Select Packages to avail"
-          :items="dialysis_packages"
-          item-text="package_name"
-          item-value="package_name"
-          @blur="$v.payload.dialysis_items.$touch()"
-          :error-messages="errorMessages.dialysis_items"
-        >
-          <template v-slot:item="{ item }">
-            <div id="packages-flex">
-              <div>{{ item.package_name }}</div>
-              <div class="packages-description">
-                <span
-                  v-for="(dialysisItem, index) in item.dialysis_items"
-                  :key="index"
-                >
-                  {{ dialysisItem
-                  }}{{ index < item.dialysis_items.length - 1 ? ", " : "" }}
-                </span>
-              </div>
+    </v-row>
+    <v-row justify="center" v-if="summary">
+      <v-col cols="12" align-self="center">
+        <div class="text-h6 text-center">Information Summary</div>
+        <v-row class="mt-5">
+          <v-col cols="6">
+            <div>Medical Site:</div>
+          </v-col>
+          <v-col cols="6">
+            {{ summary.hospital }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <div>Package & Items:</div>
+          </v-col>
+          <v-col cols="6"> {{ summary.dialysis_items }} </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <div>Total Sessions:</div>
+          </v-col>
+          <v-col cols="6"> {{ summary.total_sessions }} </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <div>Scheduled Dates:</div>
+          </v-col>
+          <v-col cols="6">
+            <div v-for="(schedule, index) in summary.schedule" :key="index">
+              {{ schedule.date }}, {{ schedule.session }}
             </div>
-          </template>
-        </v-select>
+          </v-col>
+        </v-row>
       </v-col>
-      <!-- multiple and chips ^ -->
+    </v-row>
+    <v-row justify="center" class="mt-5">
+      <v-col cols="12" align-self="center">
+        <v-btn
+          block
+          dark
+          color="blue darken-4"
+          :loading="loading"
+          @click="submitForm"
+          >Submit</v-btn
+        >
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import { format, parseISO } from "date-fns";
 import InformationInputsMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/InformationInputs";
 export default {
   name: "InformationInputs",
@@ -65,32 +71,42 @@ export default {
       type: Array,
       required: true,
     },
-    medical_sites: {
-      type: Array,
-      required: true,
-    },
-    dialysis_packages: {
-      type: Array,
+    data: {
+      type: Object,
       required: true,
     },
   },
   data: () => ({
     payload: {
-      hospital: null,
       crowd_funding_backer: null,
-      // dialysis_items = [],
-      dialysis_items: null,
-      all_items_sponsored: false,
     },
+    loading: false,
   }),
   methods: {
     touchValidations() {
-      this.$v.$touch();
-      if (!this.$v.$invalid) {
-        this.pushToParent();
-        this.$emit("validationSuccess", true);
-        this.$v.$reset();
-      }
+      return new Promise((resolve, reject) => {
+        this.$v.$touch();
+        if (!this.$v.$invalid) {
+          this.pushToParent();
+          this.$emit("validationSuccess", true);
+          resolve("Success"); // Resolve the Promise if validations pass
+        } else {
+          reject("Validation failed"); // Reject the Promise if validations fail
+        }
+      });
+    },
+    submitForm() {
+      this.loading = true;
+      this.touchValidations()
+        .then(() => {
+          this.$emit("submitForm");
+        })
+        .catch((error) => {
+          console.error("Error Submitting Dialysis Add", error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     resetValidations() {
       this.$v.$reset();
@@ -99,19 +115,24 @@ export default {
       this.$emit("payload", this.payload);
     },
   },
+  computed: {
+    summary() {
+      if (this.data)
+        return {
+          hospital: this.data.hospital,
+          dialysis_items: this.data.dialysis_items,
+          total_sessions: this.data.total_sessions,
+          schedule: this.data.schedule
+            ? this.data.schedule.map((item) => ({
+                date: format(parseISO(item.date), "MMMM dd, yyyy"),
+                session: item.session,
+              }))
+            : null,
+        };
+      return {};
+    },
+  },
 };
 </script>
 
-<style scoped>
-#packages-flex {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-.packages-description {
-  font-size: 12px;
-  color: #333;
-  font-weight: bold;
-}
-</style>
+<style scoped></style>

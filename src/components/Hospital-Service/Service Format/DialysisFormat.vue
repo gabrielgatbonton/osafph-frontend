@@ -1,10 +1,47 @@
 <template>
-  <v-container fluid class="mx-auto pa-0">
+  <v-container fluid class="mx-auto">
     <v-row
       justify="center"
       v-if="!hospitalService && dialysis_machines && dialysis_packages"
     >
-      <v-col cols="12">
+      <v-col cols="12" class="px-0">
+        <v-stepper flat v-model="stepper" non-linear>
+          <v-stepper-header class="elevation-0">
+            <v-stepper-step step="1" editable :complete="stepper > 1">
+              Sessions
+            </v-stepper-step>
+            <v-divider></v-divider>
+            <v-stepper-step step="2" editable>
+              Insights & Funding
+            </v-stepper-step>
+          </v-stepper-header>
+          <v-stepper-items>
+            <v-stepper-content step="1" class="px-0">
+              <SessionInputs
+                :medical_sites="medical_sites"
+                :dialysis_packages="dialysis_packages"
+                :dialysis_machines="dialysis_machines"
+                @validationSuccess="checkValidationSession"
+                @payload="assignPayload"
+                @stepper="updateStepper"
+                ref="sessionInputs"
+              />
+            </v-stepper-content>
+            <v-stepper-content step="2" class="px-0">
+              <InformationInputs
+                :data="payload"
+                :crowd_fundings="crowd_fundings"
+                ref="informationInputs"
+                @validationSuccess="checkValidationInformation"
+                @payload="assignPayload"
+                @submitForm="$emit('submitForm')"
+              />
+            </v-stepper-content>
+          </v-stepper-items>
+        </v-stepper>
+      </v-col>
+
+      <!-- <v-col cols="12">
         <v-tabs centered grow>
           <v-tab>Information</v-tab>
           <v-tab>Sessions</v-tab>
@@ -28,10 +65,10 @@
             />
           </v-tab-item>
         </v-tabs>
-      </v-col>
+      </v-col> -->
     </v-row>
     <v-row v-if="hospitalService && dialysis_machines">
-      <v-col cols="12">
+      <v-col cols="12" class="px-0">
         <EditInputs
           :hospitalService="hospitalService"
           :medical_sites="medical_sites"
@@ -76,6 +113,7 @@ export default {
     validation_1: false,
     validation_2: false,
     validation_edit: false,
+    stepper: 1,
   }),
   methods: {
     ...mapActions("dialysis", ["fetchEnums"]),
@@ -108,7 +146,8 @@ export default {
     assignPayload(payload) {
       for (const key in payload) {
         if (Object.hasOwnProperty.call(payload, key)) {
-          this.payload[key] = payload[key];
+          // Use this.$set to add reactive properties
+          this.$set(this.payload, key, payload[key]);
         }
       }
     },
@@ -123,6 +162,9 @@ export default {
     },
     checkValidationEdit(value) {
       this.validation_edit = value;
+    },
+    updateStepper(stepper) {
+      this.stepper = stepper;
     },
   },
   computed: {
