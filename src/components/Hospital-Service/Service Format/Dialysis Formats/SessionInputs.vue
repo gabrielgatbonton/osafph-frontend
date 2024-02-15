@@ -27,7 +27,7 @@
           :error-messages="errorMessages.dialysis_items"
         >
           <template v-slot:item="{ item }">
-            <div id="packages-flex">
+            <div id="d-flex flex-column justify-start align-start">
               <div>{{ item.package_name }}</div>
               <div class="packages-description">
                 <span
@@ -266,12 +266,6 @@ export default {
 </script>
 
 <style scoped>
-#packages-flex {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
 .packages-description {
   font-size: 12px;
   color: #333;

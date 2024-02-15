@@ -27,7 +27,16 @@
           label="Funding"
           :items="crowd_fundings"
           item-text="backer"
-        ></v-autocomplete>
+        >
+          <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
+            <div class="d-flex flex-column">
+              <div>{{ item.backer }}</div>
+              <div class="item-description">
+                Amount: {{ item.contribution }}
+              </div>
+            </div>
+          </template>
+        </v-autocomplete>
       </v-col>
       <v-col cols="12">
         <v-text-field
@@ -69,6 +78,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { format, parseISO } from "date-fns";
 import GeneralFormatMixin from "@/mixins/Validation/ServiceRequestValidation/GeneralFormat";
 export default {
@@ -185,6 +195,7 @@ export default {
     // },
   },
   computed: {
+    ...mapGetters("login", ["userRole"]),
     statuses() {
       return this.hospitalService
         ? ["UNATTENDED", "COMPLETED"]
@@ -207,5 +218,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
-@/mixins/Validation/ServiceRequestValidation/GeneralFormat
+<style scoped>
+.item-description {
+  font-size: 12px;
+  color: #333;
+  font-weight: bold;
+}
+</style>
