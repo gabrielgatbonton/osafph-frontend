@@ -14,6 +14,17 @@
         class="mx-4"
         prepend-icon="mdi-magnify"
       ></v-text-field>
+      <ReusableDeleteDialog
+        :activator="deleteDialog"
+        @dialogResponse="resetActivator"
+        @deleteItem="deleteItem"
+      />
+      <PackageDialog
+        :activator="dialog"
+        @dialogResponse="resetEditActivator"
+        :package="dialysis_package"
+        @submitForm="submitForm"
+      />
     </template>
     <template v-slot:[`item.package_price`]="{ item }">
       <div>PHP {{ item.package_price }}</div>
@@ -27,13 +38,22 @@
     <template v-slot:[`item.actions`]="{ item }">
       <v-container class="ml-n8" style="width: 120px">
         <v-row no-gutters justify="center">
-          <v-col cols="auto" v-if="iconPermissions.view" align-self="center">
+          <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
             <v-icon
-              @click="viewDialysisSession(item.dialysis_id)"
               class="mx-1"
-              color="grey darken-1"
+              color="blue darken-4"
               dense
-              >mdi-eye</v-icon
+              @click="activator(item.id)"
+              >mdi-pencil</v-icon
+            >
+          </v-col>
+          <v-col cols="auto" v-if="iconPermissions.delete" align-self="center">
+            <v-icon
+              class="mx-1"
+              color="error"
+              dense
+              @click="deleteActivator(item.id)"
+              >mdi-trash-can</v-icon
             >
           </v-col>
         </v-row>
@@ -43,17 +63,24 @@
 </template>
 
 <script>
-// import format from "date-fns/format";
-// import parseISO from "date-fns/parseISO";
 import { mapGetters } from "vuex";
+import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
+import DeletePackage from "@/mixins/Admin/Dialysis/DeletePackage";
+import PackageDialog from "./PackageDialog.vue";
+import EditPackage from "@/mixins/Admin/Dialysis/EditPackage";
 export default {
   name: "Packages-Table",
   props: ["packages"],
+  mixins: [DeletePackage, EditPackage],
   data: () => ({
     search: "",
     offset: true,
     data: [],
   }),
+  components: {
+    ReusableDeleteDialog,
+    PackageDialog,
+  },
   methods: {
     filterOnlyCapsText(value, search) {
       return (
@@ -62,12 +89,6 @@ export default {
         typeof value === "string" &&
         value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
-    },
-    viewDialysisSession(id) {
-      this.$router.push({
-        name: "",
-        params: { id: id },
-      });
     },
   },
   computed: {
@@ -94,18 +115,22 @@ export default {
       ];
     },
     iconPermissions() {
-      let view = false;
+      let edit = false;
+      let remove = false;
       if (this.userRole === "ADMIN") {
-        view = true;
-      } 
+        edit = true;
+        remove = true;
+      }
       return {
-        view: view,
+        edit: edit,
+        delete: remove,
       };
     },
   },
   watch: {
     packages(value) {
       this.data = value.map((item) => ({
+        id: item.id,
         package: item.name,
         package_price: item.price,
         items_price: item.dialysis_item_options,

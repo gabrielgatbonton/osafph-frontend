@@ -55,9 +55,13 @@ export default {
       this.dialog = data;
     },
     submitForm(data) {
-      this.addDialysisPackage(data).catch((error) => {
-        console.error("Error Adding Package in component: ", error);
-      });
+      this.addDialysisPackage(data)
+        .catch((error) => {
+          console.error("Error Adding Package in component: ", error);
+        })
+        .finally(() => {
+          this.dialog = false;
+        });
     },
   },
   computed: {

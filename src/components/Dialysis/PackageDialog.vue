@@ -53,6 +53,10 @@ export default {
       type: Object,
       required: false,
     },
+    package: {
+      type: Object,
+      required: false,
+    },
   },
   data: () => ({
     dialog: false,
@@ -67,7 +71,6 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.$emit("submitForm", this.payload);
-        this.dialog = false;
         this.$v.$reset();
       }
     },
@@ -87,6 +90,15 @@ export default {
       if (value === false) {
         this.$emit("dialogResponse", value);
       }
+    },
+    package: {
+      deep: true,
+      handler(value) {
+        this.payload = {
+          name: value.name,
+          dialysis_item_options: value.dialysis_item_options,
+        };
+      },
     },
   },
   created() {
