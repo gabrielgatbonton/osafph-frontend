@@ -4,10 +4,10 @@
       <v-col cols="12">
         <v-card
           :class="{
-            warning:
-              status.title === 'PENDING' || status.title === 'IN PROGRESS',
+            warning: status.title === 'PENDING',
             error: status.title === 'UNATTENDED',
             success: status.title === 'COMPLETED',
+            indigo: status.title === 'IN PROGRESS',
           }"
         >
           <v-row justify="center" class="ma-2 pb-2">
@@ -104,15 +104,14 @@ export default {
     },
     iconColor() {
       let iconColor = null;
-      if (
-        this.serviceStatus.status === "PENDING" ||
-        this.serviceStatus.status === "IN PROGRESS"
-      ) {
+      if (this.serviceStatus.status === "PENDING") {
         iconColor = "warning";
       } else if (this.serviceStatus.status === "UNATTENDED") {
         iconColor = "error";
       } else if (this.serviceStatus.status === "COMPLETED") {
         iconColor = "success";
+      } else if (this.serviceStatus.status === "IN PROGRESS") {
+        iconColor = "indigo";
       }
       return iconColor;
     },

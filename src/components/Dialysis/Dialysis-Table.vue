@@ -18,8 +18,10 @@
     <template v-slot:[`item.status`]="{ item }">
       <div
         :class="{
-          'text-green': item.status === 'COMPLETED',
-          'text-red': item.status !== 'COMPLETED',
+          'success--text': item.status === 'COMPLETED',
+          'error--text':
+            item.status === 'PENDING' || item.status === 'UNATTENDED',
+          'indigo--text': item.status === 'IN PROGRESS',
         }"
       >
         {{ item.status }}
@@ -135,12 +137,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.text-green {
-  color: green;
-}
-
-.text-red {
-  color: red;
-}
-</style>
+<style scoped></style>
