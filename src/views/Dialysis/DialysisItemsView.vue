@@ -36,6 +36,7 @@ export default {
   mixins: [ErrorAlertsLogic],
   data: () => ({
     dialog: false,
+    payload: {},
   }),
   components: {
     ItemsTable,
@@ -50,9 +51,17 @@ export default {
       this.dialog = data;
     },
     submitForm(data) {
-      this.addDialysisItems(data).catch((error) => {
-        console.error("Error Adding Item in component: ", error);
-      });
+      this.addDialysisItems(data)
+        .catch((error) => {
+          console.error("Error Adding Item in component: ", error);
+        })
+        .finally(() => {
+          this.dialog = false;
+          this.payload = {
+            name: null,
+            price: null,
+          };
+        });
     },
   },
   computed: {

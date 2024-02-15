@@ -61,6 +61,10 @@ export default {
         })
         .finally(() => {
           this.dialog = false;
+          this.payload = {
+            name: null,
+            dialysis_item_options: null,
+          };
         });
     },
   },

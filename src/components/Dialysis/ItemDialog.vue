@@ -68,7 +68,6 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.$emit("submitForm", this.payload);
-        this.dialog = false;
         this.$v.$reset();
       }
     },
