@@ -25,11 +25,31 @@
               @blur="$v.payload.dialysis_item_options.$touch()"
               :error-messages="errorMessages.dialysis_item_options"
               multiple
-            ></v-select>
+            >
+              <template v-slot:item="{ item, attrs, on }">
+                <v-list-item v-on="on" v-bind="attrs" #default="{ active }">
+                  <v-list-item-action>
+                    <v-checkbox :input-value="active"></v-checkbox>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <div
+                        class="d-flex flex-column justify-center align-start"
+                      >
+                        <div>{{ item.name }}</div>
+                        <div class="item-description">PHP {{ item.price }}</div>
+                      </div>
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+            </v-select>
           </v-col>
           <v-col cols="12">
             <div class="text-right">
-              <v-btn dark class="blue darken-4" @click="submitForm">Submit</v-btn>
+              <v-btn dark class="blue darken-4" @click="submitForm"
+                >Submit</v-btn
+              >
             </div>
           </v-col>
         </v-row>
@@ -76,7 +96,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("dialysis_items", ["dialysis_items"])
+    ...mapState("dialysis_items", ["dialysis_items"]),
   },
   watch: {
     activator(newValue) {
@@ -103,8 +123,14 @@ export default {
   },
   created() {
     this.fetchDialysisItems();
-  }
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.item-description {
+  font-size: 12px;
+  color: #333;
+  font-weight: bold;
+}
+</style>
