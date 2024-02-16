@@ -1,19 +1,41 @@
 <template>
-  <v-footer app dark inset padless id="footer">
+  <v-footer app dark inset padless id="footer" color="#f4f4f4">
     <v-row justify="space-between">
       <v-col cols="auto" align-self="center">
-        <v-card-text>
-          &copy; <strong>ICTDU — {{ new Date().getFullYear() }}</strong>
-        </v-card-text>
+        <div class="d-flex justify-start align-center py-1">
+          <div class="px-2">
+            <v-img
+              height="55"
+              width="55"
+              contain
+              src="../../assets/ICTDU.jpg"
+            ></v-img>
+          </div>
+          <div style="font-size: 1rem" class="px-2">
+            Copyright &copy; 2024 — <strong>ICTDU</strong>
+          </div>
+        </div>
       </v-col>
-      <v-col cols="auto">
-        <v-card-text>
-          <v-btn v-for="icon in icons" :key="icon" class="mx-3 icons" icon>
-            <v-icon size="24px">
-              {{ icon }}
-            </v-icon>
-          </v-btn>
-        </v-card-text>
+      <v-col cols="auto" align-self="center">
+        <div class="d-flex justify-start align-center">
+          <v-tooltip top v-for="(route, index) in icons" :key="index">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                :href="route.link"
+                target="_blank"
+                class="icons mx-2"
+                style="padding: 1.5rem 2rem"
+                v-bind="attrs"
+                v-on="on"
+                ><v-icon size="30px" color="primary">{{
+                  route.icon
+                }}</v-icon></v-btn
+              >
+            </template>
+            <span>{{ route.developer }}</span>
+          </v-tooltip>
+        </div>
       </v-col>
     </v-row>
   </v-footer>
@@ -23,21 +45,30 @@
 export default {
   name: "FooterComponent",
   data: () => ({
-    icons: ["mdi-facebook", "mdi-linkedin", "mdi-dots-horizontal"],
+    icons: [
+      {
+        icon: "mdi-facebook",
+        link: "https://www.facebook.com/aaronjoseph.baquing/",
+        developer: "Backend Developer",
+      },
+      {
+        icon: "mdi-facebook",
+        link: "https://www.facebook.com/gabriel.gatbonton.26/",
+        developer: "Frontend Developer",
+      },
+    ],
   }),
 };
 </script>
 
 <style scoped>
 #footer {
-  color: #ffffff;
+  color: #555;
   max-width: 100vw;
-}
-.icons {
-  display: inline-block;
+  height: auto;
 }
 .icons:hover {
-  color: blueviolet;
+  opacity: 0.7;
   cursor: pointer;
 }
 </style>

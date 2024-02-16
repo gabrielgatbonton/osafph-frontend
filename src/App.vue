@@ -10,11 +10,13 @@
     <v-main>
       <router-view />
     </v-main>
+    <FooterComponent /> 
   </v-app>
 </template>
 
 <script>
 import NavComponents from "./layouts/NavComponents.vue";
+import FooterComponent from "./layouts/Footer/FooterComponent.vue";
 export default {
   name: "App",
   data: () => ({
@@ -22,6 +24,7 @@ export default {
   }),
   components: {
     NavComponents,
+    FooterComponent
   },
 };
 </script>
