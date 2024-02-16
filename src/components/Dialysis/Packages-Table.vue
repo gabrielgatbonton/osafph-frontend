@@ -36,8 +36,8 @@
       </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container class="ml-n8" style="width: 120px">
-        <v-row no-gutters justify="center">
+      <v-container class="ml-n5" style="width: auto; padding: 0">
+        <v-row no-gutters justify="start">
           <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
             <v-icon
               class="mx-1"
@@ -56,6 +56,15 @@
               >mdi-trash-can</v-icon
             >
           </v-col>
+          <v-col cols="auto" v-if="iconPermissions.toggle" align-self="center">
+            <v-switch
+              v-model="item.is_active"
+              inset
+              class="mx-1"
+              dense
+              @click="togglePackage(item.id)"
+            ></v-switch>
+          </v-col>
         </v-row>
       </v-container>
     </template>
@@ -68,10 +77,11 @@ import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import DeletePackage from "@/mixins/Admin/Dialysis/DeletePackage";
 import PackageDialog from "./PackageDialog.vue";
 import EditPackage from "@/mixins/Admin/Dialysis/EditPackage";
+import TogglePackage from "@/mixins/Admin/Dialysis/TogglePackage";
 export default {
   name: "Packages-Table",
   props: ["packages"],
-  mixins: [DeletePackage, EditPackage],
+  mixins: [DeletePackage, EditPackage, TogglePackage],
   data: () => ({
     search: "",
     offset: true,
@@ -108,6 +118,10 @@ export default {
           value: "items_price",
         },
         {
+          text: "STATUS",
+          value: "status",
+        },
+        {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
@@ -117,13 +131,16 @@ export default {
     iconPermissions() {
       let edit = false;
       let remove = false;
+      let toggle = false;
       if (this.userRole === "ADMIN") {
         edit = true;
         remove = true;
+        toggle = true;
       }
       return {
         edit: edit,
         delete: remove,
+        toggle: toggle,
       };
     },
   },
@@ -134,6 +151,8 @@ export default {
         package: item.name,
         package_price: item.price,
         items_price: item.dialysis_item_options,
+        is_active: item.is_active,
+        status: item.is_active ? "ACTIVE" : "INACTIVE",
       }));
     },
   },

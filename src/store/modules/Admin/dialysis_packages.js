@@ -83,5 +83,18 @@ export const dialysis_packages = {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
+    toggleDialysisPackage({ dispatch }, dialysis_package_id) {
+      const url = `admin/dialysis/packages/${dialysis_package_id}/toggle-active`;
+      return this.$axios
+        .patch(url)
+        .then((response) => {
+          dispatch("fetchDialysisPackages");
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+        })
+        .catch((error) => {
+          console.error("Error adding package: ", error);
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+        });
+    },
   },
 };
