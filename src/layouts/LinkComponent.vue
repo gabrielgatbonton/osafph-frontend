@@ -24,7 +24,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
-      <v-list-item v-else router :to="link.route">
+      <v-list-item v-else router :to="link.route" color="primary">
         <v-list-item-icon>
           <v-icon>{{ link.icon }}</v-icon>
         </v-list-item-icon>

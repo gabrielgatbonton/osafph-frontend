@@ -16,7 +16,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-divider class="my-4"></v-divider>
+    <v-divider class="mx-3"></v-divider>
     <PackagesTable :packages="dialysis_packages" />
     <PackageDialog
       @dialogResponse="resetActivator"

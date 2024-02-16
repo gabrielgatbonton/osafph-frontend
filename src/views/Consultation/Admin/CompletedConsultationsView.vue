@@ -1,23 +1,13 @@
 <template>
   <div>
-    <v-container fluid class="table-title ma-2">
-      <v-row>
+    <v-container fluid class="table-title ma-1">
+      <v-row no-gutters>
         <v-col cols="auto">
           <v-icon left>mdi-medical-bag</v-icon>
           <span class="title">List of Requested Consultations</span>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="auto">
-          <!-- <v-btn
-              class="mr-3"
-              color="blue darken-4"
-              dark
-              @click="switchConsultations"
-              >{{
-                consultationsStatus ? "Pending" : "Archived"
-              }}</v-btn
-            > -->
-        </v-col>
+        <v-col cols="auto"></v-col>
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>

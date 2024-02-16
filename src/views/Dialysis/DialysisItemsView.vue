@@ -16,7 +16,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-divider class="my-4"></v-divider>
+    <v-divider class="mx-3"></v-divider>
     <ItemsTable :items="dialysis_items" />
     <ItemDialog
       :activator="dialog"
