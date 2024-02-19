@@ -3,7 +3,10 @@ export default [
   {
     path: "/dialysis",
     name: "dialysis",
-    component: () => import("@/views/Dialysis/DialysisView.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "dialysis" */ "@/views/Dialysis/DialysisView.vue"
+      ),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -11,7 +14,10 @@ export default [
   {
     path: "/dialysis/session/:id",
     name: "dialysis-session",
-    component: () => import("@/views/Dialysis/DialysisSessionView.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "dialysis" */ "@/views/Dialysis/DialysisSessionView.vue"
+      ),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -19,7 +25,10 @@ export default [
   {
     path: "/dialysis/session/:id/files/:hospital_service_id",
     name: "dialysis-files",
-    component: () => import("@/views/Consultation/ConsultationFiles.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "dialysis" */ "@/views/Consultation/ConsultationFiles.vue"
+      ),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -27,7 +36,8 @@ export default [
   {
     path: "/dialysis/session/:id/files/viewer",
     name: "dialysis-files-view",
-    component: () => import("@/views/FileView.vue"),
+    component: () =>
+      import(/* webpackChunkName: "dialysis" */ "@/views/FileView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -35,7 +45,10 @@ export default [
   {
     path: "/dialysis-packages",
     name: "dialysis-packages",
-    component: () => import("@/views/Dialysis/DialysisPackagesView.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "dialysis-admin" */ "@/views/Dialysis/DialysisPackagesView.vue"
+      ),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -43,7 +56,10 @@ export default [
   {
     path: "/dialysis-items",
     name: "dialysis-items",
-    component: () => import("@/views/Dialysis/DialysisItemsView.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "dialysis-admin" */ "@/views/Dialysis/DialysisItemsView.vue"
+      ),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
