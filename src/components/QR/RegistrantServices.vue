@@ -190,9 +190,9 @@ export default {
         : "";
     },
   },
-  mounted() {
-    console.log("Registrant Services: ", this.data);
-  },
+  // mounted() {
+  //   console.log("Registrant Services: ", this.data);
+  // },
 };
 </script>
 

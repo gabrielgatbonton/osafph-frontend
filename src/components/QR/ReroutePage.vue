@@ -19,7 +19,13 @@
     <v-container>
       <v-row dense>
         <v-col cols="12">
-          <div v-if="getPublicData && getPublicImage && getPublicSignature || getPublicBiometrics" class="my-auto text-center slide-down">
+          <div
+            v-if="
+              (getPublicData && getPublicImage && getPublicSignature) ||
+              getPublicBiometrics
+            "
+            class="my-auto text-center slide-down"
+          >
             <PublicPrintCardJavaScript
               :getPublicImage="getPublicImage"
               :getPublicSignature="getPublicSignature"
@@ -31,7 +37,10 @@
       </v-row>
       <v-row dense>
         <v-col cols="12">
-          <DataTabs :data="getPublicData" :services="getPublicHospitalServices"/>
+          <DataTabs
+            :data="getPublicData"
+            :services="getPublicHospitalServices"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -53,19 +62,27 @@ export default {
       "fetchBoosterInformation",
       "fetchPublicCitizenRecord",
     ]),
-    ...mapActions("card", ["fetchPublicImage", "fetchPublicSignature", "fetchPublicBiometrics"]),
+    ...mapActions("card", [
+      "fetchPublicImage",
+      "fetchPublicSignature",
+      "fetchPublicBiometrics",
+    ]),
     ...mapActions("services", ["fetchPublicServicesById"]),
     fetchData() {
-      const id = this.$route.params.hub_registrant_id;
-      this.fetchPublicCitizenRecord(id).catch((error) => {
-        console.error("Error fetching Public Citizen Record @ Reroute:", error);
-      });
-      // this.fetchRegistrantId(id).catch((error) => {
-      //   console.error("Error fetching data in ReroutePage:", error);
-      // });
-      // this.fetchBoosterInformation(id).catch((error) => {
-      //   console.error("Error fetching data in ReroutePage:", error);
-      // });
+      const storedId = sessionStorage.getItem("hub_registrant_id");
+      this.fetchPublicCitizenRecord(storedId)
+        .catch((error) => {
+          console.error(
+            "Error fetching Public Citizen Record @ Reroute:",
+            error
+          );
+        })
+        .finally(() => {
+          // // Remove the parameter from the URL without navigation
+          // const route = { ...this.$route }; // Create a copy of the route object
+          // delete route.params.hub_registrant_id; // Remove the parameter
+          // this.$router.replace(route); // Replace the route
+        });
     },
   },
   computed: {
@@ -74,15 +91,18 @@ export default {
       "getBoosterInformation",
       "getPublicData",
     ]),
-    ...mapGetters("card", ["getPublicImage", "getPublicSignature", "getPublicBiometrics"]),
-    ...mapGetters("services", ["getPublicHospitalServices"])
+    ...mapGetters("card", [
+      "getPublicImage",
+      "getPublicSignature",
+      "getPublicBiometrics",
+    ]),
+    ...mapGetters("services", ["getPublicHospitalServices"]),
   },
   created() {
     this.fetchData();
   },
   watch: {
     getPublicData(value) {
-      console.log("Success Public Data: ", value);
       if (value.citizen.hub_registrant_id) {
         this.fetchPublicImage(value.citizen.id);
         this.fetchPublicSignature(value.citizen.id);
@@ -96,9 +116,9 @@ export default {
     // getBoosterInformation(value) {
     //   console.log("Booster: ", value);
     // },
-    getPublicBiometrics(value) {
-      console.log(value);
-    }
+    // getPublicBiometrics(value) {
+    //   console.log(value);
+    // },
   },
 };
 </script>

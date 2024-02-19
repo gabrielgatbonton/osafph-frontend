@@ -396,9 +396,9 @@ export default {
       ];
     },
   },
-  created() {
-    console.log(this.data);
-  },
+  // created() {
+  //   console.log(this.data);
+  // },
 };
 </script>
 
