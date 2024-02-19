@@ -1,10 +1,9 @@
-import ManagementView from '@/views/ManagementView.vue'
-import { checkLoggedIn } from './auth-guard';
+import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/management",
     name: "management",
-    component: ManagementView,
+    component: () => import("@/views/ManagementView.vue"),
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
   },

@@ -1,31 +1,23 @@
-import CitizensView from "@/views/CitizensView.vue";
-import RegisterView from "@/views/RegisterView.vue";
-import ViewDetailsView from "@/views/ViewDetailsView.vue";
-import EditView from "@/views/EditView.vue";
-import CitizensConsultationView from "@/views/Consultation/Admin/CompletedConsultationsView.vue";
-import CitizensConsultationInformationView from '@/views/Consultation/ConsultationInformationView.vue';
-import EditConsultationForm from '@/views/Consultation/Admin/EditConsultationForm.vue';
-import EditConsultationFormContinuation from '@/views/Consultation/ConsultationFormContinuation.vue';
 import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/citizens",
     name: "citizens",
-    component: CitizensView,
+    component: () => import("@/views/CitizensView.vue"),
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens/register",
     name: "register",
-    component: RegisterView,
+    component: () => import("@/views/RegisterView.vue"),
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens/edit/:id",
     name: "edit",
-    component: EditView,
+    component: () => import("@/views/EditView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -33,7 +25,7 @@ export default [
   {
     path: "/citizens/details/:id",
     name: "details",
-    component: ViewDetailsView,
+    component: () => import("@/views/ViewDetailsView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -41,7 +33,8 @@ export default [
   {
     path: "/citizens-consultations",
     name: "citizens-consultations",
-    component: CitizensConsultationView,
+    component: () =>
+      import("@/views/Consultation/Admin/CompletedConsultationsView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -49,7 +42,8 @@ export default [
   {
     path: "/citizens-consultations/:consultation_id/view/:hospital_service_id",
     name: "citizens-consultations-view",
-    component: CitizensConsultationInformationView,
+    component: () =>
+      import("@/views/Consultation/ConsultationInformationView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -57,7 +51,8 @@ export default [
   {
     path: "/citizens-consultations/:consultation_id/view/:hospital_service_id/form",
     name: "edit-consultation-form",
-    component: EditConsultationForm,
+    component: () =>
+      import("@/views/Consultation/Admin/EditConsultationForm.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -65,7 +60,8 @@ export default [
   {
     path: "/citizens-consultations/:consultation_id/view/:hospital_service_id/form/2",
     name: "edit-consultation-form-continuation",
-    component: EditConsultationFormContinuation,
+    component: () =>
+      import("@/views/Consultation/ConsultationFormContinuation.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,

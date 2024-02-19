@@ -1,11 +1,10 @@
-import HospitalServicesView from "@/views/Hospital-Services/HospitalServicesView.vue";
-import HospitalServicesInformationsView from "@/views/Hospital-Services/HospitalServiceInformationView.vue";
 import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/citizens/hospital-services/:id",
     name: "hospital-services",
-    component: HospitalServicesView,
+    component: () =>
+      import("@/views/Hospital-Services/HospitalServicesView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -13,7 +12,8 @@ export default [
   {
     path: "/citizens/hospital-services/:id/view/:hospital_service_id",
     name: "hospital-services-information",
-    component: HospitalServicesInformationsView,
+    component: () =>
+      import("@/views/Hospital-Services/HospitalServiceInformationView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,

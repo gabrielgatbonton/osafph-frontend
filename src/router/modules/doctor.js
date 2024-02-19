@@ -1,17 +1,10 @@
-import ConsultationView from "@/views/Consultation/Doctor/RequestedConsultationsView.vue";
-import ConsultationInformationView from "@/views/Consultation/ConsultationInformationView.vue";
-import AddConsultationForm from "@/views/Consultation/Doctor/AddConsultationForm.vue";
-import ConsultationFormContinuation from "@/views/Consultation/ConsultationFormContinuation.vue";
-import EditConsultationFormView from "@/views/Consultation/Admin/EditConsultationForm.vue";
-import EditConsultationFormContinuation from "@/views/Consultation/ConsultationFormContinuation.vue";
-import ConsultationFiles from "@/views/Consultation/ConsultationFiles.vue";
-import FileView from "@/views/FileView.vue";
 import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/consultations",
     name: "consultations",
-    component: ConsultationView,
+    component: () =>
+      import("@/views/Consultation/Doctor/RequestedConsultationsView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -19,7 +12,8 @@ export default [
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id",
     name: "consultation-view",
-    component: ConsultationInformationView,
+    component: () =>
+      import("@/views/Consultation/ConsultationInformationView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -27,7 +21,8 @@ export default [
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/form",
     name: "add-consultation-form",
-    component: AddConsultationForm,
+    component: () =>
+      import("@/views/Consultation/Doctor/AddConsultationForm.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -35,7 +30,8 @@ export default [
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/form/2",
     name: "consultation-form-continuation",
-    component: ConsultationFormContinuation,
+    component: () =>
+      import("@/views/Consultation/ConsultationFormContinuation.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -43,7 +39,8 @@ export default [
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/edit-form",
     name: "doctor-edit-consultation-form",
-    component: EditConsultationFormView,
+    component: () =>
+      import("@/views/Consultation/Admin/EditConsultationForm.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -51,7 +48,8 @@ export default [
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/edit-form/2",
     name: "doctor-edit-consultation-form-continuation",
-    component: EditConsultationFormContinuation,
+    component: () =>
+      import("@/views/Consultation/ConsultationFormContinuation.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -59,7 +57,7 @@ export default [
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/files",
     name: "consultation-files",
-    component: ConsultationFiles,
+    component: () => import("@/views/Consultation/ConsultationFiles.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -67,7 +65,7 @@ export default [
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/files/viewer",
     name: "consultation-files-view",
-    component: FileView,
+    component: () => import("@/views/FileView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,

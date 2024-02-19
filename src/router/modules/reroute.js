@@ -1,9 +1,8 @@
-import ReroutePage from "@/components/QR/ReroutePage.vue";
 export default [
   {
     path: "/vaccination/:hub_registrant_id?",
     name: "reroute",
-    component: ReroutePage,
+    component: () => import("@/components/QR/ReroutePage.vue"),
     meta: { requiresAuth: false },
     beforeEnter: (to, from, next) => {
       const hubRegistrantId = to.params.hub_registrant_id;

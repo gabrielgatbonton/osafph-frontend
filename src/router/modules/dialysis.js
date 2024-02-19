@@ -1,15 +1,9 @@
-import DialysisView from "@/views/Dialysis/DialysisView.vue";
-import DialysisSession from "@/views/Dialysis/DialysisSessionView.vue";
-import DialysisFiles from "@/views/Consultation/ConsultationFiles.vue";
-import FileView from "@/views/FileView.vue";
-import DialysisPackagesView from "@/views/Dialysis/DialysisPackagesView.vue";
-import DialysisItemsView from "@/views/Dialysis/DialysisItemsView.vue";
 import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/dialysis",
     name: "dialysis",
-    component: DialysisView,
+    component: () => import("@/views/Dialysis/DialysisView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -17,7 +11,7 @@ export default [
   {
     path: "/dialysis/session/:id",
     name: "dialysis-session",
-    component: DialysisSession,
+    component: () => import("@/views/Dialysis/DialysisSessionView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -25,7 +19,7 @@ export default [
   {
     path: "/dialysis/session/:id/files/:hospital_service_id",
     name: "dialysis-files",
-    component: DialysisFiles,
+    component: () => import("@/views/Consultation/ConsultationFiles.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -33,7 +27,7 @@ export default [
   {
     path: "/dialysis/session/:id/files/viewer",
     name: "dialysis-files-view",
-    component: FileView,
+    component: () => import("@/views/FileView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -41,7 +35,7 @@ export default [
   {
     path: "/dialysis-packages",
     name: "dialysis-packages",
-    component: DialysisPackagesView,
+    component: () => import("@/views/Dialysis/DialysisPackagesView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
@@ -49,7 +43,7 @@ export default [
   {
     path: "/dialysis-items",
     name: "dialysis-items",
-    component: DialysisItemsView,
+    component: () => import("@/views/Dialysis/DialysisItemsView.vue"),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,

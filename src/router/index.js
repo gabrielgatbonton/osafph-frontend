@@ -4,7 +4,6 @@ import VueRouter from "vue-router";
 import dashboardRoute from "./modules/dashboard";
 import citizensRoute from "./modules/citizens";
 import managementRoute from "./modules/management";
-import LogInLayout from "../components/LandingPage.vue";
 import { checkLoggedIn } from "./modules/auth-guard";
 import ReroutePage from "./modules/reroute";
 // import html2pdfPage from "../components/File Viewer/FileViewer.vue"
@@ -22,7 +21,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: LogInLayout,
+    component: () => import("../components/LandingPage.vue"),
   },
   // {
   //   path: "/test",
