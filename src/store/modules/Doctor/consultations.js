@@ -47,8 +47,15 @@ export const consultations = {
         return archivedConsultations;
       }
     },
-    getConsultation: (state) => state.consultation,
+    getConsultation: (state) => {
+      if (state.consultation) {
+        const consultation = state.consultation.consultation;
+        return consultation;
+      }
+    },
     getConsultationForm: (state) => state.consultation_form,
+    getPreviousConsultations: (state) =>
+      state.consultation.consultation.previous_consultation_forms,
   },
   mutations: {
     SET_CONSULTATIONS(state, consultations) {

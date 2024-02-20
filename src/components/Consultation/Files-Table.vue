@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="filesData"
     item-key="name"
     class="elevation-0"
     :search="search"
@@ -82,7 +82,6 @@ export default {
   data: () => ({
     search: "",
     offset: true,
-    data: [],
   }),
   methods: {
     filterOnlyCapsText(value, search) {
@@ -133,10 +132,8 @@ export default {
         },
       ];
     },
-  },
-  watch: {
-    files(value) {
-      this.data = value.map((file) => ({
+    filesData() {
+      return this.files ? this.files.map((file) => ({
         file_name: file.file_name,
         document_type: file.document_type,
         uploaded_by: file.uploaded_by,
@@ -144,8 +141,8 @@ export default {
         upload_status: file.upload_status,
         file_id: file.id,
         hospital_service_id: file.hospital_service_id,
-      }));
-    },
+      })) : [];
+    }
   },
 };
 </script>

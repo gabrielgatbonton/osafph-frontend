@@ -17,7 +17,7 @@
       </v-row>
     </v-container>
     <v-divider class="my-4"></v-divider>
-    <FilesTable :files="files" />
+    <FilesTable :files="getFiles" />
     <UploadDialog
       v-on:uploadFiles="uploadFiles"
       v-on:dialogResponse="resetActivator"
@@ -38,7 +38,6 @@ export default {
   data: () => ({
     payload: null,
     dialog: false,
-    files: null,
   }),
   components: {
     FilesTable,
@@ -80,11 +79,6 @@ export default {
   },
   computed: {
     ...mapGetters("files", ["getFiles"]),
-  },
-  watch: {
-    getFiles(value) {
-      this.files = value;
-    },
   },
   created() {
     this.fetchData();

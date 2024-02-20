@@ -102,6 +102,11 @@ export default {
         this.$v.$reset();
       }
     },
+    fetchEnums() {
+      if (!this.getFileTypes.length) {
+        this.fetchFileTypes();
+      }
+    },
   },
   computed: {
     ...mapGetters("file_types", ["getFileTypes"]),
@@ -121,7 +126,7 @@ export default {
     },
   },
   created() {
-    this.fetchFileTypes();
+    this.fetchEnums();
   },
 };
 </script>
