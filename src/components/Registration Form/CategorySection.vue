@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import CategorySectionValidation from "@/mixins/Validation/RegistrationFormValidation/CategorySectionValidation";
 export default {
   name: "CategorySection",
@@ -105,8 +105,6 @@ export default {
     stepper: 1,
   }),
   methods: {
-    ...mapActions("categories", ["fetchCategories"]),
-    ...mapActions("identification_cards", ["fetchIdentificationCards"]),
     continueForm() {
       this.$v.$touch();
       // if (
@@ -122,31 +120,26 @@ export default {
         console.log("Data is invalid");
       }
     },
-    findIdentificationCard() {
-      if (this.editData) {
-        const data = this.getIdentificationCards.find(
-          (card) => card.id === this.editData.identification_card_id
-        );
-        if (data) {
-          this.data.identification_card = data.name;
-        }
-      }
-    },
+    // findIdentificationCard() {
+    //   if (this.editData) {
+    //     const data = this.getIdentificationCards.find(
+    //       (card) => card.id === this.editData.identification_card_id
+    //     );
+    //     if (data) {
+    //       this.data.identification_card = data.name;
+    //       console.log( this.data.identification_card);
+    //     }
+    //   }
+    // },
     asyncPayload() {
       if (this.editData) {
         this.$emit("data", this.data);
       }
-    }
+    },
   },
   computed: {
     ...mapGetters("categories", ["getCategories"]),
     ...mapGetters("identification_cards", ["getIdentificationCards"]),
-  },
-  created() {
-    this.fetchCategories();
-    this.fetchIdentificationCards().then(() => {
-      this.findIdentificationCard();
-    });
   },
   watch: {
     editData: {
@@ -155,6 +148,7 @@ export default {
         this.data.type_of_id = value.type_of_id;
         this.data.other_id = value.other_id;
         this.data.id_number = value.id_number;
+        this.data.identification_card = value.identification_card;
       },
       deep: true,
     },

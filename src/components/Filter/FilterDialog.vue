@@ -95,9 +95,19 @@ export default {
     ...mapActions("philippines", ["fetchBarangays"]),
     ...mapActions("dialysis", ["fetchDialysisMachines"]),
     fetchEnums() {
-      this.fetchCategories();
-      this.fetchBarangays();
-      this.fetchDialysisMachines();
+      if (
+        !this.categories.length &&
+        !this.barangays.length &&
+        this.type_of_filter === "CITIZENS INDEX"
+      ) {
+        this.fetchCategories();
+        this.fetchBarangays();
+      } else if (
+        this.type_of_filter === "DIALYSIS INDEX" &&
+        !this.dialysis_machines.length
+      ) {
+        this.fetchDialysisMachines();
+      }
     },
     submitFilter() {
       if (this.type_of_filter === "CITIZENS INDEX") {

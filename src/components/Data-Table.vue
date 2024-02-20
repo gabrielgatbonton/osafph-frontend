@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="registrantsData"
     item-key="name"
     class="elevation-0"
     :search="search"
@@ -81,7 +81,6 @@ export default {
   data: () => ({
     search: "",
     offset: true,
-    data: [],
   }),
   methods: {
     filterOnlyCapsText(value, search) {
@@ -180,10 +179,8 @@ export default {
         delete: remove,
       };
     },
-  },
-  watch: {
-    registrants(value) {
-      this.data = value.map((registrant) => ({
+    registrantsData() {
+      return this.registrants ? this.registrants.map((registrant) => ({
         id: registrant.id,
         hub_registrant_id: registrant.hub_registrant_id,
         full_name: `${registrant.last_name}, ${registrant.first_name} ${
@@ -194,8 +191,8 @@ export default {
         barangay: registrant.barangay,
         municipality: registrant.municipality,
         mcg_cares_card: registrant.mcg_cares_card,
-      }));
-    },
+      })) : [];
+    }
   },
 };
 </script>

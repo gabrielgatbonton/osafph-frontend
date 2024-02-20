@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import CategorySection from "./CategorySection.vue";
 import PersonalInformationSection from "./PersonalInformationSection.vue";
 import AddressSection from "./AddressSection.vue";
@@ -139,11 +139,21 @@ export default {
   }),
   computed: {
     ...mapGetters("registrants", ["getRegistrant"]),
+    ...mapGetters("professions", ["getProfessions"]),
+    ...mapGetters("philippines", [
+      "getBarangays",
+      "getRegions",
+      "getMunicipalities",
+      "getProvinces",
+      "getCountries",
+    ]),
+    ...mapGetters("categories", ["getCategories"]),
+    ...mapGetters("identification_cards", ["getIdentificationCards"]),
     CategorySectionEditData() {
       if (this.category) {
         const data = {
           category: this.category.citizen.category.description,
-          identification_card_id: this.category.citizen.identification_card_id,
+          identification_card: this.category.citizen.identification_card.name,
           type_of_id: this.category.citizen.type_of_id,
           other_id: this.category.citizen.other_id,
           id_number: this.category.citizen.id_number,
@@ -267,6 +277,16 @@ export default {
     },
   },
   methods: {
+    ...mapActions("professions", ["fetchProfessions"]),
+    ...mapActions("philippines", [
+      "fetchRegions",
+      "fetchProvinces",
+      "fetchMunicipalities",
+      "fetchBarangays",
+      "fetchCountries",
+    ]),
+    ...mapActions("categories", ["fetchCategories"]),
+    ...mapActions("identification_cards", ["fetchIdentificationCards"]),
     async fetchRegistrant() {
       if (this.id) {
         try {
@@ -314,6 +334,26 @@ export default {
     updateStepper(stepper) {
       this.stepper = stepper;
     },
+    fetchEnums() {
+      if (!this.getCategories.length) {
+        this.fetchCategories();
+      }
+      if (!this.getIdentificationCards.length) {
+        this.fetchIdentificationCards();
+      }
+      if (
+        !this.getBarangays.length ||
+        !this.getRegions.length &&
+        !this.getMunicipalities.length &&
+        !this.getProvinces.length &&
+        !this.getCountries.length
+      ) {
+        this.fetchCountries();
+      }
+      if (!this.getProfessions.length) {
+        this.fetchProfessions();
+      }
+    },
   },
   watch: {
     getRegistrant(value) {
@@ -325,6 +365,7 @@ export default {
     },
   },
   created() {
+    this.fetchEnums();
     this.fetchRegistrant();
   },
 };

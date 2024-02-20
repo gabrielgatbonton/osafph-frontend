@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import EmploymentSectionValidation from "@/mixins/Validation/RegistrationFormValidation/EmploymentSectionValidation";
 export default {
   name: "EmploymentSection",
@@ -135,7 +135,6 @@ export default {
     ],
   }),
   methods: {
-    ...mapActions("professions", ["fetchProfessions"]),
     continueForm() {
       // console.log(this.data)
       if (
@@ -153,6 +152,7 @@ export default {
         );
         if (data) {
           this.data.profession = data.name;
+          console.log(this.data.profession);
         }
       }
     },
@@ -160,14 +160,12 @@ export default {
   computed: {
     ...mapGetters("professions", ["getProfessions"]),
   },
-  created() {
-    this.fetchProfessions().then(() => {
-      this.findProfessionOnEdit();
-    });
-  },
   watch: {
     editData(value) {
-      this.data = Object.assign({}, this.data, value);
+      if (this.getProfessions && value) {
+        this.data = Object.assign({}, this.data, value);
+        this.findProfessionOnEdit();
+      }
     },
   },
 };

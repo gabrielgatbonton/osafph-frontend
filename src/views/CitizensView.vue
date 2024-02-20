@@ -67,12 +67,17 @@ export default {
     filterQuery(value) {
       this.fetchRegistrants(value);
     },
+    fetchData() {
+      if (!this.allRegistrants.length) {
+        this.fetchRegistrants(); // Fetch registrants' data when the component is created
+      }
+    },
   },
   computed: {
     ...mapGetters("registrants", ["allRegistrants"]),
   },
   created() {
-    this.fetchRegistrants(); // Fetch registrants' data when the component is created
+    this.fetchData()
   },
 };
 </script>

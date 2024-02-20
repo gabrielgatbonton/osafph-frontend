@@ -216,7 +216,19 @@ export default {
       if (this.editData) {
         this.$emit("data", this.data);
       }
-    }
+    },
+    fetchEnums() {
+      if (
+        !this.getBarangays.length &&
+        !this.getBarangays.length &&
+        !this.getRegions.length &&
+        !this.getMunicipalities.length &&
+        !this.getProvinces.length &&
+        !this.getCountries.length
+      ) {
+        this.fetchCountries();
+      }
+    },
   },
   computed: {
     ...mapGetters("philippines", [
@@ -228,7 +240,7 @@ export default {
     ]),
   },
   created() {
-    this.fetchCountries();
+    this.fetchEnums();
   },
   watch: {
     editData(value) {

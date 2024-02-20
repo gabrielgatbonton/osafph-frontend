@@ -26,20 +26,20 @@ export const registrants = {
     SET_REGISTRANTS(state, registrants) {
       state.registrants = registrants;
     },
-    ADD_REGISTRANT(state, registrant) {
-      state.registrants.push(registrant);
-    },
+    // ADD_REGISTRANT(state, registrant) {
+    //   state.registrants.push(registrant);
+    // },
     SET_REGISTRANT(state, registrant) {
       state.registrant = registrant;
     },
-    UPDATE_REGISTRANT() {
-      this.dispatch("fetchRegistrants");
-    },
-    DELETE_REGISTRANT(state, data) {
-      state.registrants = state.registrants.filter(
-        (registrant) => registrant.id !== data.id
-      );
-    },
+    // UPDATE_REGISTRANT() {
+    //   this.dispatch("fetchRegistrants");
+    // },
+    // DELETE_REGISTRANT(state, data) {
+    //   state.registrants = state.registrants.filter(
+    //     (registrant) => registrant.id !== data.id
+    //   );
+    // },
     UPDATE_REGISTRANT_FILES(state, { id, files }) {
       const registrant = state.registrant;
       if (registrant && registrant.id === id) {
@@ -111,12 +111,12 @@ export const registrants = {
           console.error("Error fetching registrants:", error);
         });
     },
-    addRegistrant({ commit, dispatch }, data) {
+    addRegistrant({ dispatch }, data) {
       return this.$axios
         .post("citizens/create", data)
         .then((response) => {
-          const registrant = response.data;
-          commit("ADD_REGISTRANT", registrant);
+          // const registrant = response.data;
+          // commit("ADD_REGISTRANT", registrant);
 
           //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
@@ -142,14 +142,17 @@ export const registrants = {
           console.error("Error fetching registrant:", error);
         });
     },
-    updateRegistrant({ commit }, { id, data }) {
+    updateRegistrant({ dispatch }, { id, data }) {
       return this.$axios
         .put(`citizens/${id}`, data)
         .then((response) => {
-          const updateRegistrant = response.data;
-          commit("UPDATE_REGISTRANT", { id, updateRegistrant });
+          // const updateRegistrant = response.data;
+          // commit("UPDATE_REGISTRANT", { id, updateRegistrant });
           //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+
+          //Call Again Fetch Registrants
+          dispatch("fetchRegistrants");
         })
         .catch((error) => {
           //Commit to the other module for alert
@@ -284,12 +287,12 @@ export const registrants = {
           console.error("Error requesting vaccination update:", error);
         });
     },
-    deleteRegistrant({ commit, dispatch }, id) {
+    deleteRegistrant({ dispatch }, id) {
       return this.$axios
         .delete(`citizens/${id}`)
         .then((response) => {
-          const data = response.data;
-          commit("DELETE_REGISTRANT", data);
+          // const data = response.data;
+          // commit("DELETE_REGISTRANT", data);
           //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
           dispatch("fetchRegistrants");
