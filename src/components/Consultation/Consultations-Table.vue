@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="tableData"
     item-key="name"
     class="elevation-0"
     :search="search"
@@ -59,7 +59,6 @@ export default {
   data: () => ({
     search: "",
     offset: true,
-    data: [],
   }),
   methods: {
     filterOnlyCapsText(value, search) {
@@ -110,27 +109,29 @@ export default {
         },
       ];
     },
-  },
-  watch: {
-    consultations(value) {
-      this.data = value.map((consultation) => ({
-        patient_name: `${consultation.citizen.last_name}, ${
-          consultation.citizen.first_name
-        } ${
-          consultation.citizen.middle_name
-            ? consultation.citizen.middle_name
-            : ""
-        } ${consultation.citizen.suffix ? consultation.citizen.suffix : ""}`,
-        status: consultation.hospital_service.status,
-        scheduled_date: format(
-          parseISO(consultation.hospital_service.scheduled_date),
-          "MMMM dd, yyyy"
-        ),
-        sex: consultation.citizen.sex,
-        medical_site: consultation.hospital_service.hospital,
-        consultation_id: consultation.id,
-        hospital_service_id: consultation.hospital_service.id,
-      }));
+    tableData() {
+      return this.consultations
+        ? this.consultations.map((consultation) => ({
+            patient_name: `${consultation.citizen.last_name}, ${
+              consultation.citizen.first_name
+            } ${
+              consultation.citizen.middle_name
+                ? consultation.citizen.middle_name
+                : ""
+            } ${
+              consultation.citizen.suffix ? consultation.citizen.suffix : ""
+            }`,
+            status: consultation.hospital_service.status,
+            scheduled_date: format(
+              parseISO(consultation.hospital_service.scheduled_date),
+              "MMMM dd, yyyy"
+            ),
+            sex: consultation.citizen.sex,
+            medical_site: consultation.hospital_service.hospital,
+            consultation_id: consultation.id,
+            hospital_service_id: consultation.hospital_service.id,
+          }))
+        : [];
     },
   },
 };

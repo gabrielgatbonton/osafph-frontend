@@ -13,25 +13,23 @@
             color="blue darken-4"
             dark
             @click="switchConsultations"
-            >{{
-              consultationsStatus ? "Pending" : "Archived"
-            }}</v-btn
+            >{{ consultationsStatus ? "Pending" : "Archived" }}</v-btn
           >
         </v-col>
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ConsultationsTable :routeName="routeName" :consultations="switchData"/>
+    <ConsultationsTable :routeName="routeName" :consultations="switchData" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import ConsultationsTable from '@/components/Consultation/Consultations-Table.vue';
+import ConsultationsTable from "@/components/Consultation/Consultations-Table.vue";
 export default {
   data: () => ({
     consultationsStatus: false,
-    routeName: "consultation-view"
+    routeName: "consultation-view",
   }),
   components: {
     ConsultationsTable,
@@ -40,10 +38,19 @@ export default {
     ...mapActions("consultations", ["fetchConsultations"]),
     switchConsultations() {
       this.consultationsStatus = !this.consultationsStatus;
-    }
+    },
+    fetchData() {
+      if (!this.getPendingConsultations || !this.getArchivedConsultations) {
+        // Fetch data only if it's not already available
+        this.fetchConsultations();
+      }
+    },
   },
   computed: {
-    ...mapGetters("consultations", ["getPendingConsultations", "getArchivedConsultations"]),
+    ...mapGetters("consultations", [
+      "getPendingConsultations",
+      "getArchivedConsultations",
+    ]),
     switchData() {
       return this.consultationsStatus
         ? this.getArchivedConsultations
@@ -51,7 +58,7 @@ export default {
     },
   },
   created() {
-    this.fetchConsultations();
+    this.fetchData();
   },
 };
 </script>
