@@ -16,18 +16,18 @@
             <v-col cols="12">
               <v-tabs centered>
                 <v-tab>Vaccination</v-tab>
-                <v-tab v-if="getVaccineInformation">Booster</v-tab>
+                <v-tab v-if="vaccinationInformation">Booster</v-tab>
                 <v-tab-item>
                   <InitialVaccination
                     v-on:submitData="submitVaccine"
-                    :payload="getVaccineInformation"
+                    :payload="vaccinationInformation"
                     :loadingStatus="loading_vaccine"
                   />
                 </v-tab-item>
                 <v-tab-item>
                   <BoosterVaccination
                     v-on:submitData="submitBooster"
-                    :payload="getBoosterInformation"
+                    :payload="boosterInformation"
                     :loadingStatus="loading_booster"
                   />
                 </v-tab-item>
@@ -43,7 +43,7 @@
 <script>
 import InitialVaccination from "./InitialVaccination.vue";
 import BoosterVaccination from "./BoosterVaccination.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   props: ["id"],
   components: {
@@ -254,18 +254,10 @@ export default {
     this.fetchData();
   },
   computed: {
-    ...mapGetters("registrants", [
-      "getVaccineInformation",
-      "getBoosterInformation",
-    ]),
-  },
-  watch: {
-    getVaccineInformation(value) {
-      console.log("VaccineInformation", value);
-    },
-    getBoosterInformation(value) {
-      console.log("BoosterInformation", value);
-    },
+    ...mapState("registrants", {
+      vaccinationInformation: "vaccinationDetails",
+      boosterInformation: "boosterDetails",
+    }),
   },
 };
 </script>

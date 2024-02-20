@@ -22,7 +22,7 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <DataTable :registrants="allRegistrants" />
+    <DataTable :registrants="registrants" />
     <FilterDialog
       @filterQuery="filterQuery"
       :activator="dialog"
@@ -36,7 +36,7 @@
 import DataTable from "@/components/Data-Table.vue";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "CitizensView",
   mixins: [ErrorAlertsLogic],
@@ -68,16 +68,18 @@ export default {
       this.fetchRegistrants(value);
     },
     fetchData() {
-      if (!this.allRegistrants.length) {
+      if (!this.registrants.length) {
         this.fetchRegistrants(); // Fetch registrants' data when the component is created
       }
     },
   },
   computed: {
-    ...mapGetters("registrants", ["allRegistrants"]),
+    ...mapState("registrants", {
+      registrants: "registrants",
+    }),
   },
   created() {
-    this.fetchData()
+    this.fetchData();
   },
 };
 </script>

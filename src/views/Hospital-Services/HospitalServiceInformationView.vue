@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import { format, parseISO } from "date-fns";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
@@ -69,8 +69,6 @@ export default {
   mixins: [EditServiceMixin, ErrorAlertsLogic],
   data: () => ({
     routeID: null,
-    registrant: null,
-    service: null,
     loading: false,
     auth: {
       edit: false,
@@ -117,18 +115,21 @@ export default {
     this.userRolePermissions();
   },
   watch: {
-    getRegistrant(value) {
-      // console.log("Get Registrant", value);
+    registrant() {
       const id = this.$route.params.id;
-      this.registrant = value;
       this.routeID = id;
     },
-    getHospitalService(value) {
-      this.service = value;
+    service(value) {
+      console.log(value);
     },
   },
   computed: {
-    ...mapGetters("registrants", ["getRegistrant"]),
+    ...mapState("registrants", {
+      registrant: "registrant",
+    }),
+    ...mapState("services", {
+      service: "hospitalService",
+    }),
     ...mapGetters("login", ["userRole"]),
     serviceInformation() {
       return {
@@ -208,7 +209,8 @@ export default {
           },
           {
             title: "Municipality",
-            content: this.registrant.citizen.barangay.municipality.municipality_name,
+            content:
+              this.registrant.citizen.barangay.municipality.municipality_name,
           },
           {
             title: "Barangay",

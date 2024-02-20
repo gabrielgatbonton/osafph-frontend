@@ -16,39 +16,14 @@ export const registrants = {
     publicData: null,
   }),
   getters: {
-    allRegistrants: (state) => state.registrants,
-    getRegistrant: (state) => state.registrant,
-    getVaccineInformation: (state) => state.vaccinationDetails,
-    getBoosterInformation: (state) => state.boosterDetails,
     getPublicData: (state) => state.publicData,
   },
   mutations: {
     SET_REGISTRANTS(state, registrants) {
       state.registrants = registrants;
     },
-    // ADD_REGISTRANT(state, registrant) {
-    //   state.registrants.push(registrant);
-    // },
     SET_REGISTRANT(state, registrant) {
       state.registrant = registrant;
-    },
-    // UPDATE_REGISTRANT() {
-    //   this.dispatch("fetchRegistrants");
-    // },
-    // DELETE_REGISTRANT(state, data) {
-    //   state.registrants = state.registrants.filter(
-    //     (registrant) => registrant.id !== data.id
-    //   );
-    // },
-    UPDATE_REGISTRANT_FILES(state, { id, files }) {
-      const registrant = state.registrant;
-      if (registrant && registrant.id === id) {
-        registrant.citizen.citizen_file = {
-          image_url: files,
-          e_signature: files,
-          biometrics: files,
-        };
-      }
     },
     UPDATE_CARD_STATUS(state, { id, claim }) {
       const registrant = state.registrant;
@@ -112,8 +87,9 @@ export const registrants = {
         });
     },
     addRegistrant({ dispatch }, data) {
+      const url = `citizens/create`;
       return this.$axios
-        .post("citizens/create", data)
+        .post(url, data)
         .then((response) => {
           // const registrant = response.data;
           // commit("ADD_REGISTRANT", registrant);
@@ -132,8 +108,9 @@ export const registrants = {
         });
     },
     fetchRegistrantId({ commit }, id) {
+      const url = `citizens/${id}`;
       return this.$axios
-        .get(`citizens/${id}`)
+        .get(url)
         .then((response) => {
           const registrant = response.data;
           commit("SET_REGISTRANT", registrant);
@@ -143,12 +120,10 @@ export const registrants = {
         });
     },
     updateRegistrant({ dispatch }, { id, data }) {
+      const url = `citizens/${id}`;
       return this.$axios
-        .put(`citizens/${id}`, data)
+        .put(url, data)
         .then((response) => {
-          // const updateRegistrant = response.data;
-          // commit("UPDATE_REGISTRANT", { id, updateRegistrant });
-          //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
 
           //Call Again Fetch Registrants
@@ -160,13 +135,11 @@ export const registrants = {
           console.error("Error updating request to registrant vuex:", error);
         });
     },
-    updateRegistrantFiles({ commit, dispatch }, { id, data }) {
+    updateRegistrantFiles({ dispatch }, { id, data }) {
+      const url = `citizens/${id}/files`;
       return this.$axios
-        .post(`citizens/${id}/files`, data)
+        .post(url, data)
         .then((response) => {
-          const files = response.data;
-          commit("UPDATE_REGISTRANT_FILES", { id, files });
-
           //Store dispatch so that images will be updated
           store.dispatch("card/fetchImage", id);
           store.dispatch("card/fetchSignature", id);
@@ -174,7 +147,8 @@ export const registrants = {
 
           //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
-          dispatch("fetchRegistrants");
+
+          dispatch("fetchRegistrantId", id);
         })
         .catch((error) => {
           //Commit to the other module for alert
@@ -183,8 +157,9 @@ export const registrants = {
         });
     },
     claimCard({ commit }, { id, data }) {
+      const url = `citizens/${id}/card`;
       return this.$axios
-        .put(`citizens/${id}/card`, data)
+        .put(url, data)
         .then((response) => {
           const claim = response.data;
           commit("UPDATE_CARD_STATUS", { id, claim });
@@ -194,9 +169,10 @@ export const registrants = {
         });
     },
     fetchVaccineInformation({ commit }, id) {
+      const url = `citizens/${id}/vaccines`;
       commit("SET_VACCINATION_INFORMATION", null);
       return this.$axios
-        .get(`citizens/${id}/vaccines`)
+        .get(url)
         .then((response) => {
           const vaccineInformation = response.data;
           commit("SET_VACCINATION_INFORMATION", vaccineInformation);
@@ -207,11 +183,9 @@ export const registrants = {
     },
     updateVaccineInformation({ commit, dispatch }, { id, data }) {
       const promises = data.map(async (vaccineData, index) => {
+        const url = `citizens/${id}/vaccines/${data[index].id}/addOrUpdate`;
         return this.$axios
-          .put(
-            `citizens/${id}/vaccines/${data[index].id}/addOrUpdate`,
-            vaccineData
-          )
+          .put(url, vaccineData)
           .then((response) => {
             response.data;
           })
@@ -241,9 +215,10 @@ export const registrants = {
         });
     },
     fetchBoosterInformation({ commit }, id) {
+      const url = `citizens/${id}/boosters`;
       commit("SET_BOOSTER_INFORMATION", null);
       return this.$axios
-        .get(`citizens/${id}/boosters`)
+        .get(url)
         .then((response) => {
           const boosterInformation = response.data;
           commit("SET_BOOSTER_INFORMATION", boosterInformation);
@@ -254,11 +229,9 @@ export const registrants = {
     },
     updateBoosterInformation({ commit, dispatch }, { id, data }) {
       const promises = data.map(async (boosterData, index) => {
+        const url = `citizens/${id}/boosters/${data[index].id}/addOrUpdate`;
         return this.$axios
-          .put(
-            `citizens/${id}/boosters/${data[index].id}/addOrUpdate`,
-            boosterData
-          )
+          .put(url, boosterData)
           .then((response) => {
             response.data;
           })
@@ -288,8 +261,9 @@ export const registrants = {
         });
     },
     deleteRegistrant({ dispatch }, id) {
+      const url = `citizens/${id}`;
       return this.$axios
-        .delete(`citizens/${id}`)
+        .delete(url)
         .then((response) => {
           // const data = response.data;
           // commit("DELETE_REGISTRANT", data);
@@ -304,8 +278,9 @@ export const registrants = {
         });
     },
     fetchPublicCitizenRecord({ commit }, hub_registrant_id) {
+      const url = `public-citizen/${hub_registrant_id}`;
       return this.$axios
-        .get(`public-citizen/${hub_registrant_id}`)
+        .get(url)
         .then((response) => {
           const publicData = response.data;
           commit("SET_PUBLIC_DATA", publicData);

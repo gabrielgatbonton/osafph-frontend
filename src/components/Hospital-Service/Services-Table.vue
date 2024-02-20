@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="servicesData"
     item-key="name"
     class="elevation-0"
     :search="search"
@@ -160,10 +160,8 @@ export default {
         delete: remove,
       };
     },
-  },
-  watch: {
-    services(value) {
-      this.data = value.map((service) => ({
+    servicesData() {
+      return this.services ? this.services.map((service) => ({
         id: service.id,
         citizen_id: service.citizen_id,
         service_type: service.service_type,
@@ -174,8 +172,8 @@ export default {
           "MMMM dd, yyyy"
         ),
         medical_site: service.hospital,
-      }));
-    },
+      })) : [];
+    }
   },
 };
 </script>

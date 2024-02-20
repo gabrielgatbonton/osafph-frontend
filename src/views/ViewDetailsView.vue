@@ -59,8 +59,8 @@
                     <v-col align-self="center" cols="12">
                       <v-img
                         class="grey darken-1 mx-auto"
-                        :src="selectedImage"
-                        :key="selectedImage"
+                        :src="imagesLoaded.capturedImage"
+                        :key="imagesLoaded.capturedImage"
                         max-height="400"
                         max-width="200"
                         style="transform: scaleX(-1)"
@@ -83,17 +83,17 @@
                     <v-col align-self="center" cols="12">
                       <v-img
                         class="grey darken-1 mx-auto"
-                        :src="selectedSignature"
-                        :key="selectedSignature"
+                        :src="imagesLoaded.capturedSignature"
+                        :key="imagesLoaded.capturedSignature"
                         max-height="150"
                         max-width="300"
                       ></v-img>
                       <SignatureComponent
-                        :requirements="requirements"
+                        :requirements="buttonProperties"
                         v-on:signature-taken="handleSignatureUpload"
                       />
                       <v-btn
-                        v-if="requirements.checkSignature !== false"
+                        v-if="buttonProperties.checkSignature !== false"
                         class="my-2 error"
                         dark
                         block
@@ -123,17 +123,17 @@
                     <v-col align-self="center" cols="12">
                       <v-img
                         class="grey darken-1 mx-auto"
-                        :src="selectedBiometrics"
-                        :key="selectedBiometrics"
+                        :src="imagesLoaded.capturedBiometrics"
+                        :key="imagesLoaded.capturedBiometrics"
                         max-height="400"
                         max-width="200"
                       ></v-img>
                       <BiometricComponent
-                        :requirements="requirements"
+                        :requirements="buttonProperties"
                         v-on:biometrics-taken="handleBiometricsUpload"
                       />
                       <v-btn
-                        v-if="requirements.checkBiometrics !== false"
+                        v-if="buttonProperties.checkBiometrics !== false"
                         class="my-2 error"
                         dark
                         block
@@ -160,9 +160,12 @@
                         :color="cardStatus.status ? 'green' : 'red'"
                         class="mb-2"
                       >
-                        {{ cardStatus.value }}
+                        {{ cardStatus.description }}
                       </v-btn>
-                      <PrintCardJavaScript :requirements="requirements" :registrant="getRegistrant" />
+                      <PrintCardJavaScript
+                        :requirements="buttonProperties"
+                        :registrant="registrant"
+                      />
                     </v-col>
                   </v-row>
                 </v-card>
@@ -187,7 +190,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapActions } from "vuex";
 import VaccinationComponent from "@/components/Vaccination/VaccinationDetailsView.vue";
 import CameraComponent from "@/components/Camera/CameraComponent.vue";
 import SignatureComponent from "@/components/Signature/SignatureComponent.vue";
@@ -202,22 +205,7 @@ import AddressCard from "@/components/Registrant Details/AddressCard.vue";
 export default {
   mixins: [ErrorAlertsLogic, DeleteDialogMixin],
   data: () => ({
-    routeID: null,
-    registrant: null,
-    selectedImage: null, // Holds the selected image file
-    selectedSignature: null, // Holds the selected signature image file
-    selectedBiometrics: null,
-    cardStatus: {
-      value: null,
-      status: false,
-    },
     loading: false,
-    dynamicBaseURL: null,
-    requirements: {
-      checkImage: null,
-      checkSignature: null,
-      checkBiometrics: null,
-    },
   }),
   components: {
     VaccinationComponent,
@@ -231,26 +219,31 @@ export default {
     AddressCard,
   },
   methods: {
+    ...mapActions("registrants", [
+      "fetchRegistrantId",
+      "updateRegistrantFiles",
+      "claimCard",
+    ]),
     handleImageUpload(file) {
       // this.selectedImage = URL.createObjectURL(file);
-      this.submitImage(file, "image");
+      this.submitFile(file, "image");
     },
     handleSignatureUpload(file) {
       // this.selectedSignature = URL.createObjectURL(file);
-      this.submitImage(file, "signature");
+      this.submitFile(file, "signature");
     },
     handleBiometricsUpload(file) {
-      this.submitImage(file, "biometrics");
+      this.submitFile(file, "biometrics");
     },
     async fetchRegistrant() {
       const id = this.$route.params.id;
       try {
-        await this.$store.dispatch("registrants/fetchRegistrantId", id);
+        await this.fetchRegistrantId(id);
       } catch (error) {
         console.error("Error fetching registrant:", error);
       }
     },
-    async submitImage(file, type) {
+    async submitFile(file, type) {
       const id = this.$route.params.id;
       try {
         this.loading = true;
@@ -258,12 +251,11 @@ export default {
         const formData = new FormData();
         formData.append(type, file);
 
-        await this.$store.dispatch("registrants/updateRegistrantFiles", {
+        await this.updateRegistrantFiles({
           id: id,
           data: formData, // Pass the FormData object as the data
         });
         this.loading = false;
-        this.fetchRegistrant();
       } catch (error) {
         console.error("Error submitting image:", error);
       }
@@ -278,11 +270,10 @@ export default {
           const data = {
             mcg_cares_card: this.cardStatus.value,
           };
-          await this.$store.dispatch("registrants/claimCard", {
+          await this.claimCard({
             id: id,
             data: data,
           });
-          // this.disabledButton = true;
           this.loading = false;
         }
       } catch (error) {
@@ -293,36 +284,59 @@ export default {
   created() {
     this.fetchRegistrant();
   },
-  watch: {
-    getRegistrant(value) {
-      console.log("Get Registrant", value);
-      const id = this.$route.params.id;
+  computed: {
+    ...mapState("registrants", {
+      registrant: "registrant",
+    }),
+    imagesLoaded() {
       const baseURL = this.$url;
-      this.registrant = value;
+      let capturedBiometrics = null;
+      let capturedSignature = null;
+      let capturedImage = null;
 
-      this.selectedImage = this.registrant.citizen.citizen_file.image_url
+      capturedImage = this.registrant.citizen.citizen_file.image_url
         ? baseURL + this.registrant.citizen.citizen_file.image_url
         : null;
-      this.selectedSignature = this.registrant.citizen.citizen_file.e_signature
+      capturedSignature = this.registrant.citizen.citizen_file.e_signature
         ? baseURL + this.registrant.citizen.citizen_file.e_signature
         : null;
-      this.selectedBiometrics = this.registrant.citizen.citizen_file.biometrics
+      capturedBiometrics = this.registrant.citizen.citizen_file.biometrics
         ? baseURL + this.registrant.citizen.citizen_file.biometrics
         : null;
-      this.requirements.checkImage = this.selectedImage ? true : false;
-      this.requirements.checkSignature = this.selectedSignature ? true : false;
-      this.requirements.checkBiometrics = this.selectedBiometrics
-        ? true
-        : false;
-      this.cardStatus.value = this.registrant.citizen.mcg_cares_card;
-      if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
-        this.cardStatus.status = true;
-      }
-      this.routeID = id;
+      return {
+        capturedImage: capturedImage,
+        capturedSignature: capturedSignature,
+        capturedBiometrics: capturedBiometrics,
+      };
     },
-  },
-  computed: {
-    ...mapGetters("registrants", ["getRegistrant"]),
+    buttonProperties() {
+      let checkImage = null;
+      let checkSignature = null;
+      let checkBiometrics = null;
+      checkImage = this.imagesLoaded.capturedImage ? true : false;
+      checkSignature = this.imagesLoaded.capturedSignature ? true : false;
+      checkBiometrics = this.imagesLoaded.capturedBiometrics ? true : false;
+      return {
+        checkImage: checkImage,
+        checkSignature: checkSignature,
+        checkBiometrics: checkBiometrics,
+      };
+    },
+    cardStatus() {
+      let card = {
+        description: null,
+        status: false,
+      };
+      card.description = this.registrant.citizen.mcg_cares_card;
+      if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
+        card.status = true;
+      }
+      return card;
+    },
+    routeID() {
+      const id = this.$route.params.id;
+      return id;
+    },
   },
 };
 </script>
