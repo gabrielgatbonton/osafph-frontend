@@ -29,6 +29,11 @@
     <template v-slot:[`item.package_price`]="{ item }">
       <div>PHP {{ item.package_price }}</div>
     </template>
+    <template v-slot:[`item.items`]="{ item }">
+      <span v-for="(name, index) in item.items" :key="index"
+        >{{ name }}{{ index < item.items.length - 1 ? ", " : "" }}</span
+      >
+    </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-container class="ml-n5" style="width: auto; padding: 0">
         <v-row no-gutters justify="start">
@@ -107,6 +112,10 @@ export default {
           value: "package_price",
         },
         {
+          text: "ITEMS",
+          value: "items",
+        },
+        {
           text: "STATUS",
           value: "status",
         },
@@ -138,6 +147,7 @@ export default {
             id: item.id,
             package: item.name,
             package_price: item.price,
+            items: item.dialysis_item_options.map((item) => (item.name)),
             is_active: item.is_active,
             status: item.is_active ? "ACTIVE" : "INACTIVE",
           }))

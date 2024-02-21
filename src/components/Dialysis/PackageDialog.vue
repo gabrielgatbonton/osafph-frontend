@@ -108,7 +108,7 @@ export default {
       handler(value) {
         this.payload = {
           name: value.name,
-          dialysis_item_options: value.dialysis_item_options,
+          dialysis_item_options: value.dialysis_item_options.map((item) => (item.id)),
           price: value.price
         };
       },
