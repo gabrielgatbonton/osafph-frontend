@@ -14,6 +14,11 @@ export const professions = {
     },
   },
   actions: {
+    fetchEnumProfessions({ dispatch, state }) {
+      if (!state.professions.length) {
+        dispatch("fetchProfessions");
+      }
+    },
     fetchProfessions({ commit }) {
       const url = `enums/professions`;
       return this.$axios
@@ -27,7 +32,5 @@ export const professions = {
         });
     },
   },
-  getters: {
-    getProfessions: (state) => state.professions,
-  },
+  getters: {},
 };

@@ -91,22 +91,15 @@ export default {
     filters: ["CATEGORY", "SEX", "BARANGAY"],
   }),
   methods: {
-    ...mapActions("categories", ["fetchCategories"]),
-    ...mapActions("philippines", ["fetchBarangays"]),
+    ...mapActions("categories", ["fetchEnumCategories"]),
+    ...mapActions("philippines", ["fetchEnumBarangayFilter"]),
     ...mapActions("dialysis", ["fetchDialysisMachines"]),
     fetchEnums() {
-      if (
-        !this.categories.length &&
-        !this.barangays.length &&
-        this.type_of_filter === "CITIZENS INDEX"
-      ) {
-        this.fetchCategories();
-        this.fetchBarangays();
-      } else if (
-        this.type_of_filter === "DIALYSIS INDEX" &&
-        !this.dialysis_machines.length
-      ) {
-        this.fetchDialysisMachines();
+      if (this.type_of_filter === "CITIZENS INDEX") {
+        this.fetchEnumCategories();
+        this.fetchEnumBarangayFilter();
+      } else if (this.type_of_filter === "DIALYSIS INDEX") {
+        this.fetchEnumsFilter();
       }
     },
     submitFilter() {
@@ -153,9 +146,15 @@ export default {
     },
   },
   computed: {
-    ...mapState("categories", ["categories"]),
-    ...mapState("philippines", ["barangays"]),
-    ...mapState("dialysis", ["dialysis_machines"]),
+    ...mapState("categories", {
+      categories: "categories",
+    }),
+    ...mapState("philippines", {
+      barangays: "barangays",
+    }),
+    ...mapState("dialysis", {
+      dialysis_machines: "dialysis_machines",
+    }),
     filterInputs() {
       let filter_type = false;
       let category = false;

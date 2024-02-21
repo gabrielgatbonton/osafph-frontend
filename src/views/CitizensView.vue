@@ -68,9 +68,8 @@ export default {
       this.fetchRegistrants(value);
     },
     fetchData() {
-      if (!this.registrants.length) {
-        this.fetchRegistrants(); // Fetch registrants' data when the component is created
-      }
+      // Fetch registrants' data when the component is created
+      this.fetchRegistrants();
     },
   },
   computed: {

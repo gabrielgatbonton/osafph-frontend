@@ -105,7 +105,7 @@ export default {
     DialysisFormat,
   },
   methods: {
-    ...mapActions("services_choices", ["fetchData"]),
+    ...mapActions("services_choices", ["fetchEnums"]),
     initService(service) {
       if (service === "CONSULTATION") {
         this.services_choices = this.specialties;
@@ -214,7 +214,7 @@ export default {
     },
   },
   created() {
-    this.fetchData();
+    this.fetchEnums();
   },
 };
 </script>

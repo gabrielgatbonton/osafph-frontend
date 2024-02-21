@@ -39,12 +39,6 @@ export default {
     switchConsultations() {
       this.consultationsStatus = !this.consultationsStatus;
     },
-    fetchData() {
-      if (!this.getPendingConsultations || !this.getArchivedConsultations) {
-        // Fetch data only if it's not already available
-        this.fetchConsultations();
-      }
-    },
   },
   computed: {
     ...mapGetters("consultations", [
@@ -58,7 +52,7 @@ export default {
     },
   },
   created() {
-    this.fetchData();
+    this.fetchConsultations();
   },
 };
 </script>

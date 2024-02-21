@@ -4,6 +4,7 @@ export default {
     payload: {
       name: { required },
       dialysis_item_options: { required },
+      price: { required },
     },
   },
   computed: {
@@ -20,6 +21,12 @@ export default {
       if (this.$v.payload.dialysis_item_options.$dirty) {
         !this.$v.payload.dialysis_item_options.required &&
           errors.dialysis_item_options.push("Dialysis Item is required");
+      }
+
+      errors.price = [];
+      if (this.$v.payload.price.$dirty) {
+        !this.$v.payload.price.required &&
+          errors.price.push("Price is required");
       }
 
       return errors;

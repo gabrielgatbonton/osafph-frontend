@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import CategorySection from "./CategorySection.vue";
 import PersonalInformationSection from "./PersonalInformationSection.vue";
 import AddressSection from "./AddressSection.vue";
@@ -138,8 +138,9 @@ export default {
     employment: null,
   }),
   computed: {
-    ...mapGetters("registrants", ["getRegistrant"]),
-    ...mapGetters("professions", ["getProfessions"]),
+    ...mapState("registrants", {
+      registrant: "registrant",
+    }),
     ...mapGetters("philippines", [
       "getBarangays",
       "getRegions",
@@ -147,8 +148,6 @@ export default {
       "getProvinces",
       "getCountries",
     ]),
-    ...mapGetters("categories", ["getCategories"]),
-    ...mapGetters("identification_cards", ["getIdentificationCards"]),
     CategorySectionEditData() {
       if (this.category) {
         const data = {
@@ -277,7 +276,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("professions", ["fetchProfessions"]),
+    ...mapActions("professions", ["fetchEnumProfessions"]),
     ...mapActions("philippines", [
       "fetchRegions",
       "fetchProvinces",
@@ -285,8 +284,8 @@ export default {
       "fetchBarangays",
       "fetchCountries",
     ]),
-    ...mapActions("categories", ["fetchCategories"]),
-    ...mapActions("identification_cards", ["fetchIdentificationCards"]),
+    ...mapActions("categories", ["fetchEnumCategories"]),
+    ...mapActions("identification_cards", ["fetchEnumIdentificationCards"]),
     async fetchRegistrant() {
       if (this.id) {
         try {
@@ -297,7 +296,7 @@ export default {
       }
     },
     submitForm(data) {
-      if (this.getRegistrant) {
+      if (this.registrant) {
         //Call all payloads
         this.$refs.category.asyncPayload();
         this.$refs.personalInformation.asyncPayload();
@@ -335,28 +334,13 @@ export default {
       this.stepper = stepper;
     },
     fetchEnums() {
-      if (!this.getCategories.length) {
-        this.fetchCategories();
-      }
-      if (!this.getIdentificationCards.length) {
-        this.fetchIdentificationCards();
-      }
-      if (
-        !this.getBarangays.length ||
-        !this.getRegions.length &&
-        !this.getMunicipalities.length &&
-        !this.getProvinces.length &&
-        !this.getCountries.length
-      ) {
-        this.fetchCountries();
-      }
-      if (!this.getProfessions.length) {
-        this.fetchProfessions();
-      }
+      this.fetchEnumCategories();
+      this.fetchEnumIdentificationCards();
+      this.fetchEnumProfessions();
     },
   },
   watch: {
-    getRegistrant(value) {
+    registrant(value) {
       this.category = value;
       this.personal_information = value;
       this.address = value;

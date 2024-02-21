@@ -47,14 +47,28 @@ export const services_choices = {
     },
   },
   actions: {
-    fetchData({ dispatch }) {
+    fetchEnums({ dispatch, state }) {
       // dispatch("fetchDoctors");
-      dispatch("fetchSpecialties");
-      dispatch("fetchLaboratoryTypes");
-      dispatch("fetchDiagnosticTypes");
-      dispatch("fetchHospitals");
-      dispatch("fetchCrowdFundings");
-      dispatch("fetchServiceTypes");
+
+      // This will fetch all the enums needed and will check for fetching duplication
+      if (!state.specialties.length) {
+        dispatch("fetchSpecialties");
+      }
+      if (!state.laboratory_types.length) {
+        dispatch("fetchLaboratoryTypes");
+      }
+      if (!state.diagnostic_types.length) {
+        dispatch("fetchDiagnosticTypes");
+      }
+      if (!state.hospitals.length) {
+        dispatch("fetchHospitals");
+      }
+      if (!state.crowd_fundings.length) {
+        dispatch("fetchCrowdFundings");
+      }
+      if (!state.service_types.length) {
+        dispatch("fetchServiceTypes");
+      }
     },
     fetchDoctors({ commit }) {
       return this.$axios

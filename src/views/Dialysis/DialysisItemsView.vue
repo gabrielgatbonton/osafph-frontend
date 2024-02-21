@@ -22,6 +22,7 @@
       :activator="dialog"
       @dialogResponse="resetActivator"
       @submitForm="submitForm"
+      :reset="payload"
     />
   </div>
 </template>
@@ -59,13 +60,14 @@ export default {
           this.dialog = false;
           this.payload = {
             name: null,
-            price: null,
           };
         });
     },
   },
   computed: {
-    ...mapState("dialysis_items", ["dialysis_items"]),
+    ...mapState("dialysis_items", {
+      dialysis_items: "dialysis_items",
+    }),
   },
   created() {
     this.fetchDialysisItems();

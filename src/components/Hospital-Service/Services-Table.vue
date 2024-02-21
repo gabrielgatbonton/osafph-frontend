@@ -92,7 +92,6 @@ export default {
   data: () => ({
     search: "",
     offset: true,
-    data: [],
   }),
   methods: {
     filterOnlyCapsText(value, search) {
@@ -161,19 +160,21 @@ export default {
       };
     },
     servicesData() {
-      return this.services ? this.services.map((service) => ({
-        id: service.id,
-        citizen_id: service.citizen_id,
-        service_type: service.service_type,
-        specialty: service.serviceable_type_name,
-        status: service.status,
-        scheduled_date: format(
-          parseISO(service.scheduled_date),
-          "MMMM dd, yyyy"
-        ),
-        medical_site: service.hospital,
-      })) : [];
-    }
+      return this.services
+        ? this.services.map((service) => ({
+            id: service.id,
+            citizen_id: service.citizen_id,
+            service_type: service.service_type,
+            specialty: service.serviceable_type_name,
+            status: service.status,
+            scheduled_date: format(
+              parseISO(service.scheduled_date),
+              "MMMM dd, yyyy"
+            ),
+            medical_site: service.hospital,
+          }))
+        : [];
+    },
   },
 };
 </script>

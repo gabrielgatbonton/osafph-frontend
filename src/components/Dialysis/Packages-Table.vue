@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="packagesData"
     item-key="name"
     class="elevation-0"
     :search="search"
@@ -28,12 +28,6 @@
     </template>
     <template v-slot:[`item.package_price`]="{ item }">
       <div>PHP {{ item.package_price }}</div>
-    </template>
-    <template v-slot:[`item.items_price`]="{ item }">
-      <div v-for="(dialysis_item, index) in item.items_price" :key="index">
-        <span class="font-weight-bold">{{ dialysis_item.name }}</span> /
-        <span>PHP: {{ dialysis_item.price }}</span>
-      </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-container class="ml-n5" style="width: auto; padding: 0">
@@ -85,7 +79,6 @@ export default {
   data: () => ({
     search: "",
     offset: true,
-    data: [],
   }),
   components: {
     ReusableDeleteDialog,
@@ -114,10 +107,6 @@ export default {
           value: "package_price",
         },
         {
-          text: "ITEMS/PRICE",
-          value: "items_price",
-        },
-        {
           text: "STATUS",
           value: "status",
         },
@@ -143,17 +132,16 @@ export default {
         toggle: toggle,
       };
     },
-  },
-  watch: {
-    packages(value) {
-      this.data = value.map((item) => ({
-        id: item.id,
-        package: item.name,
-        package_price: item.price,
-        items_price: item.dialysis_item_options,
-        is_active: item.is_active,
-        status: item.is_active ? "ACTIVE" : "INACTIVE",
-      }));
+    packagesData() {
+      return this.packages
+        ? this.packages.map((item) => ({
+            id: item.id,
+            package: item.name,
+            package_price: item.price,
+            is_active: item.is_active,
+            status: item.is_active ? "ACTIVE" : "INACTIVE",
+          }))
+        : [];
     },
   },
 };

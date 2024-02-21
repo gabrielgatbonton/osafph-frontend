@@ -12,7 +12,7 @@
           :value="data.category"
           v-model="data.category"
           label="Category"
-          :items="getCategories"
+          :items="categories_enum"
           placeholder="Choose..."
           @blur="$v.data.category.$touch()"
           :error-messages="errorMessages.category"
@@ -20,7 +20,7 @@
       </v-col>
       <v-col cols="12" lg="6" md="6" class="mt-n3">
         <v-autocomplete
-          :items="getIdentificationCards"
+          :items="identification_cards_enum"
           item-text="name"
           label="Identification Card"
           v-model="data.identification_card"
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 import CategorySectionValidation from "@/mixins/Validation/RegistrationFormValidation/CategorySectionValidation";
 export default {
   name: "CategorySection",
@@ -138,8 +138,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("categories", ["getCategories"]),
-    ...mapGetters("identification_cards", ["getIdentificationCards"]),
+    ...mapState("categories", {
+      categories_enum: "categories",
+    }),
+    ...mapState("identification_cards", {
+      identification_cards_enum: "identification_cards",
+    }),
   },
   watch: {
     editData: {
@@ -153,6 +157,8 @@ export default {
       deep: true,
     },
   },
+  mounted() {
+  }
 };
 </script>
 

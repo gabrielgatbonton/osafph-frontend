@@ -203,7 +203,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import { format, parseISO } from "date-fns";
 export default {
   name: "ConsultationFormContinuation",
@@ -319,7 +319,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("consultation_enum", ["getDiagnosis", "getDiagnostics"]),
+    ...mapState("consultation_enum", {
+      diagnosis_enum: "diagnosis",
+      diagnostics_enum: "diagnostics",
+    }),
     ...mapGetters("login", ["userRole"]),
     formattedDate1() {
       return this.data.follow_up_date
@@ -333,28 +336,38 @@ export default {
     },
   },
   watch: {
-    getDiagnosis(value) {
-      this.checkboxes.diagnosis = value.map((data) => data.name);
-      if (this.consultation_form) {
-        this.assignValues();
-      }
+    diagnosis_enum: {
+      immediate: true,
+      handler() {
+        this.checkboxes.diagnosis = this.diagnosis_enum.map(
+          (data) => data.name
+        );
+        if (this.consultation_form) {
+          this.assignValues();
+        }
+      },
     },
-    getDiagnostics(value) {
-      this.checkboxes.diagnostics = value.map((checkbox) => ({
-        label: checkbox.name,
-        value: checkbox.id,
-        checked: false,
-      }));
-      if (this.consultation_form) {
-        this.checkboxes.diagnostics.forEach((checkbox) => {
-          if (this.consultation_form.diagnostic_type.includes(checkbox.label)) {
-            checkbox.checked = true;
-          } else {
-            checkbox.checked = false;
-          }
-        });
-        this.assignValues();
-      }
+    diagnostics_enum: {
+      immediate: true,
+      handler() {
+        this.checkboxes.diagnostics = this.diagnostics_enum.map((checkbox) => ({
+          label: checkbox.name,
+          value: checkbox.id,
+          checked: false,
+        }));
+        if (this.consultation_form) {
+          this.checkboxes.diagnostics.forEach((checkbox) => {
+            if (
+              this.consultation_form.diagnostic_type.includes(checkbox.label)
+            ) {
+              checkbox.checked = true;
+            } else {
+              checkbox.checked = false;
+            }
+          });
+          this.assignValues();
+        }
+      },
     },
   },
   created() {

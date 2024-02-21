@@ -126,39 +126,21 @@ export default {
             console.error("Error fetching Consultation Data for Admin:", error);
           });
       } else if (this.userRole === "DOCTOR") {
-        if (!this.getConsultation) {
-          this.fetchConsultationById(consultation_id)
-            .then(() => {
-              if (
-                !this.getConsultationForm &&
-                this.getConsultation.hospital_service.status === "COMPLETED"
-              ) {
-                this.fetchConsultationFormById(consultation_id);
-              }
-            })
-            .catch((error) => {
-              console.error(
-                "Error fetching Consultation Data for Doctor:",
-                error
-              );
-            });
-        } else if (this.getConsultation.id !== consultation_id) {
-          this.fetchConsultationById(consultation_id)
-            .then(() => {
-              if (
-                !this.getConsultationForm &&
-                this.getConsultation.hospital_service.status === "COMPLETED"
-              ) {
-                this.fetchConsultationFormById(consultation_id);
-              }
-            })
-            .catch((error) => {
-              console.error(
-                "Error fetching Consultation Data for Doctor:",
-                error
-              );
-            });
-        }
+        this.fetchConsultationById(consultation_id)
+          .then(() => {
+            // if (
+            //   !this.getConsultationForm &&
+            //   this.getConsultation.hospital_service.status === "COMPLETED"
+            // ) {
+            //   this.fetchConsultationFormById(consultation_id);
+            // }
+          })
+          .catch((error) => {
+            console.error(
+              "Error fetching Consultation Data for Doctor:",
+              error
+            );
+          });
       }
     },
     alterConsultation() {

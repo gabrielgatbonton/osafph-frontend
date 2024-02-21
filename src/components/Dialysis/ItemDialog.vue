@@ -16,15 +16,6 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12">
-            <v-text-field
-              v-model="payload.price"
-              type="number"
-              label="Item Price"
-              @blur="$v.payload.price.$touch()"
-              :error-messages="errorMessages.price"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12">
             <div class="text-right">
               <v-btn dark class="blue darken-4" @click="submitForm"
                 >Submit</v-btn
@@ -90,7 +81,6 @@ export default {
       handler(value) {
         this.payload = {
           name: value.name,
-          price: value.price,
         };
       },
     },

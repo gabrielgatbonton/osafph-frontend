@@ -70,7 +70,7 @@
           v-model="data.profession"
           label="Profession"
           item-text="name"
-          :items="getProfessions"
+          :items="professions_enum"
           @blur="$v.data.profession.$touch()"
           :error-messages="errorMessages.profession"
         ></v-autocomplete>
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 import EmploymentSectionValidation from "@/mixins/Validation/RegistrationFormValidation/EmploymentSectionValidation";
 export default {
   name: "EmploymentSection",
@@ -147,7 +147,7 @@ export default {
     },
     findProfessionOnEdit() {
       if (this.editData) {
-        const data = this.getProfessions.find(
+        const data = this.professions_enum.find(
           (profession) => profession.id === this.editData.profession_id
         );
         if (data) {
@@ -158,11 +158,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("professions", ["getProfessions"]),
+    ...mapState("professions", {
+      professions_enum: "professions",
+    }),
   },
   watch: {
     editData(value) {
-      if (this.getProfessions && value) {
+      if (this.professions_enum && value) {
         this.data = Object.assign({}, this.data, value);
         this.findProfessionOnEdit();
       }

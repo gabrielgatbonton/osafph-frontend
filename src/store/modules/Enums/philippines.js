@@ -65,6 +65,22 @@ export const philippines = {
     },
   },
   actions: {
+    fetchEnumPhilippines({ dispatch, state }) {
+      if (
+        !state.barangays.length &&
+        !state.provinces.length &&
+        !state.municipalities.length &&
+        !state.regions.length &&
+        !state.countries.length
+      ) {
+        dispatch("fetchCountries");
+      }
+    },
+    fetchEnumBarangayFilter({ dispatch, state }) {
+      if (!state.barangays.length) {
+        dispatch("fetchBarangays");
+      }
+    },
     fetchCountries({ commit }) {
       const url = `enums/philippines`;
       return this.$axios.get(url).then((response) => {

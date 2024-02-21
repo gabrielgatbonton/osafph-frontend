@@ -9,7 +9,7 @@
           <span class="title">Hospital Service</span>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="auto" v-if="auth.edit">
+        <v-col cols="auto" v-if="editButtonProperties">
           <v-btn
             dark
             class="blue darken-4 mr-3"
@@ -68,11 +68,7 @@ import ServiceStatusComponent from "@/components/Reusable Components/ServiceStat
 export default {
   mixins: [EditServiceMixin, ErrorAlertsLogic],
   data: () => ({
-    routeID: null,
     loading: false,
-    auth: {
-      edit: false,
-    },
     id: null,
     hospital_service_id: null,
   }),
@@ -102,26 +98,9 @@ export default {
           );
         });
     },
-    userRolePermissions() {
-      if (this.userRole === "ADMIN" || this.userRole === "ENCODER") {
-        this.auth.edit = true;
-      }
-    },
   },
   created() {
     this.fetchRegistrant();
-  },
-  updated() {
-    this.userRolePermissions();
-  },
-  watch: {
-    registrant() {
-      const id = this.$route.params.id;
-      this.routeID = id;
-    },
-    service(value) {
-      console.log(value);
-    },
   },
   computed: {
     ...mapState("registrants", {
@@ -131,7 +110,24 @@ export default {
       service: "hospitalService",
     }),
     ...mapGetters("login", ["userRole"]),
+    editButtonProperties() {
+      let edit = false;
+      if (this.userRole === "ADMIN" || this.userRole === "ENCODER") {
+        edit = true;
+      }
+      return edit;
+    },
     serviceInformation() {
+      let items_availed = null;
+      if (this.service.hospitalService.service_type !== "DIALYSIS") {
+        items_availed = this.service.hospitalService.service_type;
+      } else {
+        items_availed = {
+          service_type: this.service.hospitalService.service_type,
+          package_name: this.service.hospitalService.dialysis_package.name,
+          items: this.service.hospitalService.dialysis_package.dialysis_items,
+        };
+      }
       return {
         header: {
           title: "Hospital Service Information",
@@ -163,11 +159,7 @@ export default {
               : "None",
           },
         ],
-        items_availed: {
-          service_type: this.service.hospitalService.service_type,
-          package_name: this.service.hospitalService.dialysis_package.name,
-          items: this.service.hospitalService.dialysis_package.dialysis_items,
-        },
+        items_availed: items_availed,
       };
     },
     patientInformation() {

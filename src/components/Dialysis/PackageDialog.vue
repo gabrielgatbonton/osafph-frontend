@@ -26,24 +26,15 @@
               :error-messages="errorMessages.dialysis_item_options"
               multiple
             >
-              <template v-slot:item="{ item, attrs, on }">
-                <v-list-item v-on="on" v-bind="attrs" #default="{ active }">
-                  <v-list-item-action>
-                    <v-checkbox :input-value="active"></v-checkbox>
-                  </v-list-item-action>
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      <div
-                        class="d-flex flex-column justify-center align-start"
-                      >
-                        <div>{{ item.name }}</div>
-                        <div class="item-description">PHP {{ item.price }}</div>
-                      </div>
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
             </v-select>
+          </v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="payload.price"
+              label="Price"
+              @blur="$v.payload.price.$touch()"
+              :error-messages="errorMessages.price"
+            ></v-text-field>
           </v-col>
           <v-col cols="12">
             <div class="text-right">
@@ -83,6 +74,7 @@ export default {
     payload: {
       name: null,
       dialysis_item_options: null,
+      price: null,
     },
   }),
   methods: {
@@ -117,6 +109,7 @@ export default {
         this.payload = {
           name: value.name,
           dialysis_item_options: value.dialysis_item_options,
+          price: value.price
         };
       },
     },

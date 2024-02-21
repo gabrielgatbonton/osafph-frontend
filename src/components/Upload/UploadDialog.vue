@@ -17,7 +17,7 @@
               <v-autocomplete
                 v-model="payload.document_type"
                 label="Document Type"
-                :items="getFileTypes"
+                :items="file_types_enum"
                 item-text="name"
                 @blur="$v.payload.document_type.$touch()"
                 :error-messages="errorMessages.document_type"
@@ -49,7 +49,7 @@
 
 <script>
 // import { format, parse, parseISO } from "date-fns";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import UploadArea from "./UploadArea.vue";
 import UploadDialogMixin from "@/mixins/Validation/UploadForm/UploadDialog";
 export default {
@@ -79,7 +79,7 @@ export default {
     UploadArea,
   },
   methods: {
-    ...mapActions("file_types", ["fetchFileTypes"]),
+    ...mapActions("file_types", ["fetchEnum"]),
     handleFileUpload(file) {
       //   this.payload.file = URL.createObjectURL(file);
       //   this.submitImage(file, "image");
@@ -102,14 +102,11 @@ export default {
         this.$v.$reset();
       }
     },
-    fetchEnums() {
-      if (!this.getFileTypes.length) {
-        this.fetchFileTypes();
-      }
-    },
   },
   computed: {
-    ...mapGetters("file_types", ["getFileTypes"]),
+    ...mapState("file_types", {
+      file_types_enum: "file_types",
+    }),
   },
   watch: {
     activator(newValue) {
@@ -126,7 +123,7 @@ export default {
     },
   },
   created() {
-    this.fetchEnums();
+    this.fetchEnum();
   },
 };
 </script>

@@ -14,13 +14,20 @@ export const categories = {
     },
   },
   actions: {
+    fetchEnumCategories({ dispatch, state }) {
+      if (!state.categories.length) {
+        dispatch("fetchCategories");
+      }
+    },
     fetchCategories({ commit }) {
       const url = `enums/categories`;
       return this.$axios
         .get(url)
         .then((response) => {
           const categories = response.data.categories;
-          const descriptions = categories.map((categories) => categories.description);
+          const descriptions = categories.map(
+            (categories) => categories.description
+          );
           commit("SET_CATEGORIES", descriptions);
         })
         .catch((error) => {
@@ -28,7 +35,5 @@ export const categories = {
         });
     },
   },
-  getters: {
-    getCategories: (state) => state.categories,
-  },
+  getters: {},
 };

@@ -6,9 +6,9 @@ Vue.use(Vuex);
 export const dialysis = {
   namespaced: true,
   state: () => ({
-    dialysis_machines: null,
-    dialysis_items: null,
-    dialysis_packages: null,
+    dialysis_machines: [],
+    dialysis_items: [],
+    dialysis_packages: [],
   }),
   getters: {
     getDialysisMachines: (state) => state.dialysis_machines,
@@ -27,9 +27,18 @@ export const dialysis = {
     },
   },
   actions: {
-    fetchEnums({ dispatch }) {
-      dispatch("fetchDialysisMachines");
-      dispatch("fetchDialysisPackages");
+    fetchEnums({ dispatch, state }) {
+      if (!state.dialysis_machines.length) {
+        dispatch("fetchDialysisMachines");
+      }
+      if (!state.dialysis_packages.length) {
+        dispatch("fetchDialysisPackages");
+      }
+    },
+    fetchEnumsFilter({ dispatch, state }) {
+      if (!state.dialysis_machines.length) {
+        dispatch("fetchDialysisMachines");
+      }
     },
     fetchDialysisMachines({ commit }) {
       const url = `enums/hospital-services/dialysis/machines`;

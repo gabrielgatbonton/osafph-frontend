@@ -64,12 +64,15 @@ export default {
           this.payload = {
             name: null,
             dialysis_item_options: null,
+            price: null,
           };
         });
     },
   },
   computed: {
-    ...mapState("dialysis_packages", ["dialysis_packages"]),
+    ...mapState("dialysis_packages", {
+      dialysis_packages: "dialysis_packages"
+    }),
   },
   created() {
     this.fetchDialysisPackages();

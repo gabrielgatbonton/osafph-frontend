@@ -134,6 +134,7 @@ export default {
       "fetchMunicipalities",
       "fetchBarangays",
       "fetchCountries",
+      "fetchEnumPhilippines",
     ]),
     initRegions(id) {
       this.fetchRegions(id);
@@ -218,16 +219,7 @@ export default {
       }
     },
     fetchEnums() {
-      if (
-        !this.getBarangays.length &&
-        !this.getBarangays.length &&
-        !this.getRegions.length &&
-        !this.getMunicipalities.length &&
-        !this.getProvinces.length &&
-        !this.getCountries.length
-      ) {
-        this.fetchCountries();
-      }
+      this.fetchEnumPhilippines();
     },
   },
   computed: {

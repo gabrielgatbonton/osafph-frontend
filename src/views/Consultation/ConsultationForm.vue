@@ -369,7 +369,7 @@
 
 <script>
 import { format, parseISO } from "date-fns";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "ConsultationForm",
   props: {
@@ -505,74 +505,89 @@ export default {
     },
   },
   watch: {
-    getHistory(value) {
-      this.checkboxes.history_of_present_illnesses = value.map((checkbox) => ({
-        label: checkbox.name,
-        value: checkbox.id,
-        checked: false,
-      }));
-      if (this.consultation_form) {
-        this.checkboxes.history_of_present_illnesses.forEach((checkbox) => {
-          if (
-            this.consultation_form.history_of_present_illness.includes(
-              checkbox.label
-            )
-          ) {
-            checkbox.checked = true;
-          } else {
-            checkbox.checked = false;
-          }
-        });
-        this.assignValues();
-      }
+    history_enum: {
+      immediate: true, // Trigger the handler immediately on component creation
+      handler() {
+        this.checkboxes.history_of_present_illnesses = this.history_enum.map(
+          (checkbox) => ({
+            label: checkbox.name,
+            value: checkbox.id,
+            checked: false,
+          })
+        );
+        if (this.consultation_form) {
+          this.checkboxes.history_of_present_illnesses.forEach((checkbox) => {
+            if (
+              this.consultation_form.history_of_present_illness.includes(
+                checkbox.label
+              )
+            ) {
+              checkbox.checked = true;
+            } else {
+              checkbox.checked = false;
+            }
+          });
+          this.assignValues();
+        }
+      },
     },
-    getPastMedicalHistories(value) {
-      this.checkboxes.past_medical_histories = value.map((checkbox) => ({
-        label: checkbox.name,
-        value: checkbox.id,
-        checked: false,
-      }));
-      if (this.consultation_form) {
-        this.checkboxes.past_medical_histories.forEach((checkbox) => {
-          if (
-            this.consultation_form.past_medical_history.includes(checkbox.label)
-          ) {
-            checkbox.checked = true;
-          } else {
-            checkbox.checked = false;
-          }
-        });
-        this.assignValues();
-      }
+    past_medical_history_enum: {
+      immediate: true, // Trigger the handler immediately on component creation
+      handler() {
+        this.checkboxes.past_medical_histories =
+          this.past_medical_history_enum.map((checkbox) => ({
+            label: checkbox.name,
+            value: checkbox.id,
+            checked: false,
+          }));
+        if (this.consultation_form) {
+          this.checkboxes.past_medical_histories.forEach((checkbox) => {
+            if (
+              this.consultation_form.past_medical_history.includes(
+                checkbox.label
+              )
+            ) {
+              checkbox.checked = true;
+            } else {
+              checkbox.checked = false;
+            }
+          });
+          this.assignValues();
+        }
+      },
     },
-    getFamilyMedicalHistories(value) {
-      this.checkboxes.family_medical_histories = value.map((checkbox) => ({
-        label: checkbox.name,
-        value: checkbox.id,
-        checked: false,
-      }));
-      if (this.consultation_form) {
-        this.checkboxes.family_medical_histories.forEach((checkbox) => {
-          if (
-            this.consultation_form.family_medical_history.includes(
-              checkbox.label
-            )
-          ) {
-            checkbox.checked = true;
-          } else {
-            checkbox.checked = false;
-          }
-        });
-        this.assignValues();
-      }
+    family_medical_history_enum: {
+      immediate: true, // Trigger the handler immediately on component creation
+      handler() {
+        this.checkboxes.family_medical_histories =
+          this.family_medical_history_enum.map((checkbox) => ({
+            label: checkbox.name,
+            value: checkbox.id,
+            checked: false,
+          }));
+        if (this.consultation_form) {
+          this.checkboxes.family_medical_histories.forEach((checkbox) => {
+            if (
+              this.consultation_form.family_medical_history.includes(
+                checkbox.label
+              )
+            ) {
+              checkbox.checked = true;
+            } else {
+              checkbox.checked = false;
+            }
+          });
+          this.assignValues();
+        }
+      },
     },
   },
   computed: {
-    ...mapGetters("consultation_enum", [
-      "getHistory",
-      "getPastMedicalHistories",
-      "getFamilyMedicalHistories",
-    ]),
+    ...mapState("consultation_enum", {
+      history_enum: "history_of_present_illnesses",
+      past_medical_history_enum: "past_medical_histories",
+      family_medical_history_enum: "family_medical_histories",
+    }),
     ...mapGetters("login", ["userRole"]),
     formattedDate() {
       return this.present_date

@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="itemData"
     item-key="name"
     class="elevation-0"
     :search="search"
@@ -69,7 +69,6 @@ export default {
   data: () => ({
     search: "",
     offset: true,
-    data: [],
   }),
   components: {
     ReusableDeleteDialog,
@@ -98,10 +97,6 @@ export default {
           value: "dialysis_item_name",
         },
         {
-          text: "ITEM PRICE",
-          value: "item_price",
-        },
-        {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
@@ -120,15 +115,12 @@ export default {
         delete: remove,
       };
     },
-  },
-  watch: {
-    items(value) {
-      this.data = value.map((item) => ({
+    itemData() {
+      return this.items ? this.items.map((item) => ({
         item_id: item.id,
         dialysis_item_name: item.name,
-        item_price: item.price,
-      }));
-    },
+      })) : [];
+    }
   },
 };
 </script>

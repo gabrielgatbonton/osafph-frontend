@@ -14,6 +14,11 @@ export const identification_cards = {
     },
   },
   actions: {
+    fetchEnumIdentificationCards({ dispatch, state }) {
+      if (!state.identification_cards.length) {
+        dispatch("fetchIdentificationCards");
+      }
+    },
     fetchIdentificationCards({ commit }) {
       const url = `enums/identification-cards`;
       return this.$axios
@@ -27,7 +32,5 @@ export const identification_cards = {
         });
     },
   },
-  getters: {
-    getIdentificationCards: (state) => state.identification_cards,
-  },
+  getters: {},
 };

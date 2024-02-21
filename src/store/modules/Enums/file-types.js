@@ -8,15 +8,18 @@ export const file_types = {
   state: () => ({
     file_types: [],
   }),
-  getters: {
-    getFileTypes: (state) => state.file_types,
-  },
+  getters: {},
   mutations: {
     SET_FILE_TYPES(state, data) {
       state.file_types = data;
     },
   },
   actions: {
+    fetchEnum({ dispatch, state }) {
+      if (!state.file_types.length) {
+        dispatch("fetchFileTypes");
+      }
+    },
     fetchFileTypes({ commit }) {
       const url = `enums/hospital-services/files/document-types`;
       return this.$axios
