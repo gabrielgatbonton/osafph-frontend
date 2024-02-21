@@ -43,6 +43,7 @@
 <script>
 import InitialVaccination from "./InitialVaccination.vue";
 import BoosterVaccination from "./BoosterVaccination.vue";
+import { format, parse } from "date-fns";
 import { mapActions, mapState } from "vuex";
 export default {
   props: ["id"],
@@ -69,7 +70,10 @@ export default {
       if (data.vaccine_id_1 || data.vaccine_id_2) {
         data1 = {
           dose: data.dose_1,
-          vaccination_date: data.date_1,
+          vaccination_date: format(
+            parse(data.date_1, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           vaccine_name: data.vaccine_1,
           lot_no: data.lot_number_1,
           site_name: data.vaccination_site_1,
@@ -80,7 +84,10 @@ export default {
         };
         data2 = {
           dose: data.dose_2,
-          vaccination_date: data.date_2,
+          vaccination_date: format(
+            parse(data.date_2, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           vaccine_name: data.vaccine_2,
           lot_no: data.lot_number_2,
           site_name: data.vaccination_site_2,
@@ -92,7 +99,10 @@ export default {
       } else {
         data1 = {
           dose: data.dose_1,
-          vaccination_date: data.date_1,
+          vaccination_date: format(
+            parse(data.date_1, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           vaccine_name: data.vaccine_1,
           lot_no: data.lot_number_1,
           site_name: data.vaccination_site_1,
@@ -102,7 +112,10 @@ export default {
         };
         data2 = {
           dose: data.dose_2,
-          vaccination_date: data.date_2,
+          vaccination_date: format(
+            parse(data.date_2, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           vaccine_name: data.vaccine_2,
           lot_no: data.lot_number_2,
           site_name: data.vaccination_site_2,
@@ -132,7 +145,10 @@ export default {
       if (data.vaccine_id_1 || data.vaccine_id_2) {
         data1 = {
           dose: data.dose_1,
-          booster_date: data.date_1,
+          booster_date: format(
+            parse(data.date_1, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           booster_name: data.vaccine_1,
           lot_no: data.lot_number_1,
           site_name: data.vaccination_site_1,
@@ -143,7 +159,10 @@ export default {
         };
         data2 = {
           dose: data.dose_2,
-          booster_date: data.date_2,
+          booster_date: data.date_2 ? format(
+            parse(data.date_2, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ) : null,
           booster_name: data.vaccine_2,
           lot_no: data.lot_number_2,
           site_name: data.vaccination_site_2,
@@ -155,7 +174,10 @@ export default {
       } else {
         data1 = {
           dose: data.dose_1,
-          booster_date: data.date_1,
+          booster_date: format(
+            parse(data.date_1, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
           booster_name: data.vaccine_1,
           lot_no: data.lot_number_1,
           site_name: data.vaccination_site_1,
@@ -165,7 +187,12 @@ export default {
         };
         data2 = {
           dose: data.dose_2,
-          booster_date: data.date_2,
+          booster_date: data.date_2
+            ? format(
+                parse(data.date_2, "MMMM dd, yyyy", new Date()),
+                "yyyy-MM-d"
+              )
+            : null,
           booster_name: data.vaccine_2,
           lot_no: data.lot_number_2,
           site_name: data.vaccination_site_2,

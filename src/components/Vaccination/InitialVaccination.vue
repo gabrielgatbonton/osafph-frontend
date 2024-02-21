@@ -20,31 +20,13 @@
             ></v-select>
           </v-col>
           <v-col cols="6">
-            <v-menu
-              max-width="290"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-              v-model="menu_1"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :value="formattedDate1"
-                  v-on="on"
-                  v-bind="attrs"
-                  label="Date"
-                  readonly
-                  @blur="$v.responses.date_1.$touch()"
-                  :error-messages="errorMessages.date_1"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="responses.date_1"
-                @input="menu_1 = false"
-              ></v-date-picker>
-            </v-menu>
+            <v-text-field
+              v-model="responses.date_1"
+              hint="Format (January 04, 2023)"
+              label="Date"
+              @blur="$v.responses.date_1.$touch()"
+              :error-messages="errorMessages.date_1"
+            ></v-text-field>
           </v-col>
           <v-col cols="6">
             <v-select
@@ -105,36 +87,14 @@
               :value="responses.dose_2"
               label="Dose"
               :items="checkJanssenDose"
-              @blur="$v.responses.dose_2.$touch()"
-              :error-messages="errorMessages.dose_2"
             ></v-select>
           </v-col>
           <v-col cols="6">
-            <v-menu
-              max-width="290"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-              v-model="menu_2"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :value="formattedDate2"
-                  v-on="on"
-                  v-bind="attrs"
-                  label="Date"
-                  readonly
-                  @blur="$v.responses.date_2.$touch()"
-                  :error-messages="errorMessages.date_2"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="responses.date_2"
-                @input="menu_2 = false"
-              ></v-date-picker>
-            </v-menu>
+            <v-text-field
+              v-model="responses.date_2"
+              hint="Format (January 04, 2023)"
+              label="Date"
+            ></v-text-field>
           </v-col>
           <v-col cols="6">
             <v-select
@@ -142,8 +102,6 @@
               :value="responses.vaccine_2"
               label="Vaccine"
               :items="checkJanssenVaccine"
-              @blur="$v.responses.vaccine_2.$touch()"
-              :error-messages="errorMessages.vaccine_2"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -151,8 +109,6 @@
               :value="responses.lot_number_2"
               v-model="responses.lot_number_2"
               label="Lot no."
-              @blur="$v.responses.lot_number_2.$touch()"
-              :error-messages="errorMessages.lot_number_2"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -160,8 +116,6 @@
               :value="responses.vaccination_site_2"
               v-model="responses.vaccination_site_2"
               label="Vaccination Site"
-              @blur="$v.responses.vaccination_site_2.$touch()"
-              :error-messages="errorMessages.vaccination_site_2"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -169,8 +123,6 @@
               v-model="responses.healthcare_professional_2"
               :value="responses.healthcare_professional_2"
               label="Healthcare Professional"
-              @blur="$v.responses.healthcare_professional_2.$touch()"
-              :error-messages="errorMessages.healthcare_professional_2"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -178,27 +130,27 @@
               v-model="responses.healthcare_professional_license_number_2"
               :value="responses.healthcare_professional_license_number_2"
               label="Healthcare Professional License Number"
-              @blur="
-                $v.responses.healthcare_professional_license_number_2.$touch()
-              "
-              :error-messages="
-                errorMessages.healthcare_professional_license_number_2
-              "
             ></v-text-field>
           </v-col>
         </v-row>
       </v-container>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="submitData" :loading="loadingStatus" class="blue darken-4" dark> Save </v-btn>
+        <v-btn
+          @click="submitData"
+          :loading="loadingStatus"
+          class="blue darken-4"
+          dark
+        >
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
-import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
+import { format, parseISO } from "date-fns";
 import VaccinationMixin from "@/mixins/VaccinationValidation";
 export default {
   props: ["payload", "loadingStatus"],
@@ -222,14 +174,11 @@ export default {
       vaccine_id_1: null,
       vaccine_id_2: null,
     },
-    menu_1: false,
-    menu_2: false,
     checkbox: false,
   }),
   methods: {
     submitData() {
       this.$v.$touch();
-      console.log("after touch:", this.responses);
       if (!this.$v.$invalid) {
         console.log(this.responses);
         this.$emit("submitData", this.responses);
@@ -241,9 +190,14 @@ export default {
           if (this.payload.vaccinationStat[0].vaccine_name === "JANSSEN") {
             this.checkbox = true;
             this.responses.dose_1 = this.payload.vaccinationStat[0].dose;
-            this.responses.date_1 = this.payload.vaccinationStat[0].vaccination_date;
-            this.responses.vaccine_1 = this.payload.vaccinationStat[0].vaccine_name;
-            this.responses.lot_number_1 = this.payload.vaccinationStat[0].lot_no;
+            this.responses.date_1 = format(
+              parseISO(this.payload.vaccinationStat[0].vaccination_date),
+              "MMMM dd, yyyy"
+            );
+            this.responses.vaccine_1 =
+              this.payload.vaccinationStat[0].vaccine_name;
+            this.responses.lot_number_1 =
+              this.payload.vaccinationStat[0].lot_no;
             this.responses.vaccination_site_1 =
               this.payload.vaccinationStat[0].site_name;
             this.responses.healthcare_professional_1 =
@@ -253,9 +207,14 @@ export default {
             this.responses.vaccine_id_1 = this.payload.vaccinationStat[0].id;
           } else {
             this.responses.dose_1 = this.payload.vaccinationStat[0].dose;
-            this.responses.date_1 = this.payload.vaccinationStat[0].vaccination_date;
-            this.responses.vaccine_1 = this.payload.vaccinationStat[0].vaccine_name;
-            this.responses.lot_number_1 = this.payload.vaccinationStat[0].lot_no;
+            this.responses.date_1 = format(
+              parseISO(this.payload.vaccinationStat[0].vaccination_date),
+              "MMMM dd, yyyy"
+            );
+            this.responses.vaccine_1 =
+              this.payload.vaccinationStat[0].vaccine_name;
+            this.responses.lot_number_1 =
+              this.payload.vaccinationStat[0].lot_no;
             this.responses.vaccination_site_1 =
               this.payload.vaccinationStat[0].site_name;
             this.responses.healthcare_professional_1 =
@@ -276,8 +235,12 @@ export default {
         }
         if (this.payload.vaccinationStat[1]) {
           this.responses.dose_2 = this.payload.vaccinationStat[1].dose;
-          this.responses.date_2 = this.payload.vaccinationStat[1].vaccination_date;
-          this.responses.vaccine_2 = this.payload.vaccinationStat[1].vaccine_name;
+          this.responses.date_2 = format(
+            parseISO(this.payload.vaccinationStat[1].vaccination_date),
+            "MMMM dd, yyyy"
+          );
+          this.responses.vaccine_2 =
+            this.payload.vaccinationStat[1].vaccine_name;
           this.responses.lot_number_2 = this.payload.vaccinationStat[1].lot_no;
           this.responses.vaccination_site_2 =
             this.payload.vaccinationStat[1].site_name;
@@ -300,16 +263,6 @@ export default {
     },
   },
   computed: {
-    formattedDate1() {
-      return this.responses.date_1
-        ? format(parseISO(this.responses.date_1), "MMMM d, yyyy")
-        : "";
-    },
-    formattedDate2() {
-      return this.responses.date_2
-        ? format(parseISO(this.responses.date_2), "MMMM d, yyyy")
-        : "";
-    },
     checkJanssen() {
       return this.checkbox === true ? false : true;
     },
@@ -338,16 +291,13 @@ export default {
       return vaccines;
     },
   },
-  mounted() {
-    this.updateVariables();
+  watch: {
+    payload: {
+      immediate: true,
+      handler() {
+        this.updateVariables();
+      },
+    },
   },
-  // updated() {
-  //   this.updateVariables();
-  // },
-  // watch: {
-  //   payload(value) {
-  //     console.log("Initial Vaccination: ", value);
-  //   },
-  // },
 };
 </script>

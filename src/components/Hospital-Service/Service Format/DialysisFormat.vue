@@ -5,13 +5,25 @@
       v-if="!hospitalService && dialysis_machines && dialysis_packages"
     >
       <v-col cols="12" class="px-0">
-        <v-stepper flat v-model="stepper" non-linear>
+        <v-stepper
+          flat
+          v-model="stepper"
+          :non-linear="nonLinearFunction.linear"
+        >
           <v-stepper-header class="elevation-0">
-            <v-stepper-step step="1" editable :complete="stepper > 1">
+            <v-stepper-step
+              step="1"
+              :editable="nonLinearFunction.session"
+              :complete="stepper > 1"
+            >
               Sessions
             </v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step step="2" editable>
+            <v-stepper-step
+              step="2"
+              :editable="nonLinearFunction.information"
+              :complete="stepper > 2"
+            >
               Insights & Funding
             </v-stepper-step>
           </v-stepper-header>
@@ -169,6 +181,23 @@ export default {
   },
   computed: {
     ...mapState("dialysis", ["dialysis_machines", "dialysis_packages"]),
+    nonLinearFunction() {
+      let linear = false;
+      let session = false;
+      let information = false;
+
+      if (this.stepper > 1) {
+        linear = true;
+        session = true;
+        information = true;
+      }
+
+      return {
+        linear: linear,
+        session: session,
+        information: information,
+      };
+    },
   },
   created() {
     this.fetchEnums();

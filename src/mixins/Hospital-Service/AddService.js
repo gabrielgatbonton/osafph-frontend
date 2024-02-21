@@ -1,5 +1,4 @@
 import { mapActions } from "vuex";
-import { format, parse } from "date-fns";
 export default {
   data: () => ({
     payload: null,
@@ -21,10 +20,7 @@ export default {
           hospital: payload.hospital,
           service_type: payload.service_type,
           specialty: payload.serviceable_type,
-          scheduled_date: format(
-            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          scheduled_date: payload.scheduled_date,
           date_released: null,
           status: payload.status,
           remarks: payload.remarks,
@@ -34,10 +30,7 @@ export default {
           hospital: payload.hospital,
           service_type: payload.service_type,
           diagnostic_type: payload.serviceable_type,
-          scheduled_date: format(
-            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          scheduled_date: payload.scheduled_date,
           date_released: null,
           status: payload.status,
           remarks: payload.remarks,
@@ -48,10 +41,7 @@ export default {
           hospital: payload.hospital,
           service_type: payload.service_type,
           laboratory_type: payload.serviceable_type,
-          scheduled_date: format(
-            parse(payload.scheduled_date, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          scheduled_date: payload.scheduled_date,
           date_released: null,
           status: payload.status,
           remarks: payload.remarks,

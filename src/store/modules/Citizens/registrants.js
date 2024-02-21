@@ -182,15 +182,18 @@ export const registrants = {
         });
     },
     updateVaccineInformation({ commit, dispatch }, { id, data }) {
+      let alert_message = null;
+      let error_message = null;
       const promises = data.map(async (vaccineData, index) => {
         const url = `citizens/${id}/vaccines/${data[index].id}/addOrUpdate`;
         return this.$axios
           .put(url, vaccineData)
           .then((response) => {
-            response.data;
+            alert_message = response.data.message;
           })
           .catch((error) => {
             console.error("Error updating vaccination information:", error);
+            error_message = error.response.data.message;
             throw error;
           });
       });
@@ -202,15 +205,12 @@ export const registrants = {
             updateVaccineInformation,
           });
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Updated Vaccine",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", alert_message);
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+          store.commit("alerts/SET_SHOW_ERROR", error_message);
           console.error("Error requesting vaccination update:", error);
         });
     },
@@ -228,15 +228,18 @@ export const registrants = {
         });
     },
     updateBoosterInformation({ commit, dispatch }, { id, data }) {
+      let alert_message = null;
+      let error_message = null;
       const promises = data.map(async (boosterData, index) => {
         const url = `citizens/${id}/boosters/${data[index].id}/addOrUpdate`;
         return this.$axios
           .put(url, boosterData)
           .then((response) => {
-            response.data;
+            alert_message = response.data.message;
           })
           .catch((error) => {
             console.error("Error updating vaccination information:", error);
+            error_message = error.response.data.message;
             throw error;
           });
       });
@@ -248,15 +251,12 @@ export const registrants = {
             updateBoosterInformation,
           });
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ALERT", {
-            alert: true,
-            message: "Updated Booster",
-          });
+          store.commit("alerts/SET_SHOW_ALERT", alert_message);
           dispatch("fetchRegistrants");
         })
         .catch((error) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+          store.commit("alerts/SET_SHOW_ERROR", error_message);
           console.error("Error requesting vaccination update:", error);
         });
     },

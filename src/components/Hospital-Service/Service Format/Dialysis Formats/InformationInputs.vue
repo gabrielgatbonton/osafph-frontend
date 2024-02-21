@@ -38,6 +38,12 @@
         </v-row>
         <v-row>
           <v-col cols="6">
+            <div>Dialysis Machine:</div>
+          </v-col>
+          <v-col cols="6"> {{ summary.dialysis_machine }} </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
             <div>Total Sessions:</div>
           </v-col>
           <v-col cols="6"> {{ summary.total_sessions }} </v-col>
@@ -132,6 +138,7 @@ export default {
         return {
           hospital: this.data.hospital,
           dialysis_items: this.data.dialysis_items,
+          dialysis_machine: this.data.dialysis_machine,
           total_sessions: this.data.total_sessions,
           schedule: this.data.schedule
             ? this.data.schedule.map((item) => ({
