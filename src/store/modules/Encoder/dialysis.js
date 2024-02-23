@@ -7,8 +7,11 @@ Vue.use(Vuex);
 export const dialysis_sessions = {
   namespaced: true,
   state: () => ({
-    dialysis_sessions: null,
-    dialysis_session: null,
+    dialysis_sessions: [],
+    dialysis_session: [],
+    dialysis_calendar: [],
+    dialysis_machine_calendar: [],
+    calendar_events: [],
   }),
   getters: {
     getPendingSessions: (state) => {
@@ -48,6 +51,35 @@ export const dialysis_sessions = {
       }
     },
     getDialysisSession: (state) => state.dialysis_session,
+    getCalendarEvents: (state) => {
+      if (state.calendar_events) {
+        const calendar = state.calendar_events;
+        let events = [];
+
+        const sessionDate = Object.keys(calendar);
+
+        sessionDate.forEach((sessionDate) => {
+          const sessions = calendar[sessionDate];
+
+          Object.keys(sessions).forEach((sessionType) => {
+            const dialysisMachines = sessions[sessionType];
+
+            dialysisMachines.forEach(() => {
+              const existingDate = events.find((item) => item === sessionDate);
+              if (existingDate) {
+                if (!existingDate.includes(sessionDate)) {
+                  existingDate.push(sessionDate);
+                }
+              } else {
+                events.push(sessionDate);
+              }
+            });
+          });
+        });
+
+        return events;
+      }
+    },
   },
   mutations: {
     SET_DIALYSIS_SESSIONS(state, sessions) {
@@ -55,6 +87,16 @@ export const dialysis_sessions = {
     },
     SET_DIALYSIS_SESSION(state, session) {
       state.dialysis_session = session;
+    },
+    SET_DIALYSIS_CALENDAR(state, dialysis_calendar) {
+      state.dialysis_calendar = dialysis_calendar;
+    },
+    SET_DIALYSIS_MACHINE_CALENDAR(state, calendar) {
+      state.dialysis_machine_calendar = calendar;
+    },
+    SET_CALENDAR_EVENTS(state, events) {
+      state.calendar_events = events;
+      console.log(state.calendar_events);
     },
   },
   actions: {
@@ -105,6 +147,66 @@ export const dialysis_sessions = {
           console.error("Error Patching Dialysis Session: ", error);
           //Failed Alert
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+        });
+    },
+    fetchDialysisCalendar({ commit }, queryParams = {}) {
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
+
+      let url = `hospital-services/dialysis/calendar/pick-dates`;
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
+      return this.$axios
+        .get(url)
+        .then((response) => {
+          const dialysis_calendar = response.data.results;
+          commit("SET_DIALYSIS_CALENDAR", dialysis_calendar);
+        })
+        .catch((error) => {
+          console.error("Error Fetching Dialysis Calendar: ", error);
+        });
+    },
+    fetchDialysisMachineCalendar({ commit }, queryParams = {}) {
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
+
+      let url = `hospital-services/dialysis/calendar/availability`;
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
+      return this.$axios
+        .get(url)
+        .then((response) => {
+          const calendar = response.data.results;
+          commit("SET_DIALYSIS_MACHINE_CALENDAR", calendar);
+        })
+        .catch((error) => {
+          console.error("Error Fetching Dialysis Machine Calendar: ", error);
+        });
+    },
+    fetchDialysisMachineCalendarEvents({ commit }, queryParams = {}) {
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
+
+      let url = `hospital-services/dialysis/calendar/availability`;
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
+      return this.$axios
+        .get(url)
+        .then((response) => {
+          const events = response.data.results;
+          commit("SET_CALENDAR_EVENTS", events);
+        })
+        .catch((error) => {
+          console.error("Error Fetching Dialysis Machine Calendar: ", error);
         });
     },
   },

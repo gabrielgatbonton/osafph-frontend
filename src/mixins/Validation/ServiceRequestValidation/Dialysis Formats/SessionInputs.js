@@ -5,8 +5,10 @@ export default {
       total_sessions: { required },
       schedule: {
         $each: {
-          date: { required }, // Validation rule for date property
-          session: { required }, // Validation rule for session property
+          // Validation rule for date property
+          date: { required },
+          // Validation rule for session property
+          session: { required },
         },
       },
       dialysis_machine: { required },
@@ -48,6 +50,10 @@ export default {
       errors.schedule_date = this.payload.schedule.map((session, index) => {
         const sessionErrors = [];
         if (this.$v.payload.schedule.$each.$iter[index].date.$dirty) {
+          !this.$v.payload.hospital.required &&
+            sessionErrors.push(`You must provide Dialysis Hospital`);
+          !this.$v.payload.dialysis_machine.required &&
+            sessionErrors.push(`You must provide Dialysis Machine`);
           !this.$v.payload.schedule.$each.$iter[index].date.required &&
             sessionErrors.push(`Date is required`);
         }
@@ -57,11 +63,15 @@ export default {
       errors.schedule_session = this.payload.schedule.map((session, index) => {
         const sessionErrors = [];
         if (this.$v.payload.schedule.$each.$iter[index].session.$dirty) {
+          !this.$v.payload.hospital.required &&
+            sessionErrors.push(`You must provide Dialysis Hospital`);
+          !this.$v.payload.dialysis_machine.required &&
+            sessionErrors.push(`You must provide Dialysis Machine`);
           !this.$v.payload.schedule.$each.$iter[index].session.required &&
             sessionErrors.push(`Session is required`);
         }
         return sessionErrors;
-      })
+      });
 
       // // Error messages for each session in the schedule array
       // errors.schedule_date = this.payload.schedule.map((session, index) => {

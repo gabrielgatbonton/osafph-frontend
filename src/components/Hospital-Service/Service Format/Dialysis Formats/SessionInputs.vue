@@ -11,6 +11,9 @@
           :error-messages="errorMessages.hospital"
         ></v-autocomplete>
       </v-col>
+      <v-col cols="12" v-if="payload.hospital">
+        <DialysisCalendarComponent :hospital="payload.hospital"/>
+      </v-col>
       <v-col cols="12">
         <v-checkbox
           v-model="payload.all_items_sponsored"
@@ -113,7 +116,7 @@
             <v-select
               v-model="session.session"
               :label="`Session ${index + 1}`"
-              :items="session_choices"
+              :items="session_choices[index]"
               @blur="$v.payload.schedule.$each.$iter[index].session.$touch()"
               :error-messages="errorMessages.schedule_session[index]"
             ></v-select>
@@ -132,9 +135,14 @@
 <script>
 import { format, parseISO } from "date-fns";
 import SessionInputsMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/SessionInputs";
+import { mapActions, mapState } from "vuex";
+import DialysisCalendarComponent from "@/components/Reusable Components/DialysisCalendarComponent.vue";
 export default {
   name: "SessionInputs",
   mixins: [SessionInputsMixin],
+  components: {
+    DialysisCalendarComponent,
+  },
   props: {
     dialysis_machines: {
       type: Array,
@@ -151,7 +159,7 @@ export default {
   },
   data: () => ({
     payload: {
-      hospital: null,
+      hospital: "",
       // dialysis_items = [],
       dialysis_items: null,
       all_items_sponsored: false,
@@ -160,14 +168,13 @@ export default {
       schedule: [],
       all_sessions_sponsored: false,
     },
-    menu: false,
-    session_choices: ["MORNING", "NOON", "AFTERNOON"],
+    session_choices: [],
     minDate: new Date().toISOString().slice(0, 10),
     stepper: 1,
   }),
   methods: {
+    ...mapActions("dialysis_sessions", ["fetchDialysisCalendar"]),
     touchValidations() {
-
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.pushToParent();
@@ -222,8 +229,57 @@ export default {
         });
       }
     },
+    setupDateWatchers(schedule) {
+      if (this.payload.total_sessions > 0) {
+        let dates = [];
+
+        schedule.forEach((session) => {
+          dates.push(session.date);
+        });
+
+        let params = {
+          hospital: this.payload.hospital,
+          dialysis_machine: this.payload.dialysis_machine,
+          scheduled_dates: dates,
+        };
+
+        this.fetchDialysisCalendar(params).then(() => {
+          this.setupSessionEnums(this.dialysis_calendar);
+        });
+      }
+    },
+    setupSessionEnums(schedule) {
+      const dates = Object.keys(schedule);
+      this.payload.schedule.forEach((session, index) => {
+        const sessionDate = session.date;
+        if (dates.includes(sessionDate)) {
+          const sessions = schedule[sessionDate];
+          let sessionEnum = [];
+
+          // Ensure sessionEnum is initialized as an array
+          if (!Array.isArray(sessionEnum)) {
+            sessionEnum = [];
+          }
+
+          if (!sessions["dateIsFull"]) {
+            Object.keys(sessions).forEach((sessionType) => {
+              if (sessions[sessionType]) {
+                if (!sessions[sessionType].sessionIsFull) {
+                  sessionEnum.push(sessionType);
+                }
+              }
+            });
+          }
+
+          this.$set(this.session_choices, index, sessionEnum);
+        }
+      });
+    },
   },
   computed: {
+    ...mapState("dialysis_sessions", {
+      dialysis_calendar: "dialysis_calendar",
+    }),
     formattedDates() {
       return this.payload.schedule.map((session) => {
         return session.date
@@ -231,33 +287,11 @@ export default {
           : null;
       });
     },
-    // errorMessagesDate() {
-    //   // // Loop through each session in the schedule array
-    //   // this.payload.schedule.forEach((session, index) => {
-    //   //   errors[index] = []; // Initialize error array for each session
-
-    //   //   console.log(this.$v.payload.schedule[index].date.$error);
-    //   //   console.log(session.date === null);
-    //   //   // Check if the session date is null and the field is touched
-    //   //   if (
-    //   //     this.$v.payload.schedule[index].date.$error &&
-    //   //     session.date === null
-    //   //   ) {
-    //   //     errors[index].push("Date is required for this session");
-    //   //   }
-    //   // });
-
-    //   return this.payload.schedule.map((session) => {
-    //     return session.date !== null
-    //       ? ""
-    //       : "Date is required for this session";
-    //   });
-    // },
   },
   watch: {
     "payload.schedule": {
       handler(newVal) {
-        this.setupSessionWatchers(newVal);
+        this.setupDateWatchers(newVal);
       },
       deep: true,
     },

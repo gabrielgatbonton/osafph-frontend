@@ -18,7 +18,8 @@ const baseURL = "http://200.10.77.12/";
 // const baseURL = 'http://192.168.1.108:80/';
 
 //Network URL for QR code
-const networkURL = "http://192.168.1.118:8080/";
+// const networkURL = "http://192.168.1.118:8080/"; //Network, please change.
+const networkURL = "http://localhost:8080/"; //Network, please change.
 
 const axiosInstance = axios.create({
   baseURL: `${baseURL}api/`, //Axios baseURL
