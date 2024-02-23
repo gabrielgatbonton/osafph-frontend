@@ -11,8 +11,8 @@ export const registrants = {
   state: () => ({
     registrants: [],
     registrant: null,
-    vaccinationDetails: null,
-    boosterDetails: null,
+    vaccinationDetails: [],
+    boosterDetails: [],
     publicData: null,
   }),
   getters: {
@@ -33,17 +33,6 @@ export const registrants = {
     },
     SET_VACCINATION_INFORMATION(state, vaccineInformation) {
       state.vaccinationDetails = vaccineInformation;
-    },
-    UPDATE_VACCINATION_INFORMATION(state, { id, updateVaccineInformation }) {
-      // console.log(updateVaccineInformation)
-      const vaccineInformation = state.vaccinationDetails;
-      if (
-        vaccineInformation &&
-        vaccineInformation.vaccinationStat.citizen_id === id &&
-        vaccineInformation.vaccinationStat.id === updateVaccineInformation.id
-      ) {
-        vaccineInformation.vaccinationStat = updateVaccineInformation;
-      }
     },
     SET_BOOSTER_INFORMATION(state, boosterInformation) {
       state.boosterDetails = boosterInformation;
@@ -169,95 +158,62 @@ export const registrants = {
         });
     },
     fetchVaccineInformation({ commit }, id) {
+      commit("SET_VACCINATION_INFORMATION", []);
       const url = `citizens/${id}/vaccines`;
-      commit("SET_VACCINATION_INFORMATION", null);
       return this.$axios
         .get(url)
         .then((response) => {
           const vaccineInformation = response.data;
-          commit("SET_VACCINATION_INFORMATION", vaccineInformation);
+          commit(
+            "SET_VACCINATION_INFORMATION",
+            vaccineInformation.vaccinationStats
+          );
         })
         .catch((error) => {
           console.error("Error fetching vaccine information:", error);
         });
     },
-    updateVaccineInformation({ commit, dispatch }, { id, data }) {
-      let alert_message = null;
-      let error_message = null;
-      const promises = data.map(async (vaccineData, index) => {
-        const url = `citizens/${id}/vaccines/${data[index].id}/addOrUpdate`;
-        return this.$axios
-          .put(url, vaccineData)
-          .then((response) => {
-            alert_message = response.data.message;
-          })
-          .catch((error) => {
-            console.error("Error updating vaccination information:", error);
-            error_message = error.response.data.message;
-            throw error;
-          });
-      });
-
-      return Promise.all(promises)
-        .then((updateVaccineInformation) => {
-          commit("UPDATE_VACCINATION_INFORMATION", {
-            id,
-            updateVaccineInformation,
-          });
+    updateVaccineInformation({ dispatch }, { id, data }) {
+      const url = `citizens/${id}/vaccines/add-or-update`;
+      return this.$axios
+        .post(url, data)
+        .then((response) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ALERT", alert_message);
-          dispatch("fetchRegistrants");
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("fetchVaccineInformation", id);
         })
         .catch((error) => {
+          console.error("Error updating vaccination information:", error);
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", error_message);
-          console.error("Error requesting vaccination update:", error);
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
     fetchBoosterInformation({ commit }, id) {
+      commit("SET_BOOSTER_INFORMATION", []);
       const url = `citizens/${id}/boosters`;
-      commit("SET_BOOSTER_INFORMATION", null);
       return this.$axios
         .get(url)
         .then((response) => {
           const boosterInformation = response.data;
-          commit("SET_BOOSTER_INFORMATION", boosterInformation);
+          commit("SET_BOOSTER_INFORMATION", boosterInformation.boosterStats);
         })
         .catch((error) => {
           console.error("Error fetching booster information:", error);
         });
     },
-    updateBoosterInformation({ commit, dispatch }, { id, data }) {
-      let alert_message = null;
-      let error_message = null;
-      const promises = data.map(async (boosterData, index) => {
-        const url = `citizens/${id}/boosters/${data[index].id}/addOrUpdate`;
-        return this.$axios
-          .put(url, boosterData)
-          .then((response) => {
-            alert_message = response.data.message;
-          })
-          .catch((error) => {
-            console.error("Error updating vaccination information:", error);
-            error_message = error.response.data.message;
-            throw error;
-          });
-      });
-
-      return Promise.all(promises)
-        .then((updateBoosterInformation) => {
-          commit("UPDATE_BOOSTER_INFORMATION", {
-            id,
-            updateBoosterInformation,
-          });
+    updateBoosterInformation({ dispatch }, { id, data }) {
+      const url = `citizens/${id}/boosters/add-or-update`;
+      return this.$axios
+        .post(url, data)
+        .then((response) => {
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ALERT", alert_message);
-          dispatch("fetchRegistrants");
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("fetchBoosterInformation", id);
         })
         .catch((error) => {
+          console.error("Error updating booster information:", error);
           //Commit to the other module for alert
-          store.commit("alerts/SET_SHOW_ERROR", error_message);
-          console.error("Error requesting vaccination update:", error);
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
     deleteRegistrant({ dispatch }, id) {

@@ -16,7 +16,7 @@
             <v-col cols="12">
               <v-tabs centered>
                 <v-tab>Vaccination</v-tab>
-                <v-tab v-if="vaccinationInformation">Booster</v-tab>
+                <v-tab v-if="vaccinationInformation.length > 1">Booster</v-tab>
                 <v-tab-item>
                   <InitialVaccination
                     v-on:submitData="submitVaccine"
@@ -67,7 +67,10 @@ export default {
       this.loading_vaccine = true;
       let data1 = null;
       let data2 = null;
-      if (data.vaccine_id_1 || data.vaccine_id_2) {
+      if (
+        this.vaccinationInformation[0]?.id &&
+        this.vaccinationInformation[1]?.id
+      ) {
         data1 = {
           dose: data.dose_1,
           vaccination_date: format(
@@ -84,10 +87,12 @@ export default {
         };
         data2 = {
           dose: data.dose_2,
-          vaccination_date: format(
-            parse(data.date_2, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          vaccination_date: data.date_2
+            ? format(
+                parse(data.date_2, "MMMM dd, yyyy", new Date()),
+                "yyyy-MM-d"
+              )
+            : null,
           vaccine_name: data.vaccine_2,
           lot_no: data.lot_number_2,
           site_name: data.vaccination_site_2,
@@ -112,10 +117,12 @@ export default {
         };
         data2 = {
           dose: data.dose_2,
-          vaccination_date: format(
-            parse(data.date_2, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
+          vaccination_date: data.date_2
+            ? format(
+                parse(data.date_2, "MMMM dd, yyyy", new Date()),
+                "yyyy-MM-d"
+              )
+            : null,
           vaccine_name: data.vaccine_2,
           lot_no: data.lot_number_2,
           site_name: data.vaccination_site_2,
@@ -124,25 +131,28 @@ export default {
             data.healthcare_professional_license_number_2,
         };
       }
+
+      const payload = {
+        vaccines: [data1, data2],
+      };
+
       this.updateVaccineInformation({
         id: this.id,
-        data: [data1, data2],
+        data: payload,
       })
         .catch((error) => {
           console.error("Error submitting vaccine information:", error);
         })
         .finally(() => {
           this.loading_vaccine = false;
-          setTimeout(() => {
-            this.dialog = false;
-          }, 500);
+          this.dialog = false;
         });
     },
     submitBooster(data) {
       this.loading_booster = true;
       let data1 = null;
       let data2 = null;
-      if (data.vaccine_id_1 || data.vaccine_id_2) {
+      if (this.boosterInformation[0]?.id && this.boosterInformation[1]?.id) {
         data1 = {
           dose: data.dose_1,
           booster_date: format(
@@ -159,10 +169,12 @@ export default {
         };
         data2 = {
           dose: data.dose_2,
-          booster_date: data.date_2 ? format(
-            parse(data.date_2, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ) : null,
+          booster_date: data.date_2
+            ? format(
+                parse(data.date_2, "MMMM dd, yyyy", new Date()),
+                "yyyy-MM-d"
+              )
+            : null,
           booster_name: data.vaccine_2,
           lot_no: data.lot_number_2,
           site_name: data.vaccination_site_2,
@@ -201,73 +213,23 @@ export default {
             data.healthcare_professional_license_number_2,
         };
       }
+
+      const payload = {
+        boosters: [data1, data2],
+      };
+
       this.updateBoosterInformation({
         id: this.id,
-        data: [data1, data2],
+        data: payload,
       })
         .catch((error) => {
           console.error("Error submitting vaccine information:", error);
         })
         .finally(() => {
           this.loading_booster = false;
-          setTimeout(() => {
-            this.dialog = false;
-          }, 500);
+          this.dialog = false;
         });
     },
-    // async submit() {
-    //   const id = this.id; // Update this line
-    //   let data1 = null;
-    //   let data2 = null;
-    //   try {
-    //     this.loading = true;
-    //     if (this.vaccine_id_1 || this.vaccine_id_2) {
-    //       data1 = {
-    //         dose: this.dose_1,
-    //         vaccination_date: this.date_1,
-    //         vaccine_name: this.vaccine_1,
-    //         lot_no: this.lot_number_1,
-    //         site_name: this.vaccination_site_1,
-    //         id: this.vaccine_id_1,
-    //       };
-    //       data2 = {
-    //         dose: this.dose_2,
-    //         vaccination_date: this.date_2,
-    //         vaccine_name: this.vaccine_2,
-    //         lot_no: this.lot_number_2,
-    //         site_name: this.vaccination_site_2,
-    //         id: this.vaccine_id_2,
-    //       };
-    //     } else {
-    //       data1 = {
-    //         dose: this.dose_1,
-    //         vaccination_date: this.date_1,
-    //         vaccine_name: this.vaccine_1,
-    //         lot_no: this.lot_number_1,
-    //         site_name: this.vaccination_site_1,
-    //       };
-    //       data2 = {
-    //         dose: this.dose_2,
-    //         vaccination_date: this.date_2,
-    //         vaccine_name: this.vaccine_2,
-    //         lot_no: this.lot_number_2,
-    //         site_name: this.vaccination_site_2,
-    //       };
-    //     }
-
-    //     return this.$store
-    //       .dispatch("registrants/updateVaccineInformation", {
-    //         id: id,
-    //         data: [data1, data2],
-    //       })
-    //       .then((this.loading = false), (this.dialog = false))
-    //       .catch((error) => {
-    //         console.error("Error submitting vaccine information:", error);
-    //       });
-    //   } catch (error) {
-    //     console.error("Error submitting vaccine information:", error);
-    //   }
-    // },
     fetchData() {
       this.fetchVaccineInformation(this.id).catch((error) => {
         console.error("VaccinationDetails Component Vaccination Error:", error);
