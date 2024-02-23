@@ -405,8 +405,13 @@ export default {
   created() {
     this.requestImages();
   },
-  mounted() {
-    this.values();
+  watch: {
+    registrant: {
+      immediate: true,
+      handler() {
+        this.values();
+      }
+    }
   },
   updated() {
     this.drawOnCanvasFront();

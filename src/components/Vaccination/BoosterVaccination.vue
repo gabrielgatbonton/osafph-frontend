@@ -180,9 +180,7 @@ export default {
   methods: {
     submitData() {
       this.$v.$touch();
-
       if (!this.$v.$invalid) {
-        console.log(this.responses);
         this.$emit("submitData", this.responses);
       }
     },
