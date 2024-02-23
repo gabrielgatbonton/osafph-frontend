@@ -9,9 +9,6 @@ export const dialysis_sessions = {
   state: () => ({
     dialysis_sessions: [],
     dialysis_session: [],
-    dialysis_calendar: [],
-    dialysis_machine_calendar: [],
-    calendar_events: [],
   }),
   getters: {
     getPendingSessions: (state) => {
