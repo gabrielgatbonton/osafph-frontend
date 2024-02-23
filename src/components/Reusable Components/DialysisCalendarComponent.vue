@@ -12,7 +12,19 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="6" v-for="(session, index) in sessions" :key="index">
+      <v-col cols="12">
+        <div class="d-flex justify-start align-center">
+          <div
+            class="d-flex justify-start align-center mr-5"
+            v-for="(data, index) in labelData"
+            :key="index"
+          >
+            <div id="chips" :class="data.color" class="mr-2"></div>
+            <div>{{ data.label }}</div>
+          </div>
+        </div>
+      </v-col>
+      <v-col cols="6" v-for="(session, index) in machine_sessions" :key="index">
         <v-card elevation="1">
           <div class="d-flex justify-space-between pa-3">
             <div>{{ session.machine }}</div>
@@ -50,7 +62,7 @@ export default {
     sessions: [],
   }),
   methods: {
-    ...mapActions("dialysis_sessions", [
+    ...mapActions("dialysis_calendar", [
       "fetchDialysisMachineCalendar",
       "fetchDialysisMachineCalendarEvents",
     ]),
@@ -75,69 +87,51 @@ export default {
         });
       }
     },
-    machineSessions(calendar) {
-      const availableSessions = [];
-
-      if (calendar) {
-        const sessionDate = Object.keys(calendar);
-
-        if (sessionDate.includes(this.date)) {
-          sessionDate.forEach((sessionDate) => {
-            const sessions = calendar[sessionDate];
-
-            Object.keys(sessions).forEach((sessionType) => {
-              const dialysisMachines = sessions[sessionType];
-
-              dialysisMachines.forEach((machine) => {
-                const existingMachine = availableSessions.find(
-                  (item) => item.machine === machine
-                );
-                if (existingMachine) {
-                  if (!existingMachine.available.includes(sessionType)) {
-                    existingMachine.available.push(sessionType);
-                  }
-                } else {
-                  availableSessions.push({
-                    machine: machine,
-                    available: [sessionType],
-                  });
-                }
-              });
-            });
-          });
-        }
-      }
-      this.sessions = availableSessions;
-    },
   },
   computed: {
-    ...mapState("dialysis_sessions", {
+    ...mapState("dialysis_calendar", {
       calendar: "dialysis_machine_calendar",
     }),
-    ...mapGetters("dialysis_sessions", {
-        calendar_events: "getCalendarEvents",
+    ...mapGetters("dialysis_calendar", {
+      calendar_events: "getCalendarEvents",
+      machine_sessions: "getMachineSessions",
     }),
+    labelData() {
+      let data = [
+        {
+          label: "Morning",
+          color: this.colorData.morning,
+        },
+        {
+          label: "Noon",
+          color: this.colorData.noon,
+        },
+        {
+          label: "Afternoon",
+          color: this.colorData.afternoon,
+        },
+      ];
+      return data;
+    },
+    colorData() {
+      return {
+        morning: "red",
+        noon: "blue",
+        afternoon: "green",
+      };
+    },
   },
   watch: {
     date: {
+      immediate: true,
       handler() {
         this.fetchCalendar();
-      },
-    },
-    calendar: {
-      handler(value) {
-        this.machineSessions(value);
       },
     },
     hospital: {
       immediate: true,
       handler() {
         this.fetchEvents();
-      },
-    },
-    calendar_events: {
-      handler(value) {
-        console.log("Check", value);
       },
     },
   },

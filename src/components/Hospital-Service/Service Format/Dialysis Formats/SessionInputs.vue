@@ -11,8 +11,21 @@
           :error-messages="errorMessages.hospital"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" v-if="payload.hospital">
-        <DialysisCalendarComponent :hospital="payload.hospital"/>
+      <v-col cols="12">
+        <div class="d-flex justify-center">
+          <v-btn plain large color="grey darken-1" @click="trigger"
+            >Show Calendar
+            <v-icon right>{{
+              show_calendar ? "mdi-chevron-up" : "mdi-chevron-down"
+            }}</v-icon></v-btn
+          >
+        </div>
+        <v-expand-transition>
+          <DialysisCalendarComponent
+            :hospital="payload.hospital"
+            v-show="show_calendar"
+          />
+        </v-expand-transition>
       </v-col>
       <v-col cols="12">
         <v-checkbox
@@ -171,6 +184,7 @@ export default {
     session_choices: [],
     minDate: new Date().toISOString().slice(0, 10),
     stepper: 1,
+    show_calendar: false,
   }),
   methods: {
     ...mapActions("dialysis_sessions", ["fetchDialysisCalendar"]),
@@ -274,6 +288,9 @@ export default {
           this.$set(this.session_choices, index, sessionEnum);
         }
       });
+    },
+    trigger() {
+      this.show_calendar = !this.show_calendar;
     },
   },
   computed: {
