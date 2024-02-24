@@ -187,7 +187,7 @@ export default {
     show_calendar: false,
   }),
   methods: {
-    ...mapActions("dialysis_sessions", ["fetchDialysisCalendar"]),
+    ...mapActions("dialysis_calendar", ["fetchDialysisCalendar"]),
     touchValidations() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
@@ -294,7 +294,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("dialysis_sessions", {
+    ...mapState("dialysis_calendar", {
       dialysis_calendar: "dialysis_calendar",
     }),
     formattedDates() {
