@@ -50,7 +50,12 @@
                 @click:append="show = !show"
                 label="Password"
               ></v-text-field>
-              <v-btn class="mt-5 blue darken-2" block dark :loading="loading" @click="handleLogin"
+              <v-btn
+                class="mt-5 blue darken-2"
+                block
+                dark
+                :loading="loading"
+                @click="handleLogin"
                 >Login</v-btn
               >
             </div>
@@ -135,10 +140,10 @@ export default {
 
             if (error.response && error.response.status === 404) {
               // Status code 404 indicates user not found
-              this.loginError = "User not found";
+              this.loginError = error.response.data.message;
             } else if (error.response && error.response.status === 401) {
               // Status code 401 indicates unauthorized login (incorrect credentials)
-              this.loginError = "Invalid username or password";
+              this.loginError = error.response.data.message;
             } else {
               // Other error, display a generic error message
               this.loginError = "An error occurred during login";
@@ -162,18 +167,18 @@ export default {
   overflow-y: hidden; /* Hide the vertical scrollbar */
 }
 
- @keyframes slideDown {
-    from {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
   }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-  .slide-down {
-    animation: slideDown 1.5s ease-out;
-  }
+.slide-down {
+  animation: slideDown 1.5s ease-out;
+}
 </style>

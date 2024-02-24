@@ -88,6 +88,7 @@
               @input="updateSessions"
               @blur="$v.payload.total_sessions.$touch()"
               :error-messages="errorMessages.total_sessions"
+              oninput="if(this.value < 1) this.value = 0;"
             ></v-text-field>
           </v-col>
           <v-col cols="4">
@@ -219,30 +220,30 @@ export default {
           }
       );
     },
-    setupSessionWatchers(schedule) {
-      if (this.payload.total_sessions > 0) {
-        schedule.forEach((session, index) => {
-          this.$watch(
-            () => this.payload.schedule[index].session,
-            (newVal) => {
-              this.updateOtherSessions(newVal, index);
-            }
-          );
-        });
-      }
-    },
-    updateOtherSessions(updatedSession, currentIndex) {
-      if (this.payload.total_sessions > 0) {
-        this.payload.schedule.forEach((session, index) => {
-          if (index !== currentIndex && session.session !== updatedSession) {
-            this.$set(this.payload.schedule, index, {
-              ...session,
-              session: updatedSession,
-            });
-          }
-        });
-      }
-    },
+    // setupSessionWatchers(schedule) {
+    //   if (this.payload.total_sessions > 0) {
+    //     schedule.forEach((session, index) => {
+    //       this.$watch(
+    //         () => this.payload.schedule[index].session,
+    //         (newVal) => {
+    //           this.updateOtherSessions(newVal, index);
+    //         }
+    //       );
+    //     });
+    //   }
+    // },
+    // updateOtherSessions(updatedSession, currentIndex) {
+    //   if (this.payload.total_sessions > 0) {
+    //     this.payload.schedule.forEach((session, index) => {
+    //       if (index !== currentIndex && session.session !== updatedSession) {
+    //         this.$set(this.payload.schedule, index, {
+    //           ...session,
+    //           session: updatedSession,
+    //         });
+    //       }
+    //     });
+    //   }
+    // },
     setupDateWatchers(schedule) {
       if (this.payload.total_sessions > 0) {
         let dates = [];
