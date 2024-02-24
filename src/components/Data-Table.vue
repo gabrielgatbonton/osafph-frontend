@@ -6,6 +6,8 @@
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
+    :loading="!registrantsData.length"
+    loading-text="Loading... Please wait"
   >
     <template v-slot:top>
       <v-text-field
@@ -67,8 +69,7 @@
 </template>
 
 <script>
-import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
+import { format, parseISO } from "date-fns";
 import ReusableDeleteDialog from "./ReusableDeleteDialog.vue";
 import DeleteRegistrantMixin from "@/mixins/Registrant/DeleteRegistrant";
 import { mapGetters } from "vuex";

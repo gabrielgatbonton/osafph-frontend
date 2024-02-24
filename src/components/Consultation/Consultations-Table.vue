@@ -7,6 +7,8 @@
     :search="search"
     :custom-filter="filterOnlyCapsText"
     no-data-text="No Consultations Available"
+    :loading="!tableData.length"
+    loading-text="Loading... Please wait"
   >
     <template v-slot:top>
       <v-text-field

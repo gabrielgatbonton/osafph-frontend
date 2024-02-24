@@ -1,11 +1,13 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="dialysisData"
     item-key="name"
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
+    :loading="!dialysisData.length"
+    loading-text="Loading... Please wait"
   >
     <template v-slot:top>
       <v-text-field
@@ -117,21 +119,20 @@ export default {
         view: view,
       };
     },
-  },
-  watch: {
-    dialysis(value) {
-      console.log(value);
-      this.data = value.map((dialysis) => ({
-        dialysis_id: dialysis.dialysis_session_id,
-        patient_name: dialysis.citizen_full_name,
-        dialysis_machine: dialysis.dialysis_machine,
-        session: dialysis.session,
-        scheduled_date: format(
-          parseISO(dialysis.scheduled_date),
-          "MMMM dd, yyyy"
-        ),
-        status: dialysis.status,
-      }));
+    dialysisData() {
+      return this.dialysis
+        ? this.dialysis.map((dialysis) => ({
+            dialysis_id: dialysis.dialysis_session_id,
+            patient_name: dialysis.citizen_full_name,
+            dialysis_machine: dialysis.dialysis_machine,
+            session: dialysis.session,
+            scheduled_date: format(
+              parseISO(dialysis.scheduled_date),
+              "MMMM dd, yyyy"
+            ),
+            status: dialysis.status,
+          }))
+        : [];
     },
   },
 };

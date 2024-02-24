@@ -6,6 +6,8 @@
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
+    :loading="!itemData.length"
+    loading-text="Loading... Please wait"
   >
     <template v-slot:top>
       <v-text-field
