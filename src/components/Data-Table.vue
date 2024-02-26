@@ -171,7 +171,7 @@ export default {
     },
     menuPermissions() {
       let remove = false;
-      if (this.userRole === "ADMIN") {
+      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         remove = true;
       } else if (this.userRole === "ENCODER") {
         remove = false;

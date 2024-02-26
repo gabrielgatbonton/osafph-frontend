@@ -157,10 +157,11 @@
                         block
                         :loading="loading"
                         @click="submitClaimStatus"
-                        :color="cardStatus.status ? 'green' : 'red'"
+                        :color="cardStatus.card.status ? 'green' : 'red'"
                         class="mb-2"
+                        :disabled="cardStatus.disable"
                       >
-                        {{ cardStatus.description }}
+                        {{ cardStatus.card.description }}
                       </v-btn>
                       <PrintCardJavaScript
                         :requirements="buttonProperties"
@@ -263,19 +264,9 @@ export default {
     async submitClaimStatus() {
       const id = this.$route.params.id;
       try {
-        if (this.cardStatus.status === false) {
-          this.loading = true;
-          this.cardStatus.status = true;
-          this.cardStatus.value = "CLAIMED";
-          const data = {
-            mcg_cares_card: this.cardStatus.value,
-          };
-          await this.claimCard({
-            id: id,
-            data: data,
-          });
-          this.loading = false;
-        }
+        this.loading = true;
+        await this.claimCard(id);
+        this.loading = false;
       } catch (error) {
         console.error("Error claiming card:", error);
       }
@@ -327,11 +318,26 @@ export default {
         description: null,
         status: false,
       };
+      let disable = true;
+
       card.description = this.registrant.citizen.mcg_cares_card;
       if (this.registrant.citizen.mcg_cares_card === "CLAIMED") {
         card.status = true;
       }
-      return card;
+
+      if (
+        (this.buttonProperties.checkImage &&
+          this.buttonProperties.checkBiometrics) ||
+        this.buttonProperties.checkSignature
+      ) {
+        disable = false;
+      } else {
+        card.description = "Please capture the necessary images";
+      }
+      return {
+        card: card,
+        disable: disable,
+      };
     },
     routeID() {
       const id = this.$route.params.id;

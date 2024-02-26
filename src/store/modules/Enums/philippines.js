@@ -67,7 +67,7 @@ export const philippines = {
   actions: {
     fetchEnumPhilippines({ dispatch, state }) {
       if (
-        !state.barangays.length &&
+        !state.barangays.length ||
         !state.provinces.length &&
         !state.municipalities.length &&
         !state.regions.length &&

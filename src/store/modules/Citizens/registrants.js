@@ -25,12 +25,12 @@ export const registrants = {
     SET_REGISTRANT(state, registrant) {
       state.registrant = registrant;
     },
-    UPDATE_CARD_STATUS(state, { id, claim }) {
-      const registrant = state.registrant;
-      if (registrant && registrant.id === id) {
-        registrant.citizen.mcg_cares_card = claim;
-      }
-    },
+    // UPDATE_CARD_STATUS(state, { id, claim }) {
+    //   const registrant = state.registrant;
+    //   if (registrant && registrant.id === id) {
+    //     registrant.citizen.mcg_cares_card = claim;
+    //   }
+    // },
     SET_VACCINATION_INFORMATION(state, vaccineInformation) {
       state.vaccinationDetails = vaccineInformation;
     },
@@ -145,13 +145,13 @@ export const registrants = {
           console.error("Error updating registrant files:", error);
         });
     },
-    claimCard({ commit }, { id, data }) {
+    claimCard({ dispatch }, id) {
       const url = `citizens/${id}/card`;
       return this.$axios
-        .put(url, data)
+        .patch(url)
         .then((response) => {
-          const claim = response.data;
-          commit("UPDATE_CARD_STATUS", { id, claim });
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("fetchRegistrantId", id);
         })
         .catch((error) => {
           console.error("Error requesting claim:", error);

@@ -108,7 +108,7 @@ export default {
     iconPermissions() {
       let edit = false;
       let remove = false;
-      if (this.userRole === "ADMIN") {
+      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         edit = true;
         remove = true;
       }
