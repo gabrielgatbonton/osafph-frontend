@@ -232,7 +232,7 @@ export default {
           this.responses.date_2 = this.payload[1].booster_date
             ? format(parseISO(this.payload[1].booster_date), "MMMM dd, yyyy")
             : null;
-          this.responses.vaccine_2 = this.payload[1].vaccine_name;
+          this.responses.vaccine_2 = this.payload[1].booster_name;
           this.responses.lot_number_2 = this.payload[1].lot_no;
           this.responses.vaccination_site_2 = this.payload[1].site_name;
           this.responses.healthcare_professional_2 =
