@@ -2,7 +2,7 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid class="ma-1" v-if="getConsultation">
+    <v-container fluid class="ma-1" v-if="consultation">
       <v-row no-gutters>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
@@ -19,9 +19,9 @@
             >{{ buttonProperties.consultationForm.title }}</v-btn
           >
         </v-col>
-        <v-col cols="auto" v-if="buttonPermissions.delete">
+        <v-col cols="auto" class="mr-3" v-if="buttonPermissions.delete">
           <v-btn class="error" @click="deleteActivator" dark
-            ><v-icon>mdi-trash-can</v-icon>Delete Form</v-btn
+            ><v-icon left>mdi-trash-can</v-icon>Delete Form</v-btn
           >
         </v-col>
         <v-col cols="auto" v-if="buttonPermissions.files">
@@ -92,8 +92,6 @@ export default {
   mixins: [DeleteDialog, ErrorAlertsLogic],
   data: () => ({
     routeID: null,
-    consultation: null,
-    consultation_form: null,
     loading: false,
     disabled: false,
   }),
@@ -148,16 +146,16 @@ export default {
         return this.$router.push({
           name: "edit-consultation-form",
           query: {
-            data: JSON.stringify(this.getConsultation),
-            consultation_form: JSON.stringify(this.getConsultationForm),
+            data: JSON.stringify(this.consultation),
+            consultation_form: JSON.stringify(this.consultation_form),
           },
         });
       } else if (this.userRole === "DOCTOR") {
-        if (this.getConsultation.hospital_service.status === "COMPLETED") {
+        if (this.consultation.hospital_service.status === "COMPLETED") {
           return this.$router.push({
             name: "doctor-edit-consultation-form",
             query: {
-              data: JSON.stringify(this.getConsultation),
+              data: JSON.stringify(this.consultation),
               consultation_form: JSON.stringify(this.consultation_form),
             },
           });
@@ -165,7 +163,7 @@ export default {
           return this.$router.push({
             name: "add-consultation-form",
             query: {
-              data: JSON.stringify(this.getConsultation),
+              data: JSON.stringify(this.consultation),
             },
           });
         }
@@ -212,31 +210,30 @@ export default {
   },
   computed: {
     ...mapGetters("login", ["userRole"]),
-    ...mapGetters("consultations", [
-      "getConsultation",
-      "getConsultationForm",
-      "getPreviousConsultations",
-    ]),
-    ...mapGetters("admin_consultations", [
-      "getAdminConsultation",
-      "getAdminConsultationForm",
-    ]),
+    ...mapGetters("consultations", {
+      consultation: "getConsultation",
+      consultation_form: "getConsultationForm",
+      previous_consultations: "getPreviousConsultations",
+    }),
+    ...mapGetters("admin_consultations", {
+      consultation: "getAdminConsultation",
+      consultation_form: "getAdminConsultationForm",
+      previous_consultations: "getAdminPreviousConsultations",
+    }),
     buttonProperties() {
       let consultation_title = null;
       let consultation_color = null;
       let files_title = null;
       let files_color = null;
-      if (this.userRole === "ADMIN") {
+      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         consultation_title = "Edit Consultation Form";
         consultation_color = "blue darken-4";
       } else if (this.userRole === "DOCTOR") {
         files_color = "blue darken-4";
         consultation_color = "blue darken-4";
-        if (this.getConsultation.hospital_service.status === "IN PROGRESS") {
+        if (this.consultation.hospital_service.status === "IN PROGRESS") {
           consultation_title = "Add Consultation Form";
-        } else if (
-          this.getConsultation.hospital_service.status === "COMPLETED"
-        ) {
+        } else if (this.consultation.hospital_service.status === "COMPLETED") {
           files_title = "Upload Files";
         }
       }
@@ -258,25 +255,22 @@ export default {
 
       if (this.userRole === "ADMIN") {
         files = false;
-        if (this.getConsultation.hospital_service.status === "PENDING") {
+        if (this.consultation.hospital_service.status === "PENDING") {
           remove = false;
         }
       } else if (this.userRole === "DOCTOR") {
         remove = false;
-        if (this.getConsultation.hospital_service.status === "IN PROGRESS") {
+        if (this.consultation.hospital_service.status === "IN PROGRESS") {
           files = false;
-        } else if (
-          this.getConsultation.hospital_service.status === "COMPLETED"
-        ) {
+        } else if (this.consultation.hospital_service.status === "COMPLETED") {
           form = false;
         } else {
           form = false;
           files = false;
         }
       } else if (this.userRole === "ROOT") {
-        form = false;
         files = false;
-        if (this.getConsultation.hospital_service.status === "PENDING") {
+        if (this.consultation.hospital_service.status === "PENDING") {
           remove = false;
         }
       }
@@ -296,26 +290,26 @@ export default {
         info: [
           {
             title: "Consultation ID",
-            content: this.getConsultation.id,
+            content: this.consultation.id,
           },
           {
             title: "Status",
-            content: this.getConsultation.hospital_service.status,
+            content: this.consultation.hospital_service.status,
           },
           {
             title: "Service Availed",
-            content: this.getConsultation.hospital_service.service_type,
+            content: this.consultation.hospital_service.service_type,
           },
           {
             title: "Serviceable Availed",
-            content: this.getConsultation.specialty.name,
+            content: this.consultation.specialty.name,
           },
         ],
         remarks: [
           {
             title: "Remarks",
-            content: this.getConsultation.hospital_service.remarks
-              ? this.getConsultation.hospital_service.remarks
+            content: this.consultation.hospital_service.remarks
+              ? this.consultation.hospital_service.remarks
               : "None",
           },
         ],
@@ -331,80 +325,80 @@ export default {
           title: "Patient Information",
           icon: "mdi-folder-multiple",
         },
-        image_url: this.$url + this.getConsultation.citizen.image_url,
+        image_url: this.$url + this.consultation.citizen.image_url,
         info: [
           {
             title: "Patient Name",
-            content: `${this.getConsultation.citizen.last_name}, ${
-              this.getConsultation.citizen.first_name
+            content: `${this.consultation.citizen.last_name}, ${
+              this.consultation.citizen.first_name
             } ${
-              this.getConsultation.citizen.middle_name
-                ? this.getConsultation.citizen.middle_name
+              this.consultation.citizen.middle_name
+                ? this.consultation.citizen.middle_name
                 : ""
             } ${
-              this.getConsultation.citizen.suffix
-                ? this.getConsultation.citizen.suffix
+              this.consultation.citizen.suffix
+                ? this.consultation.citizen.suffix
                 : ""
             }`,
           },
           {
             title: "Age",
-            content: this.getConsultation.citizen.age,
+            content: this.consultation.citizen.age,
           },
           {
             title: "Sex",
-            content: this.getConsultation.citizen.sex,
+            content: this.consultation.citizen.sex,
           },
           {
             title: "Date Of Birth",
             content: format(
-              parseISO(this.getConsultation.citizen.birthday),
+              parseISO(this.consultation.citizen.birthday),
               "MMMM dd, yyyy"
             ),
           },
           {
             title: "Municipality",
-            content: this.getConsultation.citizen.municipality,
+            content: this.consultation.citizen.municipality,
           },
           {
             title: "Barangay",
-            content: this.getConsultation.citizen.barangay,
+            content: this.consultation.citizen.barangay,
           },
           {
             title: "Address",
-            content: this.getConsultation.citizen.address,
+            content: this.consultation.citizen.address,
           },
         ],
         additional_info: [
           {
             title: "Civil Status",
-            content: this.getConsultation.citizen.civil_status,
+            content: this.consultation.citizen.civil_status,
           },
           {
             title: "Religion",
-            content: this.getConsultation.citizen.religion,
+            content: this.consultation.citizen.religion,
           },
           {
             title: "Occupation",
-            content: this.getConsultation.citizen.occupation
-              ? this.getConsultation.citizen.occupation
+            content: this.consultation.citizen.occupation
+              ? this.consultation.citizen.occupation
               : "None Specified",
           },
           {
             title: "Nationality",
-            content: this.getConsultation.citizen.nationality,
+            content: this.consultation.citizen.nationality,
           },
         ],
       };
     },
     previousConsultations() {
       if (
-        !this.getPreviousConsultations ||
-        !Array.isArray(this.getPreviousConsultations)
+        !this.previous_consultations ||
+        !Array.isArray(this.previous_consultations)
       ) {
         return [];
       }
-      return this.getPreviousConsultations.map((item) => ({
+      return this.previous_consultations.map((item) => ({
         consultation_date: format(
           parseISO(item.consultation_date),
           "MMMM dd, yyyy"
@@ -522,12 +516,11 @@ export default {
     },
     serviceStatus() {
       //Assign Date Released Value and Logic.
-      let date_released_data = this.getConsultation.hospital_service
-        .date_released
+      let date_released_data = this.consultation.hospital_service.date_released
         ? {
             title: "Date Released",
             content: format(
-              parseISO(this.getConsultation.hospital_service.date_released),
+              parseISO(this.consultation.hospital_service.date_released),
               "MMMM dd, yyyy"
             ),
           }
@@ -536,7 +529,7 @@ export default {
       //Conditional for General Format and Dialysis Format Messages
       let messages = null;
 
-      if (this.getConsultation.hospital_service.status !== "DIALYSIS") {
+      if (this.consultation.hospital_service.status !== "DIALYSIS") {
         messages = {
           pending: "Requested Service is pending...",
           inProgress: "Requested Service is in progress...",
@@ -553,11 +546,11 @@ export default {
       }
 
       return {
-        status: this.getConsultation.hospital_service.status,
+        status: this.consultation.hospital_service.status,
         scheduledDate: {
           title: "Scheduled Date",
           content: format(
-            parseISO(this.getConsultation.hospital_service.scheduled_date),
+            parseISO(this.consultation.hospital_service.scheduled_date),
             "MMMM dd, yyyy"
           ),
         },

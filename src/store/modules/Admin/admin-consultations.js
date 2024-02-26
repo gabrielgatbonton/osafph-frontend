@@ -13,8 +13,14 @@ export const admin_consultations = {
   }),
   getters: {
     getAdminConsultations: (state) => state.consultations,
-    getAdminConsultation: (state) => state.consultation,
+    getAdminConsultation: (state) => {
+      if (state.consultation) {
+        return state.consultation.consultation;
+      }
+    },
     getAdminConsultationForm: (state) => state.consultation_form,
+    getAdminPreviousConsultations: (state) =>
+      state.consultation.consultation.previous_consultation_forms,
   },
   mutations: {
     SET_CONSULTATIONS(state, consultations) {

@@ -488,7 +488,6 @@ export default {
       }
     },
     assignValues() {
-      console.log("DOCTOR", this.consultation_form);
       if (this.consultation_form && this.checkboxes) {
         this.data.chief_complaint = this.consultation_form.chief_complaint;
         this.data.blood_pressure = this.consultation_form.blood_pressure;
@@ -500,6 +499,43 @@ export default {
         this.data.oxygen_saturation = this.consultation_form.oxygen_saturation;
         this.data.weight = this.consultation_form.weight;
         this.data.height = this.consultation_form.height;
+        this.other_family_medical_history = this.consultation_form.other_family_medical_history;
+        this.other_history_of_present_illness = this.consultation_form.other_history_of_present_illness;
+        this.other_past_medical_history = this.consultation_form.other_past_medical_history;
+
+        this.checkboxes.history_of_present_illnesses.forEach((checkbox) => {
+          if (
+            this.consultation_form.history_of_present_illness.includes(
+              checkbox.label
+            )
+          ) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
+
+        this.checkboxes.past_medical_histories.forEach((checkbox) => {
+          if (
+            this.consultation_form.past_medical_history.includes(checkbox.label)
+          ) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
+
+        this.checkboxes.family_medical_histories.forEach((checkbox) => {
+          if (
+            this.consultation_form.family_medical_history.includes(
+              checkbox.label
+            )
+          ) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
       }
       this.pushToHistory();
     },
@@ -516,17 +552,6 @@ export default {
           })
         );
         if (this.consultation_form) {
-          this.checkboxes.history_of_present_illnesses.forEach((checkbox) => {
-            if (
-              this.consultation_form.history_of_present_illness.includes(
-                checkbox.label
-              )
-            ) {
-              checkbox.checked = true;
-            } else {
-              checkbox.checked = false;
-            }
-          });
           this.assignValues();
         }
       },
@@ -541,17 +566,6 @@ export default {
             checked: false,
           }));
         if (this.consultation_form) {
-          this.checkboxes.past_medical_histories.forEach((checkbox) => {
-            if (
-              this.consultation_form.past_medical_history.includes(
-                checkbox.label
-              )
-            ) {
-              checkbox.checked = true;
-            } else {
-              checkbox.checked = false;
-            }
-          });
           this.assignValues();
         }
       },
@@ -566,17 +580,6 @@ export default {
             checked: false,
           }));
         if (this.consultation_form) {
-          this.checkboxes.family_medical_histories.forEach((checkbox) => {
-            if (
-              this.consultation_form.family_medical_history.includes(
-                checkbox.label
-              )
-            ) {
-              checkbox.checked = true;
-            } else {
-              checkbox.checked = false;
-            }
-          });
           this.assignValues();
         }
       },

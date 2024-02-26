@@ -256,7 +256,6 @@ export default {
             this.data[key] = parsedData[key];
           }
         }
-        console.log("Passed Data", this.data);
       }
       if (consultationFormData) {
         const parsedData = JSON.parse(consultationFormData);
@@ -290,7 +289,7 @@ export default {
               console.log("Error Submitting Consultation Form: ", error);
             });
         }
-      } else if (this.userRole === "ADMIN") {
+      } else if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         return this.updateAdminConsultationFormById({
           consultation_id: this.consultation_form.consultation_id,
           consultation_form_id: this.consultation_form.consultation_form_id,
@@ -314,6 +313,14 @@ export default {
         this.data.fit_to_work_starting =
           this.consultation_form.fit_to_work_starting;
         this.data.may_rest_for = this.consultation_form.may_rest_for;
+
+        this.checkboxes.diagnostics.forEach((checkbox) => {
+          if (this.consultation_form.diagnostic_type.includes(checkbox.label)) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
       }
       this.pushToHistory();
     },
@@ -342,9 +349,6 @@ export default {
         this.checkboxes.diagnosis = this.diagnosis_enum.map(
           (data) => data.name
         );
-        if (this.consultation_form) {
-          this.assignValues();
-        }
       },
     },
     diagnostics_enum: {
@@ -356,15 +360,14 @@ export default {
           checked: false,
         }));
         if (this.consultation_form) {
-          this.checkboxes.diagnostics.forEach((checkbox) => {
-            if (
-              this.consultation_form.diagnostic_type.includes(checkbox.label)
-            ) {
-              checkbox.checked = true;
-            } else {
-              checkbox.checked = false;
-            }
-          });
+          this.assignValues();
+        }
+      },
+    },
+    consultation_form: {
+      immediate: true,
+      handler() {
+        if (this.consultation_form) {
           this.assignValues();
         }
       },

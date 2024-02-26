@@ -1,5 +1,7 @@
 <template>
   <div>
+    <SubmissionAlert v-if="success.alert" :message="success.message" />
+    <ErrorAlert v-if="failed.alert" :message="failed.message" />
     <v-container fluid class="table-title ma-1">
       <v-row no-gutters>
         <v-col cols="auto">
@@ -11,18 +13,23 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ConsultationsTable :route-name="routeName" :consultations="getAdminConsultations" />
+    <ConsultationsTable
+      :route-name="routeName"
+      :consultations="getAdminConsultations"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import ConsultationsTable from "@/components/Consultation/Consultations-Table.vue";
+import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
   name: "ConsultationIndexView",
   data: () => ({
     routeName: "citizens-consultations-view",
   }),
+  mixins: [ErrorAlertsLogic],
   components: {
     ConsultationsTable,
   },
