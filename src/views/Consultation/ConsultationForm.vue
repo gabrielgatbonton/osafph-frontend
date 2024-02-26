@@ -499,9 +499,12 @@ export default {
         this.data.oxygen_saturation = this.consultation_form.oxygen_saturation;
         this.data.weight = this.consultation_form.weight;
         this.data.height = this.consultation_form.height;
-        this.other_family_medical_history = this.consultation_form.other_family_medical_history;
-        this.other_history_of_present_illness = this.consultation_form.other_history_of_present_illness;
-        this.other_past_medical_history = this.consultation_form.other_past_medical_history;
+        this.other_family_medical_history =
+          this.consultation_form.other_family_medical_history;
+        this.other_history_of_present_illness =
+          this.consultation_form.other_history_of_present_illness;
+        this.other_past_medical_history =
+          this.consultation_form.other_past_medical_history;
 
         this.checkboxes.history_of_present_illnesses.forEach((checkbox) => {
           if (
@@ -582,6 +585,12 @@ export default {
         if (this.consultation_form) {
           this.assignValues();
         }
+      },
+    },
+    consultation_form: {
+      immediate: true,
+      handler() {
+        this.assignValues();
       },
     },
   },
