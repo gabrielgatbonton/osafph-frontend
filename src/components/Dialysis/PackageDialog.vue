@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="600" scrollable>
     <v-card>
       <v-card-title class="blue darken-1 pb-4 white--text"
-        ><v-icon dark left>mdi-file-upload</v-icon>Add Dialysis
+        ><v-icon dark left>mdi-file-upload</v-icon>{{ title }} Dialysis
         Package</v-card-title
       >
       <v-container fluid class="py-8 mx-auto overflow-scroll">
@@ -89,6 +89,15 @@ export default {
   },
   computed: {
     ...mapState("dialysis_items", ["dialysis_items"]),
+    title() {
+      let title = null;
+      if (this.package) {
+        title = "Edit";
+      } else {
+        title = "Add";
+      }
+      return title;
+    },
   },
   watch: {
     activator(newValue) {
@@ -108,8 +117,10 @@ export default {
       handler(value) {
         this.payload = {
           name: value.name,
-          dialysis_item_options: value.dialysis_item_options.map((item) => (item.id)),
-          price: value.price
+          dialysis_item_options: value.dialysis_item_options.map(
+            (item) => item.id
+          ),
+          price: value.price,
         };
       },
     },

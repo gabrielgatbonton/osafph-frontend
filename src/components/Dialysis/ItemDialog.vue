@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="600" scrollable>
     <v-card>
       <v-card-title class="blue darken-1 pb-4 white--text"
-        ><v-icon dark left>mdi-file-upload</v-icon>Add Dialysis
+        ><v-icon dark left>mdi-file-upload</v-icon>{{ title }} Dialysis
         Item</v-card-title
       >
       <v-container fluid class="py-8 mx-auto overflow-scroll">
@@ -61,6 +61,17 @@ export default {
         this.$emit("submitForm", this.payload);
         this.$v.$reset();
       }
+    },
+  },
+  computed: {
+    title() {
+      let title = null;
+      if (this.item) {
+        title = "Edit";
+      } else {
+        title = "Add";
+      }
+      return title;
     },
   },
   watch: {
