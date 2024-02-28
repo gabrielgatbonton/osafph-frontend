@@ -197,17 +197,6 @@ export default {
   created() {
     this.fetchConsultation();
   },
-  watch: {
-    getAdminConsultation(value) {
-      this.consultation = value.consultation;
-      this.previous_consultations =
-        value.consultation.previous_consultation_forms;
-    },
-    getAdminConsultationForm(value) {
-      this.consultation_form = value;
-      // console.log(this.consultation_form);
-    },
-  },
   computed: {
     ...mapGetters("login", ["userRole"]),
     ...mapGetters("consultations", {
@@ -215,11 +204,21 @@ export default {
       consultation_form: "getConsultationForm",
       previous_consultations: "getPreviousConsultations",
     }),
-    ...mapGetters("admin_consultations", {
-      consultation: "getAdminConsultation",
-      consultation_form: "getAdminConsultationForm",
-      previous_consultations: "getAdminPreviousConsultations",
-    }),
+    ...function () {
+      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
+        return mapGetters("admin_consultations", {
+          consultation: "getAdminConsultation",
+          consultation_form: "getAdminConsultationForm",
+          previous_consultations: "getAdminPreviousConsultations",
+        });
+      } else {
+        return mapGetters("admin_consultations", {
+          consultation: "getAdminConsultation",
+          consultation_form: "getAdminConsultationForm",
+          previous_consultations: "getAdminPreviousConsultations",
+        });
+      }
+    },
     buttonProperties() {
       let consultation_title = null;
       let consultation_color = null;

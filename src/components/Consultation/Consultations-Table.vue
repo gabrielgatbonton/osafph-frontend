@@ -23,7 +23,7 @@
         :class="{
           'success--text': item.status === 'COMPLETED',
           'error--text':
-            item.status === 'PENDING' || item.status === 'UNATTENDED',
+            item.status === 'PENDING' || item.status === 'UNATTENDED' || item.status === 'WALK-IN',
           'indigo--text': item.status === 'IN PROGRESS',
         }"
       >

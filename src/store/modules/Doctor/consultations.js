@@ -19,7 +19,8 @@ export const consultations = {
           .filter(
             (consultation) =>
               consultation.hospital_service.status.includes("PENDING") ||
-              consultation.hospital_service.status.includes("IN PROGRESS")
+              consultation.hospital_service.status.includes("IN PROGRESS") ||
+              consultation.hospital_service.status.includes("WALK-IN")
           )
           .sort((a, b) => {
             //Filter to Older to Newest Dates
