@@ -94,6 +94,9 @@ export default {
     routeID: null,
     loading: false,
     disabled: false,
+    consultation: null,
+    consultation_form: null,
+    previous_consultations: null,
   }),
   components: {
     ReusableDeleteDialog,
@@ -197,28 +200,50 @@ export default {
   created() {
     this.fetchConsultation();
   },
+  watch: {
+    getConsultation: {
+      handler(value) {
+        this.consultation = value;
+      },
+    },
+    getConsultationForm: {
+      handler(value) {
+        this.consultation_form = value;
+      },
+    },
+    getPreviousConsultations: {
+      handler(value) {
+        this.previous_consultations = value;
+      },
+    },
+    getAdminConsultation: {
+      handler(value) {
+        this.consultation = value;
+      },
+    },
+    getAdminConsultationForm: {
+      handler(value) {
+        this.consultation_form = value;
+      },
+    },
+    getAdminPreviousConsultations: {
+      handler(value) {
+        this.previous_consultations = value;
+      },
+    },
+  },
   computed: {
     ...mapGetters("login", ["userRole"]),
-    ...mapGetters("consultations", {
-      consultation: "getConsultation",
-      consultation_form: "getConsultationForm",
-      previous_consultations: "getPreviousConsultations",
-    }),
-    ...function () {
-      if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
-        return mapGetters("admin_consultations", {
-          consultation: "getAdminConsultation",
-          consultation_form: "getAdminConsultationForm",
-          previous_consultations: "getAdminPreviousConsultations",
-        });
-      } else {
-        return mapGetters("admin_consultations", {
-          consultation: "getAdminConsultation",
-          consultation_form: "getAdminConsultationForm",
-          previous_consultations: "getAdminPreviousConsultations",
-        });
-      }
-    },
+    ...mapGetters("consultations", [
+      "getConsultation",
+      "getConsultationForm",
+      "getPreviousConsultations",
+    ]),
+    ...mapGetters("admin_consultations", [
+      "getAdminConsultation",
+      "getAdminConsultationForm",
+      "getAdminPreviousConsultations",
+    ]),
     buttonProperties() {
       let consultation_title = null;
       let consultation_color = null;
