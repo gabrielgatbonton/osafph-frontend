@@ -6,7 +6,7 @@
       <v-row no-gutters>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
-          <span class="title">Consultations</span>
+          <span class="title">Consultation Information</span>
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto" v-if="buttonPermissions.form">

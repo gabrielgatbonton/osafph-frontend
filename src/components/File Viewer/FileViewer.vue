@@ -17,16 +17,21 @@
             ref="pdfRef"
             @rendered="handleDocumentRender()"
           />
-          <div class="chevron-position">
-            <v-chip color="grey darken-2" class="icon-color">
-              <v-icon :disabled="page <= 1" @click="page--" class="mr-3"
-                >mdi-chevron-left</v-icon
-              >
-              {{ page }} / {{ pageCount }} page(s)
-              <v-icon :disabled="page >= pageCount" @click="page++" class="ml-3"
-                >mdi-chevron-right</v-icon
-              >
-            </v-chip>
+          <div class="d-flex justify-center">
+            <div class="chevron-position">
+              <v-chip color="grey darken-2" class="icon-color">
+                <v-icon :disabled="page <= 1" @click="page--" class="mr-3"
+                  >mdi-chevron-left</v-icon
+                >
+                {{ page }} / {{ pageCount }} page(s)
+                <v-icon
+                  :disabled="page >= pageCount"
+                  @click="page++"
+                  class="ml-3"
+                  >mdi-chevron-right</v-icon
+                >
+              </v-chip>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -152,20 +157,13 @@ export default {
       }
     },
   },
-  watch: {
-    // activator(value) {
-    //   this.overlay = value;
-    // },
-  },
 };
 </script>
 
 <style scoped>
 .chevron-position {
   position: fixed;
-  bottom: 30px; /* Adjust the distance from the bottom as needed */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Center horizontally */
+  bottom: 5rem; /* Adjust the distance from the bottom as needed */
   background: transparent;
   text-align: center;
   z-index: 1000; /* Increase z-index */
