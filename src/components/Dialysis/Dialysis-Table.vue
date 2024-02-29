@@ -6,7 +6,7 @@
     class="elevation-0"
     :search="search"
     :custom-filter="filterOnlyCapsText"
-    :loading="!dialysisData.length"
+    :loading="loading"
     loading-text="Loading... Please wait"
   >
     <template v-slot:top>
@@ -57,7 +57,7 @@ export default {
   data: () => ({
     search: "",
     offset: true,
-    data: [],
+    loading: true,
   }),
   methods: {
     filterOnlyCapsText(value, search) {
@@ -135,6 +135,20 @@ export default {
         : [];
     },
   },
+  watch: {
+    dialysis: {
+      handler(value) {
+        this.loading = true;
+        if (!value.length) {
+          setTimeout(() => {
+            this.loading = false;
+          }, 5000);
+        } else {
+          this.loading = false;
+        }
+      },
+    },
+  }
 };
 </script>
 

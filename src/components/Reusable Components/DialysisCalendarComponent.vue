@@ -24,6 +24,9 @@
           </div>
         </div>
       </v-col>
+      <v-col cols="12">
+        <div class="text-h6">Reserved Machines</div>
+      </v-col>
       <v-col cols="6" v-for="(session, index) in machine_sessions" :key="index">
         <v-card elevation="1">
           <div class="d-flex justify-space-between pa-3">
@@ -77,9 +80,9 @@ export default {
         });
       }
     },
-    fetchEvents() {
+    fetchEvents(hospital) {
       let params = {
-        hospital: this.hospital,
+        hospital: hospital,
       };
       if (params) {
         this.fetchDialysisMachineCalendarEvents(params).catch((error) => {
@@ -130,8 +133,9 @@ export default {
     },
     hospital: {
       immediate: true,
-      handler() {
-        this.fetchEvents();
+      handler(value) {
+        if (value) this.fetchEvents(value);
+        this.fetchCalendar();
       },
     },
   },

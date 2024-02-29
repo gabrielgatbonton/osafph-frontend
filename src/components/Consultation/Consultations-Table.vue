@@ -7,7 +7,7 @@
     :search="search"
     :custom-filter="filterOnlyCapsText"
     no-data-text="No Consultations Available"
-    :loading="!tableData.length"
+    :loading="loading"
     loading-text="Loading... Please wait"
   >
     <template v-slot:top>
@@ -61,6 +61,7 @@ export default {
   data: () => ({
     search: "",
     offset: true,
+    loading: true,
   }),
   methods: {
     filterOnlyCapsText(value, search) {
@@ -136,6 +137,20 @@ export default {
         : [];
     },
   },
+  watch: {
+    consultations: {
+      handler(value) {
+        this.loading = true;
+        if (!value.length) {
+          setTimeout(() => {
+            this.loading = false;
+          }, 5000);
+        } else {
+          this.loading = false;
+        }
+      },
+    },
+  }
 };
 </script>
 

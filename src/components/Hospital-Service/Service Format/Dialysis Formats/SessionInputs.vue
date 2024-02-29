@@ -13,7 +13,12 @@
       </v-col>
       <v-col cols="12">
         <div class="d-flex justify-center">
-          <v-btn plain large color="grey darken-1" @click="trigger"
+          <v-btn
+            plain
+            large
+            color="grey darken-1"
+            @click="trigger"
+            :disabled="!payload.hospital"
             >Show Calendar
             <v-icon right>{{
               show_calendar ? "mdi-chevron-up" : "mdi-chevron-down"
@@ -312,6 +317,13 @@ export default {
         this.setupDateWatchers(newVal);
       },
       deep: true,
+    },
+    "payload.hospital": {
+      handler(value) {
+        if (!value) {
+          this.show_calendar = false;
+        }
+      },
     },
   },
 };

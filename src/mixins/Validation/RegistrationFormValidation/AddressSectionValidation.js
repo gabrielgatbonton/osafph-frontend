@@ -21,7 +21,7 @@ export default {
       errors.address = [];
       if (this.$v.data.address.$dirty) {
         !this.$v.data.address.required &&
-          errors.address.push("Contact Number is required");
+          errors.address.push("Address is required");
         !this.$v.data.address.maxLength &&
           errors.address.push("A limit of 255 characters is exceeded");
       }

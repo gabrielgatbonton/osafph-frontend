@@ -208,17 +208,10 @@ export default {
         this.payload.crowd_funding_backer =
           this.hospitalService.hospitalService.crowd_funding_backer;
         this.payload.hospital = this.hospitalService.hospitalService.hospital;
-        this.payload.scheduled_date = format(
-          parseISO(this.hospitalService.hospitalService.scheduled_date),
-          "MMMM d, yyyy"
-        );
+        this.payload.scheduled_date =
+          this.hospitalService.hospitalService.scheduled_date;
         this.payload.remarks = this.hospitalService.hospitalService.remarks;
-        this.date_released = this.hospitalService.hospitalService.date_released
-          ? format(
-              parseISO(this.hospitalService.hospitalService.date_released),
-              "MMMM d, yyyy"
-            )
-          : null;
+        this.date_released = this.hospitalService.hospitalService.date_released;
         this.payload.status = this.hospitalService.hospitalService.status;
       }
     },
