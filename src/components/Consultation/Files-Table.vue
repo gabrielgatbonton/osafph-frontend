@@ -33,8 +33,8 @@
       </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container class="ml-n8" style="width: 120px">
-        <v-row no-gutters justify="center">
+      <v-container :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-n3'" style="width: auto; padding: 0;">
+        <v-row no-gutters justify="start">
           <v-col cols="auto" align-self="center">
             <v-icon
               class="mx-1"

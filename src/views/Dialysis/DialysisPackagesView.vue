@@ -10,8 +10,11 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn dark class="mr-3" color="blue darken-4" @click="activator">
+          <v-btn v-if="!$vuetify.breakpoint.xs" dark class="mr-3" color="blue darken-4" @click="activator">
             Add Package</v-btn
+          >
+          <v-btn v-else class="mr-3" color="blue darken-4" icon @click="activator">
+            <v-icon>mdi-plus</v-icon></v-btn
           >
         </v-col>
       </v-row>

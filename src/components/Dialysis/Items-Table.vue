@@ -32,8 +32,8 @@
       <div>PHP {{ item.item_price }}</div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container class="ml-n8" style="width: 120px">
-        <v-row no-gutters justify="center">
+      <v-container :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-n8'" style="width: 120px; padding: 0;">
+        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'center'">
           <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
             <v-icon
               class="mx-1"

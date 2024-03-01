@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-card
         rounded="lg"
-        class="mx-5"
+        :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-5'"
         flat
         outlined
         style="background-color: #f1f5fb"
@@ -23,17 +23,21 @@
         </v-row>
         <v-row class="ma-2">
           <v-col cols="12">
-            <v-card flat outlined class="mx-2">
+            <v-card
+              flat
+              outlined
+              :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'"
+            >
               <div class="ma-5">
                 <v-row>
-                  <v-col cols="6">
+                  <v-col cols="12" md="6" sm="6" xl="6">
                     <v-text-field
                       v-model="localBasicDetails.patient_name"
                       readonly
                       label="Patient Name"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" md="2" sm="2" xl="2">
                     <v-select
                       v-model="localBasicDetails.sex"
                       :items="selects.sex"
@@ -41,7 +45,7 @@
                       label="Sex"
                     ></v-select>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" md="2" sm="2" xl="2">
                     <v-text-field
                       readonly
                       label="Age"
@@ -49,14 +53,14 @@
                       v-model="localBasicDetails.age"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" md="2" sm="2" xl="2">
                     <v-text-field
                       v-model="localBasicDetails.birthday"
                       readonly
                       label="Birthdate"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="3">
+                  <v-col cols="12" md="3" sm="3" xl="3">
                     <v-select
                       v-model="localBasicDetails.civil_status"
                       :items="selects.civil_status"
@@ -64,21 +68,21 @@
                       label="Civil Status"
                     ></v-select>
                   </v-col>
-                  <v-col cols="3">
+                  <v-col cols="12" md="3" sm="3" xl="3">
                     <v-text-field
                       v-model="localBasicDetails.religion"
                       readonly
                       label="Religion"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="3">
+                  <v-col cols="12" md="3" sm="3" xl="3">
                     <v-text-field
                       v-model="localBasicDetails.occupation"
                       readonly
                       label="Occupation"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="3">
+                  <v-col cols="12" md="3" sm="3" xl="3">
                     <v-text-field
                       v-model="localBasicDetails.nationality"
                       readonly
@@ -92,21 +96,21 @@
                       label="Address"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="12" md="4" sm="4" xl="4">
                     <v-text-field
                       v-model="localBasicDetails.date_of_consult"
                       readonly
                       label="Date of Consult"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="12" md="4" sm="4" xl="4">
                     <v-text-field
                       v-model="localBasicDetails.doctor_name"
                       readonly
                       label="Doctor"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="12" md="4" sm="4" xl="4">
                     <v-text-field readonly label="Diagnosis"></v-text-field>
                   </v-col>
                 </v-row>
@@ -118,7 +122,7 @@
       <div class="custom-divider"></div>
       <v-card
         rounded="lg"
-        class="mx-5"
+        :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-5'"
         flat
         outlined
         style="background-color: #f1f5fb"
@@ -138,17 +142,21 @@
         </v-row>
         <v-row class="ma-2">
           <v-col cols="12">
-            <v-card flat outlined class="mx-2">
+            <v-card
+              flat
+              outlined
+              :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'"
+            >
               <div class="ma-5">
                 <v-row>
-                  <v-col cols="6">
+                  <v-col cols="12" md="6" sm="6">
                     <v-text-field
                       v-model="data.chief_complaint"
                       label="Chief Complaint"
                     ></v-text-field>
                   </v-col>
                   <v-spacer></v-spacer>
-                  <v-col cols="3">
+                  <v-col cols="12" md="3" sm="4">
                     <v-text-field
                       v-model="formattedDate"
                       readonly
@@ -158,36 +166,33 @@
                   <v-col cols="12">
                     <div class="text-h6 mb-2">History</div>
                     <v-row no-gutters>
-                      <v-col cols="12">
-                        <v-row no-gutters>
-                          <v-col
-                            :cols="checkbox.label === 'Others' ? 8 : 4"
-                            v-for="(
-                              checkbox, index
-                            ) in checkboxes.history_of_present_illnesses"
-                            :key="index"
-                          >
-                            <div class="d-flex">
-                              <v-checkbox
-                                :label="checkbox.label"
-                                v-model="checkbox.checked"
-                                @click="pushToHistory"
-                                class="my-0"
-                              ></v-checkbox>
-                              <v-text-field
-                                class="mt-n3 mx-5"
-                                v-if="
-                                  checkbox.label === 'Others' &&
-                                  checkbox.value === 10 &&
-                                  checkbox.checked === true
-                                "
-                                v-model="other_history_of_present_illness"
-                                label="Enter Other Value"
-                                @input="pushToHistory"
-                              ></v-text-field>
-                            </div>
-                          </v-col>
-                        </v-row>
+                      <v-col
+                        cols="12"
+                        :sm="checkbox.label === 'Others' ? 8 : 4"
+                        v-for="(
+                          checkbox, index
+                        ) in checkboxes.history_of_present_illnesses"
+                        :key="index"
+                      >
+                        <div class="d-flex">
+                          <v-checkbox
+                            :label="checkbox.label"
+                            v-model="checkbox.checked"
+                            @click="pushToHistory"
+                            class="my-0"
+                          ></v-checkbox>
+                          <v-text-field
+                            class="mt-n3 mx-5"
+                            v-if="
+                              checkbox.label === 'Others' &&
+                              checkbox.value === 10 &&
+                              checkbox.checked === true
+                            "
+                            v-model="other_history_of_present_illness"
+                            label="Enter Other Value"
+                            @input="pushToHistory"
+                          ></v-text-field>
+                        </div>
                       </v-col>
                     </v-row>
                   </v-col>
@@ -195,36 +200,33 @@
                   <v-col cols="12">
                     <div class="text-h6 mb-2">PAST MEDICAL HISTORY</div>
                     <v-row no-gutters>
-                      <v-col cols="12">
-                        <v-row no-gutters>
-                          <v-col
-                            :cols="checkbox.label === 'Other' ? 8 : 4"
-                            v-for="(
-                              checkbox, index
-                            ) in checkboxes.past_medical_histories"
-                            :key="index"
-                          >
-                            <div class="d-flex">
-                              <v-checkbox
-                                :label="checkbox.label"
-                                v-model="checkbox.checked"
-                                @click="pushToHistory"
-                                class="my-0"
-                              ></v-checkbox>
-                              <v-text-field
-                                class="mt-n3 mx-5"
-                                v-if="
-                                  checkbox.label === 'Other' &&
-                                  checkbox.value === 15 &&
-                                  checkbox.checked === true
-                                "
-                                v-model="other_past_medical_history"
-                                label="Enter Other Value"
-                                @input="pushToHistory"
-                              ></v-text-field>
-                            </div>
-                          </v-col>
-                        </v-row>
+                      <v-col
+                        cols="12"
+                        :sm="checkbox.label === 'Other' ? 8 : 4"
+                        v-for="(
+                          checkbox, index
+                        ) in checkboxes.past_medical_histories"
+                        :key="index"
+                      >
+                        <div class="d-flex">
+                          <v-checkbox
+                            :label="checkbox.label"
+                            v-model="checkbox.checked"
+                            @click="pushToHistory"
+                            class="my-0"
+                          ></v-checkbox>
+                          <v-text-field
+                            class="mt-n3 mx-5"
+                            v-if="
+                              checkbox.label === 'Other' &&
+                              checkbox.value === 15 &&
+                              checkbox.checked === true
+                            "
+                            v-model="other_past_medical_history"
+                            label="Enter Other Value"
+                            @input="pushToHistory"
+                          ></v-text-field>
+                        </div>
                       </v-col>
                     </v-row>
                   </v-col>
@@ -232,36 +234,33 @@
                   <v-col cols="12">
                     <div class="text-h6 mb-2">FAMILY MEDICAL HISTORY</div>
                     <v-row no-gutters>
-                      <v-col cols="12">
-                        <v-row no-gutters>
-                          <v-col
-                            :cols="checkbox.label === 'Other' ? 8 : 4"
-                            v-for="(
-                              checkbox, index
-                            ) in checkboxes.family_medical_histories"
-                            :key="index"
-                          >
-                            <div class="d-flex">
-                              <v-checkbox
-                                :label="checkbox.label"
-                                v-model="checkbox.checked"
-                                @click="pushToHistory"
-                                class="my-0"
-                              ></v-checkbox>
-                              <v-text-field
-                                class="mt-n3 mx-5"
-                                v-if="
-                                  checkbox.label === 'Other' &&
-                                  checkbox.value === 11 &&
-                                  checkbox.checked === true
-                                "
-                                v-model="other_family_medical_history"
-                                label="Enter Other Value"
-                                @input="pushToHistory"
-                              ></v-text-field>
-                            </div>
-                          </v-col>
-                        </v-row>
+                      <v-col
+                        cols="12"
+                        :sm="checkbox.label === 'Other' ? 8 : 4"
+                        v-for="(
+                          checkbox, index
+                        ) in checkboxes.family_medical_histories"
+                        :key="index"
+                      >
+                        <div class="d-flex">
+                          <v-checkbox
+                            :label="checkbox.label"
+                            v-model="checkbox.checked"
+                            @click="pushToHistory"
+                            class="my-0"
+                          ></v-checkbox>
+                          <v-text-field
+                            class="mt-n3 mx-5"
+                            v-if="
+                              checkbox.label === 'Other' &&
+                              checkbox.value === 11 &&
+                              checkbox.checked === true
+                            "
+                            v-model="other_family_medical_history"
+                            label="Enter Other Value"
+                            @input="pushToHistory"
+                          ></v-text-field>
+                        </div>
                       </v-col>
                     </v-row>
                   </v-col>
@@ -274,7 +273,7 @@
       <div class="custom-divider"></div>
       <v-card
         rounded="lg"
-        class="mx-5"
+        :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-5'"
         flat
         outlined
         style="background-color: #f1f5fb"
@@ -294,57 +293,57 @@
         </v-row>
         <v-row class="ma-2">
           <v-col cols="12">
-            <v-card flat outlined class="mx-2">
+            <v-card flat outlined :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'">
               <div class="ma-5">
                 <v-row>
                   <v-col cols="12">
                     <div class="text-h6">PHYSICAL EXAMINATION</div>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" sm="3" md="2">
                     <v-text-field
                       v-model="data.blood_pressure"
                       label="BP"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" sm="3" md="2">
                     <v-text-field
                       v-model="data.heart_rate"
                       label="HR"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" sm="3" md="2">
                     <v-text-field
                       v-model="data.respiratory_rate"
                       label="RR"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" sm="3" md="2">
                     <v-text-field
                       v-model="data.temperature"
                       label="Temperature"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" sm="4" md="2">
                     <v-text-field
                       v-model="data.oxygen_saturation"
                       label="O2 Saturation"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" sm="4" md="2">
                     <v-text-field
                       v-model="data.weight"
                       label="Weight (kg)"
                       type="number"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="12" sm="4" md="2">
                     <v-text-field
                       v-model="data.height"
                       label="Height (m)"
                       type="number"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="8">
+                  <v-col cols="12" sm="12" md="8">
                     <v-text-field
                       v-model="data.pertinent_findings"
                       label="Permanent Findings"

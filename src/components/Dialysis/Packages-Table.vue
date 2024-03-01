@@ -37,8 +37,11 @@
       >
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container class="ml-n5" style="width: auto; padding: 0">
-        <v-row no-gutters justify="start">
+      <v-container
+        :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-n5'"
+        style="width: auto; padding: 0"
+      >
+        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'start'">
           <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
             <v-icon
               class="mx-1"
@@ -150,7 +153,7 @@ export default {
             id: item.id,
             package: item.name,
             package_price: item.price,
-            items: item.dialysis_item_options.map((item) => (item.name)),
+            items: item.dialysis_item_options.map((item) => item.name),
             is_active: item.is_active,
             status: item.is_active ? "ACTIVE" : "INACTIVE",
           }))
@@ -170,7 +173,7 @@ export default {
         }
       },
     },
-  }
+  },
 };
 </script>
 

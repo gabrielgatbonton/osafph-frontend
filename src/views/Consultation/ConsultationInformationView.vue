@@ -11,6 +11,7 @@
         <v-spacer></v-spacer>
         <v-col cols="auto" v-if="buttonPermissions.form">
           <v-btn
+            v-if="!$vuetify.breakpoint.xs"
             dark
             class="mr-3"
             :color="buttonProperties.consultationForm.color"
@@ -18,20 +19,47 @@
             @click="alterConsultation"
             >{{ buttonProperties.consultationForm.title }}</v-btn
           >
+          <v-btn
+            v-else
+            dark
+            icon
+            class="mr-3"
+            :color="buttonProperties.consultationForm.color"
+            :class="{ 'disabled-button': disabled }"
+            @click="alterConsultation"
+            ><v-icon>mdi-pencil</v-icon></v-btn
+          >
         </v-col>
         <v-col cols="auto" class="mr-3" v-if="buttonPermissions.delete">
-          <v-btn class="error" @click="deleteActivator" dark
+          <v-btn
+            v-if="!$vuetify.breakpoint.xs"
+            class="error"
+            @click="deleteActivator"
+            dark
             ><v-icon left>mdi-trash-can</v-icon>Delete Form</v-btn
+          >
+          <v-btn v-else color="error" @click="deleteActivator" icon
+            ><v-icon left>mdi-trash-can</v-icon></v-btn
           >
         </v-col>
         <v-col cols="auto" v-if="buttonPermissions.files">
           <v-btn
+            v-if="!$vuetify.breakpoint.xs"
             dark
             class="mr-3"
             :color="buttonProperties.files.color"
             :class="{ 'disabled-button': disabled }"
             @click="proceedToFiles"
             >{{ buttonProperties.files.title }}</v-btn
+          >
+          <v-btn
+            v-else
+            icon
+            class="mr-3"
+            :color="buttonProperties.files.color"
+            :class="{ 'disabled-button': disabled }"
+            @click="proceedToFiles"
+            ><v-icon left>mdi-file-upload</v-icon></v-btn
           >
         </v-col>
       </v-row>

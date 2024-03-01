@@ -7,7 +7,12 @@
           >{{ hospitalService ? "Edit" : "Add" }} Medical Service</v-card-title
         >
         <v-container fluid class="py-8 mx-auto overflow-scroll">
-          <v-row class="mx-4">
+          <v-row
+            :class="{
+              'mx-1': $vuetify.breakpoint.xs,
+              'mx-4': !$vuetify.breakpoint.xs,
+            }"
+          >
             <v-col cols="12">
               <v-autocomplete
                 v-model="payload.service_type"

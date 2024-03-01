@@ -23,7 +23,9 @@
         :class="{
           'success--text': item.status === 'COMPLETED',
           'error--text':
-            item.status === 'PENDING' || item.status === 'UNATTENDED' || item.status === 'WALK-IN',
+            item.status === 'PENDING' ||
+            item.status === 'UNATTENDED' ||
+            item.status === 'WALK-IN',
           'indigo--text': item.status === 'IN PROGRESS',
         }"
       >
@@ -31,8 +33,11 @@
       </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container class="ml-n8" style="width: 120px">
-        <v-row no-gutters justify="center">
+      <v-container
+        :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-3'"
+        style="width: auto; padding: 0;"
+      >
+        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'start'">
           <v-col cols="auto" align-self="center">
             <v-icon
               @click="
@@ -150,7 +155,7 @@ export default {
         }
       },
     },
-  }
+  },
 };
 </script>
 

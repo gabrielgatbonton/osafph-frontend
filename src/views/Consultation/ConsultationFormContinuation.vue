@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-card
         rounded="lg"
-        class="mx-5"
+        :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-5'"
         flat
         outlined
         style="background-color: #f1f5fb"
@@ -20,8 +20,12 @@
           </v-col>
         </v-row>
         <v-row class="ma-2">
-          <v-col cols="12">
-            <v-card flat outlined class="mx-2">
+          <v-col cols="12" md="6" sm="6">
+            <v-card
+              flat
+              outlined
+              :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'"
+            >
               <div class="ma-5">
                 <v-row>
                   <v-col cols="12">
@@ -42,7 +46,7 @@
       <div class="custom-divider"></div>
       <v-card
         rounded="lg"
-        class="mx-5"
+        :class="$vuetify.breakpoint.xs ? 'mx-1' : 'mx-5'"
         flat
         outlined
         style="background-color: #f1f5fb"
@@ -60,7 +64,7 @@
         </v-row>
         <v-row class="ma-2">
           <v-col cols="12">
-            <v-card flat outlined class="mx-2">
+            <v-card flat outlined :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'">
               <div class="ma-5">
                 <v-row>
                   <v-col cols="12">
@@ -70,7 +74,8 @@
                       <v-col cols="12">
                         <v-row no-gutters>
                           <v-col
-                            cols="4"
+                            cols="12"
+                            sm="4"
                             v-for="(checkbox, index) in checkboxes.diagnostics"
                             :key="index"
                           >
@@ -126,7 +131,7 @@
                   <v-col cols="12">
                     <div class="text-h5 text-left my-2">Remarks</div>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="12" sm="4">
                     <v-menu
                       max-width="290"
                       :close-on-content-click="false"
@@ -152,7 +157,7 @@
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="12" sm="4">
                     <v-menu
                       max-width="290"
                       :close-on-content-click="false"
@@ -178,7 +183,7 @@
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="12" sm="4">
                     <v-text-field
                       v-model="data.may_rest_for"
                       label="May Rest For"

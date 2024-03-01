@@ -11,6 +11,7 @@
         <v-spacer></v-spacer>
         <v-col cols="auto">
           <v-btn
+            v-if="!$vuetify.breakpoint.xs"
             class="mr-3"
             color="blue darken-4"
             dark
@@ -19,11 +20,35 @@
               servicesStatus ? "Pending Services" : "Archived Services"
             }}</v-btn
           >
+          <v-btn
+            v-else
+            class="mr-3"
+            color="blue darken-4"
+            dark
+            icon
+            @click="switchServices"
+            ><v-icon> mdi-swap-horizontal </v-icon></v-btn
+          >
         </v-col>
         <v-col cols="auto">
-          <v-btn class="mr-3" color="blue darken-4" dark @click="activator">
+          <v-btn
+            v-if="!$vuetify.breakpoint.xs"
+            class="mr-3"
+            color="blue darken-4"
+            dark
+            @click="activator"
+          >
             Add Service
           </v-btn>
+          <v-btn
+            v-else
+            class="mr-3"
+            color="blue darken-4"
+            dark
+            icon
+            @click="activator"
+            ><v-icon> mdi-plus </v-icon></v-btn
+          >
           <ServiceDialog
             v-on:dialogResponse="resetActivator"
             v-on:submitForm="submitForm"

@@ -11,10 +11,20 @@
         <v-spacer></v-spacer>
         <v-col cols="auto" v-if="editButtonProperties">
           <v-btn
+            v-if="!$vuetify.breakpoint.xs"
             dark
             class="blue darken-4 mr-3"
             @click="activator(id, hospital_service_id)"
             ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
+          >
+          <v-btn
+            v-else
+            class="mr-3"
+            color="blue darken-4"
+            dark
+            icon
+            @click="activator(id, hospital_service_id)"
+            ><v-icon> mdi-square-edit-outline </v-icon></v-btn
           >
         </v-col>
       </v-row>
