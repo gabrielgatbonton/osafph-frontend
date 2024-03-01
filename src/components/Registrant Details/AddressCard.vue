@@ -4,14 +4,26 @@
       ><v-icon dark left>mdi-map-marker</v-icon>Address</v-card-title
     >
     <v-container fluid class="py-4">
-      <v-row v-for="info in address" :key="info.title" no-gutters>
+      <v-row
+        v-for="(info, index) in address"
+        :key="index"
+        no-gutters
+        :class="{
+          'mb-3': $vuetify.breakpoint.xs && index < address.length - 1,
+        }"
+      >
         <v-col cols="12" md="6" sm="6">
           <v-card-subtitle class="py-0">{{ info.title }}</v-card-subtitle>
         </v-col>
         <v-col cols="12" md="6" sm="6">
-          <v-card-text class="font-weight-bold py-0">{{
-            info.content
-          }}</v-card-text>
+          <v-card-text
+            :class="{
+              font: $vuetify.breakpoint.xs,
+              'font-weight-bold': !$vuetify.breakpoint.xs,
+            }"
+            class="py-0"
+            >{{ info.content }}</v-card-text
+          >
         </v-col>
       </v-row>
     </v-container>
@@ -49,3 +61,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+@media (max-width: 600px) {
+  .font {
+    font-size: 1.25rem;
+    font-weight: normal;
+  }
+}
+</style>

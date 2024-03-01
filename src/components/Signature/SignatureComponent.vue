@@ -25,7 +25,7 @@
                   class="canvas-border"
                   id="cnv"
                   name="cnv"
-                  width="500"
+                  :width="$vuetify.breakpoint.xs ? 300 : 500"
                   height="100"
                 ></canvas>
               </div>

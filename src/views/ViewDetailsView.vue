@@ -5,16 +5,27 @@
     <v-container fluid class="ma-1" v-if="registrant">
       <v-row>
         <v-col cols="auto">
-          <!-- <v-icon left>mdi-account-box-multiple</v-icon> -->
+          <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Registrant Information</span>
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
           <v-btn
+            v-if="!$vuetify.breakpoint.xs"
             dark
-            class="blue darken-4 mr-3"
+            color="blue darken-4"
+            class="mr-3"
             :to="{ name: 'edit', params: { id: routeID } }"
             ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
+          >
+          <v-btn
+            v-else
+            dark
+            class="mr-3"
+            color="blue darken-4"
+            icon
+            :to="{ name: 'edit', params: { id: routeID } }"
+            ><v-icon>mdi-square-edit-outline</v-icon></v-btn
           >
         </v-col>
       </v-row>
