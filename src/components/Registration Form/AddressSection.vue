@@ -1,12 +1,12 @@
 <template>
-  <v-container class="mx-auto mt-3 px-8">
+  <v-container class="mx-auto mt-3">
     <v-row class="mt-3">
       <v-col cols="auto">
         <v-icon left>mdi-map-marker</v-icon>
         <span>Address</span>
       </v-col>
     </v-row>
-    <v-row class="mt-n3">
+    <v-row>
       <v-col cols="12">
         <v-text-field
           :value="data.address"
@@ -16,8 +16,6 @@
           :error-messages="errorMessages.address"
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row class="mt-n3">
       <v-col cols="12">
         <v-autocomplete
           label="Country"
@@ -30,8 +28,6 @@
           :error-messages="errorMessages.country"
         ></v-autocomplete>
       </v-col>
-    </v-row>
-    <v-row class="mt-n3">
       <v-col cols="12" lg="6" md="6">
         <v-autocomplete
           :value="selects.region"
@@ -58,8 +54,6 @@
           @change="(id) => initMunicipalities(id)"
         ></v-autocomplete>
       </v-col>
-    </v-row>
-    <v-row class="mt-n3">
       <v-col cols="12" lg="6" md="6">
         <v-autocomplete
           :value="selects.municipality"
@@ -87,8 +81,7 @@
         ></v-autocomplete>
       </v-col>
     </v-row>
-
-    <v-row class="mt-n3">
+    <v-row>
       <v-col cols="12">
         <v-btn dark block class="blue darken-4" @click="continueForm"
           >Proceed</v-btn

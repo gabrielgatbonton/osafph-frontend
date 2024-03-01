@@ -1,12 +1,12 @@
 <template>
-  <v-container class="mx-auto mt-3 px-8">
+  <v-container class="mx-auto mt-3">
     <v-row>
       <v-col cols="auto">
         <v-icon left>mdi-medical-bag</v-icon>
         <span>Emergency Details</span>
       </v-col>
     </v-row>
-    <v-row class="mt-3">
+    <v-row>
       <v-col cols="12" lg="6" md="6" sm="6">
         <v-text-field
           :value="data.emergency_name"
@@ -28,7 +28,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row class="mt-n3">
+    <v-row>
       <v-col cols="12">
         <v-btn dark block class="blue darken-4" @click="continueForm"
           >Proceed</v-btn

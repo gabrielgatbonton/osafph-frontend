@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mx-auto mt-3 px-8">
+  <v-container class="mx-auto mt-3">
     <v-row>
       <v-col cols="auto">
         <v-icon left>mdi-folder-multiple</v-icon>
@@ -61,7 +61,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row class="mt-n3">
+    <v-row>
       <v-col cols="12">
         <v-btn dark block class="blue darken-4" @click="continueForm"
           >Proceed</v-btn

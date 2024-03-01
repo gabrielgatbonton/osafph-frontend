@@ -1,13 +1,13 @@
 <template>
-  <v-container class="mx-auto mt-3 px-8">
+  <v-container class="mx-auto mt-3">
     <v-row class="mt-3">
       <v-col cols="auto">
         <v-icon left>mdi-human-greeting-variant</v-icon>
         <span>Personal Information</span>
       </v-col>
     </v-row>
-    <v-row class="mt-n3">
-      <v-col cols="12" lg="3" md="3" sm="6">
+    <v-row>
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-text-field
           :value="data.last_name"
           v-model="data.last_name"
@@ -16,7 +16,7 @@
           :error-messages="errorMessages.last_name"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-text-field
           :value="data.first_name"
           v-model="data.first_name"
@@ -25,7 +25,7 @@
           :error-messages="errorMessages.first_name"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-text-field
           :value="data.middle_name"
           v-model="data.middle_name"
@@ -34,7 +34,7 @@
           :error-messages="errorMessages.middle_name"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-combobox
           :value="data.suffix"
           v-model="data.suffix"
@@ -45,9 +45,7 @@
           :error-messages="errorMessages.suffix"
         ></v-combobox>
       </v-col>
-    </v-row>
-    <v-row class="mt-n3">
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-menu
           max-width="290"
           :close-on-content-click="false"
@@ -74,7 +72,7 @@
           ></v-date-picker>
         </v-menu>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-select
           :value="data.sex"
           v-model="data.sex"
@@ -84,7 +82,7 @@
           :error-messages="errorMessages.sex"
         ></v-select>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-select
           :value="data.civil_status"
           v-model="data.civil_status"
@@ -94,7 +92,7 @@
           :error-messages="errorMessages.civil_status"
         ></v-select>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-text-field
           label="Place of Birth"
           v-model="data.place_of_birth"
@@ -102,9 +100,7 @@
           :error-messages="errorMessages.place_of_birth"
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row class="mt-n3">
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-text-field
           :value="data.contact_number"
           v-model="data.contact_number"
@@ -116,7 +112,7 @@
           counter="11"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-select
           :value="data.blood_type"
           v-model="data.blood_type"
@@ -126,10 +122,10 @@
           :error-messages="errorMessages.blood_type"
         ></v-select>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-text-field v-model="data.religion" label="Religion"></v-text-field>
       </v-col>
-      <v-col cols="12" lg="3" md="3" sm="6">
+      <v-col cols="12" lg="3" md="3" sm="12">
         <v-text-field
           v-model="data.nationality"
           label="Nationality"
@@ -137,9 +133,7 @@
           :error-messages="errorMessages.nationality"
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row class="mt-n3">
-      <v-col cols="12" lg="6" md="6" sm="6">
+      <v-col cols="12" lg="6" md="6" sm="12">
         <v-text-field
           :value="data.tin_number"
           v-model="data.tin_number"
@@ -149,7 +143,7 @@
           :counter="11"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" lg="6" md="6" sm="6">
+      <v-col cols="12" lg="6" md="6" sm="12">
         <v-text-field
           :value="data.passport_number"
           v-model="data.passport_number"
@@ -159,7 +153,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row class="mt-n3">
+    <v-row>
       <v-col cols="12">
         <v-btn dark block class="blue darken-4" @click="continueForm"
           >Proceed</v-btn
