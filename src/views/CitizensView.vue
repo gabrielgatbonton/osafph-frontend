@@ -10,13 +10,40 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn dark class="mr-3" color="blue darken-4" @click="activator"
+          <v-btn
+            v-if="!$vuetify.breakpoint.xs"
+            dark
+            class="mr-3"
+            color="blue darken-4"
+            @click="activator"
             >Filter</v-btn
+          >
+          <v-btn
+            v-else
+            dark
+            class="mr-3"
+            color="blue darken-4"
+            @click="activator"
+            icon
+            ><v-icon>mdi-magnify</v-icon></v-btn
           >
         </v-col>
         <v-col cols="auto">
-          <v-btn dark class="mr-3 blue darken-4" @click="toRegister"
+          <v-btn
+            v-if="!$vuetify.breakpoint.xs"
+            dark
+            class="mr-3 blue darken-4"
+            @click="toRegister"
             >Register</v-btn
+          >
+          <v-btn
+            v-else
+            dark
+            class="mr-3"
+            color="blue darken-4"
+            @click="toRegister"
+            icon
+            ><v-icon>mdi-plus</v-icon></v-btn
           >
         </v-col>
       </v-row>
@@ -76,6 +103,14 @@ export default {
     ...mapState("registrants", {
       registrants: "registrants",
     }),
+    mobileBreakpoint() {
+      return {
+        filter: {
+          value: this.$vuetify.breakpoint.xs ? "mdi-magnify" : "Filter",
+          icon: true,
+        },
+      };
+    },
   },
   created() {
     this.fetchData();
@@ -83,8 +118,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.search-bar {
-  width: 70%;
-}
-</style>
+<style scoped></style>

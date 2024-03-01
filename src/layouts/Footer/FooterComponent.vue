@@ -24,8 +24,7 @@
                 icon
                 :href="route.link"
                 target="_blank"
-                class="icons mx-2"
-                style="padding: 1.5rem 2rem"
+                class="icons"
                 v-bind="attrs"
                 v-on="on"
                 ><v-icon size="30px" color="primary">{{
@@ -67,8 +66,18 @@ export default {
   max-width: 100vw;
   height: auto;
 }
+.icons {
+  margin-right: 1rem;
+  padding: 1.5rem 2rem;
+}
 .icons:hover {
   opacity: 0.7;
   cursor: pointer;
+}
+
+@media(max-width: 600px) {
+  .icons {
+    padding: .5rem;
+  }
 }
 </style>

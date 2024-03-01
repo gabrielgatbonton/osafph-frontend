@@ -36,8 +36,15 @@
       <!-- Icon button for options -->
       <v-menu left :offset-x="offset">
         <template v-slot:activator="{ on, attrs }">
-          <v-icon class="ml-n8" v-bind="attrs" v-on="on"
+          <v-icon
+            v-if="!$vuetify.breakpoint.xs"
+            class="ml-n8"
+            v-bind="attrs"
+            v-on="on"
             >mdi-dots-vertical</v-icon
+          >
+          <v-btn v-else color="blue darken-4" v-bind="attrs" v-on="on" icon x-large
+            ><v-icon>mdi-dots-horizontal</v-icon></v-btn
           >
         </template>
 
@@ -182,19 +189,21 @@ export default {
       };
     },
     registrantsData() {
-      return this.registrants ? this.registrants.map((registrant) => ({
-        id: registrant.id,
-        hub_registrant_id: registrant.hub_registrant_id,
-        full_name: `${registrant.last_name}, ${registrant.first_name} ${
-          registrant.middle_name ? " " + registrant.middle_name : ""
-        } ${registrant.suffix ? " " + registrant.suffix : ""}`,
-        sex: registrant.sex,
-        birthday: format(parseISO(registrant.birthday), "MMMM dd, yyyy"),
-        barangay: registrant.barangay,
-        municipality: registrant.municipality,
-        mcg_cares_card: registrant.mcg_cares_card,
-      })) : [];
-    }
+      return this.registrants
+        ? this.registrants.map((registrant) => ({
+            id: registrant.id,
+            hub_registrant_id: registrant.hub_registrant_id,
+            full_name: `${registrant.last_name}, ${registrant.first_name} ${
+              registrant.middle_name ? " " + registrant.middle_name : ""
+            } ${registrant.suffix ? " " + registrant.suffix : ""}`,
+            sex: registrant.sex,
+            birthday: format(parseISO(registrant.birthday), "MMMM dd, yyyy"),
+            barangay: registrant.barangay,
+            municipality: registrant.municipality,
+            mcg_cares_card: registrant.mcg_cares_card,
+          }))
+        : [];
+    },
   },
   watch: {
     registrants: {
@@ -209,7 +218,7 @@ export default {
         }
       },
     },
-  }
+  },
 };
 </script>
 
