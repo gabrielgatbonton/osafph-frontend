@@ -1,42 +1,27 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import vuetify from './plugins/vuetify'
-import axios from 'axios'
-import Vuelidate from 'vuelidate'
+import Vue from "vue";
+import Vuex from "vuex";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import vuetify from "./plugins/vuetify";
+import Vuelidate from "vuelidate";
+import axiosInstance from "./services/axiosInstance";
+import pusherInstance from "./services/pusherInstance";
 
 Vue.config.productionTip = false;
-Vue.prototype.$http = axios;
 Vue.use(Vuelidate);
 
-//BaseURLs
-const baseURL = "https://api.osafphmabalacatcity.com/"; //Deployed BaseURL
-// const baseURL = "http://200.10.77.12/";
-// const baseURL = 'http://127.0.0.1:8000/'; //Local BaseURL
-// const baseURL = 'http://192.168.1.108:80/';
+//Initialize Backend URL
+const baseURL = process.env.VUE_APP_BACKEND_URL;
 
-//Network URL for QR code
-// const networkURL = "http://192.168.1.118:8080/"; //Network, please change.
-const networkURL = "http://localhost:8080/"; //Network, please change.
-
-const axiosInstance = axios.create({
-  baseURL: `${baseURL}api/`, //Axios baseURL
-});
+//Server URL for QR code
+const networkURL = process.env.VUE_APP_SERVER_URL;
 
 Vue.prototype.$axios = axiosInstance;
 Vuex.Store.prototype.$axios = axiosInstance;
 Vue.prototype.$url = baseURL;
 Vue.prototype.$network = networkURL;
-
-axiosInstance.interceptors.request.use((config) => {
-  const accessToken = store.getters["login/accessToken"];
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
-});
+Vue.prototype.$pusher = pusherInstance;
 
 function handleBeforeUnload(event) {
   // Check if the tab or window is being closed intentionally
