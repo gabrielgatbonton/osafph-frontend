@@ -53,6 +53,10 @@ export default {
   },
   created() {
     this.fetchConsultations();
+    const channel = this.$pusher.subscribe("public-hospital-services");
+    channel.bind("status.changed", () => {
+      this.fetchConsultations();
+    });
   },
 };
 </script>

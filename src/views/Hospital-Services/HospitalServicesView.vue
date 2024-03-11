@@ -98,6 +98,16 @@ export default {
   },
   created() {
     this.requestServices();
+    const channel = this.$pusher.subscribe("public-hospital-services");
+    channel.bind("hospital-service.created", () => {
+      this.requestServices();
+    });
+    channel.bind("hospital-service.updated", () => {
+      this.requestServices();
+    });
+    channel.bind("hospital-service.deleted", () => {
+      this.requestServices();
+    });
   },
 };
 </script>

@@ -227,6 +227,16 @@ export default {
   },
   created() {
     this.fetchConsultation();
+    const channel = this.$pusher.subscribe("public-hospital-services");
+    channel.bind("consultation-form.created", () => {
+      this.fetchConsultation();
+    });
+    channel.bind("consultation-form.updated", () => {
+      this.fetchConsultation();
+    });
+    channel.bind("consultation-form.deleted", () => {
+      this.fetchConsultation();
+    });
   },
   watch: {
     getConsultation: {
@@ -246,17 +256,23 @@ export default {
     },
     getAdminConsultation: {
       handler(value) {
-        this.consultation = value;
+        if (value) {
+          this.consultation = value;
+        }
       },
     },
     getAdminConsultationForm: {
       handler(value) {
-        this.consultation_form = value;
+        if (value) {
+          this.consultation_form = value;
+        }
       },
     },
     getAdminPreviousConsultations: {
       handler(value) {
-        this.previous_consultations = value;
+        if (value) {
+          this.previous_consultations = value;
+        }
       },
     },
   },

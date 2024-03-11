@@ -20,7 +20,7 @@
           </v-col>
         </v-row>
         <v-row class="ma-2">
-          <v-col cols="12" md="6" sm="6">
+          <v-col cols="12" md="6">
             <v-card
               flat
               outlined

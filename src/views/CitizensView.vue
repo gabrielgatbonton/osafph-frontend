@@ -114,19 +114,17 @@ export default {
   },
   created() {
     this.fetchData();
-    const channel = this.$pusher.subscribe("public-citizens.created");
-    channel.bind("pusher:subscription_succeeded", () => {
-      console.log("Subscription succeeded for public-citizens.created channel");
-      // You can add any logic here to handle the subscription success event
-    });
-
+    const channel = this.$pusher.subscribe("public-citizens");
     channel.bind("citizen.created", () => {
       this.fetchData();
     });
+    channel.bind("citizen.updated", () => {
+      this.fetchData();
+    });
+    channel.bind("citizen.deleted", () => {
+      this.fetchData();
+    });
   },
-  beforeDestroy() {
-    this.$pusher.unsubscribe("public-citizens.created");
-  }
 };
 </script>
 
