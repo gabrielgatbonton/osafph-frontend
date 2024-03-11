@@ -93,7 +93,7 @@ export default {
   methods: {
     ...mapActions("categories", ["fetchEnumCategories"]),
     ...mapActions("philippines", ["fetchEnumBarangayFilter"]),
-    ...mapActions("dialysis", ["fetchDialysisMachines"]),
+    ...mapActions("dialysis", ["fetchEnumsFilter"]),
     fetchEnums() {
       if (this.type_of_filter === "CITIZENS INDEX") {
         this.fetchEnumCategories();
