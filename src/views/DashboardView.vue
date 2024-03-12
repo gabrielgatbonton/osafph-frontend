@@ -2,10 +2,15 @@
   <div class="background">
     <v-container fluid class="mx-auto" style="max-width: 85vw" v-if="dashData">
       <v-row class="mt-2">
-        <v-col cols="12" md="4">
+        <v-col
+          cols="12"
+          md="4"
+          v-for="(item, index) in dashboardValues.registrations"
+          :key="index"
+        >
           <v-card class="pa-6">
             <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Total Registrations</div>
+              <div class="card-title">{{ item.title }}</div>
               <div class="card-icon d-flex justify-center align-center">
                 <v-icon size="28" color="primary">mdi-account</v-icon>
               </div>
@@ -14,46 +19,19 @@
               class="card-number"
               :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-5'"
             >
-              {{ dashData.citizens.total_registrations }}
+              {{ item.value }}
             </div>
           </v-card>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col
+          cols="12"
+          md="4"
+          v-for="(item, index) in dashboardValues.sexVacLoc"
+          :key="'sexVacLoc' + index"
+        >
           <v-card class="pa-6">
             <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Total Registrations Today</div>
-              <div class="card-icon d-flex justify-center align-center">
-                <v-icon size="28" color="primary">mdi-account</v-icon>
-              </div>
-            </div>
-            <div
-              class="card-number"
-              :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-5'"
-            >
-              {{ dashData.citizens.total_registrations_today }}
-            </div>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card class="pa-6">
-            <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Hospital Services Created Today</div>
-              <div class="card-icon d-flex justify-center align-center">
-                <v-icon size="28" color="primary">mdi-account</v-icon>
-              </div>
-            </div>
-            <div
-              class="card-number"
-              :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-5'"
-            >
-              {{ dashData.hospital_services.created_today }}
-            </div>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card class="pa-6">
-            <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Sex</div>
+              <div class="card-title">{{ item.title }}</div>
               <div class="card-icon d-flex justify-center align-center">
                 <v-icon size="28" color="primary">mdi-account</v-icon>
               </div>
@@ -70,28 +48,25 @@
               <div
                 class="d-flex flex-column align-center"
                 :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
+                v-for="(indivItem, index) in item.values"
+                :key="'indivSexVacLoc' + index"
               >
                 <div class="card-number">
-                  {{ dashData.citizens.registered.male }}
+                  {{ indivItem.value }}
                 </div>
-                <div>Male</div>
-              </div>
-              <div
-                class="d-flex flex-column align-center"
-                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
-              >
-                <div class="card-number">
-                  {{ dashData.citizens.registered.female }}
-                </div>
-                <div>Female</div>
+                <div>{{ indivItem.title }}</div>
               </div>
             </div>
           </v-card>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col
+          cols="12"
+          v-for="(item, index) in dashboardValues.unique_services"
+          :key="'uniqServ' + index"
+        >
           <v-card class="pa-6">
             <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Vaccination</div>
+              <div class="card-title">{{ item.title }}</div>
               <div class="card-icon d-flex justify-center align-center">
                 <v-icon size="28" color="primary">mdi-account</v-icon>
               </div>
@@ -108,114 +83,13 @@
               <div
                 class="d-flex flex-column align-center"
                 :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
+                v-for="(indivItem, index) in item.values"
+                :key="'indivSer' + index"
               >
                 <div class="card-number">
-                  {{ dashData.citizens.vaccinated.fully }}
+                  {{ indivItem.value }}
                 </div>
-                <div>Fully Vaccinated</div>
-              </div>
-              <div
-                class="d-flex flex-column align-center"
-                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
-              >
-                <div class="card-number">
-                  {{ dashData.citizens.vaccinated.not }}
-                </div>
-                <div>Not Vaccinated</div>
-              </div>
-            </div>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card class="pa-6">
-            <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Citizens Location</div>
-              <div class="card-icon d-flex justify-center align-center">
-                <v-icon size="28" color="primary">mdi-account</v-icon>
-              </div>
-            </div>
-            <div
-              class="d-flex"
-              :class="{
-                'mt-5 flex-row justify-space-around align-center':
-                  !$vuetify.breakpoint.xs,
-                'mt-3 flex-column justify-center align-center':
-                  $vuetify.breakpoint.xs,
-              }"
-            >
-              <div
-                class="d-flex flex-column align-center"
-                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
-              >
-                <div class="card-number">
-                  {{ dashData.citizens.cities.mabalacat }}
-                </div>
-                <div>Mabalacat</div>
-              </div>
-              <div
-                class="d-flex flex-column align-center"
-                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
-              >
-                <div class="card-number">
-                  {{ dashData.citizens.cities.non_mabalacat }}
-                </div>
-                <div>Non-Mabalacat</div>
-              </div>
-            </div>
-          </v-card>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="pa-6">
-            <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Unique Citizens Services</div>
-              <div class="card-icon d-flex justify-center align-center">
-                <v-icon size="28" color="primary">mdi-account</v-icon>
-              </div>
-            </div>
-            <div
-              class="d-flex"
-              :class="{
-                'mt-5 flex-row justify-space-around align-center':
-                  !$vuetify.breakpoint.xs,
-                'mt-3 flex-column justify-center align-center':
-                  $vuetify.breakpoint.xs,
-              }"
-            >
-              <div
-                class="d-flex flex-column align-center"
-                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
-              >
-                <div class="card-number">
-                  {{ dashData.citizens.unique_services.consultation }}
-                </div>
-                <div>Consultations</div>
-              </div>
-              <div
-                class="d-flex flex-column align-center"
-                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
-              >
-                <div class="card-number">
-                  {{ dashData.citizens.unique_services.diagnostic }}
-                </div>
-                <div>Diagnostics</div>
-              </div>
-              <div
-                class="d-flex flex-column align-center"
-                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
-              >
-                <div class="card-number">
-                  {{ dashData.citizens.unique_services.dialysis }}
-                </div>
-                <div>Dialysis</div>
-              </div>
-              <div
-                class="d-flex flex-column align-center"
-                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
-              >
-                <div class="card-number">
-                  {{ dashData.citizens.unique_services.laboratory }}
-                </div>
-                <div>Laboratories</div>
+                <div>{{ indivItem.title }}</div>
               </div>
             </div>
           </v-card>
@@ -230,17 +104,109 @@ export default {
   name: "DashboardView",
   methods: {
     ...mapActions("dashboard", ["getDashboardData"]),
+    formattedTitle(value) {
+      // Capitalize the first character of each word and replace underscores with spaces
+      const formattedTitle = value
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+
+      return formattedTitle;
+    },
   },
   computed: {
     ...mapState("dashboard", {
       dashData: "dashboard_data",
     }),
-  },
-  watch: {
-    dashData: {
-      handler(value) {
-        console.log(value);
-      },
+    dashboardValues() {
+      let registrations = [];
+      let sexVacLoc = [];
+      let unique_services = [];
+      Object.keys(this.dashData).forEach((item) => {
+        const citizens = this.dashData[item];
+
+        Object.keys(citizens).forEach((itemers) => {
+          if (
+            itemers.includes(
+              "total_registrations" || "total_registrations_today"
+            )
+          ) {
+            registrations.push({
+              title: this.formattedTitle(itemers),
+              value: citizens[itemers],
+            });
+          }
+          if (itemers.includes("created_today")) {
+            registrations.push({
+              title: `Hospital Services ${this.formattedTitle(itemers)}`,
+              value: citizens[itemers],
+            });
+          }
+          if (itemers.includes("registered")) {
+            sexVacLoc.push({
+              title: "Sex",
+              values: [
+                { title: "Male", value: citizens[itemers]["male"] },
+                { title: "Female", value: citizens[itemers]["female"] },
+              ],
+            });
+          }
+          if (itemers.includes("vaccinated")) {
+            sexVacLoc.push({
+              title: "Vaccination",
+              values: [
+                {
+                  title: "Fully Vaccinated",
+                  value: citizens[itemers]["fully"],
+                },
+                { title: "Not Vaccinated", value: citizens[itemers]["not"] },
+              ],
+            });
+          }
+          if (itemers.includes("cities")) {
+            sexVacLoc.push({
+              title: "Citizens Location",
+              values: [
+                {
+                  title: "Mabalacat",
+                  value: citizens[itemers]["mabalacat"],
+                },
+                {
+                  title: "Non-Mabalacat",
+                  value: citizens[itemers]["non_mabalacat"],
+                },
+              ],
+            });
+          }
+          if (itemers.includes("unique_services")) {
+            unique_services.push({
+              title: "Unique Citizens Services",
+              values: [
+                {
+                  title: "Consultations",
+                  value: citizens[itemers]["consultation"],
+                },
+                {
+                  title: "Diagnostics",
+                  value: citizens[itemers]["diagnostic"],
+                },
+                {
+                  title: "Dialysis",
+                  value: citizens[itemers]["dialysis"],
+                },
+                {
+                  title: "Laboratories",
+                  value: citizens[itemers]["laboratory"],
+                },
+              ],
+            });
+          }
+        });
+      });
+      return {
+        registrations: registrations,
+        sexVacLoc: sexVacLoc,
+        unique_services: unique_services,
+      };
     },
   },
   created() {
