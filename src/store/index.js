@@ -21,6 +21,7 @@ import { files } from "./modules/General/files";
 import { dialysis_packages } from "./modules/Admin/dialysis_packages";
 import { dialysis_items } from "./modules/Admin/dialysis_items";
 import { dialysis_calendar } from "./modules/Encoder/dialysis_calendar";
+import { dashboard } from "./modules/General/dashboard";
 
 Vue.use(Vuex);
 
@@ -55,5 +56,6 @@ export default new Vuex.Store({
 
     //General
     files,
+    dashboard
   },
 });
