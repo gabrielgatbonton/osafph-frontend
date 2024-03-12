@@ -53,7 +53,7 @@
         <v-col cols="12" md="4">
           <v-card class="pa-6">
             <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Gender</div>
+              <div class="card-title">Sex</div>
               <div class="card-icon d-flex justify-center align-center">
                 <v-icon size="28" color="primary">mdi-account</v-icon>
               </div>
@@ -91,7 +91,7 @@
         <v-col cols="12" md="4">
           <v-card class="pa-6">
             <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Vaccinated</div>
+              <div class="card-title">Vaccination</div>
               <div class="card-icon d-flex justify-center align-center">
                 <v-icon size="28" color="primary">mdi-account</v-icon>
               </div>
@@ -121,7 +121,7 @@
                 <div class="card-number">
                   {{ dashData.citizens.vaccinated.not }}
                 </div>
-                <div>Not Fully Vaccinated</div>
+                <div>Not Vaccinated</div>
               </div>
             </div>
           </v-card>
@@ -167,7 +167,7 @@
         <v-col cols="12">
           <v-card class="pa-6">
             <div class="d-flex justify-space-between align-center">
-              <div class="card-title">Citizens Location</div>
+              <div class="card-title">Unique Citizens Services</div>
               <div class="card-icon d-flex justify-center align-center">
                 <v-icon size="28" color="primary">mdi-account</v-icon>
               </div>
