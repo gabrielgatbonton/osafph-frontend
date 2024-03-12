@@ -119,10 +119,12 @@
       </v-col>
       <v-col cols="12" v-if="selectedDates.length > 0">
         <v-row v-for="(session, index) in payload.schedule" :key="index">
-          <v-col cols="6" id="labelSessions">
-            <label>
-              {{ session.date }}
-            </label>
+          <v-col cols="12" md="6" sm="6">
+            <v-text-field
+              :value="session.date"
+              readonly
+              :label="`Scheduled Date ${index + 1}`"
+            ></v-text-field>
           </v-col>
           <!--<v-menu
               max-width="290"
@@ -150,7 +152,7 @@
                 @input="session.menu = false"
               ></v-date-picker>
             </v-menu>-->
-          <v-col cols="6">
+          <v-col cols="12" md="6" sm="6">
             <v-select
               v-model="session.session"
               :label="`Session ${index + 1}`"
