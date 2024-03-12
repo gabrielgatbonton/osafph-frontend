@@ -121,7 +121,7 @@
         <v-row v-for="(session, index) in payload.schedule" :key="index">
           <v-col cols="12" md="6" sm="6">
             <v-text-field
-              :value="session.date"
+              :value="formattedDates[index]"
               readonly
               :label="`Scheduled Date ${index + 1}`"
             ></v-text-field>
