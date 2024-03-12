@@ -101,10 +101,30 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" v-if="payload.schedule.length > 0">
+      <v-col cols="12" v-if="payload.total_sessions > 0">
+        <v-date-picker
+          multiple
+          v-model="selectedDates"
+          :min="minDate"
+          :disabled="disable"
+          :landscape="landscape"
+          full-width
+          @input="appendDate"
+        >
+          <v-spacer></v-spacer>
+          <v-btn @click="resetButton" color="blue darken-4" block dark
+            >Clear</v-btn
+          >
+        </v-date-picker>
+      </v-col>
+      <v-col cols="12" v-if="selectedDates.length > 0">
         <v-row v-for="(session, index) in payload.schedule" :key="index">
-          <v-col cols="6">
-            <v-menu
+          <v-col cols="6" id="labelSessions">
+            <label>
+              {{ session.date }}
+            </label>
+          </v-col>
+          <!--<v-menu
               max-width="290"
               :close-on-content-click="false"
               :nudge-right="40"
@@ -129,8 +149,7 @@
                 :min="minDate"
                 @input="session.menu = false"
               ></v-date-picker>
-            </v-menu>
-          </v-col>
+            </v-menu>-->
           <v-col cols="6">
             <v-select
               v-model="session.session"
@@ -177,6 +196,9 @@ export default {
     },
   },
   data: () => ({
+    selectedDates: [],
+    landscape: true,
+    disable: false,
     payload: {
       hospital: "",
       // dialysis_items = [],
@@ -224,6 +246,48 @@ export default {
             menu: false,
           }
       );
+      this.disable = false;
+      this.selectedDates = [];
+      this.payload.schedule.forEach((session, index) => {
+        this.payload.schedule[index].session = null;
+      });
+    },
+
+    appendDate(schedule) {
+      schedule.forEach((date, index) => {
+        this.payload.schedule[index].date = this.selectedDates[index];
+      });
+    },
+
+    setupCalendarWatchers() {
+      if (this.selectedDates.length !== this.payload.total_sessions) {
+        this.disable = false;
+      } else {
+        this.disable = true;
+      }
+
+      if (this.selectedDates.length > 0) {
+        this.updateScheduleDates();
+      }
+    },
+
+    updateScheduleDates() {
+      this.payload.schedule.forEach((session, index) => {
+        if (session.date !== this.selectedDates[index]) {
+          this.payload.schedule[index].date = this.selectedDates[index];
+        }
+      });
+    },
+
+    resetButton() {
+      this.disable = false;
+      this.selectedDates = [];
+      this.payload.schedule.forEach((session, index) => {
+        this.payload.schedule[index].date = null;
+      });
+      this.payload.schedule.forEach((session, index) => {
+        this.payload.schedule[index].session = null;
+      });
     },
     // setupSessionWatchers(schedule) {
     //   if (this.payload.total_sessions > 0) {
@@ -325,6 +389,11 @@ export default {
         }
       },
     },
+    selectedDates: {
+      handler() {
+        this.setupCalendarWatchers();
+      },
+    },
   },
 };
 </script>
@@ -334,5 +403,10 @@ export default {
   font-size: 12px;
   color: #333;
   font-weight: bold;
+}
+
+#labelSessions {
+  font-size: 18px;
+  margin-top: 20px;
 }
 </style>
