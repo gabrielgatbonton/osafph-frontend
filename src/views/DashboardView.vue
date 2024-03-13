@@ -99,7 +99,7 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   name: "DashboardView",
   methods: {
@@ -117,6 +117,7 @@ export default {
     ...mapState("dashboard", {
       dashData: "dashboard_data",
     }),
+    ...mapGetters("login", ["userRole"]),
     dashboardValues() {
       let registrations = [];
       let sexVacLoc = [];
