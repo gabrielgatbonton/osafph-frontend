@@ -8,11 +8,11 @@
           v-for="(item, index) in dashboardValues.registrations"
           :key="index"
         >
-          <v-card class="pa-6">
+          <v-card class="pa-6" rounded="lg">
             <div class="d-flex justify-space-between align-center">
               <div class="card-title">{{ item.title }}</div>
-              <div class="card-icon d-flex justify-center align-center">
-                <v-icon size="28" color="primary">mdi-account</v-icon>
+              <div class="card-icon blue lighten-5 d-flex justify-center align-center">
+                <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
               </div>
             </div>
             <div
@@ -29,11 +29,11 @@
           v-for="(item, index) in dashboardValues.sexVacLoc"
           :key="'sexVacLoc' + index"
         >
-          <v-card class="pa-6">
+          <v-card class="pa-6" rounded="lg">
             <div class="d-flex justify-space-between align-center">
               <div class="card-title">{{ item.title }}</div>
-              <div class="card-icon d-flex justify-center align-center">
-                <v-icon size="28" color="primary">mdi-account</v-icon>
+              <div class="card-icon blue lighten-5 d-flex justify-center align-center">
+                <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
               </div>
             </div>
             <div
@@ -64,11 +64,11 @@
           v-for="(item, index) in dashboardValues.unique_services"
           :key="'uniqServ' + index"
         >
-          <v-card class="pa-6">
+          <v-card class="pa-6" rounded="lg">
             <div class="d-flex justify-space-between align-center">
               <div class="card-title">{{ item.title }}</div>
-              <div class="card-icon d-flex justify-center align-center">
-                <v-icon size="28" color="primary">mdi-account</v-icon>
+              <div class="card-icon blue lighten-5 d-flex justify-center align-center">
+                <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
               </div>
             </div>
             <div
@@ -125,20 +125,24 @@ export default {
         const citizens = this.dashData[item];
 
         Object.keys(citizens).forEach((itemers) => {
-          if (
-            itemers.includes(
-              "total_registrations" || "total_registrations_today"
-            )
-          ) {
+          if (itemers.includes("total_registrations_today")) {
             registrations.push({
               title: this.formattedTitle(itemers),
               value: citizens[itemers],
+              icon: "mdi-account-multiple-plus-outline",
+            });
+          } else if (itemers.includes("total_registrations")) {
+            registrations.push({
+              title: this.formattedTitle(itemers),
+              value: citizens[itemers],
+              icon: "mdi-account-group-outline",
             });
           }
           if (itemers.includes("created_today")) {
             registrations.push({
               title: `Hospital Services ${this.formattedTitle(itemers)}`,
               value: citizens[itemers],
+              icon: "mdi-cog-outline",
             });
           }
           if (itemers.includes("registered")) {
@@ -148,6 +152,7 @@ export default {
                 { title: "Male", value: citizens[itemers]["male"] },
                 { title: "Female", value: citizens[itemers]["female"] },
               ],
+              icon: "mdi-account-multiple-outline",
             });
           }
           if (itemers.includes("vaccinated")) {
@@ -160,6 +165,7 @@ export default {
                 },
                 { title: "Not Vaccinated", value: citizens[itemers]["not"] },
               ],
+              icon: "mdi-needle",
             });
           }
           if (itemers.includes("cities")) {
@@ -175,6 +181,7 @@ export default {
                   value: citizens[itemers]["non_mabalacat"],
                 },
               ],
+              icon: "mdi-map-outline",
             });
           }
           if (itemers.includes("unique_services")) {
@@ -198,6 +205,7 @@ export default {
                   value: citizens[itemers]["laboratory"],
                 },
               ],
+              icon: "mdi-widgets-outline",
             });
           }
         });
@@ -217,7 +225,7 @@ export default {
 
 <style scoped>
 .card-title {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
 }
 .card-number {
@@ -227,6 +235,7 @@ export default {
 .card-icon {
   width: 50px;
   height: 50px;
+  border-radius: 10%;
 }
 .background {
   background: #f4f4f4;
