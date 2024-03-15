@@ -46,6 +46,9 @@
           </div>
         </v-card>
       </v-col>
+      <v-col cols="12">
+        <v-divider></v-divider>
+      </v-col>
     </v-row>
   </v-container>
 </template>

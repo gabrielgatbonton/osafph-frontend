@@ -12,27 +12,6 @@
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
-        <div class="d-flex justify-center">
-          <v-btn
-            plain
-            large
-            color="grey darken-1"
-            @click="trigger"
-            :disabled="!payload.hospital"
-            >Show Calendar
-            <v-icon right>{{
-              show_calendar ? "mdi-chevron-up" : "mdi-chevron-down"
-            }}</v-icon></v-btn
-          >
-        </div>
-        <v-expand-transition>
-          <DialysisCalendarComponent
-            :hospital="payload.hospital"
-            v-show="show_calendar"
-          />
-        </v-expand-transition>
-      </v-col>
-      <v-col cols="12">
         <v-checkbox
           v-model="payload.all_items_sponsored"
           label="Items included are sponsored by Funding"
@@ -102,6 +81,26 @@
         </v-row>
       </v-col>
       <v-col cols="12" v-if="payload.total_sessions > 0">
+        <div class="d-flex justify-center mb-3">
+          <v-btn
+            plain
+            large
+            color="grey darken-1"
+            @click="trigger"
+            :disabled="!payload.hospital"
+            >Show Calendar
+            <v-icon right>{{
+              show_calendar ? "mdi-chevron-up" : "mdi-chevron-down"
+            }}</v-icon></v-btn
+          >
+        </div>
+        <v-expand-transition>
+          <DialysisCalendarComponent
+            :hospital="payload.hospital"
+            v-show="show_calendar"
+            class="mb-3"
+          />
+        </v-expand-transition>
         <v-date-picker
           multiple
           v-model="selectedDates"
