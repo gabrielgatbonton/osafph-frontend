@@ -20,7 +20,7 @@
           </v-col>
         </v-row>
         <v-row class="ma-2">
-          <v-col cols="12" md="6">
+          <v-col cols="12">
             <v-card
               flat
               outlined
@@ -126,10 +126,9 @@
                       </v-col>
                     </v-row>
                   </v-col>
-                </v-row>
-                <v-row>
+                  <v-col cols="12"><v-divider class="mx-3"></v-divider></v-col>
                   <v-col cols="12">
-                    <div class="text-h5 text-left my-2">Remarks</div>
+                    <div class="text-h6 text-left my-2">Follow Ups</div>
                   </v-col>
                   <v-col cols="12" sm="4">
                     <v-menu

@@ -3,7 +3,7 @@
     <v-container fluid class="container-height v-scrollbar-hide">
       <v-row>
         <v-col cols="12" md="6" class="grey darken-4">
-          <div class="text-center" style="margin-top: 80px">
+          <div class="text-center text-container">
             <div
               class="headline white--text text-center mx-auto"
               style="max-width: 300px"
@@ -14,52 +14,52 @@
               <v-img
                 class="mx-auto d-block"
                 src="../assets/OSAFPH LOGO.png"
-                max-height="320"
-                max-width="320"
+                :max-width="$vuetify.breakpoint.xs ? 260 : 320"
                 contain
               ></v-img>
             </div>
           </div>
         </v-col>
         <v-col cols="12" md="6" :style="{ backgroundColor: '#d1d1d1' }">
-          <v-card
-            rounded="xl"
-            class="mx-auto pb-7 slide-down"
-            max-width="350"
-            elevation="7"
-            style="margin-top: 100px"
-          >
-            <v-card-title class="justify-center blue--text headline"
-              >Login</v-card-title
+          <div class="card-container">
+            <v-card
+              rounded="xl"
+              class="mx-auto pb-7 slide-down"
+              max-width="350"
+              elevation="7"
             >
-            <div class="mx-7">
-              <v-text-field
-                v-model="username"
-                :error-messages="usernameErrors"
-                @blur="$v.username.$touch()"
-                :success="!$v.username.$invalid && $v.username.$dirty"
-                label="Username"
-              ></v-text-field>
-              <v-text-field
-                v-model="password"
-                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                @blur="$v.password.$touch()"
-                :error-messages="passwordErrors"
-                :success="!$v.password.$invalid && $v.password.$dirty"
-                :type="show ? 'text' : 'password'"
-                @click:append="show = !show"
-                label="Password"
-              ></v-text-field>
-              <v-btn
-                class="mt-5 blue darken-2"
-                block
-                dark
-                :loading="loading"
-                @click="handleLogin"
-                >Login</v-btn
+              <v-card-title class="justify-center blue--text headline"
+                >Login</v-card-title
               >
-            </div>
-          </v-card>
+              <div class="mx-7">
+                <v-text-field
+                  v-model="username"
+                  :error-messages="usernameErrors"
+                  @blur="$v.username.$touch()"
+                  :success="!$v.username.$invalid && $v.username.$dirty"
+                  label="Username"
+                ></v-text-field>
+                <v-text-field
+                  v-model="password"
+                  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                  @blur="$v.password.$touch()"
+                  :error-messages="passwordErrors"
+                  :success="!$v.password.$invalid && $v.password.$dirty"
+                  :type="show ? 'text' : 'password'"
+                  @click:append="show = !show"
+                  label="Password"
+                ></v-text-field>
+                <v-btn
+                  class="mt-5 blue darken-2"
+                  block
+                  dark
+                  :loading="loading"
+                  @click="handleLogin"
+                  >Login</v-btn
+                >
+              </div>
+            </v-card>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -164,7 +164,28 @@ export default {
   height: 100vh; /* Set the height of the container to 100% of the viewport height */
   display: flex; /* Use flexbox to align the columns vertically */
   flex-direction: column; /* Arrange the columns vertically */
-  overflow-y: hidden; /* Hide the vertical scrollbar */
+}
+
+.text-container {
+  margin-top: 10%;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-container {
+  margin-top: 15%;
+  padding: 40px 20px;
+}
+
+@media (max-width: 576px) {
+  .text-container {
+    margin: 0;
+  }
+  .card-container {
+    margin: 0;
+  }
 }
 
 @keyframes slideDown {

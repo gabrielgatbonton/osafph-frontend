@@ -111,7 +111,7 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="4" sm="4" xl="4">
-                    <v-text-field readonly label="Diagnosis"></v-text-field>
+                    <v-text-field readonly label="Specialty" v-model="localBasicDetails.specialty"></v-text-field>
                   </v-col>
                 </v-row>
               </div>

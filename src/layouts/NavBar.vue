@@ -6,7 +6,7 @@
         <v-img src="../assets/MCG.png" width="120" height="60" contain></v-img>
       </div>
       <v-spacer></v-spacer>
-      <div class="title py-1 mr-3">{{ userRole }}</div>
+      <div class="title py-1 mr-3">{{ userName }}</div>
       <v-menu bottom :offset-y="offset" class>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on" class="mr-1" :loading="loading">
@@ -33,7 +33,7 @@
 
 <script>
 import NavDrawer from "../layouts/NavDrawer.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
     offset: true,
@@ -83,7 +83,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    ...mapState("login", {
+      userName: (state) => state.user.loggedInUser,
+    }),
   },
 };
 </script>

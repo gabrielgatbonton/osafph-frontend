@@ -8,6 +8,7 @@ export const login = {
   namespaced: true,
   state: () => ({
     user: {
+      loggedInUser: sessionStorage.getItem("loggedInUser") || null,
       accessToken: localStorage.getItem("accessToken") || null,
       role: localStorage.getItem("role") || null,
     },
@@ -22,8 +23,15 @@ export const login = {
     SET_LOGGED_OUT(state) {
       state.user.accessToken = null;
       state.user.role = null;
+      state.user.loggedInUser = null;
       localStorage.removeItem("accessToken");
       localStorage.removeItem("role");
+      sessionStorage.removeItem("loggedInUser");
+    },
+    SET_USER_DATA(state, information) {
+      const user = `${information.last_name}, ${information.first_name}`;
+      state.user.loggedInUser = user;
+      sessionStorage.setItem("loggedInUser", user);
     },
   },
   actions: {
@@ -33,7 +41,9 @@ export const login = {
         .then((response) => {
           const accessToken = response.data.token;
           const role = response.data.user.role;
+          const information = response.data.user;
           commit("SET_LOGGED_IN", { accessToken, role });
+          commit("SET_USER_DATA", information);
           return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -64,5 +74,6 @@ export const login = {
     },
     accessToken: (state) => state.user.accessToken,
     userRole: (state) => state.user.role,
+    userName: (state) => state.user.loggedInUser,
   },
 };

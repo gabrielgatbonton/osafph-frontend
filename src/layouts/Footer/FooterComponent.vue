@@ -1,14 +1,18 @@
 <template>
   <v-footer app dark inset padless id="footer" color="#f4f4f4">
-    <v-row justify="space-between">
+    <v-row :justify="$vuetify.breakpoint.xs ? 'center' : 'space-between'">
       <v-col cols="auto" align-self="center">
-        <div class="d-flex justify-start align-center py-1">
+        <div
+          class="d-flex justify-start align-center py-1"
+          :class="{ 'justify-center py-5 px-3': $vuetify.breakpoint.xs }"
+        >
           <div class="px-2">
             <v-img
               height="55"
               width="55"
               contain
               src="../../assets/ICTDU.jpg"
+              :class="{ 'd-none': $vuetify.breakpoint.xs }"
             ></v-img>
           </div>
           <div style="font-size: 1rem" class="px-2">
@@ -16,7 +20,7 @@
           </div>
         </div>
       </v-col>
-      <v-col cols="auto" align-self="center">
+      <v-col cols="auto" align-self="center" v-if="!$vuetify.breakpoint.xs">
         <div class="d-flex justify-start align-center">
           <v-tooltip top v-for="(route, index) in icons" :key="index">
             <template v-slot:activator="{ on, attrs }">
@@ -75,9 +79,10 @@ export default {
   cursor: pointer;
 }
 
-@media(max-width: 600px) {
+/* Phones */
+@media (max-width: 576px) {
   .icons {
-    padding: .5rem;
+    padding: 0.5rem;
   }
 }
 </style>
