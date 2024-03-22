@@ -1,6 +1,17 @@
 <template>
-  <div>
-    <v-container fluid class="container-height v-scrollbar-hide">
+  <div id="container">
+    <div id="gradient-section"></div>
+    <div></div>
+  </div>
+  <!-- <v-container fluid id="login-container">
+      <v-row justify="end">
+        <v-col cols="auto" align-self="center">
+          
+        </v-col>
+
+      </v-row>
+    </v-container> -->
+  <!-- <v-container fluid class="container-height v-scrollbar-hide">
       <v-row>
         <v-col cols="12" md="6" class="grey darken-4">
           <div class="text-center text-container">
@@ -62,8 +73,7 @@
           </div>
         </v-col>
       </v-row>
-    </v-container>
-  </div>
+    </v-container> -->
 </template>
 
 <script>
@@ -159,36 +169,53 @@ export default {
 };
 </script>
 
-<style scoped>
-.container-height {
-  height: 100vh; /* Set the height of the container to 100% of the viewport height */
-  display: flex; /* Use flexbox to align the columns vertically */
-  flex-direction: column; /* Arrange the columns vertically */
+<style scoped lang="scss">
+#container {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  #gradient-section {
+    background: linear-gradient(
+      to bottom,
+      rgba(251, 185, 185),
+      rgba(199, 123, 123),
+      rgba(157, 74, 74)
+    );
+    width: 50%;
+    height: 100%;
+
+  }
 }
 
-.text-container {
+/* .container-height {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+} */
+
+/* .text-container {
   margin-top: 10%;
   padding: 40px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
+} */
 
-.card-container {
+/* .card-container {
   margin-top: 15%;
   padding: 40px 20px;
-}
+} */
 
-@media (max-width: 576px) {
+/* @media (max-width: 576px) {
   .text-container {
     margin: 0;
   }
   .card-container {
     margin: 0;
   }
-}
+} */
 
-@keyframes slideDown {
+/* @keyframes slideDown {
   from {
     transform: translateY(-100%);
     opacity: 0;
@@ -197,9 +224,9 @@ export default {
     transform: translateY(0);
     opacity: 1;
   }
-}
+} */
 
-.slide-down {
+/* .slide-down {
   animation: slideDown 1.5s ease-out;
-}
+} */
 </style>
