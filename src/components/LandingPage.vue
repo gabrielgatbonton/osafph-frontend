@@ -33,7 +33,7 @@
           </div>
           <v-text-field
             solo
-            rounded="lg"
+            rounded
             height="50"
             v-model="username"
             :error-messages="usernameErrors"
@@ -44,7 +44,7 @@
           <v-text-field
             solo
             height="50"
-            rounded="lg"
+            rounded
             v-model="password"
             :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
             @blur="$v.password.$touch()"
@@ -56,7 +56,7 @@
           ></v-text-field>
           <v-btn
             x-large
-            rounded="lg"
+            rounded
             class="blue darken-3"
             block
             dark

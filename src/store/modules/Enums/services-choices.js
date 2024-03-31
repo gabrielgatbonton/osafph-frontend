@@ -70,6 +70,11 @@ export const services_choices = {
         dispatch("fetchServiceTypes");
       }
     },
+    fetchSpecialtiesEnum({ dispatch, state }) {
+      if (!state.specialties.length) {
+        dispatch("fetchSpecialties");
+      }
+    },
     fetchDoctors({ commit }) {
       return this.$axios
         .get(`account/doctors`)
