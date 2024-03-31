@@ -40,6 +40,10 @@
                         <v-text-field
                           v-model="user_payload.first_name"
                           label="First Name"
+                          @blur="$v.user_payload.first_name.$touch()"
+                          :error-messages="
+                            errorMessages.user_payload.first_name
+                          "
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
@@ -52,6 +56,8 @@
                         <v-text-field
                           v-model="user_payload.last_name"
                           label="Last Name"
+                          @blur="$v.user_payload.last_name.$touch()"
+                          :error-messages="errorMessages.user_payload.last_name"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
@@ -59,6 +65,8 @@
                           v-model="user_payload.role"
                           :items="user_roles_enum"
                           label="Role"
+                          @blur="$v.user_payload.role.$touch()"
+                          :error-messages="errorMessages.user_payload.role"
                         ></v-select>
                       </v-col>
                       <v-col cols="12" v-if="user_payload.role === 'DOCTOR'">
@@ -67,12 +75,16 @@
                           v-model="user_payload.specialty"
                           label="Specialty"
                           item-text="name"
+                          @blur="$v.user_payload.specialty.$touch()"
+                          :error-messages="errorMessages.user_payload.specialty"
                         ></v-autocomplete>
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
                           v-model="user_payload.username"
                           label="Username"
+                          @blur="$v.user_payload.username.$touch()"
+                          :error-messages="errorMessages.user_payload.username"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
@@ -82,6 +94,8 @@
                           :type="show_1 ? 'text' : 'password'"
                           :append-icon="show_1 ? 'mdi-eye' : 'mdi-eye-off'"
                           @click:append="show_1 = !show_1"
+                          @blur="$v.user_payload.password.$touch()"
+                          :error-messages="errorMessages.user_payload.password"
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
@@ -91,6 +105,10 @@
                           :type="show_2 ? 'text' : 'password'"
                           :append-icon="show_2 ? 'mdi-eye' : 'mdi-eye-off'"
                           @click:append="show_2 = !show_2"
+                          @blur="$v.user_payload.password_confirmation.$touch()"
+                          :error-messages="
+                            errorMessages.user_payload.password_confirmation
+                          "
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
@@ -119,6 +137,10 @@
                           :type="show_3 ? 'text' : 'password'"
                           :append-icon="show_3 ? 'mdi-eye' : 'mdi-eye-off'"
                           @click:append="show_3 = !show_3"
+                          @blur="$v.password_payload.new_password.$touch()"
+                          :error-messages="
+                            errorMessages.password_payload.new_password
+                          "
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
@@ -128,6 +150,13 @@
                           :type="show_4 ? 'text' : 'password'"
                           :append-icon="show_4 ? 'mdi-eye' : 'mdi-eye-off'"
                           @click:append="show_4 = !show_4"
+                          @blur="
+                            $v.password_payload.new_password_confirmation.$touch()
+                          "
+                          :error-messages="
+                            errorMessages.password_payload
+                              .new_password_confirmation
+                          "
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
@@ -162,8 +191,10 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+import UserManagementMixin from "../../mixins/Validation/ManagementValidation/UserManagement";
 export default {
   name: "Users-Table",
+  mixins: [UserManagementMixin],
   props: ["users"],
   data: () => ({
     search: "",
@@ -200,21 +231,25 @@ export default {
       this.dialogPassword = !this.dialogPassword;
     },
     submitPasswordChange() {
-      this.changeUserPassword({
-        id: this.id,
-        data: this.password_payload,
-      })
-        .catch((error) => {
-          console.error("Error Submitting Password Change: ", error);
+      this.$v.$touch();
+
+      if (!this.$v.$invalid) {
+        this.changeUserPassword({
+          id: this.id,
+          data: this.password_payload,
         })
-        .finally(() => {
-          this.id = null;
-          this.password_payload = {
-            new_password: null,
-            new_password_confirmation: null,
-          };
-          this.dialogPassword = false;
-        });
+          .catch((error) => {
+            console.error("Error Submitting Password Change: ", error);
+          })
+          .finally(() => {
+            this.id = null;
+            this.password_payload = {
+              new_password: null,
+              new_password_confirmation: null,
+            };
+            this.dialogPassword = false;
+          });
+      }
     },
     submitUser() {
       this.createNewUser(this.user_payload)
