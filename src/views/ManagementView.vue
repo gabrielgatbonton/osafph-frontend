@@ -14,7 +14,7 @@
     <v-container fluid class="ma-1">
       <v-row>
         <v-col cols="12">
-          <UsersTable v-if="userRole === 'ROOT'" :users="users_index" />
+          <UsersTable v-if="userPermissions.usersTable" :users="users_index" />
           <div
             v-else
             class="d-flex justify-center align-center"
@@ -45,6 +45,15 @@ export default {
     ...mapState("accounts", {
       users_index: "users_index",
     }),
+    userPermissions() {
+      let usersTable = false;
+      if (this.userRole === "ROOT" || this.userRole === "ADMIN") {
+        usersTable = true;
+      }
+      return {
+        usersTable: usersTable,
+      };
+    },
   },
   created() {
     this.fetchUsersIndex();

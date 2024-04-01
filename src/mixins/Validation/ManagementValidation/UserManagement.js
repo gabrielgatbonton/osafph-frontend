@@ -1,20 +1,34 @@
-import { required, requiredIf } from "vuelidate/lib/validators";
+import {
+  required,
+  requiredIf,
+  minLength,
+  sameAs,
+  email,
+} from "vuelidate/lib/validators";
 export default {
   validations: {
     password_payload: {
-      new_password: { required },
-      new_password_confirmation: { required },
+      new_password: { required, minLength: minLength(6) },
+      new_password_confirmation: {
+        required,
+        sameAs: sameAs((value) => {
+          return value.new_password;
+        }),
+      },
     },
-    user_payload: {
+    information_payload: {
       first_name: { required },
       middle_name: {},
       last_name: { required },
+      email: { email },
       role: { required },
       specialty: {
         required: requiredIf((value) => {
           return value && value.role === "DOCTOR";
         }),
       },
+    },
+    credentials_payload: {
       username: { required },
       password: { required },
       password_confirmation: { required },
@@ -22,48 +36,59 @@ export default {
   },
   computed: {
     errorMessages() {
-      const errors = {};
+      const errors = {
+        information_payload: {},
+        credentials_payload: {},
+        password_payload: {},
+      };
+
       //Create User Errors
-      errors.user_payload.first_name = [];
-      if (this.user_payload.first_name.$dirty) {
-        !this.user_payload.first_name.required &&
-          errors.user_payload.first_name.push("First Name is required");
+      errors.information_payload.first_name = [];
+      if (this.$v.information_payload.first_name.$dirty) {
+        !this.$v.information_payload.first_name.required &&
+          errors.information_payload.first_name.push("First Name is required");
       }
 
-      errors.user_payload.last_name = [];
-      if (this.user_payload.last_name.$dirty) {
-        !this.user_payload.last_name.required &&
-          errors.user_payload.last_name.push("Last Name is required");
+      errors.information_payload.last_name = [];
+      if (this.$v.information_payload.last_name.$dirty) {
+        !this.$v.information_payload.last_name.required &&
+          errors.information_payload.last_name.push("Last Name is required");
       }
 
-      errors.user_payload.role = [];
-      if (this.user_payload.role.$dirty) {
-        !this.user_payload.role.required &&
-          errors.user_payload.role.push("Role is required");
+      errors.information_payload.email = [];
+      if (this.$v.information_payload.email.$dirty) {
+        !this.$v.information_payload.email.email &&
+          errors.information_payload.email.push("A valid email is required");
       }
 
-      errors.user_payload.specialty = [];
-      if (this.user_payload.specialty.$dirty) {
-        !this.user_payload.specialty.required &&
-          errors.user_payload.specialty.push("Specialty is required");
+      errors.information_payload.role = [];
+      if (this.$v.information_payload.role.$dirty) {
+        !this.$v.information_payload.role.required &&
+          errors.information_payload.role.push("Role is required");
       }
 
-      errors.user_payload.username = [];
-      if (this.user_payload.username.$dirty) {
-        !this.user_payload.username.required &&
-          errors.user_payload.username.push("Username is required");
+      errors.information_payload.specialty = [];
+      if (this.$v.information_payload.specialty.$dirty) {
+        !this.$v.information_payload.specialty.required &&
+          errors.information_payload.specialty.push("Specialty is required");
       }
 
-      errors.user_payload.password = [];
-      if (this.$v.user_payload.password.$dirty) {
-        !this.$v.user_payload.password.required &&
-          errors.user_payload.password.push("Password is required");
+      errors.credentials_payload.username = [];
+      if (this.$v.credentials_payload.username.$dirty) {
+        !this.$v.credentials_payload.username.required &&
+          errors.credentials_payload.username.push("Username is required");
       }
 
-      errors.user_payload.password_confirmation = [];
-      if (this.$v.user_payload.password_confirmation.$dirty) {
-        !this.$v.user_payload.password_confirmation.required &&
-          errors.user_payload.password_confirmation.push("Confirm Password");
+      errors.credentials_payload.password = [];
+      if (this.$v.credentials_payload.password.$dirty) {
+        !this.$v.credentials_payload.password.required &&
+          errors.credentials_payload.password.push("Password is required");
+      }
+
+      errors.credentials_payload.password_confirmation = [];
+      if (this.$v.credentials_payload.password_confirmation.$dirty) {
+        !this.$v.credentials_payload.password_confirmation.required &&
+          errors.credentials_payload.password_confirmation.push("Confirm Password");
       }
 
       //New Password Error Messages
@@ -71,6 +96,10 @@ export default {
       if (this.$v.password_payload.new_password.$dirty) {
         !this.$v.password_payload.new_password.required &&
           errors.password_payload.new_password.push("New Password is required");
+        !this.$v.password_payload.new_password.minLength &&
+          errors.password_payload.new_password.push(
+            "A minimun of 6 characters is required"
+          );
       }
 
       errors.password_payload.new_password_confirmation = [];
@@ -79,8 +108,11 @@ export default {
           errors.password_payload.new_password_confirmation.push(
             "Confirm New Password"
           );
+        !this.$v.password_payload.new_password_confirmation.sameAs &&
+          errors.password_payload.new_password_confirmation.push(
+            "New Password must match"
+          );
       }
-      console.log(errors);
       return errors;
     },
   },

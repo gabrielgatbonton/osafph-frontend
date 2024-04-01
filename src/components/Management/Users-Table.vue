@@ -37,86 +37,48 @@
                   <v-container fluid class="py-8 mx-auto overflow-scroll">
                     <v-row class="mx-4">
                       <v-col cols="12">
-                        <v-text-field
-                          v-model="user_payload.first_name"
-                          label="First Name"
-                          @blur="$v.user_payload.first_name.$touch()"
-                          :error-messages="
-                            errorMessages.user_payload.first_name
-                          "
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="user_payload.middle_name"
-                          label="Middle Name"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="user_payload.last_name"
-                          label="Last Name"
-                          @blur="$v.user_payload.last_name.$touch()"
-                          :error-messages="errorMessages.user_payload.last_name"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-select
-                          v-model="user_payload.role"
-                          :items="user_roles_enum"
-                          label="Role"
-                          @blur="$v.user_payload.role.$touch()"
-                          :error-messages="errorMessages.user_payload.role"
-                        ></v-select>
-                      </v-col>
-                      <v-col cols="12" v-if="user_payload.role === 'DOCTOR'">
-                        <v-autocomplete
-                          :items="specialties_enum"
-                          v-model="user_payload.specialty"
-                          label="Specialty"
-                          item-text="name"
-                          @blur="$v.user_payload.specialty.$touch()"
-                          :error-messages="errorMessages.user_payload.specialty"
-                        ></v-autocomplete>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="user_payload.username"
-                          label="Username"
-                          @blur="$v.user_payload.username.$touch()"
-                          :error-messages="errorMessages.user_payload.username"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="user_payload.password"
-                          label="Password"
-                          :type="show_1 ? 'text' : 'password'"
-                          :append-icon="show_1 ? 'mdi-eye' : 'mdi-eye-off'"
-                          @click:append="show_1 = !show_1"
-                          @blur="$v.user_payload.password.$touch()"
-                          :error-messages="errorMessages.user_payload.password"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="user_payload.password_confirmation"
-                          label="Confirm Password"
-                          :type="show_2 ? 'text' : 'password'"
-                          :append-icon="show_2 ? 'mdi-eye' : 'mdi-eye-off'"
-                          @click:append="show_2 = !show_2"
-                          @blur="$v.user_payload.password_confirmation.$touch()"
-                          :error-messages="
-                            errorMessages.user_payload.password_confirmation
-                          "
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <div class="text-right">
-                          <v-btn dark class="blue darken-4" @click="submitUser"
-                            >Submit</v-btn
-                          >
-                        </div>
+                        <v-stepper
+                          flat
+                          v-model="stepper"
+                          :non-linear="nonLinearFunction.linear"
+                        >
+                          <v-stepper-header class="elevation-0">
+                            <v-stepper-step
+                              step="1"
+                              :complete="stepper > 1"
+                              :editable="nonLinearFunction.information"
+                            >
+                              Information
+                            </v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step
+                              step="2"
+                              :complete="stepper > 2"
+                              :editable="nonLinearFunction.credentials"
+                            >
+                              Credentials
+                            </v-stepper-step>
+                          </v-stepper-header>
+                          <v-stepper-items>
+                            <v-stepper-content step="1" class="px-0">
+                              <InformationStepper
+                                :roles="user_roles_enum"
+                                :specialties="specialties_enum"
+                                @stepper="updateStepper"
+                                @payload="assignPayload"
+                                ref="informationStepper"
+                              />
+                            </v-stepper-content>
+                            <v-stepper-content step="2" class="px-0">
+                              <CredentailsStepper
+                                @stepper="updateStepper"
+                                @payload="assignPayload"
+                                @submitForm="submitUser"
+                                ref="credentialsStepper"
+                              />
+                            </v-stepper-content>
+                          </v-stepper-items>
+                        </v-stepper>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -183,7 +145,12 @@
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <div class="text-center">
-        <v-icon small @click="changePassword(item.user_id)">mdi-pencil</v-icon>
+        <v-icon
+          :disabled="iconPermissions.edit"
+          small
+          @click="changePassword(item.user_id)"
+          >mdi-pencil</v-icon
+        >
       </div>
     </template>
   </v-data-table>
@@ -192,6 +159,8 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 import UserManagementMixin from "../../mixins/Validation/ManagementValidation/UserManagement";
+import InformationStepper from "./Steppers/InformationStepper.vue";
+import CredentailsStepper from "./Steppers/CredentailsStepper.vue";
 export default {
   name: "Users-Table",
   mixins: [UserManagementMixin],
@@ -200,40 +169,37 @@ export default {
     search: "",
     offset: true,
     loading: true,
+    stepper: 1,
     dialogPassword: false,
     dialogUser: false,
     password_payload: {
       new_password: null,
       new_password_confirmation: null,
     },
-    user_payload: {
-      first_name: null,
-      middle_name: null,
-      last_name: null,
-      role: null,
-      specialty: null,
-      username: null,
-      password: null,
-      password_confirmation: null,
-    },
-    show_1: false,
-    show_2: false,
+    user_payload: {},
     show_3: false,
     show_4: false,
     id: null,
   }),
+  components: {
+    InformationStepper,
+    CredentailsStepper,
+  },
   methods: {
     ...mapActions("accounts", ["changeUserPassword", "createNewUser"]),
     ...mapActions("management", ["fetchEnum"]),
     ...mapActions("services_choices", ["fetchSpecialtiesEnum"]),
     changePassword(id) {
+      //This is for the reset of validations
+      this.$v.password_payload.$reset();
       this.id = id;
       this.dialogPassword = !this.dialogPassword;
     },
-    submitPasswordChange() {
-      this.$v.$touch();
 
-      if (!this.$v.$invalid) {
+    submitPasswordChange() {
+      this.$v.password_payload.$touch();
+
+      if (!this.$v.password_payload.$invalid) {
         this.changeUserPassword({
           id: this.id,
           data: this.password_payload,
@@ -248,6 +214,7 @@ export default {
               new_password_confirmation: null,
             };
             this.dialogPassword = false;
+            this.$v.password_payload.$reset();
           });
       }
     },
@@ -257,18 +224,22 @@ export default {
           console.error("Error Creating User: ", error);
         })
         .finally(() => {
-          this.user_payload = {
-            first_name: null,
-            middle_name: null,
-            last_name: null,
-            role: null,
-            specialty: null,
-            username: null,
-            password: null,
-            password_confirmation: null,
-          };
+          this.$refs.informationStepper.resetValidations();
+          this.$refs.credentialsStepper.resetValidations();
           this.dialogUser = false;
+          this.stepper = 1;
         });
+    },
+    updateStepper(stepper) {
+      this.stepper = stepper;
+    },
+    assignPayload(payload) {
+      for (const key in payload) {
+        if (Object.hasOwnProperty.call(payload, key)) {
+          // Use this.$set to add reactive properties
+          this.$set(this.user_payload, key, payload[key]);
+        }
+      }
     },
   },
   computed: {
@@ -300,18 +271,32 @@ export default {
         },
       ];
     },
-    //   iconPermissions() {
-    //     let edit = false;
-    //     let remove = false;
-    //     if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
-    //       edit = true;
-    //       remove = true;
-    //     }
-    //     return {
-    //       edit: edit,
-    //       delete: remove,
-    //     };
-    //   },
+    nonLinearFunction() {
+      let linear = false;
+      let information = false;
+      let credentials = false;
+
+      if (this.stepper > 1) {
+        linear = true;
+        information = true;
+        credentials = true;
+      }
+
+      return {
+        linear: linear,
+        credentials: credentials,
+        information: information,
+      };
+    },
+    iconPermissions() {
+      let edit = true;
+      if (this.userRole === "ROOT") {
+        edit = false;
+      }
+      return {
+        edit: edit,
+      };
+    },
     itemData() {
       return this.users
         ? this.users.map((item) => ({
