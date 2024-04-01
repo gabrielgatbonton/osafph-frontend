@@ -16,8 +16,18 @@ export const accounts = {
     },
   },
   actions: {
-    fetchUsersIndex({ commit }) {
-      const url = `account/users`;
+    fetchUsersIndex({ commit }, queryParams = {}) {
+      // Construct the query string from the queryParams object
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
+
+      // Add the query string to the URL if it exists
+      let url = "account/users";
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
       return this.$axios
         .get(url)
         .then((response) => {

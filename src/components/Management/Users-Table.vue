@@ -21,7 +21,49 @@
               ></v-text-field>
             </v-col>
             <v-spacer></v-spacer>
-            <v-col cols="auto"> </v-col>
+            <v-col cols="auto">
+              <v-dialog max-width="600">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn color="blue darken-4" dark v-bind="attrs" v-on="on"
+                    >Filter</v-btn
+                  >
+                </template>
+                <v-card>
+                  <v-card-title class="blue darken-1 pb-4 white--text">
+                    <v-icon left dark>mdi-filter-multiple</v-icon> Filter
+                  </v-card-title>
+                  <v-container fluid class="py-8 mx-auto">
+                    <v-row class="mx-4">
+                      <v-col cols="12">
+                        <v-select
+                          multiple
+                          v-model="table_filter.roles"
+                          :items="user_roles_enum"
+                          label="Roles"
+                        ></v-select>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-row dense justify="end">
+                          <v-col cols="auto">
+                            <v-btn color="error" @click="resetFilter"
+                              >Reset</v-btn
+                            >
+                          </v-col>
+                          <v-col cols="auto">
+                            <v-btn
+                              dark
+                              class="blue darken-4"
+                              @click="submitFilter"
+                              >Submit</v-btn
+                            >
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card>
+              </v-dialog>
+            </v-col>
             <v-col cols="auto">
               <v-dialog v-model="dialogUser" max-width="600">
                 <template v-slot:activator="{ on, attrs }">
@@ -84,61 +126,56 @@
                   </v-container>
                 </v-card>
               </v-dialog>
-              <v-dialog v-model="dialogPassword" max-width="600">
-                <v-card>
-                  <v-card-title class="blue darken-1 pb-4 white--text">
-                    <v-icon left dark>mdi-lock-reset</v-icon>
-                    Change Password
-                  </v-card-title>
-                  <v-container fluid class="py-8 mx-auto overflow-scroll">
-                    <v-row class="mx-4">
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="password_payload.new_password"
-                          label="New Password"
-                          :type="show_3 ? 'text' : 'password'"
-                          :append-icon="show_3 ? 'mdi-eye' : 'mdi-eye-off'"
-                          @click:append="show_3 = !show_3"
-                          @blur="$v.password_payload.new_password.$touch()"
-                          :error-messages="
-                            errorMessages.password_payload.new_password
-                          "
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field
-                          v-model="password_payload.new_password_confirmation"
-                          label="Confirm New Password"
-                          :type="show_4 ? 'text' : 'password'"
-                          :append-icon="show_4 ? 'mdi-eye' : 'mdi-eye-off'"
-                          @click:append="show_4 = !show_4"
-                          @blur="
-                            $v.password_payload.new_password_confirmation.$touch()
-                          "
-                          :error-messages="
-                            errorMessages.password_payload
-                              .new_password_confirmation
-                          "
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <div class="text-right">
-                          <v-btn
-                            dark
-                            class="blue darken-4"
-                            @click="submitPasswordChange"
-                            >Submit</v-btn
-                          >
-                        </div>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-dialog>
             </v-col>
           </v-row>
         </v-container>
       </v-toolbar>
+      <v-dialog v-model="dialogPassword" max-width="600">
+        <v-card>
+          <v-card-title class="blue darken-1 pb-4 white--text">
+            <v-icon left dark>mdi-lock-reset</v-icon>
+            Change Password
+          </v-card-title>
+          <v-container fluid class="py-8 mx-auto overflow-scroll">
+            <v-row class="mx-4">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="password_payload.new_password"
+                  label="New Password"
+                  :type="show_3 ? 'text' : 'password'"
+                  :append-icon="show_3 ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="show_3 = !show_3"
+                  @blur="$v.password_payload.new_password.$touch()"
+                  :error-messages="errorMessages.password_payload.new_password"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="password_payload.new_password_confirmation"
+                  label="Confirm New Password"
+                  :type="show_4 ? 'text' : 'password'"
+                  :append-icon="show_4 ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="show_4 = !show_4"
+                  @blur="$v.password_payload.new_password_confirmation.$touch()"
+                  :error-messages="
+                    errorMessages.password_payload.new_password_confirmation
+                  "
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <div class="text-right">
+                  <v-btn
+                    dark
+                    class="blue darken-4"
+                    @click="submitPasswordChange"
+                    >Submit</v-btn
+                  >
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-dialog>
     </template>
     <template v-slot:[`header.actions`]>
       <div class="text-center">ACTIONS</div>
@@ -180,6 +217,9 @@ export default {
     show_3: false,
     show_4: false,
     id: null,
+    table_filter: {
+      roles: [],
+    },
   }),
   components: {
     InformationStepper,
@@ -192,6 +232,7 @@ export default {
     changePassword(id) {
       //This is for the reset of validations
       this.$v.password_payload.$reset();
+
       this.id = id;
       this.dialogPassword = !this.dialogPassword;
     },
@@ -240,6 +281,15 @@ export default {
           this.$set(this.user_payload, key, payload[key]);
         }
       }
+    },
+    submitFilter() {
+      this.$emit("submitFilter", this.table_filter);
+    },
+    resetFilter() {
+      this.table_filter = {
+        roles: [],
+      };
+      this.$emit("submitFilter", {});
     },
   },
   computed: {

@@ -14,7 +14,7 @@
     <v-container fluid class="ma-1">
       <v-row>
         <v-col cols="12">
-          <UsersTable v-if="userPermissions.usersTable" :users="users_index" />
+          <UsersTable v-if="userPermissions.usersTable" :users="users_index" @submitFilter="submitFilter"/>
           <div
             v-else
             class="d-flex justify-center align-center"
@@ -39,6 +39,9 @@ export default {
   },
   methods: {
     ...mapActions("accounts", ["fetchUsersIndex"]),
+    submitFilter(filter) {
+      this.fetchUsersIndex(filter);
+    }
   },
   computed: {
     ...mapGetters("login", ["userRole"]),
