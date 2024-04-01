@@ -12,38 +12,6 @@
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
-        <v-checkbox
-          v-model="payload.all_items_sponsored"
-          label="Items included are sponsored by Funding"
-          @change="pushToParent"
-        ></v-checkbox>
-        <v-select
-          v-model="payload.dialysis_items"
-          label="Select Packages to avail"
-          :items="dialysis_packages"
-          item-text="package_name"
-          item-value="package_name"
-          @blur="$v.payload.dialysis_items.$touch()"
-          :error-messages="errorMessages.dialysis_items"
-        >
-          <template v-slot:item="{ item }">
-            <div id="d-flex flex-column justify-start align-start">
-              <div>{{ item.package_name }}</div>
-              <div class="packages-description">
-                <span
-                  v-for="(dialysisItem, index) in item.dialysis_items"
-                  :key="index"
-                >
-                  {{ dialysisItem
-                  }}{{ index < item.dialysis_items.length - 1 ? ", " : "" }}
-                </span>
-              </div>
-            </div>
-          </template>
-        </v-select>
-      </v-col>
-      <!-- multiple and chips ^ -->
-      <v-col cols="12">
         <v-autocomplete
           v-model="payload.dialysis_machine"
           label="Dialysis Machine"
@@ -59,6 +27,13 @@
             <v-checkbox
               v-model="payload.all_sessions_sponsored"
               label="Sessions sponsored by Funding"
+              @change="pushToParent"
+            ></v-checkbox>
+          </v-col>
+          <v-col cols="12">
+            <v-checkbox
+              v-model="payload.all_items_sponsored"
+              label="Items included are sponsored by Funding"
               @change="pushToParent"
             ></v-checkbox>
           </v-col>
@@ -160,6 +135,54 @@
               :error-messages="errorMessages.schedule_session[index]"
             ></v-select>
           </v-col>
+          <v-col cols="12" md="6" sm="6">
+            <v-select
+              v-model="session.dialysis_package"
+              :label="`Dialysis Package ${index + 1}`"
+              :items="dialysis_packages"
+              item-text="package_name"
+              item-value="package_name"
+              @blur="
+                $v.payload.schedule.$each.$iter[index].dialysis_package.$touch()
+              "
+              :error-messages="errorMessages.dialysis_package[index]"
+            >
+              <template v-slot:item="{ item }">
+                <div id="d-flex flex-column justify-start align-start">
+                  <div>{{ item.package_name }}</div>
+                  <div class="packages-description">
+                    <span
+                      v-for="(dialysisItem, index) in item.dialysis_items"
+                      :key="index"
+                    >
+                      {{ dialysisItem
+                      }}{{ index < item.dialysis_items.length - 1 ? ", " : "" }}
+                    </span>
+                  </div>
+                </div>
+              </template>
+            </v-select>
+          </v-col>
+          <v-col cols="12" md="6" sm="6">
+            <v-autocomplete
+              v-model="session.funder"
+              :label="`Funder ${index + 1}`"
+              :items="crowd_fundings"
+              item-text="backer"
+            >
+              <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
+                <div class="d-flex flex-column">
+                  <div>{{ item.backer }}</div>
+                  <div class="item-description">
+                    Amount: {{ item.contribution }}
+                  </div>
+                </div>
+              </template>
+            </v-autocomplete>
+          </v-col>
+          <v-col cols="12" v-if="index <  payload.schedule.length - 1">
+            <v-divider></v-divider>
+          </v-col>
         </v-row>
       </v-col>
       <v-col cols="12">
@@ -174,7 +197,7 @@
 <script>
 import { format, parseISO } from "date-fns";
 import SessionInputsMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/SessionInputs";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import DialysisCalendarComponent from "@/components/Reusable Components/DialysisCalendarComponent.vue";
 export default {
   name: "SessionInputs",
@@ -195,6 +218,10 @@ export default {
       type: Array,
       required: true,
     },
+    crowd_fundings: {
+      type: Array,
+      required: true,
+    },
   },
   data: () => ({
     selectedDates: [],
@@ -202,8 +229,6 @@ export default {
     disable: false,
     payload: {
       hospital: "",
-      // dialysis_items = [],
-      dialysis_items: null,
       all_items_sponsored: false,
       dialysis_machine: null,
       total_sessions: null,
@@ -244,6 +269,8 @@ export default {
           this.payload.schedule[index] || {
             date: null,
             session: null,
+            dialysis_package: null,
+            funder: null,
             menu: false,
           }
       );
@@ -368,6 +395,7 @@ export default {
     ...mapState("dialysis_calendar", {
       dialysis_calendar: "dialysis_calendar",
     }),
+    ...mapGetters("login", ["userRole"]),
     formattedDates() {
       return this.payload.schedule.map((session) => {
         return session.date
@@ -409,5 +437,11 @@ export default {
 #labelSessions {
   font-size: 18px;
   margin-top: 20px;
+}
+
+.item-description {
+  font-size: 12px;
+  color: #333;
+  font-weight: bold;
 }
 </style>

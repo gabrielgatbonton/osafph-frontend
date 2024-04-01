@@ -24,7 +24,7 @@
               :editable="nonLinearFunction.information"
               :complete="stepper > 2"
             >
-              Insights & Funding
+              Insights
             </v-stepper-step>
           </v-stepper-header>
           <v-stepper-items>
@@ -33,6 +33,7 @@
                 :medical_sites="medical_sites"
                 :dialysis_packages="dialysis_packages"
                 :dialysis_machines="dialysis_machines"
+                :crowd_fundings="crowd_fundings"
                 @validationSuccess="checkValidationSession"
                 @payload="assignPayload"
                 @stepper="updateStepper"
@@ -42,7 +43,6 @@
             <v-stepper-content step="2" class="px-0">
               <InformationInputs
                 :data="payload"
-                :crowd_fundings="crowd_fundings"
                 ref="informationInputs"
                 @validationSuccess="checkValidationInformation"
                 @payload="assignPayload"

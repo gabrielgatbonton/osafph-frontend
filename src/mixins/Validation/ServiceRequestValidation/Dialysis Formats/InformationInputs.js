@@ -1,9 +1,5 @@
 export default {
-  validations: {
-    payload: {
-      crowd_funding_backer: {},
-    },
-  },
+  validations: {},
   computed: {
     errorMessages() {
       const errors = {};

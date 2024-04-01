@@ -1,24 +1,5 @@
 <template>
   <v-container fluid class="mx-auto">
-    <v-row>
-      <v-col cols="12">
-        <v-autocomplete
-          v-model="payload.crowd_funding_backer"
-          label="Funding"
-          :items="crowd_fundings"
-          item-text="backer"
-        >
-          <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
-            <div class="d-flex flex-column">
-              <div>{{ item.backer }}</div>
-              <div class="item-description">
-                Amount: {{ item.contribution }}
-              </div>
-            </div>
-          </template>
-        </v-autocomplete>
-      </v-col>
-    </v-row>
     <v-row justify="center" v-if="summary">
       <v-col cols="12" align-self="center">
         <div class="text-h6 text-center">Information Summary</div>
@@ -29,12 +10,6 @@
           <v-col cols="6">
             {{ summary.hospital }}
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6">
-            <div>Package & Items:</div>
-          </v-col>
-          <v-col cols="6"> {{ summary.dialysis_items }} </v-col>
         </v-row>
         <v-row>
           <v-col cols="6">
@@ -54,7 +29,8 @@
           </v-col>
           <v-col cols="6">
             <div v-for="(schedule, index) in summary.schedule" :key="index">
-              {{ schedule.date }}, {{ schedule.session }}
+              <div>{{ schedule.date }}, {{ schedule.session }}</div>
+              <div>{{ schedule.dialysis_package }}</div>
             </div>
           </v-col>
         </v-row>
@@ -78,24 +54,16 @@
 <script>
 import { format, parseISO } from "date-fns";
 import InformationInputsMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/InformationInputs";
-import { mapGetters } from "vuex";
 export default {
   name: "InformationInputs",
   mixins: [InformationInputsMixin],
   props: {
-    crowd_fundings: {
-      type: Array,
-      required: true,
-    },
     data: {
       type: Object,
       required: true,
     },
   },
   data: () => ({
-    payload: {
-      crowd_funding_backer: null,
-    },
     loading: false,
   }),
   methods: {
@@ -132,18 +100,17 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
     summary() {
       if (this.data)
         return {
           hospital: this.data.hospital,
-          dialysis_items: this.data.dialysis_items,
           dialysis_machine: this.data.dialysis_machine,
           total_sessions: this.data.total_sessions,
           schedule: this.data.schedule
             ? this.data.schedule.map((item) => ({
                 date: format(parseISO(item.date), "MMMM dd, yyyy"),
                 session: item.session,
+                dialysis_package: item.dialysis_package,
               }))
             : null,
         };
@@ -153,10 +120,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.item-description {
-  font-size: 12px;
-  color: #333;
-  font-weight: bold;
-}
-</style>
+<style scoped></style>

@@ -9,12 +9,15 @@ export default {
           date: { required },
           // Validation rule for session property
           session: { required },
+          // Validation rule for dialysis package property
+          dialysis_package: { required },
+          // Validation rule for funder property
+          funder: {},
         },
       },
       dialysis_machine: { required },
       all_sessions_sponsored: {},
       all_items_sponsored: {},
-      dialysis_items: { required },
       hospital: { required },
     },
   },
@@ -73,6 +76,17 @@ export default {
         return sessionErrors;
       });
 
+      errors.dialysis_package = this.payload.schedule.map((session, index) => {
+        const sessionErrors = [];
+        if (
+          this.$v.payload.schedule.$each.$iter[index].dialysis_package.$dirty
+        ) {
+          !this.$v.payload.schedule.$each.$iter[index].dialysis_package
+            .required && sessionErrors.push(`Dialysis Package is required`);
+        }
+        return sessionErrors;
+      });
+
       // // Error messages for each session in the schedule array
       // errors.schedule_date = this.payload.schedule.map((session, index) => {
       //   const sessionErrors = [];
@@ -97,12 +111,6 @@ export default {
       if (this.$v.payload.hospital.$dirty) {
         !this.$v.payload.hospital.required &&
           errors.hospital.push("Medical Site is required");
-      }
-
-      errors.dialysis_items = [];
-      if (this.$v.payload.dialysis_items.$dirty) {
-        !this.$v.payload.dialysis_items.required &&
-          errors.dialysis_items.push("Dialysis Items is required");
       }
 
       return errors;
