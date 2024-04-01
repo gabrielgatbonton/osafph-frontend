@@ -20,8 +20,9 @@
         <div class="text-container">
           <v-img
             class="mx-auto d-block"
-            src="../assets/lion.svg"
-            :max-width="$vuetify.breakpoint.xs ? 260 : 320"
+            id="image"
+            src="../assets/Jose (1).png"
+            :max-width="$vuetify.breakpoint.xs ? 260 : 400"
             contain
           ></v-img>
         </div>
@@ -172,6 +173,7 @@ export default {
   transition: transform 0.3s ease; /* Add transition for smooth rotation */
 
   .card-container {
+    background: #fff;
     max-width: 600px;
     margin: 0 auto;
   }
@@ -179,7 +181,16 @@ export default {
 
 @media (max-width: 960px) {
   #container {
-    background: none
+    background: linear-gradient(
+      to bottom,
+      rgba(251, 185, 185),
+      rgba(199, 123, 123),
+      rgba(157, 74, 74)
+    );
+    .card-container {
+      padding: 2rem;
+      border-radius: 40px;
+    }
   }
 }
 
