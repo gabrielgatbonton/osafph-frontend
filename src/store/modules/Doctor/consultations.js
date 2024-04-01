@@ -164,5 +164,22 @@ export const consultations = {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
+    toggleServiceProgress(
+      { dispatch },
+      { hospital_service_id, consultation_id, status }
+    ) {
+      const url = `hospital-services/${hospital_service_id}/toggle-status`;
+      return this.$axios
+        .patch(url, status)
+        .then((response) => {
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("fetchConsultationById", consultation_id);
+        })
+        .catch((error) => {
+          console.error("Error Patching Status: ", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+        });
+    },
   },
 };

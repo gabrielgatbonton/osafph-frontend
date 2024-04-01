@@ -87,7 +87,10 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="4">
-          <ServiceStatusComponent :serviceStatus="serviceStatus" />
+          <ServiceStatusComponent
+            @toggleProgress="toggleStatus"
+            :serviceStatus="serviceStatus"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -138,6 +141,7 @@ export default {
       "fetchConsultationById",
       "fetchConsultationFormById",
       "completeConsultationToId",
+      "toggleServiceProgress",
     ]),
     ...mapActions("admin_consultations", [
       "fetchAdminConsultationById",
@@ -223,6 +227,20 @@ export default {
         .finally(() => {
           this.deleteDialog = false;
         });
+    },
+    toggleStatus(status) {
+      let payload = {
+        status: status,
+      };
+      if (status) {
+        if (this.userRole === "DOCTOR") {
+          this.toggleServiceProgress({
+            consultation_id: this.consultation.id,
+            hospital_service_id: this.consultation.hospital_service.id,
+            status: payload,
+          });
+        }
+      }
     },
   },
   created() {

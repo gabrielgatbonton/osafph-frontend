@@ -12,10 +12,15 @@
         >
           <v-row justify="center" class="ma-2 pb-2">
             <v-col align-self="center" cols="12">
-              <div class="my-3">
+              <div class="my-3 d-flex justify-space-between">
                 <v-avatar color="white">
                   <v-icon :color="iconColor"> mdi-message-processing </v-icon>
                 </v-avatar>
+                <v-icon @click="initToggleProgress" large dark class="px-2">{{
+                  toggle_status
+                    ? "mdi-toggle-switch-outline"
+                    : "mdi-toggle-switch-off-outline"
+                }}</v-icon>
               </div>
               <div class="my-3 text-h4 text-left white--text">
                 {{ status.title }}
@@ -77,8 +82,20 @@
 export default {
   name: "ServiceStatusComponent",
   props: ["serviceStatus"],
-  data: () => ({}),
-  methods: {},
+  data: () => ({
+    toggle_status: false,
+  }),
+  methods: {
+    initToggleProgress() {
+      this.toggle_status = !this.toggle_status;
+      if (this.toggle_status) {
+        this.$emit("toggleProgress", "PENDING");
+      } else {
+        this.$emit("toggleProgress", "IN PROGRESS");
+      }
+      
+    },
+  },
   computed: {
     status() {
       let status = null;
