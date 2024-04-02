@@ -21,14 +21,14 @@
           </v-col>
         </v-row>
       </v-container>
-     <LinkComponent :links="navLinks"/>
+      <LinkComponent :links="navLinks" />
     </v-navigation-drawer>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import LinkComponent from './LinkComponent.vue';
+import LinkComponent from "./LinkComponent.vue";
 export default {
   props: ["drawer"],
   components: {
@@ -80,6 +80,11 @@ export default {
             icon: "mdi-medical-bag",
             text: "Consultations",
             route: "/citizens-consultations",
+          },
+          {
+            icon: "mdi-human-queue",
+            text: "Dialysis Queuing",
+            route: "/dialysis-queuing",
           },
           { icon: "mdi-cog", text: "Management", route: "/management" },
         ];

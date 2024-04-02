@@ -64,4 +64,15 @@ export default [
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
   },
+  {
+    path: "/dialysis-queuing",
+    name: "dialysis-queuing",
+    component: () =>
+      import(
+        /* webpackChunkName: "dialysis-admin" */ "@/views/Dialysis/DialysisQueuingView.vue"
+      ),
+    props: true,
+    meta: { requiresAuth: true },
+    beforeEnter: checkLoggedIn,
+  },
 ];

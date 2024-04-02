@@ -53,6 +53,7 @@
             :success="!$v.password.$invalid && $v.password.$dirty"
             :type="show ? 'text' : 'password'"
             @click:append="show = !show"
+            @keyup.enter="handleLogin"
             label="Password"
           ></v-text-field>
           <v-btn

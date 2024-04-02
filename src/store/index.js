@@ -24,6 +24,7 @@ import { dialysis_calendar } from "./modules/Encoder/dialysis_calendar";
 import { dashboard } from "./modules/General/dashboard";
 import { accounts } from "./modules/Management/accounts";
 import { management } from "./modules/Enums/management";
+import { dialysis_general } from "./modules/General/dialysis_general";
 
 Vue.use(Vuex);
 
@@ -60,6 +61,7 @@ export default new Vuex.Store({
     //General
     files,
     dashboard,
+    dialysis_general,
 
     //Management
     accounts,
