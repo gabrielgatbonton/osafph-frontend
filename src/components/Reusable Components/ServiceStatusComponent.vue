@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card
           :class="{
-            warning: status.title === 'PENDING',
+            warning: status.title === 'PENDING' || status.title === 'WALK-IN',
             error: status.title === 'UNATTENDED',
             success: status.title === 'COMPLETED',
             indigo: status.title === 'IN PROGRESS',
@@ -16,11 +16,18 @@
                 <v-avatar color="white">
                   <v-icon :color="iconColor"> mdi-message-processing </v-icon>
                 </v-avatar>
-                <v-icon @click="initToggleProgress" large dark class="px-2">{{
-                  toggle_status
-                    ? "mdi-toggle-switch-outline"
-                    : "mdi-toggle-switch-off-outline"
-                }}</v-icon>
+                <v-icon
+                  v-if="userRole === 'DOCTOR' || userRole === 'DIALYSIS_ENCODER'"
+                  @click="initToggleProgress"
+                  large
+                  dark
+                  class="px-2"
+                  >{{
+                    toggle_status
+                      ? "mdi-toggle-switch-outline"
+                      : "mdi-toggle-switch-off-outline"
+                  }}</v-icon
+                >
               </div>
               <div class="my-3 text-h4 text-left white--text">
                 {{ status.title }}
@@ -79,6 +86,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "ServiceStatusComponent",
   props: ["serviceStatus"],
@@ -89,18 +97,21 @@ export default {
     initToggleProgress() {
       this.toggle_status = !this.toggle_status;
       if (this.toggle_status) {
-        this.$emit("toggleProgress", "PENDING");
-      } else {
         this.$emit("toggleProgress", "IN PROGRESS");
+      } else {
+        this.$emit("toggleProgress", this.serviceStatus.original_status);
       }
-      
     },
   },
   computed: {
+    ...mapGetters("login", ["userRole"]),
     status() {
       let status = null;
       let message = null;
-      if (this.serviceStatus.status === "PENDING") {
+      if (
+        this.serviceStatus.status === "PENDING" ||
+        this.serviceStatus.status === "WALK-IN"
+      ) {
         status = this.serviceStatus.status;
         message = this.serviceStatus.messages.pending;
       } else if (this.serviceStatus.status === "IN PROGRESS") {
@@ -121,7 +132,10 @@ export default {
     },
     iconColor() {
       let iconColor = null;
-      if (this.serviceStatus.status === "PENDING") {
+      if (
+        this.serviceStatus.status === "PENDING" ||
+        this.serviceStatus.status === "WALK-IN"
+      ) {
         iconColor = "warning";
       } else if (this.serviceStatus.status === "UNATTENDED") {
         iconColor = "error";
@@ -133,6 +147,18 @@ export default {
       return iconColor;
     },
   },
+  watch: {
+    serviceStatus: {
+      immediate: true,
+      handler(value) {
+        if(value.status === "IN PROGRESS") {
+          this.toggle_status = true;
+        } else {
+          this.toggle_status = false;
+        }
+      }
+    }
+  }
 };
 </script>
 

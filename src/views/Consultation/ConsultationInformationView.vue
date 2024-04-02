@@ -615,7 +615,7 @@ export default {
       //Conditional for General Format and Dialysis Format Messages
       let messages = null;
 
-      if (this.consultation.hospital_service.status !== "DIALYSIS") {
+      if (this.consultation.hospital_service.service_type !== "CONSULTATION") {
         messages = {
           pending: "Requested Service is pending...",
           inProgress: "Requested Service is in progress...",
@@ -633,6 +633,7 @@ export default {
 
       return {
         status: this.consultation.hospital_service.status,
+        original_status: this.consultation.hospital_service.original_status,
         scheduledDate: {
           title: "Scheduled Date",
           content: format(

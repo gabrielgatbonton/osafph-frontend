@@ -42,7 +42,7 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="4">
-          <ServiceStatusComponent :serviceStatus="serviceStatus" />
+          <ServiceStatusComponent @toggleProgress="toggleStatus" :serviceStatus="serviceStatus" />
         </v-col>
       </v-row>
     </v-container>
@@ -77,6 +77,7 @@ export default {
     ...mapActions("dialysis_sessions", [
       "fetchDialysisSessionById",
       "completeDialysisSessionById",
+      "toggleServiceProgress"
     ]),
     fetchSessionData() {
       const id = this.$route.params.id;
@@ -98,6 +99,20 @@ export default {
           console.error("Error Clicking Complete Button: ", error);
         }
       );
+    },
+    toggleStatus(status) {
+      let payload = {
+        status: status,
+      };
+      if (status) {
+        if (this.userRole === "DIALYSIS_ENCODER") {
+          this.toggleServiceProgress({
+            id: this.session.dialysis_session_id,
+            hospital_service_id: this.session.hospital_service.id,
+            status: payload,
+          });
+        }
+      }
     },
   },
   computed: {
@@ -239,6 +254,7 @@ export default {
 
       return {
         status: this.session.hospital_service.status,
+        original_status: this.session.hospital_service.original_status,
         scheduledDate: {
           title: "Scheduled Date",
           content: format(

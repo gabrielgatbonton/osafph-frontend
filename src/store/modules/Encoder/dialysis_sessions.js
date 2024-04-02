@@ -107,5 +107,22 @@ export const dialysis_sessions = {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
+    toggleServiceProgress(
+      { dispatch },
+      { hospital_service_id, id, status }
+    ) {
+      const url = `hospital-services/${hospital_service_id}/toggle-status`;
+      return this.$axios
+        .patch(url, status)
+        .then((response) => {
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("fetchDialysisSessionById", id);
+        })
+        .catch((error) => {
+          console.error("Error Patching Status: ", error);
+          //Failed Alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+        });
+    },
   },
 };

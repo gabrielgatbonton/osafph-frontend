@@ -129,18 +129,46 @@ export default {
     },
     serviceInformation() {
       let items_availed = null;
+      let title = null;
+      let second_column = {
+        title: null,
+        content: null,
+      };
+      let fourth_column = {
+        title: null,
+        content: null,
+      };
       if (this.service.hospitalService.service_type !== "DIALYSIS") {
         items_availed = this.service.hospitalService.service_type;
+        title = "Hospital Service Information";
+        second_column = {
+          title: "Health Professional",
+          content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
+        };
+        fourth_column = {
+          title: "Serviceable Availed",
+          content: this.service.hospitalService.serviceable_type_name,
+        }
       } else {
         items_availed = {
           service_type: this.service.hospitalService.service_type,
           package_name: this.service.hospitalService.dialysis_package.name,
           items: this.service.hospitalService.dialysis_package.dialysis_items,
         };
+        title = "Dialysis Service Information";
+        second_column = {
+          title: "Dialysis Site",
+          content: this.service.hospitalService.hospital,
+        };
+        fourth_column = {
+          title: "Session Time",
+          content: this.service.hospitalService.session,
+        }
       }
+
       return {
         header: {
-          title: "Hospital Service Information",
+          title: title,
           icon: "mdi-medical-bag",
         },
         info: [
@@ -149,16 +177,16 @@ export default {
             content: this.service.hospitalService.id,
           },
           {
-            title: "Health Professional",
-            content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
+            title: second_column.title,
+            content: second_column.content,
           },
           {
             title: "Service Availed",
             content: this.service.hospitalService.service_type,
           },
           {
-            title: "Serviceable Availed",
-            content: this.service.hospitalService.serviceable_type_name,
+            title: fourth_column.title,
+            content: fourth_column.content,
           },
         ],
         remarks: [
@@ -260,7 +288,7 @@ export default {
       //Conditional for General Format and Dialysis Format Messages
       let messages = null;
 
-      if (this.service.hospitalService.status !== "DIALYSIS") {
+      if (this.service.hospitalService.service_type !== "DIALYSIS") {
         messages = {
           pending: "Requested Service is pending...",
           inProgress: "Requested Service is in progress...",
