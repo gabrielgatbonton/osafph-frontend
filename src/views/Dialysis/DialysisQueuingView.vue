@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid class="ma-1">
+    <!-- <v-container fluid class="ma-1">
       <v-row no-gutters>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
@@ -8,35 +8,60 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-divider class="mx-3"></v-divider>
+    <v-divider class="mx-3"></v-divider> -->
     <v-container fluid class="ma-1">
       <v-row>
         <v-col cols="12">
-          <QueuingTable :queue_data="queuingDialysisList"/>
+          <QueuingTable
+            :queue_data="queuingDialysisList"
+            @dialog="updateDialog"
+            :dialogResponse="dialog"
+          />
         </v-col>
       </v-row>
     </v-container>
-    
+    <v-dialog
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+      v-model="dialog"
+      scrollable
+    >
+      <v-card>
+        <QueuingTable
+          :queue_data="queuingDialysisList"
+          @dialog="updateDialog"
+          :dialogResponse="dialog"
+        />
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import QueuingTable from '@/components/Dialysis/Queuing-Table.vue';
-import { mapActions, mapGetters } from 'vuex';
+import QueuingTable from "@/components/Dialysis/Queuing-Table.vue";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "DialysisQueuingView",
+  data: () => ({
+    dialog: false,
+  }),
   components: {
     QueuingTable,
   },
   methods: {
-    ...mapActions("dialysis_general", ["fetchDialysisQueue"])
+    ...mapActions("dialysis_general", ["fetchDialysisQueue"]),
+    updateDialog(value) {
+      this.dialog = value;
+    },
   },
   computed: {
-    ...mapGetters("dialysis_general", ["queuingDialysisList"])
+    ...mapGetters("dialysis_general", ["queuingDialysisList"]),
   },
   created() {
     this.fetchDialysisQueue();
-  }
+  },
+
 };
 </script>
 
