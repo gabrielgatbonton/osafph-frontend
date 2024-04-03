@@ -180,7 +180,7 @@
               </template>
             </v-autocomplete>
           </v-col>
-          <v-col cols="12" v-if="index <  payload.schedule.length - 1">
+          <v-col cols="12" v-if="index < payload.schedule.length - 1">
             <v-divider></v-divider>
           </v-col>
         </v-row>
@@ -342,6 +342,7 @@ export default {
     //   }
     // },
     setupDateWatchers(schedule) {
+      console.log(schedule, "Log");
       if (this.payload.total_sessions > 0) {
         let dates = [];
 
@@ -411,11 +412,14 @@ export default {
       },
       deep: true,
     },
+    "payload.dialysis_machine": {
+      handler() {
+        this.setupDateWatchers(this.payload.schedule);
+      },
+    },
     "payload.hospital": {
-      handler(value) {
-        if (!value) {
-          this.show_calendar = false;
-        }
+      handler() {
+        this.setupDateWatchers(this.payload.schedule);
       },
     },
     selectedDates: {

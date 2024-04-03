@@ -177,14 +177,12 @@
         </v-card>
       </v-dialog>
     </template>
-    <template v-slot:[`header.actions`]>
-      <div class="text-center">ACTIONS</div>
-    </template>
     <template v-slot:[`item.actions`]="{ item }">
       <div class="text-center">
         <v-icon
           :disabled="iconPermissions.edit"
           small
+          color="primary"
           @click="changePassword(item.user_id)"
           >mdi-pencil</v-icon
         >
@@ -318,6 +316,7 @@ export default {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
+          align: "center"
         },
       ];
     },
