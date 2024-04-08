@@ -11,7 +11,9 @@
           <v-card class="pa-6" rounded="lg">
             <div class="d-flex justify-space-between align-center">
               <div class="card-title">{{ item.title }}</div>
-              <div class="card-icon blue lighten-5 d-flex justify-center align-center">
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
                 <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
               </div>
             </div>
@@ -32,7 +34,9 @@
           <v-card class="pa-6" rounded="lg">
             <div class="d-flex justify-space-between align-center">
               <div class="card-title">{{ item.title }}</div>
-              <div class="card-icon blue lighten-5 d-flex justify-center align-center">
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
                 <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
               </div>
             </div>
@@ -67,7 +71,9 @@
           <v-card class="pa-6" rounded="lg">
             <div class="d-flex justify-space-between align-center">
               <div class="card-title">{{ item.title }}</div>
-              <div class="card-icon blue lighten-5 d-flex justify-center align-center">
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
                 <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
               </div>
             </div>
@@ -95,6 +101,235 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row v-if="userRole === `ROOT` && dashRoot">
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, index) in dashboardRootValues.encoder"
+          :key="index"
+        >
+          <v-card class="pa-6" rounded="lg">
+            <div class="d-flex justify-space-between align-center">
+              <div class="card-title">{{ item.title }}</div>
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
+                <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
+              </div>
+            </div>
+            <div
+              class="card-number mb-6"
+              :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-5'"
+            >
+              {{ item.value }}
+            </div>
+          </v-card>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, index) in dashboardRootValues.doctor"
+          :key="'doctor' + index"
+        >
+          <v-card class="pa-6" rounded="lg">
+            <div class="d-flex justify-space-between align-center">
+              <div class="card-title">{{ item.title }}</div>
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
+                <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
+              </div>
+            </div>
+            <div
+              class="d-flex"
+              :class="{
+                'mt-5 flex-row justify-space-around align-center':
+                  !$vuetify.breakpoint.xs,
+                'mt-3 flex-column justify-center align-center':
+                  $vuetify.breakpoint.xs,
+              }"
+            >
+              <div
+                class="d-flex flex-column align-center"
+                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
+                v-for="(indivDoc, index) in item.values"
+                :key="'indivdoctor' + index"
+              >
+                <div class="card-number">
+                  {{ indivDoc.value }}
+                </div>
+                <div>{{ indivDoc.title }}</div>
+              </div>
+            </div>
+          </v-card>
+        </v-col>
+        <v-col cols="12">
+          <v-card class="pa-6" rounded="lg">
+            <div class="d-flex justify-space-between align-center">
+              <div class="card-title">Funding</div>
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
+                <v-icon size="28" color="primary">mdi-cash-multiple</v-icon>
+              </div>
+            </div>
+            <template>
+              <div>
+                <v-data-table
+                  :headers="headers"
+                  :items="dashboardRootValues.tableContent"
+                  item-key="name"
+                  class="elevation-0"
+                  :search="search"
+                  :loading="loading"
+                  loading-text="Loading... Please wait"
+                >
+                  <template v-slot:top>
+                    <v-text-field
+                      v-model="search"
+                      label="Search"
+                      class="mx-4"
+                      prepend-icon="mdi-magnify"
+                    >
+                    </v-text-field>
+                  </template>
+                </v-data-table>
+              </div>
+            </template>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="userRole === `ADMIN` && dashRoot">
+        <v-col cols="12">
+          <v-card class="pa-6" rounded="lg">
+            <div class="d-flex justify-space-between align-center">
+              <div class="card-title">Packages Availed</div>
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
+                <v-icon size="28" color="primary">mdi-package</v-icon>
+              </div>
+            </div>
+            <div
+              class="d-flex"
+              :class="{
+                'mt-5 flex-row justify-space-around align-center':
+                  !$vuetify.breakpoint.xs,
+                'mt-3 flex-column justify-center align-center':
+                  $vuetify.breakpoint.xs,
+              }"
+            >
+              <div
+                class="d-flex flex-column align-center"
+                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
+                v-for="(packages, index) in dashboardRootValues.packages"
+                :key="'indivpackage' + index"
+              >
+                <div class="card-number">
+                  {{ packages.count }}
+                </div>
+                <div>{{ packages.package }}</div>
+              </div>
+            </div>
+          </v-card>
+        </v-col>
+        <v-col cols="12">
+          <v-card class="pa-6" rounded="lg">
+            <div class="d-flex justify-space-between align-center">
+              <div class="card-title">Funding</div>
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
+                <v-icon size="28" color="primary">mdi-cash-multiple</v-icon>
+              </div>
+            </div>
+            <template>
+              <div class="pa-0">
+                <v-data-table
+                  :headers="headers"
+                  :items="dashboardRootValues.tableContent"
+                  item-key="name"
+                  class="elevation-0"
+                  :search="search"
+                >
+                  <template v-slot:top>
+                    <v-text-field
+                      v-model="search"
+                      label="Search"
+                      class="mx-4"
+                      prepend-icon="mdi-magnify"
+                    >
+                    </v-text-field>
+                  </template>
+                </v-data-table>
+              </div>
+            </template>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="userRole === `ENCODER` && dashRoot">
+        <v-col
+          cols="12"
+          v-for="(item, index) in dashboardRootValues.encoder"
+          :key="index"
+        >
+          <v-card class="pa-6" rounded="lg">
+            <div class="d-flex justify-space-between align-center">
+              <div class="card-title">{{ item.title }}</div>
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
+                <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
+              </div>
+            </div>
+            <div
+              class="card-number"
+              :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-5'"
+            >
+              {{ item.value }}
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="userRole === `DOCTOR` && dashRoot">
+        <v-col
+          cols="12"
+          v-for="(item, index) in dashboardRootValues.doctor"
+          :key="'doctor' + index"
+        >
+          <v-card class="pa-6" rounded="lg">
+            <div class="d-flex justify-space-between align-center">
+              <div class="card-title">{{ item.title }}</div>
+              <div
+                class="card-icon blue lighten-5 d-flex justify-center align-center"
+              >
+                <v-icon size="28" color="primary">{{ item.icon }}</v-icon>
+              </div>
+            </div>
+            <div
+              class="d-flex"
+              :class="{
+                'mt-5 flex-row justify-space-around align-center':
+                  !$vuetify.breakpoint.xs,
+                'mt-3 flex-column justify-center align-center':
+                  $vuetify.breakpoint.xs,
+              }"
+            >
+              <div
+                class="d-flex flex-column align-center"
+                :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-0'"
+                v-for="(indivDoc, index) in item.values"
+                :key="'indivdoctor' + index"
+              >
+                <div class="card-number">
+                  {{ indivDoc.value }}
+                </div>
+                <div>{{ indivDoc.title }}</div>
+              </div>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -102,8 +337,12 @@
 import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   name: "DashboardView",
+  data: () => ({
+    search: "",
+    loading: true,
+  }),
   methods: {
-    ...mapActions("dashboard", ["getDashboardData"]),
+    ...mapActions("dashboard", ["getDashboardData", "getRootData"]),
     formattedTitle(value) {
       // Capitalize the first character of each word and replace underscores with spaces
       const formattedTitle = value
@@ -116,6 +355,7 @@ export default {
   computed: {
     ...mapState("dashboard", {
       dashData: "dashboard_data",
+      dashRoot: "dashboard_root_data",
     }),
     ...mapGetters("login", ["userRole"]),
     dashboardValues() {
@@ -217,9 +457,133 @@ export default {
         unique_services: unique_services,
       };
     },
+
+    dashboardRootValues() {
+      let encoder = [];
+      let doctor = [];
+      let packages = [];
+      let tableContent = [];
+
+      Object.keys(this.dashRoot).forEach((data) => {
+        if (data.includes("doctor")) {
+          doctor.push({
+            title: this.formattedTitle(data),
+            icon: "mdi-doctor",
+            values: [
+              {
+                title: "Specialty",
+                value: this.dashRoot[data]["specialty"],
+              },
+              {
+                title: "Pending Patients",
+                value: this.dashRoot[data]["pending_patients"],
+              },
+              {
+                title: "Completed Patients",
+                value: this.dashRoot[data]["completed_patients"],
+              },
+            ],
+          });
+        }
+
+        const root = this.dashRoot[data];
+        Object.keys(root).forEach((indata) => {
+          if (indata.includes("encoder")) {
+            encoder.push({
+              title: this.formattedTitle(indata),
+              icon: "mdi-desktop-classic",
+              value: root[indata],
+            });
+          }
+          if (indata.includes("package_counts")) {
+            root[indata].forEach((package_data) => {
+              packages.push({
+                    package: package_data["name"],
+                    count: package_data["count"],
+              });
+            });
+            packages.push({
+              title: "Packages Availed",
+              icon: "mdi-package",
+            });
+          }
+
+          const admin = root[indata];
+          Object.keys(admin).forEach((adminDatas) => {
+            if (adminDatas.includes("data")) {
+              admin[adminDatas].forEach((adminData) => {
+                tableContent.push({
+                  name: adminData["backer"],
+                  amount: adminData["contribution"],
+                });
+              });
+            }
+          });
+        });
+      });
+
+      return {
+        tableContent: tableContent,
+        encoder: encoder,
+        doctor: doctor,
+        packages: packages,
+      };
+    },
+
+    headers() {
+      return [
+        {
+          text: "Name",
+          value: "name",
+        },
+        {
+          text: "Contribution",
+          value: "amount",
+        },
+      ];
+    },
   },
+
   created() {
     this.getDashboardData();
+    this.getRootData();
+  },
+
+  watch: {
+    // dashboardValues: {
+    //   handler(value) {
+    //     console.log(value);
+    //   },
+    // },
+    // dashData: {
+    //   handler(value) {
+    //     console.log("General: ",value);
+    //   },
+    // },
+    dashRoot: {
+      handler(value) {
+        console.log("Root: ", value);
+      },
+    },
+    dashboardRootValues: {
+      handler(value) {
+        console.log("Root Values: ", value);
+      },
+    },
+    // "dashboardRootValues.tableContent": {
+    //   handler(value) {
+    //     this.loading = true;
+    //     if (!value.length) {
+    //       setTimeout(() => {
+    //         this.loading = false;
+    //         console.log("Failed", value);
+    //       }, 5000);
+    //     } else {
+    //       this.loading = false;
+    //       console.log("Success", value);
+    //     }
+    //   },
+    // },
   },
 };
 </script>
