@@ -251,6 +251,8 @@
                   item-key="name"
                   class="elevation-0"
                   :search="search"
+                  :loading="loading"
+                  loading-text="Loading... Please wait"
                 >
                   <template v-slot:top>
                     <v-text-field
@@ -513,8 +515,8 @@ export default {
             if (adminDatas.includes("data")) {
               admin[adminDatas].forEach((adminData) => {
                 tableContent.push({
-                  name: adminData["backer"],
-                  amount: adminData["contribution"],
+                  name: adminData["name"],
+                  total_amount: adminData["contribution"],
                 });
               });
             }
@@ -537,9 +539,17 @@ export default {
           value: "name",
         },
         {
-          text: "Contribution",
-          value: "amount",
+          text: "Total Contribution",
+          value: "total_amount",
         },
+        {
+          text: "Date",
+          value: "date",
+        },
+        {
+          text: "Remaining Amount",
+          value: "rem_amount",
+        }
       ];
     },
   },
@@ -550,40 +560,23 @@ export default {
   },
 
   watch: {
-    // dashboardValues: {
-    //   handler(value) {
-    //     console.log(value);
-    //   },
-    // },
-    // dashData: {
-    //   handler(value) {
-    //     console.log("General: ",value);
-    //   },
-    // },
+    dashboardRootValues:{
+      handler(value) {
+        console.log("Root", value)
+      }
+    },
     dashRoot: {
       handler(value) {
-        console.log("Root: ", value);
+        this.loading = true;
+        if (value.length === 0) {
+          setTimeout(() => {
+            this.loading = false;
+          }, 5000);
+        } else {
+          this.loading = false;
+        }
       },
     },
-    dashboardRootValues: {
-      handler(value) {
-        console.log("Root Values: ", value);
-      },
-    },
-    // "dashboardRootValues.tableContent": {
-    //   handler(value) {
-    //     this.loading = true;
-    //     if (!value.length) {
-    //       setTimeout(() => {
-    //         this.loading = false;
-    //         console.log("Failed", value);
-    //       }, 5000);
-    //     } else {
-    //       this.loading = false;
-    //       console.log("Success", value);
-    //     }
-    //   },
-    // },
   },
 };
 </script>
