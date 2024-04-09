@@ -516,7 +516,7 @@ export default {
               admin[adminDatas].forEach((adminData) => {
                 tableContent.push({
                   name: adminData["name"],
-                  total_amount: adminData["contribution"],
+                  total_amount: adminData["initial_contribution"],
                   date: adminData["created_at"],
                   rem_amount: adminData["contribution_left"]
                 });
