@@ -517,6 +517,8 @@ export default {
                 tableContent.push({
                   name: adminData["name"],
                   total_amount: adminData["contribution"],
+                  date: adminData["created_at"],
+                  rem_amount: adminData["contribution_left"]
                 });
               });
             }
