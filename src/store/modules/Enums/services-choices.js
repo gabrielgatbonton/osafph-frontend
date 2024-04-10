@@ -135,7 +135,7 @@ export const services_choices = {
         });
     },
     fetchCrowdFundings({ commit }) {
-      const url = `enums/hospital-services/crowd-fundings`;
+      const url = `enums/hospital-services/funders`;
       return this.$axios
         .get(url)
         .then((response) => {

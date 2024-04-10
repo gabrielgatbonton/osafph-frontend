@@ -65,7 +65,7 @@
               </v-dialog>
             </v-col>
             <v-col cols="auto">
-              <v-dialog v-model="dialogUser" max-width="600">
+              <v-dialog v-model="dialogUser" max-width="600" scrollable>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn color="blue darken-4" dark v-bind="attrs" v-on="on"
                     >Add User</v-btn
@@ -377,4 +377,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.overflow-scroll {
+  max-height: 600px;
+  overflow-y: auto;
+}
+</style>
