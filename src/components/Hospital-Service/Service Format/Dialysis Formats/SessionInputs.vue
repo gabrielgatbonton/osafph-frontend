@@ -22,6 +22,45 @@
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
+        <v-autocomplete
+          label="Dialysis Package"
+          :items="dialysis_packages"
+          item-text="package_name"
+          item-value="package_name"
+        >
+          <template v-slot:item="{ item }">
+            <div id="d-flex flex-column justify-start align-start">
+              <div>{{ item.package_name }}</div>
+              <div class="packages-description">
+                <span
+                  v-for="(dialysisItem, index) in item.dialysis_items"
+                  :key="index"
+                >
+                  {{ dialysisItem
+                  }}{{ index < item.dialysis_items.length - 1 ? ", " : "" }}
+                </span>
+              </div>
+            </div>
+          </template>
+        </v-autocomplete>
+      </v-col>
+      <v-col cols="12">
+        <v-autocomplete
+          label="Funder"
+          :items="crowd_fundings"
+          item-text="backer"
+        >
+          <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
+            <div class="d-flex flex-column">
+              <div>{{ item.backer }}</div>
+              <div class="item-description">
+                Amount: {{ item.contribution }}
+              </div>
+            </div>
+          </template>
+        </v-autocomplete>
+      </v-col>
+      <v-col cols="12">
         <v-row no-gutters>
           <v-col cols="12">
             <v-checkbox
@@ -179,6 +218,17 @@
                 </div>
               </template>
             </v-autocomplete>
+          </v-col>
+          <v-col cols="12">
+            <div class="d-flex justify-center align-center">
+              <v-btn
+                color="blue darken-4"
+                dark
+                :class="$vuetify.breakpoint.xs ? 'px-5' : 'px-10'"
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </div>
           </v-col>
           <v-col cols="12" v-if="index < payload.schedule.length - 1">
             <v-divider></v-divider>
@@ -425,6 +475,11 @@ export default {
     selectedDates: {
       handler() {
         this.setupCalendarWatchers();
+      },
+    },
+    crowd_fundings: {
+      handler(value) {
+        console.log(value);
       },
     },
   },
