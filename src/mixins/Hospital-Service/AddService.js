@@ -34,7 +34,7 @@ export default {
           date_released: null,
           status: payload.status,
           remarks: payload.remarks,
-          crowd_funding_backer: payload.crowd_funding_backer,
+          funders: payload.crowd_funding_backer,
         };
       } else if (payload.service_type === "LABORATORY") {
         data = {
@@ -45,12 +45,12 @@ export default {
           date_released: null,
           status: payload.status,
           remarks: payload.remarks,
-          crowd_funding_backer: payload.crowd_funding_backer,
+          funders: payload.crowd_funding_backer,
         };
       } else if (payload.service_type === "DIALYSIS") {
         data = {
           service_type: payload.service_type,
-          crowd_funding_backer: payload.crowd_funding_backer,
+          funders: payload.crowd_funding_backer,
           total_sessions: payload.total_sessions,
           hospital: payload.hospital,
           schedule: payload.schedule,

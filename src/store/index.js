@@ -25,6 +25,7 @@ import { dashboard } from "./modules/General/dashboard";
 import { accounts } from "./modules/Management/accounts";
 import { management } from "./modules/Enums/management";
 import { dialysis_general } from "./modules/General/dialysis_general";
+import { funding } from "./modules/Admin/funding";
 
 Vue.use(Vuex);
 
@@ -41,6 +42,7 @@ export default new Vuex.Store({
     admin_consultations,
     dialysis_packages,
     dialysis_items,
+    funding,
 
     //Encoder
     consultation_form,

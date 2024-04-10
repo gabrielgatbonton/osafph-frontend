@@ -15,9 +15,9 @@ export const dashboard = {
     SET_DASHBOARD_DATA(state, data) {
       state.dashboard_data = data;
     },
-    SET_DASHBOARD_ROOT_DATA(state, rootData){
+    SET_DASHBOARD_ROOT_DATA(state, rootData) {
       state.dashboard_root_data = rootData;
-    }
+    },
   },
   actions: {
     getDashboardData({ commit }) {
@@ -32,18 +32,17 @@ export const dashboard = {
           console.error("Error Fetching Dashboard Data: ", error);
         });
     },
-    getRootData({ commit }) {
-      // , queryParams = {}
+    getRootData({ commit }, queryParams = {}) {
       // Construct the query string from the queryParams object
-      // let queryString = Object.keys(queryParams)
-      //   .map((key) => `${key}=${queryParams[key]}`)
-      //   .join("&");
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
 
       // Add the query string to the URL if it exists
-      const url = `dashboard/root`;
-      // if (queryString) {
-      //   url += `?${queryString}`;
-      // }
+      let url = `dashboard/root`;
+      if (queryString) {
+        url += `?${queryString}`;
+      }
 
       return this.$axios
         .get(url)

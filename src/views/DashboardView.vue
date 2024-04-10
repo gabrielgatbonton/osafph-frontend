@@ -297,19 +297,22 @@ export default {
             });
           }
 
-          const admin = root[indata];
-          Object.keys(admin).forEach((adminDatas) => {
-            if (adminDatas.includes("data")) {
-              admin[adminDatas].forEach((adminData) => {
-                tableContent.push({
-                  name: adminData["name"],
-                  total_amount: adminData["initial_contribution"],
-                  date: adminData["created_at"],
-                  rem_amount: adminData["contribution_left"],
-                });
-              });
-            }
-          });
+          tableContent = this.dashRoot.admin.crowd_funding;
+          // const admin = root[indata];
+          // Object.keys(admin).forEach((adminDatas) => {
+          //   if (adminDatas.includes("data")) {
+          //     admin[adminDatas].forEach((adminData) => {
+          //       tableContent.push({
+          //         name: adminData["name"],
+          //         total_amount: adminData["initial_contribution"],
+          //         date: adminData["created_at"],
+          //         rem_amount: adminData["contribution_left"],
+          //         office: adminData["office"],
+          //         type: adminData["type"],
+          //       });
+          //     });
+          //   }
+          // });
         });
       });
 
