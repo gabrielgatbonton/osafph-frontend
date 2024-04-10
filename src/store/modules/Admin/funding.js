@@ -17,7 +17,6 @@ export const funding = {
         .then((response) => {
           commit("");
           store.dispatch("services_choices/fetchCrowdFundings");
-          store.dispatch("dashboard/getRootData");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -32,7 +31,6 @@ export const funding = {
         .then((response) => {
           commit("");
           store.dispatch("services_choices/fetchCrowdFundings");
-          store.dispatch("dashboard/getRootData");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -46,7 +44,6 @@ export const funding = {
         .then((response) => {
           commit("");
           store.dispatch("services_choices/fetchCrowdFundings");
-          store.dispatch("dashboard/getRootData");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
