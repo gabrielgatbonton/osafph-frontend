@@ -43,28 +43,6 @@ export default [
     beforeEnter: checkLoggedIn,
   },
   {
-    path: "/dialysis-packages",
-    name: "dialysis-packages",
-    component: () =>
-      import(
-        /* webpackChunkName: "dialysis-admin" */ "@/views/Dialysis/DialysisPackagesView.vue"
-      ),
-    props: true,
-    meta: { requiresAuth: true },
-    beforeEnter: checkLoggedIn,
-  },
-  {
-    path: "/dialysis-items",
-    name: "dialysis-items",
-    component: () =>
-      import(
-        /* webpackChunkName: "dialysis-admin" */ "@/views/Dialysis/DialysisItemsView.vue"
-      ),
-    props: true,
-    meta: { requiresAuth: true },
-    beforeEnter: checkLoggedIn,
-  },
-  {
     path: "/dialysis-queuing",
     name: "dialysis-queuing",
     component: () =>
