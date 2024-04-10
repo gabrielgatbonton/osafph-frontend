@@ -67,6 +67,7 @@ function isAllowedRoutes(routeName, userRole) {
       "management",
       "dialysis-packages",
       "dialysis-items",
+      "document-types",
     ];
   } else if (userRole === "ENCODER") {
     allowedRoutes = [

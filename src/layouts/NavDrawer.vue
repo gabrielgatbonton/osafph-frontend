@@ -60,8 +60,8 @@ export default {
           },
           {
             dropdown: {
-              icon: "mdi-blood-bag",
-              title: "Dialysis",
+              icon: "mdi-tune-variant",
+              title: "Enums",
             },
             subroutes: [
               {
@@ -74,6 +74,11 @@ export default {
                 text: "Dialysis Items",
                 route: "/dialysis-items",
               },
+              {
+                icon: "mdi-file-document",
+                text: "Document Types",
+                route: "/document-types",
+              }
             ],
           },
           {

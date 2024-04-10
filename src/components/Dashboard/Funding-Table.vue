@@ -53,7 +53,6 @@
                 </v-row>
               </v-container>
             </v-toolbar>
-
             <v-dialog v-model="dialog" max-width="600" scrollable>
               <v-card>
                 <v-card-title class="blue darken-1 pb-4 white--text"
@@ -66,6 +65,8 @@
                       <v-text-field
                         label="Name"
                         v-model="payload.name"
+                        @blur="$v.payload.name.$touch()"
+                        :error-messages="errorMessages.name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -87,6 +88,8 @@
                         type="number"
                         v-model="payload.initial_contribution"
                         :disabled="disabled"
+                        @blur="$v.payload.initial_contribution.$touch()"
+                        :error-messages="errorMessages.initial_contribution"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -135,10 +138,11 @@
 import { mapActions } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
+import FundingTableMixin from "@/mixins/Validation/DashboardValidation/FundingTable";
 export default {
   name: "Funding-Table",
   props: ["data"],
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, FundingTableMixin],
   components: {
     ReusableDeleteDialog,
   },
@@ -181,6 +185,7 @@ export default {
       this.dialogStatus = status;
       if (this.dialogStatus === "UPDATE") {
         // Init the id
+        this.$v.$reset();
         this.id = value.id;
 
         // Disable the Initial Contribution per conditions.
@@ -202,7 +207,15 @@ export default {
         this.dialog = !this.dialog;
         this.dialogTitle = "Update";
       } else {
-        // Open the dialog and change the title
+        // Open the dialog and reset payload, change the title also
+        this.$v.$reset();
+        this.disabled = false;
+        this.payload = {
+          name: null,
+          office: null,
+          type: null,
+          initial_contribution: null,
+        };
         this.dialog = !this.dialog;
         this.dialogTitle = "Create";
       }
@@ -217,39 +230,57 @@ export default {
     // Requests
     submitRequest() {
       if (this.dialogStatus === "UPDATE") {
-        this.updateFunder({
-          data: this.payload,
-          id: this.id,
-        })
-          .catch((error) => {
-            console.error("Error Updating Funder: ", error);
+        this.$v.$touch();
+
+        if (!this.$v.$invalid) {
+          this.updateFunder({
+            data: this.payload,
+            id: this.id,
           })
-          .finally(() => {
-            this.payload = {
-              name: null,
-              office: null,
-              type: null,
-              initial_contribution: null,
-            };
-            this.id = null;
-            this.dialogStatus = null;
-            this.dialog = false;
-          });
+            .catch((error) => {
+              console.error("Error Updating Funder: ", error);
+            })
+            .finally(() => {
+              this.payload = {
+                name: null,
+                office: null,
+                type: null,
+                initial_contribution: null,
+              };
+              this.id = null;
+              this.dialogStatus = null;
+              this.dialog = false;
+              this.$v.$reset();
+              //Fetch Again for the updating of data
+              this.getRootData(this.query_params).catch((error) => {
+                console.error("Error Fetching Root Data: ", error);
+              });
+            });
+        }
       } else {
-        this.createFunder(this.payload)
-          .catch((error) => {
-            console.error("Error Submitting Funder: ", error);
-          })
-          .finally(() => {
-            this.payload = {
-              name: null,
-              office: null,
-              type: null,
-              initial_contribution: null,
-            };
-            this.dialogStatus = null;
-            this.dialog = false;
-          });
+        this.$v.$touch();
+
+        if (!this.$v.$invalid) {
+          this.createFunder(this.payload)
+            .catch((error) => {
+              console.error("Error Submitting Funder: ", error);
+            })
+            .finally(() => {
+              this.payload = {
+                name: null,
+                office: null,
+                type: null,
+                initial_contribution: null,
+              };
+              this.dialogStatus = null;
+              this.dialog = false;
+              this.$v.$reset();
+              //Fetch Again for the updating of data
+              this.getRootData(this.query_params).catch((error) => {
+                console.error("Error Fetching Root Data: ", error);
+              });
+            });
+        }
       }
     },
     deleteRequest() {
@@ -260,6 +291,10 @@ export default {
         .finally(() => {
           this.id = null;
           this.deleteDialog = false;
+          //Fetch Again for the updating of data
+          this.getRootData(this.query_params).catch((error) => {
+            console.error("Error Fetching Root Data: ", error);
+          });
         });
     },
   },

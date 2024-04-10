@@ -10,7 +10,7 @@ import ReroutePage from "./modules/reroute";
 import hospitalServicesRoute from "./modules/hospital-services";
 import doctorRoute from "./modules/doctor";
 import dialysisRoute from "./modules/dialysis";
-
+import EnumsRoute from "./modules/enums";
 Vue.use(VueRouter);
 
 const routes = [
@@ -36,6 +36,7 @@ const routes = [
   ...hospitalServicesRoute,
   ...doctorRoute,
   ...dialysisRoute,
+  ...EnumsRoute,
 ];
 
 const router = new VueRouter({
