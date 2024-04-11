@@ -14,7 +14,7 @@ import { admin_consultations } from "./modules/Admin/admin-consultations";
 import { identification_cards } from "./modules/Enums/identification-cards";
 import { professions } from "./modules/Enums/professions";
 import { consultation_form } from "./modules/Encoder/consultation-form";
-import { file_types } from "./modules/Enums/file-types";
+import { file_types, file_types_actions } from "./modules/Enums/file-types";
 import { dialysis } from "./modules/Enums/dialysis";
 import { dialysis_sessions } from "./modules/Encoder/dialysis_sessions";
 import { files } from "./modules/General/files";
@@ -43,6 +43,7 @@ export default new Vuex.Store({
     dialysis_packages,
     dialysis_items,
     funding,
+    file_types_actions,
 
     //Encoder
     consultation_form,

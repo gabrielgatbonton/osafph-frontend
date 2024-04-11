@@ -20,6 +20,9 @@
           loading-text="Loading... Please wait"
           :server-items-length="total_items"
           :options.sync="options"
+          :footer-props="{
+            itemsPerPageOptions: [5, 10, 15],
+          }"
         >
           <template v-slot:top>
             <SubmissionAlert :message="success.message" v-if="success.alert" />
