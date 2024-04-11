@@ -15,11 +15,9 @@ import { identification_cards } from "./modules/Enums/identification-cards";
 import { professions } from "./modules/Enums/professions";
 import { consultation_form } from "./modules/Encoder/consultation-form";
 import { file_types, file_types_actions } from "./modules/Enums/file-types";
-import { dialysis } from "./modules/Enums/dialysis";
+import { dialysis, dialysis_items_actions } from "./modules/Enums/dialysis";
 import { dialysis_sessions } from "./modules/Encoder/dialysis_sessions";
 import { files } from "./modules/General/files";
-import { dialysis_packages } from "./modules/Admin/dialysis_packages";
-import { dialysis_items } from "./modules/Admin/dialysis_items";
 import { dialysis_calendar } from "./modules/Encoder/dialysis_calendar";
 import { dashboard } from "./modules/General/dashboard";
 import { accounts } from "./modules/Management/accounts";
@@ -40,8 +38,7 @@ export default new Vuex.Store({
 
     //Admin Exclusive Stores
     admin_consultations,
-    dialysis_packages,
-    dialysis_items,
+    dialysis_items_actions,
     funding,
     file_types_actions,
 

@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="packagesData"
+    :items="itemData"
     item-key="name"
     class="elevation-0"
     :search="search"
@@ -21,33 +21,28 @@
         @dialogResponse="resetActivator"
         @deleteItem="deleteItem"
       />
-      <PackageDialog
+      <ItemDialog
         :activator="dialog"
         @dialogResponse="resetEditActivator"
-        :package="dialysis_package"
+        :item="dialysis_item"
         @submitForm="submitForm"
       />
     </template>
-    <template v-slot:[`item.package_price`]="{ item }">
-      <div>PHP {{ item.package_price }}</div>
-    </template>
-    <template v-slot:[`item.items`]="{ item }">
-      <span v-for="(name, index) in item.items" :key="index"
-        >{{ name }}{{ index < item.items.length - 1 ? ", " : "" }}</span
-      >
+    <template v-slot:[`item.item_price`]="{ item }">
+      <div>PHP {{ item.item_price }}</div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-container
-        :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-n5'"
-        style="width: auto; padding: 0"
+        :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-n8'"
+        style="width: 120px; padding: 0"
       >
-        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'start'">
+        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'center'">
           <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
             <v-icon
               class="mx-1"
               color="blue darken-4"
               dense
-              @click="activator(item.id)"
+              @click="activator(item.item_id)"
               >mdi-pencil</v-icon
             >
           </v-col>
@@ -56,18 +51,9 @@
               class="mx-1"
               color="error"
               dense
-              @click="deleteActivator(item.id)"
+              @click="deleteActivator(item.item_id)"
               >mdi-trash-can</v-icon
             >
-          </v-col>
-          <v-col cols="auto" v-if="iconPermissions.toggle" align-self="center">
-            <v-switch
-              v-model="item.is_active"
-              inset
-              class="mx-1"
-              dense
-              @click="togglePackage(item.id)"
-            ></v-switch>
           </v-col>
         </v-row>
       </v-container>
@@ -78,14 +64,13 @@
 <script>
 import { mapGetters } from "vuex";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
-import DeletePackage from "@/mixins/Admin/Dialysis/DeletePackage";
-import PackageDialog from "./PackageDialog.vue";
-import EditPackage from "@/mixins/Admin/Dialysis/EditPackage";
-import TogglePackage from "@/mixins/Admin/Dialysis/TogglePackage";
+import DeleteItem from "@/mixins/Admin/Dialysis/DeleteItem";
+import ItemDialog from "./ItemDialog.vue";
+import EditItem from "@/mixins/Admin/Dialysis/EditItem";
 export default {
-  name: "Packages-Table",
-  props: ["packages"],
-  mixins: [DeletePackage, EditPackage, TogglePackage],
+  name: "Items-Table",
+  mixins: [DeleteItem, EditItem],
+  props: ["items"],
   data: () => ({
     search: "",
     offset: true,
@@ -93,7 +78,7 @@ export default {
   }),
   components: {
     ReusableDeleteDialog,
-    PackageDialog,
+    ItemDialog,
   },
   methods: {
     filterOnlyCapsText(value, search) {
@@ -110,20 +95,12 @@ export default {
     headers() {
       return [
         {
-          text: "PACKAGE",
-          value: "package",
+          text: "ITEM ID",
+          value: "item_id",
         },
         {
-          text: "PACKAGE PRICE",
-          value: "package_price",
-        },
-        {
-          text: "ITEMS",
-          value: "items",
-        },
-        {
-          text: "STATUS",
-          value: "status",
+          text: "DIALYSIS ITEM NAME",
+          value: "dialysis_item_name",
         },
         {
           text: "ACTIONS",
@@ -135,33 +112,26 @@ export default {
     iconPermissions() {
       let edit = false;
       let remove = false;
-      let toggle = false;
       if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         edit = true;
         remove = true;
-        toggle = true;
       }
       return {
         edit: edit,
         delete: remove,
-        toggle: toggle,
       };
     },
-    packagesData() {
-      return this.packages
-        ? this.packages.map((item) => ({
-            id: item.id,
-            package: item.name,
-            package_price: item.price,
-            items: item.dialysis_item_options.map((item) => item.name),
-            is_active: item.is_active,
-            status: item.is_active ? "ACTIVE" : "INACTIVE",
+    itemData() {
+      return this.items
+        ? this.items.map((item) => ({
+            item_id: item.id,
+            dialysis_item_name: item.name,
           }))
         : [];
     },
   },
   watch: {
-    packages: {
+    items: {
       handler(value) {
         this.loading = true;
         if (!value.length) {
@@ -178,3 +148,4 @@ export default {
 </script>
 
 <style scoped></style>
+@/mixins/Admin/Enums/Dialysis/DeleteItem@/mixins/Admin/Enums/Dialysis/EditItem

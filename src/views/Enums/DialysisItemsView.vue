@@ -10,17 +10,35 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn v-if="!$vuetify.breakpoint.xs" dark class="mr-3" color="blue darken-4" @click="activator">
+          <v-btn
+            v-if="!$vuetify.breakpoint.xs"
+            dark
+            class="mr-3"
+            color="blue darken-4"
+            @click="activator"
+          >
             Add Item</v-btn
           >
-          <v-btn v-else class="mr-3" color="blue darken-4" icon @click="activator">
+          <v-btn
+            v-else
+            class="mr-3"
+            color="blue darken-4"
+            icon
+            @click="activator"
+          >
             <v-icon>mdi-plus</v-icon></v-btn
           >
         </v-col>
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ItemsTable :items="dialysis_items" />
+    <v-container fluid class="ma-1">
+      <v-row>
+        <v-col cols="12">
+          <ItemsTable :items="dialysis_items" />
+        </v-col>
+      </v-row>
+    </v-container>
     <ItemDialog
       :activator="dialog"
       @dialogResponse="resetActivator"
@@ -33,8 +51,8 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-import ItemsTable from "@/components/Dialysis/Items-Table.vue";
-import ItemDialog from "@/components/Dialysis/ItemDialog.vue";
+import ItemsTable from "@/components/Enums/Items-Table.vue";
+import ItemDialog from "@/components/Enums/ItemDialog.vue";
 export default {
   name: "DialysisItemsView",
   mixins: [ErrorAlertsLogic],
@@ -47,7 +65,10 @@ export default {
     ItemDialog,
   },
   methods: {
-    ...mapActions("dialysis_items", ["fetchDialysisItems", "addDialysisItems"]),
+    ...mapActions("dialysis_items_actions", [
+      "fetchDialysisItems",
+      "addDialysisItem",
+    ]),
     activator() {
       this.dialog = !this.dialog;
     },
@@ -55,7 +76,7 @@ export default {
       this.dialog = data;
     },
     submitForm(data) {
-      this.addDialysisItems(data)
+      this.addDialysisItem(data)
         .catch((error) => {
           console.error("Error Adding Item in component: ", error);
         })
@@ -68,7 +89,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("dialysis_items", {
+    ...mapState("dialysis_items_actions", {
       dialysis_items: "dialysis_items",
     }),
   },

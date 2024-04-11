@@ -5,7 +5,7 @@ export default {
     dialysis_package_id: null,
   }),
   methods: {
-    ...mapActions("dialysis_packages", ["deleteDialysisPackage"]),
+    ...mapActions("dialysis_items_actions", ["deleteDialysisPackage"]),
     deleteActivator(id) {
       this.dialysis_package_id = id;
       this.deleteDialog = !this.deleteDialog;

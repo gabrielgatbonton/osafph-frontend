@@ -10,17 +10,35 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn v-if="!$vuetify.breakpoint.xs" dark class="mr-3" color="blue darken-4" @click="activator">
+          <v-btn
+            v-if="!$vuetify.breakpoint.xs"
+            dark
+            class="mr-3"
+            color="blue darken-4"
+            @click="activator"
+          >
             Add Package</v-btn
           >
-          <v-btn v-else class="mr-3" color="blue darken-4" icon @click="activator">
+          <v-btn
+            v-else
+            class="mr-3"
+            color="blue darken-4"
+            icon
+            @click="activator"
+          >
             <v-icon>mdi-plus</v-icon></v-btn
           >
         </v-col>
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <PackagesTable :packages="dialysis_packages" />
+    <v-container fluid class="ma-1">
+      <v-row>
+        <v-col cols="12">
+          <PackagesTable :packages="dialysis_packages" />
+        </v-col>
+      </v-row>
+    </v-container>
     <PackageDialog
       @dialogResponse="resetActivator"
       :activator="dialog"
@@ -31,9 +49,9 @@
 </template>
 
 <script>
-import PackagesTable from "@/components/Dialysis/Packages-Table.vue";
+import PackagesTable from "@/components/Enums/Packages-Table.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-import PackageDialog from "@/components/Dialysis/PackageDialog.vue";
+import PackageDialog from "@/components/Enums/PackageDialog.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "DialysisPackagesView",
@@ -47,7 +65,7 @@ export default {
     PackageDialog,
   },
   methods: {
-    ...mapActions("dialysis_packages", [
+    ...mapActions("dialysis_items_actions", [
       "fetchDialysisPackages",
       "addDialysisPackage",
     ]),
@@ -73,8 +91,8 @@ export default {
     },
   },
   computed: {
-    ...mapState("dialysis_packages", {
-      dialysis_packages: "dialysis_packages"
+    ...mapState("dialysis_items_actions", {
+      dialysis_packages: "dialysis_packages",
     }),
   },
   created() {
