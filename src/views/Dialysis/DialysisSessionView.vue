@@ -173,8 +173,7 @@ export default {
         ],
         items_availed: {
           service_type: this.session.hospital_service.service_type,
-          package_name: this.session.dialysis_package.name,
-          items: this.session.dialysis_package.dialysis_items,
+          packages: this.session.dialysis_packages,
         },
       };
     },
