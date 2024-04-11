@@ -239,6 +239,7 @@
                 $v.payload.schedule.$each.$iter[index].dialysis_package.$touch()
               "
               :error-messages="errorMessages.dialysis_package[index]"
+              @input="appendPackage"
             >
               <template v-slot:item="{ item }">
                 <div id="d-flex flex-column justify-start align-start">
@@ -263,6 +264,7 @@
               :label="`Funder ${fundIndex + 1}`"
               :items="crowd_fundings"
               item-text="name"
+              @input="appendFunder"
             >
               <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
                 <div class="d-flex flex-column">
@@ -293,22 +295,6 @@
               </v-btn>
             </div>
           </v-col>
-          <!-- <v-col cols="12">
-            <div class="d-flex justify-center align-center">
-              <v-btn
-                v-show="payload.schedule[index].hidden"
-                color="blue darken-4"
-                dark
-                :class="$vuetify.breakpoint.xs ? 'px-5' : 'px-10'"
-                @click="
-                  payload.schedule[index].hidden =
-                    !payload.schedule[index].hidden
-                "
-              >
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </div>
-          </v-col> -->
           <v-col cols="12" v-if="index < payload.schedule.length - 1">
             <v-divider></v-divider>
           </v-col>
@@ -356,6 +342,8 @@ export default {
     master_package: null,
     master_funder: null,
     selectedDates: [],
+    selectedPackages: [],
+    selectedFunders: [],
     landscape: true,
     disable: false,
     payload: {
@@ -417,8 +405,23 @@ export default {
     appendDate(schedule) {
       schedule.forEach((date, index) => {
         this.payload.schedule[index].date = this.selectedDates[index];
+        this.payload.schedule[index].dialysis_package = this.master_package;
+        this.payload.schedule[index].funder = this.master_funder;
       });
     },
+
+    appendPackage(schedule) {
+      schedule.forEach((dialysis_package, index) => {
+        this.payload.schedule[index].dialysis_package = this.selectedPackages[index];
+      });
+    },
+
+    appendFunder(schedule) {
+      schedule.forEach((funder, index) => {
+        this.payload.schedule[index].funder = this.selectedFunders[index];
+      });
+    },
+
 
     setupCalendarWatchers() {
       if (this.selectedDates.length !== this.payload.total_sessions) {
@@ -527,8 +530,8 @@ export default {
     addIndex() {
       this.payload.schedule.forEach((session, index) => {
         if (
-          this.payload.schedule[index].package_index ===
-          this.payload.schedule[index].package_index
+          this.payload.schedule[index].date ===
+          this.payload.schedule[index].date
         ) {
           this.payload.schedule[index].package_index.push(null);
           this.payload.schedule[index].funder_index.push(null);
