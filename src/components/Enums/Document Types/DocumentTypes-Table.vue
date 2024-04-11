@@ -68,7 +68,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
+import ReusableDeleteDialog from "../../ReusableDeleteDialog.vue";
 import DeleteType from "@/mixins/Admin/Enums/DeleteType";
 import FileTypeDialogMixin from "@/mixins/Validation/EnumsValidation/FileTypeDialog";
 export default {

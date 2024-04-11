@@ -51,8 +51,8 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-import ItemsTable from "@/components/Enums/Items-Table.vue";
-import ItemDialog from "@/components/Enums/ItemDialog.vue";
+import ItemsTable from "@/components/Enums/Dialysis Items/Items-Table.vue";
+import ItemDialog from "@/components/Enums/Dialysis Items/ItemDialog.vue";
 export default {
   name: "DialysisItemsView",
   mixins: [ErrorAlertsLogic],

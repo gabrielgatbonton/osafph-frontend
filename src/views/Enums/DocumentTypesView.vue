@@ -56,7 +56,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-import DocumentTypesTable from "@/components/Enums/DocumentTypes-Table.vue";
+import DocumentTypesTable from "@/components/Enums/Document Types/DocumentTypes-Table.vue";
 export default {
   name: "DocumentTypesView",
   mixins: [ErrorAlertsLogic],

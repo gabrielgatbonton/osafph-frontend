@@ -49,9 +49,9 @@
 </template>
 
 <script>
-import PackagesTable from "@/components/Enums/Packages-Table.vue";
+import PackagesTable from "@/components/Enums/Dialysis Packages/Packages-Table.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-import PackageDialog from "@/components/Enums/PackageDialog.vue";
+import PackageDialog from "@/components/Enums/Dialysis Packages/PackageDialog.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "DialysisPackagesView",
