@@ -21,8 +21,12 @@
         >
           <div>Print Card</div>
           <div>
-            <v-btn icon dark class="mr-3" @click="generateAndPrintID"><v-icon>mdi-printer</v-icon></v-btn>
-            <v-btn icon dark @click="dialog = !dialog"><v-icon>mdi-close</v-icon></v-btn>
+            <v-btn icon dark class="mr-3" @click="generateAndPrintID"
+              ><v-icon>mdi-printer</v-icon></v-btn
+            >
+            <v-btn icon dark @click="dialog = !dialog"
+              ><v-icon>mdi-close</v-icon></v-btn
+            >
           </div>
         </v-card-title>
         <v-container fluid class="overflow-scroll">
@@ -353,5 +357,16 @@ export default {
 }
 .page-padding {
   padding: 6rem;
+}
+
+@media (max-width: 768px) {
+  .page-padding {
+    padding: 3rem;
+  }
+}
+@media (max-width: 512px) {
+  .page-padding {
+    padding: 2rem;
+  }
 }
 </style>

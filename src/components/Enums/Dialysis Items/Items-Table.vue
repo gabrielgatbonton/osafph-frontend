@@ -33,7 +33,6 @@
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-container
-        :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-n8'"
         style="width: 120px; padding: 0"
       >
         <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'center'">
@@ -106,6 +105,7 @@ export default {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
+          align: "center",
         },
       ];
     },
