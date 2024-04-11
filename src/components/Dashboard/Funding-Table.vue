@@ -181,7 +181,7 @@ export default {
     page: 1,
   }),
   methods: {
-    ...mapActions("funding", ["createFunder", "updateFunder", "deleteFunder"]),
+    ...mapActions("funders_actions", ["createFunder", "updateFunder", "deleteFunder"]),
     ...mapActions("dashboard", ["getRootData"]),
     // Dialogs Methods
     openDialog(value, status) {

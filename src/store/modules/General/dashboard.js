@@ -1,6 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
-// import store from "../../";
+import store from "../../";
 
 Vue.use(Vuex);
 
@@ -52,6 +52,52 @@ export const dashboard = {
         })
         .catch((error) => {
           console.error("Error fetching root data: ", error);
+        });
+    },
+  },
+};
+
+export const funders_actions = {
+  namespaced: true,
+  state: () => ({}),
+  getters: {},
+  mutations: {},
+  actions: {
+    createFunder(_, data) {
+      const url = `enums/hospital-services/funders`;
+      return this.$axios
+        .post(url, data)
+        .then((response) => {
+          store.dispatch("services_choices/fetchCrowdFundings");
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+        })
+        .catch((error) => {
+          console.error("Error Adding Funder: ", error);
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+        });
+    },
+    updateFunder(_, { id, data }) {
+      const url = `enums/hospital-services/funders/${id}`;
+      return this.$axios
+        .put(url, data)
+        .then((response) => {
+          store.dispatch("services_choices/fetchCrowdFundings");
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+        })
+        .catch((error) => {
+          console.error("Error Updating Funder: ", error);
+        });
+    },
+    deleteFunder(_, id) {
+      const url = `enums/hospital-services/funders/${id}`;
+      return this.$axios
+        .delete(url)
+        .then((response) => {
+          store.dispatch("services_choices/fetchCrowdFundings");
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+        })
+        .catch((error) => {
+          console.error("Error Deleting Funder: ", error);
         });
     },
   },

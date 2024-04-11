@@ -43,12 +43,11 @@ export const file_types_actions = {
   getters: {},
   mutations: {},
   actions: {
-    createFileType({ dispatch }, data) {
+    createFileType(_, data) {
       const url = `enums/hospital-services/files/document-types`;
       return this.$axios
         .post(url, data)
         .then((response) => {
-          dispatch("");
           store.dispatch("file_types/fetchFileTypes");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
@@ -57,12 +56,11 @@ export const file_types_actions = {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
-    deleteFileType({ dispatch }, id) {
+    deleteFileType(_, id) {
       const url = `enums/hospital-services/files/document-types/${id}`;
       return this.$axios
         .delete(url)
         .then((response) => {
-          dispatch("");
           store.dispatch("file_types/fetchFileTypes");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })

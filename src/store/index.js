@@ -19,11 +19,11 @@ import { dialysis, dialysis_items_actions } from "./modules/Enums/dialysis";
 import { dialysis_sessions } from "./modules/Encoder/dialysis_sessions";
 import { files } from "./modules/General/files";
 import { dialysis_calendar } from "./modules/Encoder/dialysis_calendar";
-import { dashboard } from "./modules/General/dashboard";
+import { dashboard, funders_actions } from "./modules/General/dashboard";
 import { accounts } from "./modules/Management/accounts";
 import { management } from "./modules/Enums/management";
 import { dialysis_general } from "./modules/General/dialysis_general";
-import { funding } from "./modules/Admin/funding";
+// import { funding } from "./modules/Admin/funding";
 
 Vue.use(Vuex);
 
@@ -39,7 +39,8 @@ export default new Vuex.Store({
     //Admin Exclusive Stores
     admin_consultations,
     dialysis_items_actions,
-    funding,
+    funders_actions,
+    // funding,
     file_types_actions,
 
     //Encoder
