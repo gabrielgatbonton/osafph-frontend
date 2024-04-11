@@ -64,9 +64,9 @@
 <script>
 import { mapGetters } from "vuex";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
-import DeleteItem from "@/mixins/Admin/Dialysis/DeleteItem";
+import DeleteItem from "@/mixins/Admin/Enums/Dialysis/DeleteItem";
 import ItemDialog from "./ItemDialog.vue";
-import EditItem from "@/mixins/Admin/Dialysis/EditItem";
+import EditItem from "@/mixins/Admin/Enums/Dialysis/EditItem";
 export default {
   name: "Items-Table",
   mixins: [DeleteItem, EditItem],
