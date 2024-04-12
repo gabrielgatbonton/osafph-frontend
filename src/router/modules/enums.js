@@ -5,7 +5,7 @@ export default [
     name: "dialysis-packages",
     component: () =>
       import(
-        /* webpackChunkName: "admin-enums" */ "@/views/Dialysis/DialysisPackagesView.vue"
+        /* webpackChunkName: "admin-enums" */ "@/views/Enums/DialysisPackagesView.vue"
       ),
     props: true,
     meta: { requiresAuth: true },
@@ -16,7 +16,7 @@ export default [
     name: "dialysis-items",
     component: () =>
       import(
-        /* webpackChunkName: "admin-enums" */ "@/views/Dialysis/DialysisItemsView.vue"
+        /* webpackChunkName: "admin-enums" */ "@/views/Enums/DialysisItemsView.vue"
       ),
     props: true,
     meta: { requiresAuth: true },

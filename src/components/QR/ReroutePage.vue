@@ -1,23 +1,27 @@
 <template>
   <div>
-    <div>
-      <v-img
-        class="mx-auto mt-15 slide-down"
-        width="300"
-        src="../../assets/OSAFPH LOGO.png"
-        contain
-      ></v-img>
-    </div>
-    <div>
-      <div class="text-center my-5 text-subtitle-1 slide-down">
-        Office of the Special Adviser for Flagship Programs for Health
-      </div>
-      <div class="text-center my-5 text-h3 slide-down">
-        Official COVID-19 Vaccination Record
-      </div>
-    </div>
     <v-container>
-      <v-row dense>
+      <v-row align-content="center">
+        <v-col cols="12">
+          <v-img
+            class="mx-auto mt-15 slide-down"
+            width="300"
+            src="../../assets/OSAFPH LOGO.png"
+            contain
+          ></v-img>
+        </v-col>
+        <v-col cols="12">
+          <div class="text-center text-subtitle-1 slide-down">
+            Office of the Special Adviser for Flagship Programs for Health
+          </div>
+        </v-col>
+        <v-col cols="12">
+          <div class="text-center text-h3 slide-down">
+            Official COVID-19 Vaccination Record
+          </div>
+        </v-col>
+      </v-row>
+      <v-row dense class="mt-5">
         <v-col cols="12">
           <div
             v-if="

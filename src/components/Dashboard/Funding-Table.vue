@@ -20,6 +20,9 @@
           loading-text="Loading... Please wait"
           :server-items-length="total_items"
           :options.sync="options"
+          :footer-props="{
+            itemsPerPageOptions: [5, 10, 15],
+          }"
         >
           <template v-slot:top>
             <SubmissionAlert :message="success.message" v-if="success.alert" />
@@ -29,30 +32,31 @@
               @deleteItem="deleteRequest"
               @dialogResponse="resetDeleteDialog"
             />
-            <v-toolbar flat>
-              <v-container fluid>
-                <v-row align-content="center">
-                  <v-col cols="9">
-                    <v-text-field
-                      v-model="search"
-                      label="Search"
-                      class="mx-4"
-                      prepend-icon="mdi-magnify"
-                    >
-                    </v-text-field>
-                  </v-col>
-                  <v-spacer></v-spacer>
-                  <v-col cols="auto">
-                    <v-btn
-                      color="blue darken-4"
-                      dark
-                      @click="openDialog(null, 'CREATE')"
-                      >New Funder</v-btn
-                    >
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-toolbar>
+            <div class="d-flex justify-space-between align-center">
+              <v-text-field
+                v-model="search"
+                label="Search"
+                class="mx-4"
+                prepend-icon="mdi-magnify"
+              >
+              </v-text-field>
+              <v-btn
+                v-if="!$vuetify.breakpoint.xs"
+                color="blue darken-4"
+                dark
+                @click="openDialog(null, 'CREATE')"
+                >New Funder</v-btn
+              >
+              <v-btn
+                v-else
+                class="mr-3"
+                color="blue darken-4"
+                icon
+                @click="openDialog(null, 'CREATE')"
+                ><v-icon>mdi-plus</v-icon></v-btn
+              >
+            </div>
+
             <v-dialog v-model="dialog" max-width="600" scrollable>
               <v-card>
                 <v-card-title class="blue darken-1 pb-4 white--text"
@@ -178,7 +182,11 @@ export default {
     page: 1,
   }),
   methods: {
-    ...mapActions("funding", ["createFunder", "updateFunder", "deleteFunder"]),
+    ...mapActions("funders_actions", [
+      "createFunder",
+      "updateFunder",
+      "deleteFunder",
+    ]),
     ...mapActions("dashboard", ["getRootData"]),
     // Dialogs Methods
     openDialog(value, status) {

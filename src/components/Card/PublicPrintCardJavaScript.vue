@@ -1,41 +1,61 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" min-width="600" max-width="900">
+    <v-dialog
+      v-model="dialog"
+      min-width="600"
+      max-width="900"
+      fullscreen
+      hide-overlay
+      scrollable
+    >
       <template v-slot:activator="{ on, attrs }">
         <v-btn right dark class="mb-2 blue darken-4" v-bind="attrs" v-on="on"
           ><v-icon left>mdi-smart-card-outline</v-icon>Print MCG Cares
           Card</v-btn
         >
       </template>
-      <v-card>
-        <v-card-title class="blue darken-1 pb-4 white--text"
-          >ID Card Generator</v-card-title
+      <v-card id="background">
+        <v-card-title
+          id="navbar"
+          class="pb-4 white--text d-flex justify-space-between"
         >
-        <div class="text-center mx-4 mt-4">
-          <canvas
-            ref="frontCardCanvas"
-            class="canvas-border"
-            style="position: relative; max-width: 100%; height: auto"
-          >
-          </canvas>
-          <canvas
-            ref="backCardCanvas"
-            class="canvas-border"
-            style="position: relative; max-width: 100%; height: auto"
-          >
-          </canvas>
-          <vue-qrcode
-            :value="QRCodeValue"
-            @change="onDataUrlChange"
-            type="image/png"
-            :color="{ dark: '#000000ff', light: '#ffffffff' }"
-            :quality="options.quality"
-            :width="options.width"
-            :margin="options.margin"
-          ></vue-qrcode>
-        </div>
+          <div>Print Card</div>
+          <div>
+            <v-btn icon dark class="mr-3" @click="generateAndPrintID"
+              ><v-icon>mdi-printer</v-icon></v-btn
+            >
+            <v-btn icon dark @click="dialog = !dialog"
+              ><v-icon>mdi-close</v-icon></v-btn
+            >
+          </div>
+        </v-card-title>
+        <v-container fluid class="overflow-scroll">
+          <v-container class="white page-padding">
+            <div class="text-center mx-4 mt-4">
+              <canvas
+                ref="frontCardCanvas"
+                class="canvas-border"
+                style="position: relative; max-width: 100%; height: auto"
+              >
+              </canvas>
+              <canvas
+                ref="backCardCanvas"
+                class="canvas-border"
+                style="position: relative; max-width: 100%; height: auto"
+              >
+              </canvas>
+              <vue-qrcode
+                :value="QRCodeValue"
+                @change="onDataUrlChange"
+                type="image/png"
+                :color="{ dark: '#000000ff', light: '#ffffffff' }"
+                :quality="options.quality"
+                :width="options.width"
+                :margin="options.margin"
+              ></vue-qrcode>
+            </div>
 
-        <!-- <div class="text-center mx-4 mt-4">
+            <!-- <div class="text-center mx-4 mt-4">
                 <canvas
                   ref="cardCanvas"
                   class="canvas-border"
@@ -43,12 +63,9 @@
                 ></canvas>
               </div> -->
 
-        <!-- Button to trigger generating and printing the ID -->
-        <v-card-actions>
-          <v-btn dark class="blue darken-4" block @click="generateAndPrintID"
-            >Print ID</v-btn
-          >
-        </v-card-actions>
+            <!-- Button to trigger generating and printing the ID -->
+          </v-container>
+        </v-container>
       </v-card>
     </v-dialog>
   </div>
@@ -326,5 +343,30 @@ export default {
 <style scoped>
 .canvas-border {
   border: 2px solid lightgray;
+}
+#background {
+  background: #525659;
+}
+#navbar {
+  background: #323639;
+  box-shadow: 1px 1px 3px #212426;
+}
+.overflow-scroll {
+  overflow-y: auto;
+  height: 100%;
+}
+.page-padding {
+  padding: 6rem;
+}
+
+@media (max-width: 768px) {
+  .page-padding {
+    padding: 3rem;
+  }
+}
+@media (max-width: 512px) {
+  .page-padding {
+    padding: 2rem;
+  }
 }
 </style>

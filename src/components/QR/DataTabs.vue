@@ -1,7 +1,6 @@
 <template>
-  <v-container v-if="data">
-    <v-row>
-      <v-col cols="12">
+    <v-row justify="center" v-if="data">
+      <v-col cols="auto">
         <v-tabs centered>
           <v-tab>Personal Details</v-tab>
           <v-tab>Services Availed</v-tab>
@@ -14,7 +13,6 @@
         </v-tabs>
       </v-col>
     </v-row>
-  </v-container>
 </template>
 
 <script>

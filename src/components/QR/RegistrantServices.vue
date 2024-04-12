@@ -1,116 +1,108 @@
 <template>
-  <div>
-    <v-container v-if="data">
-      <v-row no-gutters>
-        <v-col cols="12">
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-card rounded="lg" flat style="background-color: #f1f5fb">
-                  <v-container>
-                    <v-row dense class="ma-2">
-                      <v-col cols="auto">
-                        <v-avatar
-                          color="
+  <v-row no-gutters v-if="data" class="mt-3">
+    <v-col cols="12">
+      <v-container>
+        <v-row>
+          <v-col cols="12">
+            <v-card rounded="lg" flat style="background-color: #f1f5fb">
+              <v-container>
+                <v-row dense class="ma-2">
+                  <v-col cols="auto">
+                    <v-avatar
+                      color="
                             white
                           "
-                        >
-                          <v-icon color="blue darken-1">
-                            mdi-medical-bag
-                          </v-icon>
-                        </v-avatar>
-                      </v-col>
-                      <v-col cols="auto" class="pt-2">
-                        <div class="text-subtitle-2 font-weight-bold">
-                          REGISTRANT'S HOSPITAL SERVICES
-                        </div>
-                        <div class="text-caption grey--text">
-                          Services Availed
-                        </div>
-                      </v-col>
-                    </v-row>
-                    <v-row dense class="ma-2">
-                      <v-col
-                        cols="12"
-                        class="py-0"
-                        v-for="(service, index) in services"
-                        :key="index"
-                      >
-                        <v-expansion-panels popout class="my-1">
-                          <v-expansion-panel>
-                            <v-expansion-panel-header>
-                              <v-container class="py-1">
-                                <v-row>
-                                  <v-col cols="auto" class="px-0">
-                                      <v-icon :color="serviceStatusColor(service.status)">
-                                        {{ serviceStatus(service.status) }}
-                                      </v-icon>
-                                  </v-col>
-                                  <v-col cols="auto" class="py-0">
-                                    <div
-                                      class="text-subtitle-2 font-weight-bold"
-                                    >
-                                      {{ service.service_type }}
-                                    </div>
-                                    <div class="text-subtitle-2">
-                                      {{ service.scheduled_date }}
-                                    </div>
-                                  </v-col>
-                                </v-row>
-                              </v-container>
-                            </v-expansion-panel-header>
-                            <v-expansion-panel-content>
-                              <v-row>
-                                <v-col
-                                  cols="12"
-                                  md="6"
-                                  sm="6"
-                                  v-for="(detail, index) in service.details"
-                                  :key="'detail-' + index"
+                    >
+                      <v-icon color="blue darken-1"> mdi-medical-bag </v-icon>
+                    </v-avatar>
+                  </v-col>
+                  <v-col cols="auto" class="pt-2">
+                    <div class="text-subtitle-2 font-weight-bold">
+                      REGISTRANT'S HOSPITAL SERVICES
+                    </div>
+                    <div class="text-caption grey--text">Services Availed</div>
+                  </v-col>
+                </v-row>
+                <v-row dense class="ma-2">
+                  <v-col
+                    cols="12"
+                    class="py-0"
+                    v-for="(service, index) in services"
+                    :key="index"
+                  >
+                    <v-expansion-panels popout class="my-1">
+                      <v-expansion-panel>
+                        <v-expansion-panel-header>
+                          <v-container class="py-1">
+                            <v-row>
+                              <v-col cols="auto" class="px-0">
+                                <v-icon
+                                  :color="serviceStatusColor(service.status)"
                                 >
-                                  <div class="ma-2">
-                                    <div class="text-subtitle-2 grey--text">
-                                      {{ detail.title }}
-                                    </div>
-                                    <div class="text-h5">
-                                      {{ detail.content }}
-                                    </div>
-                                  </div>
-                                </v-col>
-                                <v-col cols="12">
-                                  <v-divider class="mx-3"></v-divider>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  md="6"
-                                  sm="6"
-                                  v-for="(detail, index) in service.dates"
-                                  :key="'date-' + index"
-                                >
-                                  <div class="ma-2">
-                                    <div class="text-subtitle-2 grey--text">
-                                      {{ detail.title }}
-                                    </div>
-                                    <div class="text-h5">
-                                      {{ detail.content }}
-                                    </div>
-                                  </div>
-                                </v-col>
-                              </v-row>
-                            </v-expansion-panel-content>
-                          </v-expansion-panel>
-                        </v-expansion-panels>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+                                  {{ serviceStatus(service.status) }}
+                                </v-icon>
+                              </v-col>
+                              <v-col cols="auto" class="py-0">
+                                <div class="text-subtitle-2 font-weight-bold">
+                                  {{ service.service_type }}
+                                </div>
+                                <div class="text-subtitle-2">
+                                  {{ service.scheduled_date }}
+                                </div>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                          <v-row>
+                            <v-col
+                              cols="12"
+                              md="6"
+                              sm="6"
+                              v-for="(detail, index) in service.details"
+                              :key="'detail-' + index"
+                            >
+                              <div class="ma-2">
+                                <div class="text-subtitle-2 grey--text">
+                                  {{ detail.title }}
+                                </div>
+                                <div class="text-h5">
+                                  {{ detail.content }}
+                                </div>
+                              </div>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-divider class="mx-3"></v-divider>
+                            </v-col>
+                            <v-col
+                              cols="12"
+                              md="6"
+                              sm="6"
+                              v-for="(detail, index) in service.dates"
+                              :key="'date-' + index"
+                            >
+                              <div class="ma-2">
+                                <div class="text-subtitle-2 grey--text">
+                                  {{ detail.title }}
+                                </div>
+                                <div class="text-h5">
+                                  {{ detail.content }}
+                                </div>
+                              </div>
+                            </v-col>
+                          </v-row>
+                        </v-expansion-panel-content>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

@@ -4,7 +4,7 @@ export default {
     dialog: false,
   }),
   methods: {
-    ...mapActions("dialysis_items", [
+    ...mapActions("dialysis_items_actions", [
       "fetchDialysisItem",
       "updateDialysisItem",
     ]),
@@ -32,6 +32,6 @@ export default {
     },
   },
   computed: {
-    ...mapState("dialysis_items", ["dialysis_item"]),
+    ...mapState("dialysis_items_actions", ["dialysis_item"]),
   },
 };

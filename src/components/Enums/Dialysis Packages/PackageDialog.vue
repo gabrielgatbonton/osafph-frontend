@@ -34,6 +34,7 @@
               label="Price"
               @blur="$v.payload.price.$touch()"
               :error-messages="errorMessages.price"
+              type="number"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -78,7 +79,7 @@ export default {
     },
   }),
   methods: {
-    ...mapActions("dialysis_items", ["fetchDialysisItems"]),
+    ...mapActions("dialysis_items_actions", ["fetchDialysisItems"]),
     submitForm() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
@@ -88,7 +89,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("dialysis_items", ["dialysis_items"]),
+    ...mapState("dialysis_items_actions", ["dialysis_items"]),
     title() {
       let title = null;
       if (this.package) {

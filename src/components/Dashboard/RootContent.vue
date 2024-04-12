@@ -3,7 +3,6 @@
     <v-row>
       <v-col
         cols="12"
-        md="6"
         v-for="(item, index) in data.encoder"
         :key="index"
       >
@@ -26,7 +25,6 @@
       </v-col>
       <v-col
         cols="12"
-        md="6"
         v-for="(item, index) in data.doctor"
         :key="'doctor' + index"
       >

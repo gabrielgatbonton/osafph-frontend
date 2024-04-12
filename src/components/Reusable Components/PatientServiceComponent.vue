@@ -22,39 +22,6 @@
             <div class="text-h5">{{ info.content }}</div>
           </div>
         </v-col>
-        <v-col
-          cols="12"
-          class="mt-3"
-          v-if="serviceInformation.items_availed.service_type === 'DIALYSIS'"
-        >
-          <v-expansion-panels>
-            <v-expansion-panel>
-              <v-expansion-panel-header
-                class="text-subtitle-1 font-weight-bold"
-              >
-                {{ serviceInformation.items_availed.package_name }}
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-container fluid>
-                  <v-row>
-                    <v-col
-                      cols="6"
-                      v-for="(item, index) in serviceInformation.items_availed
-                        .items"
-                      :key="index"
-                    >
-                      <ul>
-                        <li class="text-h5">
-                          {{ item }}
-                        </li>
-                      </ul>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-col>
         <v-col cols="12" class="mt-3">
           <v-expansion-panels>
             <v-expansion-panel
@@ -68,6 +35,44 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 {{ info.content }}
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-col>
+        <v-col
+          cols="12"
+          class="mt-3"
+          v-if="serviceInformation.items_availed.service_type === 'DIALYSIS'"
+        >
+          <div class="ma-2">
+            <div class="text-subtitle-2 grey--text">Packages Availed</div>
+          </div>
+          <v-expansion-panels accordion>
+            <v-expansion-panel
+              v-for="(item, index) in serviceInformation.items_availed.packages"
+              :key="index"
+            >
+              <v-expansion-panel-header
+                class="text-subtitle-1 font-weight-bold"
+              >
+                {{ item.name }}
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-container fluid>
+                  <v-row>
+                    <v-col
+                      cols="6"
+                      v-for="(i, index) in item.dialysis_items"
+                      :key="index"
+                    >
+                      <ul>
+                        <li class="text-h5">
+                          {{ i }}
+                        </li>
+                      </ul>
+                    </v-col>
+                  </v-row>
+                </v-container>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
