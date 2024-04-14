@@ -10,9 +10,12 @@ export default {
           // Validation rule for session property
           session: { required },
           // Validation rule for dialysis package property
-          dialysis_package: { required },
-          // Validation rule for funder property
-          funder: {},
+          dialysis_packages: {
+            $each: {
+              name: { required },
+              funder: {},
+            },
+          },
         },
       },
       dialysis_machine: { required },
@@ -76,14 +79,23 @@ export default {
         return sessionErrors;
       });
 
-      errors.dialysis_package = this.payload.schedule.map((session, index) => {
+      errors.dialysis_package_name = this.payload.schedule.map((_, index) => {
         const sessionErrors = [];
-        if (
-          this.$v.payload.schedule.$each.$iter[index].dialysis_package.$dirty
-        ) {
-          !this.$v.payload.schedule.$each.$iter[index].dialysis_package
-            .required && sessionErrors.push(`Dialysis Package is required`);
-        }
+
+        this.payload.schedule[index].dialysis_packages.forEach(
+          (_, indexPackage) => {
+            let packageErrors = [];
+            if (
+              this.$v.payload.schedule.$each.$iter[index].dialysis_packages
+                .$each.$iter[indexPackage].name.$dirty
+            ) {
+              !this.$v.payload.schedule.$each.$iter[index].dialysis_packages
+                .$each.$iter[indexPackage].name.required &&
+                packageErrors.push(`Dialysis Package is required`);
+            }
+            sessionErrors.push(packageErrors);
+          }
+        );
         return sessionErrors;
       });
 
