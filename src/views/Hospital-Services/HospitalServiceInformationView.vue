@@ -112,6 +112,13 @@ export default {
   created() {
     this.fetchRegistrant();
   },
+  watch: {
+    service: {
+      handler(value) {
+        console.log(value);
+      }
+    }
+  },
   computed: {
     ...mapState("registrants", {
       registrant: "registrant",
@@ -138,31 +145,30 @@ export default {
         title: null,
         content: null,
       };
-      if (this.service.hospitalService.service_type !== "DIALYSIS") {
-        items_availed = this.service.hospitalService.service_type;
+      if (this.service.data.service_type !== "DIALYSIS") {
+        items_availed = this.service.data.service_type;
         title = "Hospital Service Information";
         second_column = {
           title: "Health Professional",
-          content: `${this.service.hospitalService.doctor_last_name}, ${this.service.hospitalService.doctor_first_name} ${this.service.hospitalService.doctor_middle_name}`,
+          content: `${this.service.data.doctor_last_name}, ${this.service.data.doctor_first_name} ${this.service.data.doctor_middle_name}`,
         };
         fourth_column = {
           title: "Serviceable Availed",
-          content: this.service.hospitalService.serviceable_type_name,
+          content: this.service.data.serviceable_type_name,
         }
       } else {
         items_availed = {
-          service_type: this.service.hospitalService.service_type,
-          package_name: this.service.hospitalService.dialysis_package.name,
-          items: this.service.hospitalService.dialysis_package.dialysis_items,
+          service_type: this.service.data.service_type,
+          packages: this.service.data.dialysis_packages,
         };
         title = "Dialysis Service Information";
         second_column = {
           title: "Dialysis Site",
-          content: this.service.hospitalService.hospital,
+          content: this.service.data.hospital,
         };
         fourth_column = {
           title: "Session Time",
-          content: this.service.hospitalService.session,
+          content: this.service.data.session,
         }
       }
 
@@ -174,7 +180,7 @@ export default {
         info: [
           {
             title: "Service ID",
-            content: this.service.hospitalService.id,
+            content: this.service.data.id,
           },
           {
             title: second_column.title,
@@ -182,7 +188,7 @@ export default {
           },
           {
             title: "Service Availed",
-            content: this.service.hospitalService.service_type,
+            content: this.service.data.service_type,
           },
           {
             title: fourth_column.title,
@@ -192,8 +198,8 @@ export default {
         remarks: [
           {
             title: "Remarks",
-            content: this.service.hospitalService.remarks
-              ? this.service.hospitalService.remarks
+            content: this.service.data.remarks
+              ? this.service.data.remarks
               : "None",
           },
         ],
@@ -275,11 +281,11 @@ export default {
     },
     serviceStatus() {
       //Assign Date Released Value and Logic.
-      let date_released_data = this.service.hospitalService.date_released
+      let date_released_data = this.service.data.date_released
         ? {
             title: "Date Released",
             content: format(
-              parseISO(this.service.hospitalService.date_released),
+              parseISO(this.service.data.date_released),
               "MMMM dd, yyyy"
             ),
           }
@@ -288,7 +294,7 @@ export default {
       //Conditional for General Format and Dialysis Format Messages
       let messages = null;
 
-      if (this.service.hospitalService.service_type !== "DIALYSIS") {
+      if (this.service.data.service_type !== "DIALYSIS") {
         messages = {
           pending: "Requested Service is pending...",
           inProgress: "Requested Service is in progress...",
@@ -305,11 +311,11 @@ export default {
       }
 
       return {
-        status: this.service.hospitalService.status,
+        status: this.service.data.status,
         scheduledDate: {
           title: "Scheduled Date",
           content: format(
-            parseISO(this.service.hospitalService.scheduled_date),
+            parseISO(this.service.data.scheduled_date),
             "MMMM dd, yyyy"
           ),
         },
