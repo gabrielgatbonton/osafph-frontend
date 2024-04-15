@@ -30,13 +30,15 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <DataTable
-      v-if="registrants"
-      :registrants="registrants"
-      @query:options="filterQuery"
-      @query:search="filterQuery"
-      @dialog:filter="filterQuery"
-    />
+    <v-container fluid class="ma-1">
+      <DataTable
+        v-if="registrants"
+        :registrants="registrants"
+        @query:options="filterQuery"
+        @query:search="filterQuery"
+        @dialog:filter="filterQuery"
+      />
+    </v-container>
   </div>
 </template>
 

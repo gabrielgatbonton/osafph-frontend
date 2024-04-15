@@ -13,10 +13,12 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ConsultationsTable
-      :route-name="routeName"
-      :consultations="getAdminConsultations"
-    />
+    <v-container fluid class="ma-1">
+      <ConsultationsTable
+        :route-name="routeName"
+        :consultations="getAdminConsultations"
+      />
+    </v-container>
   </div>
 </template>
 

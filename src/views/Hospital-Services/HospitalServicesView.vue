@@ -59,7 +59,9 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ServicesTable :services="switchData" />
+    <v-container fluid class="ma-1">
+      <ServicesTable :services="switchData" />
+    </v-container>
   </div>
 </template>
 
