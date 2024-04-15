@@ -190,8 +190,14 @@
                     :items="dialysis_packages"
                     item-text="package_name"
                     item-value="package_name"
-                    @blur="$v.payload.schedule.$each.$iter[index].dialysis_packages.$each.$iter[subIndex].name.$touch()"
-                    :error-messages="errorMessages.dialysis_package_name[index][subIndex]"
+                    @blur="
+                      $v.payload.schedule.$each.$iter[
+                        index
+                      ].dialysis_packages.$each.$iter[subIndex].name.$touch()
+                    "
+                    :error-messages="
+                      errorMessages.dialysis_package_name[index][subIndex]
+                    "
                   >
                     <template v-slot:item="{ item }">
                       <div id="d-flex flex-column justify-start align-start">
@@ -363,10 +369,10 @@ export default {
     appendDate(schedule) {
       schedule.forEach((_, index) => {
         this.payload.schedule[index].date = this.selectedDates[index];
-        this.payload.schedule[index].dialysis_packages[0] = {
-          name: this.master_package,
-          funder: this.master_funder,
-        };
+        this.payload.schedule[index].dialysis_packages[0].name =
+          this.master_package;
+        this.payload.schedule[index].dialysis_packages[0].funder =
+          this.master_funder;
       });
     },
 
