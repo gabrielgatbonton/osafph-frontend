@@ -384,7 +384,7 @@ export default {
   computed: {
     ...mapGetters("card", ["getImage", "getSignature", "getBiometrics"]),
     QRCodeValue() {
-      return `${this.$network}vaccination/${this.registrant.citizen.hub_registrant_id}`;
+      return `${this.$network}vaccination/${this.registrant.citizen.hashed_id}`;
     },
     disabledButton() {
       let disabled = true;

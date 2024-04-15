@@ -22,6 +22,47 @@
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
+        <v-autocomplete
+          v-model="master_package"
+          label="Dialysis Package"
+          :items="dialysis_packages"
+          item-text="package_name"
+          item-value="package_name"
+        >
+          <template v-slot:item="{ item }">
+            <div id="d-flex flex-column justify-start align-start">
+              <div>{{ item.package_name }}</div>
+              <div class="packages-description">
+                <span
+                  v-for="(dialysisItem, index) in item.dialysis_items"
+                  :key="index"
+                >
+                  {{ dialysisItem
+                  }}{{ index < item.dialysis_items.length - 1 ? ", " : "" }}
+                </span>
+              </div>
+            </div>
+          </template>
+        </v-autocomplete>
+      </v-col>
+      <v-col cols="12">
+        <v-autocomplete
+          v-model="master_funder"
+          label="Funder"
+          :items="crowd_fundings"
+          item-text="name"
+        >
+          <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
+            <div class="d-flex flex-column">
+              <div>{{ item.name }}</div>
+              <div class="item-description">
+                Amount: {{ item.initial_contribution }}
+              </div>
+            </div>
+          </template>
+        </v-autocomplete>
+      </v-col>
+      <v-col cols="12">
         <v-row no-gutters>
           <v-col cols="12">
             <v-checkbox
@@ -135,50 +176,82 @@
               :error-messages="errorMessages.schedule_session[index]"
             ></v-select>
           </v-col>
-          <v-col cols="12" md="6" sm="6">
-            <v-select
-              v-model="session.dialysis_package"
-              :label="`Dialysis Package ${index + 1}`"
-              :items="dialysis_packages"
-              item-text="package_name"
-              item-value="package_name"
-              @blur="
-                $v.payload.schedule.$each.$iter[index].dialysis_package.$touch()
-              "
-              :error-messages="errorMessages.dialysis_package[index]"
+          <v-col cols="12">
+            <v-row
+              v-for="(set, subIndex) in payload.schedule[index]
+                .dialysis_packages"
+              :key="subIndex"
             >
-              <template v-slot:item="{ item }">
-                <div id="d-flex flex-column justify-start align-start">
-                  <div>{{ item.package_name }}</div>
-                  <div class="packages-description">
-                    <span
-                      v-for="(dialysisItem, index) in item.dialysis_items"
-                      :key="index"
-                    >
-                      {{ dialysisItem
-                      }}{{ index < item.dialysis_items.length - 1 ? ", " : "" }}
-                    </span>
-                  </div>
+              <v-col cols="12" md="6" sm="6">
+                <div>
+                  <v-select
+                    v-model="set.name"
+                    :label="`Dialysis Package ${subIndex + 1}`"
+                    :items="dialysis_packages"
+                    item-text="package_name"
+                    item-value="package_name"
+                    @blur="$v.payload.schedule.$each.$iter[index].dialysis_packages.$each.$iter[subIndex].name.$touch()"
+                    :error-messages="errorMessages.dialysis_package_name[index][subIndex]"
+                  >
+                    <template v-slot:item="{ item }">
+                      <div id="d-flex flex-column justify-start align-start">
+                        <div>{{ item.package_name }}</div>
+                        <div class="packages-description">
+                          <span
+                            v-for="(dialysisItem, index) in item.dialysis_items"
+                            :key="index"
+                          >
+                            {{ dialysisItem
+                            }}{{
+                              index < item.dialysis_items.length - 1 ? ", " : ""
+                            }}
+                          </span>
+                        </div>
+                      </div>
+                    </template>
+                  </v-select>
                 </div>
-              </template>
-            </v-select>
+              </v-col>
+              <v-col cols="12" md="6" sm="6" class="relative-position">
+                <v-autocomplete
+                  v-model="set.funder"
+                  :label="`Funder ${subIndex + 1}`"
+                  :items="crowd_fundings"
+                  item-text="name"
+                >
+                  <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
+                    <div class="d-flex flex-column">
+                      <div>{{ item.name }}</div>
+                      <div class="item-description">
+                        Amount: {{ item.initial_contribution }}
+                      </div>
+                    </div>
+                  </template>
+                </v-autocomplete>
+                <v-btn
+                  color="red darken-4"
+                  icon
+                  @click="removeIndex(index, subIndex)"
+                  fab
+                  class="absolute-position"
+                  :ripple="false"
+                >
+                  <v-icon>mdi-minus</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-col>
-          <v-col cols="12" md="6" sm="6">
-            <v-autocomplete
-              v-model="session.funder"
-              :label="`Funder ${index + 1}`"
-              :items="crowd_fundings"
-              item-text="backer"
-            >
-              <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
-                <div class="d-flex flex-column">
-                  <div>{{ item.backer }}</div>
-                  <div class="item-description">
-                    Amount: {{ item.contribution }}
-                  </div>
-                </div>
-              </template>
-            </v-autocomplete>
+          <v-col cols="12">
+            <div class="d-flex justify-center align-center">
+              <v-btn
+                color="blue darken-4"
+                icon
+                @click="addIndex(index)"
+                :ripple="false"
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </div>
           </v-col>
           <v-col cols="12" v-if="index < payload.schedule.length - 1">
             <v-divider></v-divider>
@@ -224,6 +297,8 @@ export default {
     },
   },
   data: () => ({
+    master_package: null,
+    master_funder: null,
     selectedDates: [],
     landscape: true,
     disable: false,
@@ -239,6 +314,7 @@ export default {
     minDate: new Date().toISOString().slice(0, 10),
     stepper: 1,
     show_calendar: false,
+    add_div: false,
   }),
   methods: {
     ...mapActions("dialysis_calendar", ["fetchDialysisCalendar"]),
@@ -269,9 +345,12 @@ export default {
           this.payload.schedule[index] || {
             date: null,
             session: null,
-            dialysis_package: null,
-            funder: null,
-            menu: false,
+            dialysis_packages: [
+              {
+                name: null,
+                funder: null,
+              },
+            ],
           }
       );
       this.disable = false;
@@ -282,8 +361,12 @@ export default {
     },
 
     appendDate(schedule) {
-      schedule.forEach((date, index) => {
+      schedule.forEach((_, index) => {
         this.payload.schedule[index].date = this.selectedDates[index];
+        this.payload.schedule[index].dialysis_packages[0] = {
+          name: this.master_package,
+          funder: this.master_funder,
+        };
       });
     },
 
@@ -342,7 +425,6 @@ export default {
     //   }
     // },
     setupDateWatchers(schedule) {
-      console.log(schedule, "Log");
       if (this.payload.total_sessions > 0) {
         let dates = [];
 
@@ -391,6 +473,22 @@ export default {
     trigger() {
       this.show_calendar = !this.show_calendar;
     },
+    addIndex(index) {
+      this.payload.schedule[index].dialysis_packages.push({
+        name: null,
+        funder: null,
+      });
+    },
+    removeIndex(index, subIndex) {
+      if (this.payload.schedule[index].dialysis_packages.length > 1) {
+        this.payload.schedule[index].dialysis_packages.splice(subIndex, 1);
+      }
+    },
+    updateMasterPackage(schedule) {
+      schedule.forEach((_, index) => {
+        this.payload.schedule[index].dialysis_packages = this.master_package;
+      });
+    },
   },
   computed: {
     ...mapState("dialysis_calendar", {
@@ -427,6 +525,16 @@ export default {
         this.setupCalendarWatchers();
       },
     },
+    master_package: {
+      handler() {
+        this.appendDate(this.payload.schedule);
+      },
+    },
+    master_funder: {
+      handler() {
+        this.appendDate(this.payload.schedule);
+      },
+    },
   },
 };
 </script>
@@ -447,5 +555,15 @@ export default {
   font-size: 12px;
   color: #333;
   font-weight: bold;
+}
+
+.relative-position {
+  position: relative;
+}
+
+.absolute-position {
+  position: absolute;
+  top: -10px;
+  right: -10px;
 }
 </style>
