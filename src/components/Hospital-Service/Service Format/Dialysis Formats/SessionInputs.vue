@@ -190,12 +190,8 @@
                     :items="dialysis_packages"
                     item-text="package_name"
                     item-value="package_name"
-                    @blur="
-                      $v.payload.schedule.$each.$iter[
-                        index
-                      ].dialysis_package.$touch()
-                    "
-                    :error-messages="errorMessages.dialysis_package[index]"
+                    @blur="$v.payload.schedule.$each.$iter[index].dialysis_packages.$each.$iter[subIndex].name.$touch()"
+                    :error-messages="errorMessages.dialysis_package_name[index][subIndex]"
                   >
                     <template v-slot:item="{ item }">
                       <div id="d-flex flex-column justify-start align-start">
@@ -349,7 +345,12 @@ export default {
           this.payload.schedule[index] || {
             date: null,
             session: null,
-            dialysis_packages: [],
+            dialysis_packages: [
+              {
+                name: null,
+                funder: null,
+              },
+            ],
           }
       );
       this.disable = false;
@@ -362,12 +363,10 @@ export default {
     appendDate(schedule) {
       schedule.forEach((_, index) => {
         this.payload.schedule[index].date = this.selectedDates[index];
-        this.payload.schedule[index].dialysis_packages = [
-          {
-            name: this.master_package,
-            funder: this.master_funder,
-          },
-        ];
+        this.payload.schedule[index].dialysis_packages[0] = {
+          name: this.master_package,
+          funder: this.master_funder,
+        };
       });
     },
 
@@ -426,7 +425,6 @@ export default {
     //   }
     // },
     setupDateWatchers(schedule) {
-      console.log(schedule, "Log");
       if (this.payload.total_sessions > 0) {
         let dates = [];
 
@@ -509,7 +507,6 @@ export default {
     "payload.schedule": {
       handler(newVal) {
         this.setupDateWatchers(newVal);
-        console.log("PS", newVal);
       },
       deep: true,
     },
@@ -530,17 +527,14 @@ export default {
     },
     master_package: {
       handler() {
-        if (this.payload.schedule.length !== 0) {
-          console.log("It works!", this.payload.schedule);
-          this.updateMasterPackage();
-        }
+        this.appendDate(this.payload.schedule);
       },
     },
-    // master_funder: {
-    //   handler() {
-    //     this.appendDate();
-    //   },
-    // },
+    master_funder: {
+      handler() {
+        this.appendDate(this.payload.schedule);
+      },
+    },
   },
 };
 </script>
