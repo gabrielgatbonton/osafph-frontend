@@ -52,11 +52,11 @@
           :items="crowd_fundings"
           item-text="name"
         >
-          <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
+          <template v-slot:item="{ item }" v-if="funderPermission">
             <div class="d-flex flex-column">
               <div>{{ item.name }}</div>
               <div class="item-description">
-                Amount: {{ item.initial_contribution }}
+                Amount:  {{ item.contribution_left }} / {{ item.initial_contribution }} 
               </div>
             </div>
           </template>
@@ -225,11 +225,11 @@
                   :items="crowd_fundings"
                   item-text="name"
                 >
-                  <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
+                  <template v-slot:item="{ item }" v-if="funderPermission">
                     <div class="d-flex flex-column">
                       <div>{{ item.name }}</div>
                       <div class="item-description">
-                        Amount: {{ item.initial_contribution }}
+                        Amount: {{ item.contribution_left }} / {{ item.initial_contribution }} 
                       </div>
                     </div>
                   </template>
@@ -507,6 +507,9 @@ export default {
           ? format(parseISO(session.date), "MMMM d, yyyy")
           : null;
       });
+    },
+    funderPermission() {
+      return this.userRole === "ADMIN" || this.userRole === "ROOT";
     },
   },
   watch: {
