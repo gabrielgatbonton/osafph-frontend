@@ -9,127 +9,114 @@
     loading-text="Loading... Please wait"
   >
     <template v-slot:top>
-      <v-toolbar flat>
-        <v-container fluid>
-          <v-row align-content="center">
-            <v-col cols="9">
-              <v-text-field
-                v-model="search"
-                label="Search"
-                class="mx-4"
-                prepend-icon="mdi-magnify"
-              ></v-text-field>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="auto">
-              <v-dialog max-width="600">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="blue darken-4" dark v-bind="attrs" v-on="on"
-                    >Filter</v-btn
-                  >
-                </template>
-                <v-card>
-                  <v-card-title class="blue darken-1 pb-4 white--text">
-                    <v-icon left dark>mdi-filter-multiple</v-icon> Filter
-                  </v-card-title>
-                  <v-container fluid class="py-8 mx-auto">
-                    <v-row class="mx-4">
-                      <v-col cols="12">
-                        <v-select
-                          multiple
-                          v-model="table_filter.roles"
-                          :items="user_roles_enum"
-                          label="Roles"
-                        ></v-select>
+      <div class="d-flex justify-space-between align-center">
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+          prepend-icon="mdi-magnify"
+        ></v-text-field>
+        <div>
+          <v-dialog max-width="600">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="blue darken-4" class="mr-3" dark v-bind="attrs" v-on="on"
+                >Filter</v-btn
+              >
+            </template>
+            <v-card>
+              <v-card-title class="blue darken-1 pb-4 white--text">
+                <v-icon left dark>mdi-filter-multiple</v-icon> Filter
+              </v-card-title>
+              <v-container fluid class="py-8 mx-auto">
+                <v-row class="mx-4">
+                  <v-col cols="12">
+                    <v-select
+                      multiple
+                      v-model="table_filter.roles"
+                      :items="user_roles_enum"
+                      label="Roles"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-row dense justify="end">
+                      <v-col cols="auto">
+                        <v-btn color="error" @click="resetFilter">Reset</v-btn>
                       </v-col>
-                      <v-col cols="12">
-                        <v-row dense justify="end">
-                          <v-col cols="auto">
-                            <v-btn color="error" @click="resetFilter"
-                              >Reset</v-btn
-                            >
-                          </v-col>
-                          <v-col cols="auto">
-                            <v-btn
-                              dark
-                              class="blue darken-4"
-                              @click="submitFilter"
-                              >Submit</v-btn
-                            >
-                          </v-col>
-                        </v-row>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-dialog>
-            </v-col>
-            <v-col cols="auto">
-              <v-dialog v-model="dialogUser" max-width="600" scrollable>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="blue darken-4" dark v-bind="attrs" v-on="on"
-                    >Add User</v-btn
-                  >
-                </template>
-                <v-card>
-                  <v-card-title class="blue darken-1 pb-4 white--text"
-                    ><v-icon left dark>mdi-account</v-icon> Create
-                    User</v-card-title
-                  >
-                  <v-container fluid class="py-8 mx-auto overflow-scroll">
-                    <v-row class="mx-4">
-                      <v-col cols="12">
-                        <v-stepper
-                          flat
-                          v-model="stepper"
-                          :non-linear="nonLinearFunction.linear"
+                      <v-col cols="auto">
+                        <v-btn dark class="blue darken-4" @click="submitFilter"
+                          >Submit</v-btn
                         >
-                          <v-stepper-header class="elevation-0">
-                            <v-stepper-step
-                              step="1"
-                              :complete="stepper > 1"
-                              :editable="nonLinearFunction.information"
-                            >
-                              Information
-                            </v-stepper-step>
-                            <v-divider></v-divider>
-                            <v-stepper-step
-                              step="2"
-                              :complete="stepper > 2"
-                              :editable="nonLinearFunction.credentials"
-                            >
-                              Credentials
-                            </v-stepper-step>
-                          </v-stepper-header>
-                          <v-stepper-items>
-                            <v-stepper-content step="1" class="px-0">
-                              <InformationStepper
-                                :roles="user_roles_enum"
-                                :specialties="specialties_enum"
-                                @stepper="updateStepper"
-                                @payload="assignPayload"
-                                ref="informationStepper"
-                              />
-                            </v-stepper-content>
-                            <v-stepper-content step="2" class="px-0">
-                              <CredentailsStepper
-                                @stepper="updateStepper"
-                                @payload="assignPayload"
-                                @submitForm="submitUser"
-                                ref="credentialsStepper"
-                              />
-                            </v-stepper-content>
-                          </v-stepper-items>
-                        </v-stepper>
                       </v-col>
                     </v-row>
-                  </v-container>
-                </v-card>
-              </v-dialog>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-toolbar>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogUser" max-width="600" scrollable>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="blue darken-4" class="mr-3" dark v-bind="attrs" v-on="on"
+                >Add User</v-btn
+              >
+            </template>
+            <v-card>
+              <v-card-title class="blue darken-1 pb-4 white--text"
+                ><v-icon left dark>mdi-account</v-icon> Create
+                User</v-card-title
+              >
+              <v-container fluid class="py-8 mx-auto overflow-scroll">
+                <v-row class="mx-4">
+                  <v-col cols="12">
+                    <v-stepper
+                      flat
+                      v-model="stepper"
+                      :non-linear="nonLinearFunction.linear"
+                    >
+                      <v-stepper-header class="elevation-0">
+                        <v-stepper-step
+                          step="1"
+                          :complete="stepper > 1"
+                          :editable="nonLinearFunction.information"
+                        >
+                          Information
+                        </v-stepper-step>
+                        <v-divider></v-divider>
+                        <v-stepper-step
+                          step="2"
+                          :complete="stepper > 2"
+                          :editable="nonLinearFunction.credentials"
+                        >
+                          Credentials
+                        </v-stepper-step>
+                      </v-stepper-header>
+                      <v-stepper-items>
+                        <v-stepper-content step="1" class="px-0">
+                          <InformationStepper
+                            :roles="user_roles_enum"
+                            :specialties="specialties_enum"
+                            @stepper="updateStepper"
+                            @payload="assignPayload"
+                            ref="informationStepper"
+                          />
+                        </v-stepper-content>
+                        <v-stepper-content step="2" class="px-0">
+                          <CredentailsStepper
+                            @stepper="updateStepper"
+                            @payload="assignPayload"
+                            @submitForm="submitUser"
+                            ref="credentialsStepper"
+                          />
+                        </v-stepper-content>
+                      </v-stepper-items>
+                    </v-stepper>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-dialog>
+        </div>
+      </div>
+
       <v-dialog v-model="dialogPassword" max-width="600">
         <v-card>
           <v-card-title class="blue darken-1 pb-4 white--text">
@@ -316,7 +303,7 @@ export default {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
-          align: "center"
+          align: "center",
         },
       ];
     },
