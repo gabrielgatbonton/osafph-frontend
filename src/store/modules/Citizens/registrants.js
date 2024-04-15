@@ -9,7 +9,7 @@ Vue.use(Vuex);
 export const registrants = {
   namespaced: true,
   state: () => ({
-    registrants: [],
+    registrants: null,
     registrant: null,
     vaccinationDetails: [],
     boosterDetails: [],
@@ -68,7 +68,7 @@ export const registrants = {
       return this.$axios
         .get(url)
         .then((response) => {
-          const registrants = response.data.citizens;
+          const registrants = response.data;
           commit("SET_REGISTRANTS", registrants);
         })
         .catch((error) => {

@@ -49,7 +49,7 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <DataTable :registrants="registrants" />
+    <DataTable v-if="registrants" :registrants="registrants" />
     <FilterDialog
       @filterQuery="filterQuery"
       :activator="dialog"

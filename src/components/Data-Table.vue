@@ -5,9 +5,10 @@
     item-key="name"
     class="elevation-0"
     :search="search"
-    :custom-filter="filterOnlyCapsText"
     :loading="loading"
     loading-text="Loading... Please wait"
+    :server-items-length="registrants.pagination.total"
+    :options.sync="options"
   >
     <template v-slot:top>
       <v-text-field
@@ -43,7 +44,13 @@
             v-on="on"
             >mdi-dots-vertical</v-icon
           >
-          <v-btn v-else color="blue darken-4" v-bind="attrs" v-on="on" icon x-large
+          <v-btn
+            v-else
+            color="blue darken-4"
+            v-bind="attrs"
+            v-on="on"
+            icon
+            x-large
             ><v-icon>mdi-dots-horizontal</v-icon></v-btn
           >
         </template>
@@ -79,7 +86,7 @@
 import { format, parseISO } from "date-fns";
 import ReusableDeleteDialog from "./ReusableDeleteDialog.vue";
 import DeleteRegistrantMixin from "@/mixins/Registrant/DeleteRegistrant";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   mixins: [DeleteRegistrantMixin],
   props: ["registrants"],
@@ -90,16 +97,11 @@ export default {
     search: "",
     offset: true,
     loading: true,
+    options: {},
+    query_params: {},
   }),
   methods: {
-    filterOnlyCapsText(value, search) {
-      return (
-        value != null &&
-        search != null &&
-        typeof value === "string" &&
-        value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-      );
-    },
+    ...mapActions("registrants", ["fetchRegistrants"]),
     getOptions(item) {
       return [
         {
@@ -190,7 +192,7 @@ export default {
     },
     registrantsData() {
       return this.registrants
-        ? this.registrants.map((registrant) => ({
+        ? this.registrants.citizens.map((registrant) => ({
             id: registrant.id,
             hub_registrant_id: registrant.hub_registrant_id,
             full_name: `${registrant.last_name}, ${registrant.first_name} ${
@@ -207,15 +209,49 @@ export default {
   },
   watch: {
     registrants: {
+      immediate: true,
       handler(value) {
         this.loading = true;
-        if (!value.length) {
+        if (!value.citizens.length) {
           setTimeout(() => {
             this.loading = false;
           }, 5000);
         } else {
           this.loading = false;
         }
+      },
+    },
+    options: {
+      deep: true,
+      handler(value) {
+        if (value.page > 1) {
+          this.query_params.page = value.page;
+        } else {
+          delete this.query_params.page;
+        }
+        if (value.itemsPerPage) {
+          this.query_params.per_page = value.itemsPerPage;
+        }
+        if (value.sortBy.length === 1 && value.sortDesc.length === 1) {
+          this.query_params.sort_by = value.sortBy[0];
+          this.query_params.sort_order = value.sortDesc[0] ? "asc" : "desc";
+        } else {
+          delete this.query_params.sort_by;
+          delete this.query_params.sort_order;
+        }
+
+        this.fetchRegistrants(this.query_params).catch((error) => {
+          console.error("Error Fetching Query: ", error);
+        });
+      },
+    },
+    search: {
+      deep: true,
+      handler(value) {
+        this.query_params.search = value;
+        this.fetchRegistrants(this.query_params).catch((error) => {
+          console.error("Error Fetching Query: ", error);
+        });
       },
     },
   },
