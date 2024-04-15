@@ -9,18 +9,49 @@
     loading-text="Loading... Please wait"
     :server-items-length="registrants.pagination.total"
     :options.sync="options"
+    :footer-props="{
+      itemsPerPageOptions: [5, 10, 15],
+    }"
   >
     <template v-slot:top>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        class="mx-4"
-        prepend-icon="mdi-magnify"
-      ></v-text-field>
+      <div class="d-flex justify-space-between align-center">
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+          prepend-icon="mdi-magnify"
+        ></v-text-field>
+        <div>
+          <v-btn
+            v-if="!$vuetify.breakpoint.xs"
+            dark
+            class="mr-3"
+            color="blue darken-4"
+            @click="activator"
+            >Filter</v-btn
+          >
+          <v-btn
+            v-else
+            dark
+            class="mr-3"
+            color="blue darken-4"
+            @click="activator"
+            icon
+            ><v-icon>mdi-magnify</v-icon></v-btn
+          >
+        </div>
+      </div>
+
       <ReusableDeleteDialog
         :activator="deleteDialog"
         v-on:dialogResponse="resetActivator"
         v-on:deleteItem="deleteItem"
+      />
+      <FilterDialog
+        @filterQuery="(data) => $emit('dialog:filter', data)"
+        :activator="dialog"
+        @dialogResponse="resetActivator"
+        :type_of_filter="type_of_filter"
       />
     </template>
     <template v-slot:[`item.mcg_cares_card`]="{ item }">
@@ -86,12 +117,14 @@
 import { format, parseISO } from "date-fns";
 import ReusableDeleteDialog from "./ReusableDeleteDialog.vue";
 import DeleteRegistrantMixin from "@/mixins/Registrant/DeleteRegistrant";
-import { mapGetters, mapActions } from "vuex";
+import FilterDialog from "@/components/Filter/FilterDialog.vue";
+import { mapGetters } from "vuex";
 export default {
   mixins: [DeleteRegistrantMixin],
   props: ["registrants"],
   components: {
     ReusableDeleteDialog,
+    FilterDialog,
   },
   data: () => ({
     search: "",
@@ -99,9 +132,10 @@ export default {
     loading: true,
     options: {},
     query_params: {},
+    dialog: false,
+    type_of_filter: "CITIZENS INDEX",
   }),
   methods: {
-    ...mapActions("registrants", ["fetchRegistrants"]),
     getOptions(item) {
       return [
         {
@@ -136,6 +170,12 @@ export default {
         // Navigate to the route
         this.$router.push(option.route);
       }
+    },
+    activator() {
+      this.dialog = !this.dialog;
+    },
+    resetActivator(data) {
+      this.dialog = data;
     },
   },
   computed: {
@@ -240,18 +280,14 @@ export default {
           delete this.query_params.sort_order;
         }
 
-        this.fetchRegistrants(this.query_params).catch((error) => {
-          console.error("Error Fetching Query: ", error);
-        });
+        this.$emit("query:options", this.query_params);
       },
     },
     search: {
       deep: true,
       handler(value) {
         this.query_params.search = value;
-        this.fetchRegistrants(this.query_params).catch((error) => {
-          console.error("Error Fetching Query: ", error);
-        });
+        this.$emit("query:search", this.query_params);
       },
     },
   },

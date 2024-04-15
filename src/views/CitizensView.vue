@@ -13,25 +13,6 @@
           <v-btn
             v-if="!$vuetify.breakpoint.xs"
             dark
-            class="mr-3"
-            color="blue darken-4"
-            @click="activator"
-            >Filter</v-btn
-          >
-          <v-btn
-            v-else
-            dark
-            class="mr-3"
-            color="blue darken-4"
-            @click="activator"
-            icon
-            ><v-icon>mdi-magnify</v-icon></v-btn
-          >
-        </v-col>
-        <v-col cols="auto">
-          <v-btn
-            v-if="!$vuetify.breakpoint.xs"
-            dark
             class="mr-3 blue darken-4"
             @click="toRegister"
             >Register</v-btn
@@ -49,19 +30,18 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <DataTable v-if="registrants" :registrants="registrants" />
-    <FilterDialog
-      @filterQuery="filterQuery"
-      :activator="dialog"
-      @dialogResponse="resetActivator"
-      :type_of_filter="type_of_filter"
+    <DataTable
+      v-if="registrants"
+      :registrants="registrants"
+      @query:options="filterQuery"
+      @query:search="filterQuery"
+      @dialog:filter="filterQuery"
     />
   </div>
 </template>
 
 <script>
 import DataTable from "@/components/Data-Table.vue";
-import FilterDialog from "@/components/Filter/FilterDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import { mapState, mapActions } from "vuex";
 export default {
@@ -69,27 +49,14 @@ export default {
   mixins: [ErrorAlertsLogic],
   components: {
     DataTable,
-    FilterDialog,
   },
   data() {
-    return {
-      search: "",
-      showAlert: false,
-      showError: false,
-      dialog: false,
-      type_of_filter: "CITIZENS INDEX",
-    };
+    return {};
   },
   methods: {
     ...mapActions("registrants", ["fetchRegistrants"]),
     toRegister() {
       this.$router.push({ name: "register" });
-    },
-    activator() {
-      this.dialog = !this.dialog;
-    },
-    resetActivator(data) {
-      this.dialog = data;
     },
     filterQuery(value) {
       this.fetchRegistrants(value);
