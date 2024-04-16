@@ -13,6 +13,7 @@
           v-model="data.category"
           label="Category"
           :items="categories_enum"
+          item-text="description"
           placeholder="Choose..."
           @blur="$v.data.category.$touch()"
           :error-messages="errorMessages.category"

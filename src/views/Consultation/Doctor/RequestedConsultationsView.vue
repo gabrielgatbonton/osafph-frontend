@@ -19,7 +19,9 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <ConsultationsTable :routeName="routeName" :consultations="switchData" />
+    <v-container fluid class="ma-1">
+      <ConsultationsTable :routeName="routeName" :consultations="switchData" />
+    </v-container>
   </div>
 </template>
 

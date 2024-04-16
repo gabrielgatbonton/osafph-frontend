@@ -28,11 +28,11 @@
           :items="crowd_fundings"
           item-text="backer"
         >
-          <template v-slot:item="{ item }" v-if="userRole === 'ADMIN'">
+          <template v-slot:item="{ item }" v-if="funderPermission">
             <div class="d-flex flex-column">
               <div>{{ item.backer }}</div>
               <div class="item-description">
-                Amount: {{ item.contribution }}
+                Amount: {{ item.contribution_left }} / {{ item.initial_contribution }} 
               </div>
             </div>
           </template>
@@ -244,6 +244,9 @@ export default {
       return this.payload.date_released
         ? format(parseISO(this.payload.date_released), "MMMM d, yyyy")
         : null;
+    },
+    funderPermission() {
+      return this.userRole === "ADMIN" || this.userRole === "ROOT";
     },
   },
   mounted() {

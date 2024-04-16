@@ -17,7 +17,9 @@
       </v-row>
     </v-container>
     <v-divider class="my-4"></v-divider>
-    <FilesTable :files="getFiles" />
+    <v-container fluid class="ma-1">
+      <FilesTable :files="getFiles" />
+    </v-container>
     <UploadDialog
       v-on:uploadFiles="uploadFiles"
       v-on:dialogResponse="resetActivator"

@@ -30,7 +30,19 @@
           <v-col cols="6">
             <div v-for="(schedule, index) in summary.schedule" :key="index">
               <div>{{ schedule.date }}, {{ schedule.session }}</div>
-              <div>{{ schedule.dialysis_package }}</div>
+              <div>
+                <span
+                class="font-weight-bold"
+                  v-for="(i, spanIndex) in schedule.dialysis_packages"
+                  :key="spanIndex"
+                  >{{ i.name
+                  }}{{
+                    spanIndex < schedule.dialysis_packages.length - 1
+                      ? ", "
+                      : ""
+                  }}</span
+                >
+              </div>
             </div>
           </v-col>
         </v-row>
@@ -101,6 +113,7 @@ export default {
   },
   computed: {
     summary() {
+      console.log(this.data);
       if (this.data)
         return {
           hospital: this.data.hospital,
@@ -110,7 +123,7 @@ export default {
             ? this.data.schedule.map((item) => ({
                 date: format(parseISO(item.date), "MMMM dd, yyyy"),
                 session: item.session,
-                dialysis_package: item.dialysis_package,
+                dialysis_packages: item.dialysis_packages,
               }))
             : null,
         };

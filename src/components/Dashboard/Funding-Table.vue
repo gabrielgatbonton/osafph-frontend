@@ -15,7 +15,7 @@
           :items="items"
           item-key="name"
           class="elevation-0"
-          :search="search"
+          :search.sync="search"
           :loading="loading"
           loading-text="Loading... Please wait"
           :server-items-length="total_items"
@@ -180,6 +180,7 @@ export default {
     options: {},
     query_params: {},
     page: 1,
+    searchTimeout: null,
   }),
   methods: {
     ...mapActions("funders_actions", [
@@ -376,16 +377,25 @@ export default {
       },
     },
     search: {
-      deep: true,
       handler(value) {
-        this.query_params = {
-          search: value,
-        };
+        // Clear any existing timeout
+        clearTimeout(this.searchTimeout);
 
-        this.getRootData(this.query_params).catch((error) => {
-          console.error("Error Fetching Root Data: ", error);
-        });
+        // Set a timeout to call the API after 1000 ms (1 second) of inactivity
+        this.searchTimeout = setTimeout(() => {
+          // Only make the API call if the search input hasn't changed
+          // for the last 1 second
+          this.query_params = {
+            search: value,
+          };
+
+          // Call the function to fetch data
+          this.getRootData(this.query_params).catch((error) => {
+            console.error("Error Fetching Root Data: ", error);
+          });
+        }, 300); // 1000 ms = 1 second delay
       },
+      immediate: false,
     },
   },
 };

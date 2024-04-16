@@ -25,10 +25,7 @@ export const categories = {
         .get(url)
         .then((response) => {
           const categories = response.data.categories;
-          const descriptions = categories.map(
-            (categories) => categories.description
-          );
-          commit("SET_CATEGORIES", descriptions);
+          commit("SET_CATEGORIES", categories);
         })
         .catch((error) => {
           console.error("Error fetching categories:", error);

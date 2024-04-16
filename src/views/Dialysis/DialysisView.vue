@@ -26,7 +26,9 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <DialysisTable :dialysis="switchData" />
+    <v-container fluid class="ma-1">
+      <DialysisTable :dialysis="switchData" />
+    </v-container>
     <FilterDialog
       @filterQuery="filterQuery"
       :activator="dialog"
@@ -39,7 +41,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import DialysisTable from "@/components/Dialysis/Dialysis-Table.vue";
-import FilterDialog from "@/components/Filter/FilterDialog.vue"
+import FilterDialog from "@/components/Filter/FilterDialog.vue";
 export default {
   name: "DialysisView",
   data: () => ({

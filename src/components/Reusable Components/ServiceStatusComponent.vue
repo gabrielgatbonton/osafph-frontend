@@ -17,7 +17,9 @@
                   <v-icon :color="iconColor"> mdi-message-processing </v-icon>
                 </v-avatar>
                 <v-icon
-                  v-if="userRole === 'DOCTOR' || userRole === 'DIALYSIS_ENCODER'"
+                  v-if="
+                    userRole === 'DOCTOR' || userRole === 'DIALYSIS_ENCODER'
+                  "
                   @click="initToggleProgress"
                   large
                   dark
@@ -151,14 +153,14 @@ export default {
     serviceStatus: {
       immediate: true,
       handler(value) {
-        if(value.status === "IN PROGRESS") {
+        if (value.status === "IN PROGRESS" || value.status === "COMPLETED") {
           this.toggle_status = true;
         } else {
           this.toggle_status = false;
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

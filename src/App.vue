@@ -8,8 +8,8 @@
       "
     />
     <v-main>
-      <SubmissionAlert v-if="success.alert" :message="success.message" />
-      <ErrorAlert v-if="failed.alert" :message="failed.message" />
+      <!-- <SubmissionAlert v-if="success.alert" :message="success.message" />
+      <ErrorAlert v-if="failed.alert" :message="failed.message" /> -->
       <router-view />
     </v-main>
     <FooterComponent />
@@ -19,10 +19,10 @@
 <script>
 import NavComponents from "./layouts/NavComponents.vue";
 import FooterComponent from "./layouts/Footer/FooterComponent.vue";
-import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
+// import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
   name: "App",
-  mixins: [ErrorAlertsLogic],
+  // mixins: [ErrorAlertsLogic],
   data: () => ({
     //
   }),

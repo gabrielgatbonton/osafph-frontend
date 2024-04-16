@@ -19,6 +19,8 @@
               v-model="category"
               label="Category"
               :items="categories"
+              item-text="description"
+              item-value="id"
               multiple
             ></v-select>
           </v-col>
@@ -31,6 +33,7 @@
               label="Barangay"
               :items="barangays"
               item-text="barangay_name"
+              item-value="id"
               multiple
             ></v-select>
           </v-col>
@@ -107,17 +110,17 @@ export default {
         this.filter_type.forEach((element) => {
           if (element === "CATEGORY") {
             if (this.category.length > 0) {
-              this.payload.category = this.category;
+              this.payload.category_ids = this.category;
             }
           }
           if (element === "SEX") {
             if (this.sex) {
-              this.payload.sex = this.sex;
+              this.payload.sexes = this.sex;
             }
           }
           if (element === "BARANGAY") {
             if (this.barangay.length > 0) {
-              this.payload.barangay = this.barangay;
+              this.payload.barangay_ids = this.barangay;
             }
           }
         });
