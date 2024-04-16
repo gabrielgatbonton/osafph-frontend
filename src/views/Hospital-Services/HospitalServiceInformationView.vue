@@ -33,14 +33,14 @@
         <v-col cols="12" md="8">
           <v-container fluid class="mx-auto mt-3">
             <v-row>
-              <v-col cols="12" class="mt-n1">
-                <PatientServiceComponent
-                  :serviceInformation="serviceInformation"
-                />
-              </v-col>
               <v-col cols="12">
                 <PatientInformationComponent
                   :patientInformation="patientInformation"
+                />
+              </v-col>
+              <v-col cols="12" class="mt-n1">
+                <PatientServiceComponent
+                  :serviceInformation="serviceInformation"
                 />
               </v-col>
             </v-row>
@@ -116,8 +116,8 @@ export default {
     service: {
       handler(value) {
         console.log(value);
-      }
-    }
+      },
+    },
   },
   computed: {
     ...mapState("registrants", {
@@ -155,7 +155,7 @@ export default {
         fourth_column = {
           title: "Serviceable Availed",
           content: this.service.data.serviceable_type_name,
-        }
+        };
       } else {
         items_availed = {
           service_type: this.service.data.service_type,
@@ -169,7 +169,7 @@ export default {
         fourth_column = {
           title: "Session Time",
           content: this.service.data.session,
-        }
+        };
       }
 
       return {
