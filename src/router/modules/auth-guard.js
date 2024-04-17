@@ -18,16 +18,15 @@ export function checkLoggedIn(to, from, next) {
     // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
   } else if (userRole === "ROOT" && !isAllowedRoutes(to.name, userRole)) {
-    // If the user is an admin and is trying to access a restricted route,
-    // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
   } else if (userRole === "DOCTOR" && !isAllowedRoutes(to.name, userRole)) {
-    // If the user is an admin and is trying to access a restricted route,
-    // redirect to a different route (e.g., 'home') or display an error message
     next({ name: "dashboard" });
   } else if (userRole === "ENCODER" && !isAllowedRoutes(to.name, userRole)) {
-    // If the user is an admin and is trying to access a restricted route,
-    // redirect to a different route (e.g., 'home') or display an error message
+    next({ name: "dashboard" });
+  } else if (
+    userRole === "DIALYSIS_ENCODER" &&
+    !isAllowedRoutes(to.name, userRole)
+  ) {
     next({ name: "dashboard" });
   } else {
     // Proceed with the navigation
@@ -46,10 +45,8 @@ function isAllowedRoutes(routeName, userRole) {
       "consultation-form-continuation",
       "doctor-edit-consultation-form",
       "doctor-edit-consultation-form-continuation",
-      "dashboard",
-      "management",
       "consultation-files",
-      "consultation-files-view"
+      "consultation-files-view",
     ];
   } else if (userRole === "ADMIN" || userRole === "ROOT") {
     allowedRoutes = [
@@ -61,30 +58,37 @@ function isAllowedRoutes(routeName, userRole) {
       "citizens-consultations-view",
       "edit-consultation-form",
       "edit-consultation-form-continuation",
-      "dashboard",
       "hospital-services",
       "hospital-services-information",
-      "management",
       "dialysis-packages",
       "dialysis-items",
       "document-types",
     ];
+    if (userRole === "ROOT") {
+      allowedRoutes.push("dialysis-queuing");
+    }
   } else if (userRole === "ENCODER") {
     allowedRoutes = [
       "citizens",
       "register",
       "edit",
       "details",
-      "dashboard",
       "hospital-services",
       "hospital-services-information",
-      "management",
+    ];
+  } else if (userRole === "DIALYSIS_ENCODER") {
+    allowedRoutes = [
+      "dialysis-queuing",
+      "dialysis",
+      "dialysis-session",
+      "dialysis-files",
+      "dialysis-files-view",
     ];
   }
 
   //Allow all roles to use these routes:
-  allowedRoutes.push("reroute", "test", "dialysis-queuing");
-  
+  allowedRoutes.push("reroute", "management", "dashboard", "test");
+
   // Check if the provided routeName is in the restrictedRoutes array
   return allowedRoutes.includes(routeName);
 }

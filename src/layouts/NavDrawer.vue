@@ -78,7 +78,7 @@ export default {
                 icon: "mdi-file-document",
                 text: "Document Types",
                 route: "/document-types",
-              }
+              },
             ],
           },
           {
@@ -86,13 +86,16 @@ export default {
             text: "Consultations",
             route: "/citizens-consultations",
           },
-          {
+          { icon: "mdi-cog", text: "Management", route: "/management" },
+        ];
+        if (this.userRole === "ROOT") {
+          const index = links.length - 1;
+          links.splice(index, 0, {
             icon: "mdi-human-queue",
             text: "Dialysis Queuing",
             route: "/dialysis-queuing",
-          },
-          { icon: "mdi-cog", text: "Management", route: "/management" },
-        ];
+          });
+        }
       } else if (this.userRole === "DOCTOR") {
         links = [
           {
@@ -132,6 +135,11 @@ export default {
             icon: "mdi-medical-bag",
             text: "Dialysis",
             route: "/dialysis",
+          },
+          {
+            icon: "mdi-human-queue",
+            text: "Dialysis Queuing",
+            route: "/dialysis-queuing",
           },
           { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
