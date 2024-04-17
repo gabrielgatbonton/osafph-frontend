@@ -5,15 +5,17 @@
       app
       color="grey lighten-4"
       width="200"
+      
     >
       <v-container>
         <v-row>
           <v-col cols="auto" class="ma-n2 pl-4">
             <v-img
-              src="../assets/OSAFPH LOGO.png"
+              :src="logoUrl"
               height="55"
               width="55"
               contain
+              eager
             ></v-img>
           </v-col>
           <v-col cols="auto">
@@ -31,6 +33,9 @@ import { mapGetters } from "vuex";
 import LinkComponent from "./LinkComponent.vue";
 export default {
   props: ["drawer"],
+  data: () => ({
+    logoUrl: require("@/assets/OSAFPH LOGO.png"),
+  }),
   components: {
     LinkComponent,
   },

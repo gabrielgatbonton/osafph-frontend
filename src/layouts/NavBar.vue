@@ -3,7 +3,7 @@
     <v-app-bar app flat color="grey lighten-2">
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       <div>
-        <v-img src="../assets/MCG.png" width="120" height="60" contain></v-img>
+        <v-img eager :src="logoUrl" width="120" height="60" contain></v-img>
       </div>
       <v-spacer></v-spacer>
       <div class="title py-1 mr-3">{{ userName }}</div>
@@ -39,6 +39,7 @@ export default {
     offset: true,
     drawer: false,
     loading: false,
+    logoUrl: require("../assets/MCG.png"),
   }),
   components: {
     NavDrawer,

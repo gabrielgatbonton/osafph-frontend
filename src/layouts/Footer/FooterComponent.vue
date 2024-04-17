@@ -8,10 +8,11 @@
         >
           <div class="px-2">
             <v-img
+              eager
               height="55"
               width="55"
               contain
-              src="../../assets/ICTDU.jpg"
+              :src="imageUrl"
               :class="{ 'd-none': $vuetify.breakpoint.xs }"
             ></v-img>
           </div>
@@ -48,6 +49,7 @@
 export default {
   name: "FooterComponent",
   data: () => ({
+    imageUrl: require("@/assets/ICTDU.jpg"),
     icons: [
       {
         icon: "mdi-facebook",
