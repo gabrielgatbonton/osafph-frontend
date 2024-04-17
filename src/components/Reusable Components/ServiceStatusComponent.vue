@@ -83,6 +83,47 @@
           </v-row>
         </v-card>
       </v-col>
+      <v-col cols="12" class="mt-n2">
+        <v-card>
+          <v-card-title class="blue darken-1 white--text">
+            <v-icon dark class="mr-2">mdi-hospital-box-outline</v-icon>
+            Packages Availed
+          </v-card-title>
+          <v-container>
+            <v-row
+              v-for="(info, packIndex) in packageInformation"
+              :key="packIndex"
+              class="mt-n3"
+            >
+              <v-col cols="12">
+                <v-btn text @click="expandCollapse(packIndex)" width="100%"
+                  >{{ info.name }}
+                  <v-spacer></v-spacer>
+                  <v-icon>{{packageInformation[packIndex].expand ? "mdi-chevron-down" : "mdi-chevron-up"}}</v-icon>
+                </v-btn>
+              </v-col>
+              <v-expand-transition>
+                <v-row
+                  v-if="packageInformation[packIndex].expand"
+                  class="ma-1 mt-n4"
+                >
+                  <v-col
+                    cols="6"
+                    v-for="(item, itemIndex) in info.items"
+                    :key="itemIndex"
+                  >
+                    <ul>
+                      <li>
+                        {{ item }}
+                      </li>
+                    </ul>
+                  </v-col>
+                </v-row>
+              </v-expand-transition>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -94,6 +135,18 @@ export default {
   props: ["serviceStatus"],
   data: () => ({
     toggle_status: false,
+    packageInformation: [
+      {
+        name: "Package A",
+        items: ["EPO", "Copay"],
+        expand: false,
+      },
+      {
+        name: "Package B",
+        items: ["Dialyzer", "EPO", "Copay", "Laboratory"],
+        expand: false,
+      },
+    ],
   }),
   methods: {
     initToggleProgress() {
@@ -103,6 +156,11 @@ export default {
       } else {
         this.$emit("toggleProgress", this.serviceStatus.original_status);
       }
+    },
+    expandCollapse(packIndex) {
+      this.packageInformation[packIndex].expand =
+        !this.packageInformation[packIndex].expand;
+      console.log(this.packageInformation[packIndex].expand);
     },
   },
   computed: {
@@ -158,6 +216,11 @@ export default {
         } else {
           this.toggle_status = false;
         }
+      },
+    },
+    packageInformation: {
+      handler(value) {
+        console.log(value);
       },
     },
   },

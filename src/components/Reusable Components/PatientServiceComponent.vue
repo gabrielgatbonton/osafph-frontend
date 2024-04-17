@@ -39,7 +39,7 @@
             </v-expansion-panel>
           </v-expansion-panels>
         </v-col>
-        <v-col
+        <!-- <v-col
           cols="12"
           class="mt-3"
           v-if="serviceInformation.items_availed.service_type === 'DIALYSIS'"
@@ -76,7 +76,7 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-container>
   </v-card>
