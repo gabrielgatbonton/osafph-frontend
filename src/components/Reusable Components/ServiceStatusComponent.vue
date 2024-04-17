@@ -99,7 +99,7 @@
                 <v-btn text @click="expandCollapse(packIndex)" width="100%"
                   >{{ info.name }}
                   <v-spacer></v-spacer>
-                  <v-icon>{{packageInformation[packIndex].expand ? "mdi-chevron-down" : "mdi-chevron-up"}}</v-icon>
+                  <v-icon>{{packageInformation[packIndex].expand ? "mdi-chevron-up" : "mdi-chevron-down"}}</v-icon>
                 </v-btn>
               </v-col>
               <v-expand-transition>
