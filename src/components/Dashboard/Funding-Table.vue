@@ -306,6 +306,10 @@ export default {
           });
         });
     },
+    formattedNumber(num) {
+      const formattedNumber = num.toLocaleString();
+      return formattedNumber;
+    },
   },
   computed: {
     headers() {
@@ -346,7 +350,14 @@ export default {
           }, 5000);
         } else {
           this.loading = false;
-          this.items = value.tableContent.data;
+          this.items = value.tableContent.data.map((item) => ({
+            name: item.name,
+            initial_contribution: this.formattedNumber(
+              item.initial_contribution
+            ),
+            created_at: item.created_at,
+            contribution_left: this.formattedNumber(item.contribution_left),
+          }));
           this.total_items = value.tableContent.total;
         }
       },

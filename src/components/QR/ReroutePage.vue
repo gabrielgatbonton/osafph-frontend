@@ -23,19 +23,8 @@
       </v-row>
       <v-row dense class="mt-5">
         <v-col cols="12">
-          <div
-            v-if="
-              (getPublicData && getPublicImage && getPublicSignature) ||
-              getPublicBiometrics
-            "
-            class="my-auto text-center slide-down"
-          >
-            <PublicPrintCardJavaScript
-              :getPublicImage="getPublicImage"
-              :getPublicSignature="getPublicSignature"
-              :getPublicBiometrics="getPublicBiometrics"
-              :registrant="getPublicData"
-            />
+          <div v-if="getPublicData" class="my-auto text-center slide-down">
+            <PrintQRJavaScript :registrant="getPublicData" />
           </div>
         </v-col>
       </v-row>
@@ -53,23 +42,16 @@
 
 <script>
 import DataTabs from "./DataTabs.vue";
-import PublicPrintCardJavaScript from "../Card/PublicPrintCardJavaScript.vue";
+import PrintQRJavaScript from "../Card/PrintQRJavaScript.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     DataTabs,
-    PublicPrintCardJavaScript,
+    PrintQRJavaScript,
   },
   methods: {
     ...mapActions("registrants", [
-      "fetchRegistrantId",
-      "fetchBoosterInformation",
       "fetchPublicCitizenRecord",
-    ]),
-    ...mapActions("card", [
-      "fetchPublicImage",
-      "fetchPublicSignature",
-      "fetchPublicBiometrics",
     ]),
     ...mapActions("services", ["fetchPublicServicesById"]),
     fetchData() {
@@ -91,14 +73,7 @@ export default {
   },
   computed: {
     ...mapGetters("registrants", [
-      "getRegistrant",
-      "getBoosterInformation",
       "getPublicData",
-    ]),
-    ...mapGetters("card", [
-      "getPublicImage",
-      "getPublicSignature",
-      "getPublicBiometrics",
     ]),
     ...mapGetters("services", ["getPublicHospitalServices"]),
   },
@@ -108,21 +83,9 @@ export default {
   watch: {
     getPublicData(value) {
       if (value.citizen.hub_registrant_id) {
-        this.fetchPublicImage(value.citizen.id);
-        this.fetchPublicSignature(value.citizen.id);
-        this.fetchPublicBiometrics(value.citizen.id);
         this.fetchPublicServicesById(value.citizen.id);
       }
     },
-    // getRegistrant(value) {
-    //   console.log("Registrant: ", value);
-    // },
-    // getBoosterInformation(value) {
-    //   console.log("Booster: ", value);
-    // },
-    // getPublicBiometrics(value) {
-    //   console.log(value);
-    // },
   },
 };
 </script>
