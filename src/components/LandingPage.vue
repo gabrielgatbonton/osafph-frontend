@@ -19,9 +19,10 @@
       <v-col cols="12" md="6">
         <div class="text-container">
           <v-img
+            eager
             class="mx-auto d-block"
             id="image"
-            src="../assets/Jose (1).png"
+            :src="imageUrl"
             :max-width="$vuetify.breakpoint.xs ? 260 : 400"
             contain
           ></v-img>
@@ -81,6 +82,7 @@ export default {
     loading: false,
     loginError: null,
     show: false,
+    imageUrl: require("@/assets/Jose (1).png"),
   }),
   validations: {
     username: {

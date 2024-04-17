@@ -5,15 +5,17 @@
       app
       color="grey lighten-4"
       width="200"
+      
     >
       <v-container>
         <v-row>
           <v-col cols="auto" class="ma-n2 pl-4">
             <v-img
-              src="../assets/OSAFPH LOGO.png"
+              :src="logoUrl"
               height="55"
               width="55"
               contain
+              eager
             ></v-img>
           </v-col>
           <v-col cols="auto">
@@ -31,6 +33,9 @@ import { mapGetters } from "vuex";
 import LinkComponent from "./LinkComponent.vue";
 export default {
   props: ["drawer"],
+  data: () => ({
+    logoUrl: require("@/assets/OSAFPH LOGO.png"),
+  }),
   components: {
     LinkComponent,
   },
@@ -78,7 +83,7 @@ export default {
                 icon: "mdi-file-document",
                 text: "Document Types",
                 route: "/document-types",
-              }
+              },
             ],
           },
           {
@@ -86,13 +91,16 @@ export default {
             text: "Consultations",
             route: "/citizens-consultations",
           },
-          {
+          { icon: "mdi-cog", text: "Management", route: "/management" },
+        ];
+        if (this.userRole === "ROOT") {
+          const index = links.length - 1;
+          links.splice(index, 0, {
             icon: "mdi-human-queue",
             text: "Dialysis Queuing",
             route: "/dialysis-queuing",
-          },
-          { icon: "mdi-cog", text: "Management", route: "/management" },
-        ];
+          });
+        }
       } else if (this.userRole === "DOCTOR") {
         links = [
           {
@@ -132,6 +140,11 @@ export default {
             icon: "mdi-medical-bag",
             text: "Dialysis",
             route: "/dialysis",
+          },
+          {
+            icon: "mdi-human-queue",
+            text: "Dialysis Queuing",
+            route: "/dialysis-queuing",
           },
           { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
