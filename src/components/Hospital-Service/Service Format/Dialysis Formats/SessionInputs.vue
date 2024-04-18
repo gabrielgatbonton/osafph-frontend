@@ -56,7 +56,8 @@
             <div class="d-flex flex-column">
               <div>{{ item.name }}</div>
               <div class="item-description">
-                Amount:  {{ item.contribution_left }} / {{ item.initial_contribution }} 
+                Amount: {{ item.contribution_left }} /
+                {{ item.initial_contribution }}
               </div>
             </div>
           </template>
@@ -229,7 +230,8 @@
                     <div class="d-flex flex-column">
                       <div>{{ item.name }}</div>
                       <div class="item-description">
-                        Amount: {{ item.contribution_left }} / {{ item.initial_contribution }} 
+                        Amount: {{ item.contribution_left }} /
+                        {{ item.initial_contribution }}
                       </div>
                     </div>
                   </template>
@@ -361,9 +363,6 @@ export default {
       );
       this.disable = false;
       this.selectedDates = [];
-      this.payload.schedule.forEach((session, index) => {
-        this.payload.schedule[index].session = null;
-      });
     },
 
     appendDate(schedule) {
@@ -399,11 +398,15 @@ export default {
     resetButton() {
       this.disable = false;
       this.selectedDates = [];
-      this.payload.schedule.forEach((session, index) => {
+      this.payload.schedule.forEach((_, index) => {
         this.payload.schedule[index].date = null;
-      });
-      this.payload.schedule.forEach((session, index) => {
         this.payload.schedule[index].session = null;
+        this.payload.schedule[index].dialysis_packages = [
+          {
+            name: null,
+            funder: null,
+          },
+        ];
       });
     },
     // setupSessionWatchers(schedule) {
@@ -516,6 +519,7 @@ export default {
     "payload.schedule": {
       handler(newVal) {
         this.setupDateWatchers(newVal);
+        console.log(newVal);
       },
       deep: true,
     },
