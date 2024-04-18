@@ -102,10 +102,10 @@
         </v-col>
       </v-row>
       <v-row v-if="userRole === `ROOT` && dashRoot">
-        <RootContent :data="dashboardRootValues" />
+        <RootContent @query_params="updateFetch" :data="dashboardRootValues" />
       </v-row>
       <v-row v-if="userRole === `ADMIN` && dashRoot">
-        <AdminContent :data="dashboardRootValues" />
+        <AdminContent @query_params="updateFetch" :data="dashboardRootValues" />
       </v-row>
       <v-row v-if="userRole === `ENCODER` && dashRoot">
         <EncoderContent :data="dashboardRootValues" />
@@ -139,6 +139,11 @@ export default {
         .replace(/\b\w/g, (char) => char.toUpperCase());
 
       return formattedTitle;
+    },
+    updateFetch(query) {
+      this.getRootData(query).catch((error) => {
+        console.error("Error updating fetch: ", error);
+      });
     },
   },
   computed: {

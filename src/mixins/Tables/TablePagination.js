@@ -1,6 +1,14 @@
 // Import the following about the export default
 // import TablePaginationMixin from "@/mixins/Tables/TablePagination"
 
+// Add the necessary props to the v-data-table
+// :server-items-length="registrants.pagination.total"
+// :options.sync="options"
+// :footer-props="{
+//   itemsPerPageOptions: [5, 10, 15],
+// }"
+
+
 export default {
   data: () => ({
     searchTimeout: null,

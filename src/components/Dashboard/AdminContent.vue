@@ -34,7 +34,10 @@
           </div>
         </v-card>
       </v-col>
-      <FundingTable :data="data" />
+      <FundingTable
+        @query_params="(data) => $emit('query_params', data)"
+        :data="data"
+      />
     </v-row>
   </v-container>
 </template>

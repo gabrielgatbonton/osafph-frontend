@@ -143,10 +143,11 @@ import { mapActions } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import FundingTableMixin from "@/mixins/Validation/DashboardValidation/FundingTable";
+import TablePaginationMixin from "@/mixins/Tables/TablePagination"
 export default {
   name: "Funding-Table",
   props: ["data"],
-  mixins: [ErrorAlertsLogic, FundingTableMixin],
+  mixins: [ErrorAlertsLogic, FundingTableMixin, TablePaginationMixin],
   components: {
     ReusableDeleteDialog,
   },
@@ -154,7 +155,6 @@ export default {
     // Table Values
     items: [],
     total_items: 0,
-    search: "",
     loading: true,
     // Dialog Values
     dialog: false,
@@ -177,10 +177,6 @@ export default {
     }),
     disabled: false,
     types: ["PUBLIC", "PRIVATE"],
-    options: {},
-    query_params: {},
-    page: 1,
-    searchTimeout: null,
   }),
   methods: {
     ...mapActions("funders_actions", [
@@ -188,7 +184,6 @@ export default {
       "updateFunder",
       "deleteFunder",
     ]),
-    ...mapActions("dashboard", ["getRootData"]),
     // Dialogs Methods
     openDialog(value, status) {
       this.dialogStatus = status;
@@ -361,52 +356,6 @@ export default {
           this.total_items = value.tableContent.total;
         }
       },
-    },
-    options: {
-      deep: true,
-      handler(value) {
-        if (value.page !== this.page) {
-          this.query_params.page = value.page;
-        }
-        if (value.itemsPerPage) {
-          this.query_params.per_page = value.itemsPerPage;
-        }
-        if (value.sortBy.length === 1 && value.sortDesc.length === 1) {
-          this.query_params.sort_by = value.sortBy[0];
-          this.query_params.sort_order = value.sortDesc[0] ? "asc" : "desc";
-        } else {
-          delete this.query_params.sort_by;
-          delete this.query_params.sort_order;
-        }
-        this.getRootData(this.query_params)
-          .catch((error) => {
-            console.error("Error Fetching Root Data: ", error);
-          })
-          .finally(() => {
-            this.page = value.page;
-          });
-      },
-    },
-    search: {
-      handler(value) {
-        // Clear any existing timeout
-        clearTimeout(this.searchTimeout);
-
-        // Set a timeout to call the API after 1000 ms (1 second) of inactivity
-        this.searchTimeout = setTimeout(() => {
-          // Only make the API call if the search input hasn't changed
-          // for the last 1 second
-          this.query_params = {
-            search: value,
-          };
-
-          // Call the function to fetch data
-          this.getRootData(this.query_params).catch((error) => {
-            console.error("Error Fetching Root Data: ", error);
-          });
-        }, 300); // 1000 ms = 1 second delay
-      },
-      immediate: false,
     },
   },
 };
