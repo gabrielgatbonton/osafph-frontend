@@ -9,6 +9,7 @@
           item-text="name"
           @blur="$v.payload.hospital.$touch()"
           :error-messages="errorMessages.hospital"
+          :disabled="disabled"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
@@ -19,6 +20,7 @@
           item-text="name"
           @blur="$v.payload.dialysis_machine.$touch()"
           :error-messages="errorMessages.dialysis_machine"
+          :disabled="disabled"
         ></v-autocomplete>
       </v-col>
       <v-col cols="6">
@@ -40,6 +42,7 @@
               readonly
               @blur="$v.payload.scheduled_date.$touch()"
               :error-messages="errorMessages.scheduled_date"
+              :disabled="disabled"
             ></v-text-field>
           </template>
           <v-date-picker
@@ -56,6 +59,7 @@
           v-model="payload.scheduled_session"
           @blur="$v.payload.scheduled_session.$touch()"
           :error-messages="errorMessages.scheduled_session"
+          :disabled="disabled"
         ></v-select>
       </v-col>
       <v-col cols="6">
@@ -77,6 +81,7 @@
               readonly
               @blur="$v.payload.date_released.$touch()"
               :error-messages="errorMessages.date_released"
+              :disabled="disabled"
             ></v-text-field>
           </template>
           <v-date-picker
@@ -93,11 +98,12 @@
           :items="statuses"
           @blur="$v.payload.status.$touch()"
           :error-messages="errorMessages.status"
+          :disabled="disabled"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12">
+      <!-- <v-col cols="12">
         <v-text-field v-model="payload.remarks" label="Remarks"></v-text-field>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>
@@ -121,6 +127,10 @@ export default {
       type: Array,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      required: true,
+    },
   },
   data: () => ({
     payload: {
@@ -133,7 +143,6 @@ export default {
       dialysis_machine: null,
     },
     session_choices: ["MORNING", "NOON", "AFTERNOON"],
-    statuses: ["PENDING", "UNATTENDED", "COMPLETED"],
     menu_1: false,
     menu_2: false,
     minDate: new Date().toISOString().slice(0, 10),
@@ -155,17 +164,14 @@ export default {
     },
     checkEditData() {
       if (this.hospitalService) {
-        this.payload.hospital = this.hospitalService.hospitalService.hospital;
+        this.payload.hospital = this.hospitalService.data.hospital;
         this.payload.dialysis_machine =
-          this.hospitalService.hospitalService.dialysis_machine.name;
-        this.payload.scheduled_date =
-          this.hospitalService.hospitalService.scheduled_date;
-        this.payload.date_released =
-          this.hospitalService.hospitalService.date_released;
-        this.payload.scheduled_session =
-          this.hospitalService.hospitalService.session;
-        this.payload.status = this.hospitalService.hospitalService.status;
-        this.payload.remarks = this.hospitalService.hospitalService.remarks;
+          this.hospitalService.data.dialysis_machine;
+        this.payload.scheduled_date = this.hospitalService.data.scheduled_date;
+        this.payload.date_released = this.hospitalService.data.date_released;
+        this.payload.scheduled_session = this.hospitalService.data.session;
+        this.payload.status = this.hospitalService.data.status;
+        // this.payload.remarks = this.hospitalService.data.remarks;
       }
     },
   },
@@ -179,6 +185,11 @@ export default {
       return this.payload.date_released
         ? format(parseISO(this.payload.date_released), "MMMM d, yyyy")
         : null;
+    },
+    statuses() {
+      return this.disabled
+        ? ["PENDING", "UNATTENDED", "COMPLETED", "IN PROGRESS"]
+        : ["PENDING", "UNATTENDED", "COMPLETED"];
     },
   },
   watch: {

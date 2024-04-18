@@ -87,6 +87,7 @@
           :dialysis_machines="dialysis_machines"
           @payload="assignPayload"
           @validationSuccess="checkValidationEdit"
+          :disabled="disabled"
           ref="editInputs"
         />
       </v-col>
@@ -114,6 +115,10 @@ export default {
       type: Object,
       required: false,
     },
+    disabled: {
+      type: Boolean,
+      required: true,
+    }
   },
   components: {
     EditInputs,
