@@ -27,14 +27,14 @@ export default [
     name: "dialysis-files",
     component: () =>
       import(
-        /* webpackChunkName: "dialysis" */ "@/views/Consultation/ConsultationFiles.vue"
+        /* webpackChunkName: "dialysis" */ "@/views/Dialysis/DialysisFiles.vue"
       ),
     props: true,
     meta: { requiresAuth: true },
     beforeEnter: checkLoggedIn,
   },
   {
-    path: "/dialysis/session/:id/files/viewer",
+    path: "/dialysis/session/:id/files/:hospital_service_id/viewer",
     name: "dialysis-files-view",
     component: () =>
       import(/* webpackChunkName: "dialysis" */ "@/views/FileView.vue"),

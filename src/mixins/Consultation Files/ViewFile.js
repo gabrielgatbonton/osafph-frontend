@@ -9,17 +9,32 @@ export default {
   methods: {
     ...mapActions("files", ["fetchFile"]),
     activator(file_id, hospital_service_id) {
-      this.$router
-        .push({
-          name: "consultation-files-view",
-          query: {
-            file_id: JSON.stringify(file_id),
-            hospital_service_id: JSON.stringify(hospital_service_id),
-          },
-        })
-        .catch((error) => {
-          console.log("Error Moving to Next Route:", error);
-        });
+      if (this.userRole === "DOCTOR") {
+        console.log("Check1")
+        this.$router
+          .push({
+            name: "consultation-files-view",
+            query: {
+              file_id: JSON.stringify(file_id),
+              hospital_service_id: JSON.stringify(hospital_service_id),
+            },
+          })
+          .catch((error) => {
+            console.error("Error Moving to Next Route:", error);
+          });
+      } else if (this.userRole === "DIALYSIS_ENCODER") {
+        this.$router
+          .push({
+            name: "dialysis-files-view",
+            query: {
+              file_id: JSON.stringify(file_id),
+              hospital_service_id: JSON.stringify(hospital_service_id),
+            },
+          })
+          .catch((error) => {
+            console.error("Error Moving to Next Route:", error);
+          });
+      }
     },
     downloadTrigger(file_id, hospital_service_id) {
       this.fetchFile({
@@ -64,6 +79,7 @@ export default {
   },
   computed: {
     ...mapGetters("files", ["getFile"]),
+    ...mapGetters("login", ["userRole"]),
   },
   watch: {
     getFile(value) {

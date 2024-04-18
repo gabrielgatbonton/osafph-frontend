@@ -24,26 +24,22 @@ export default {
   data: () => ({}),
   methods: {
     returnToRoute() {
-      this.$router
-        .push({
-          name: "consultation-files",
-        })
-        .catch((error) => {
-          console.error("Error Returning to Route: ", error);
-        });
+      this.$router.go(-1).catch((error) => {
+        console.error("Error Returning to Route: ", error);
+      });
     },
     printPDF() {
-        this.$emit("print", true);
+      this.$emit("print", true);
     },
     downloadPDF() {
-        this.$emit("download", true);
+      this.$emit("download", true);
     },
     downloadImage() {
-        this.$emit("downloadImage", true);
+      this.$emit("downloadImage", true);
     },
     printImage() {
-        this.$emit("printImage", true);
-    }
+      this.$emit("printImage", true);
+    },
   },
 };
 </script>

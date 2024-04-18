@@ -31,7 +31,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import FilesTable from "@/components/Consultation/Files-Table.vue";
+import FilesTable from "@/components/File Viewer/Files-Table.vue";
 import UploadDialog from "../../components/Upload/UploadDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
