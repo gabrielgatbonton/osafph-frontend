@@ -101,9 +101,6 @@
           :disabled="disabled"
         ></v-autocomplete>
       </v-col>
-      <!-- <v-col cols="12">
-        <v-text-field v-model="payload.remarks" label="Remarks"></v-text-field>
-      </v-col> -->
     </v-row>
   </v-container>
 </template>
@@ -135,7 +132,6 @@ export default {
   data: () => ({
     payload: {
       status: null,
-      remarks: null,
       scheduled_date: null,
       date_released: null,
       scheduled_session: null,
@@ -171,7 +167,6 @@ export default {
         this.payload.date_released = this.hospitalService.data.date_released;
         this.payload.scheduled_session = this.hospitalService.data.session;
         this.payload.status = this.hospitalService.data.status;
-        // this.payload.remarks = this.hospitalService.data.remarks;
       }
     },
   },

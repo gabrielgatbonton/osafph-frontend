@@ -67,8 +67,6 @@ export default {
           scheduled_session: payload.scheduled_session,
           date_released: payload.date_released,
           status: payload.status,
-          remarks: payload.remarks !== "" ? payload.remarks : null,
-          // crowd_funding_backer: payload.crowd_funding_backer,
         };
       }
       return this.updateHospitalService({
