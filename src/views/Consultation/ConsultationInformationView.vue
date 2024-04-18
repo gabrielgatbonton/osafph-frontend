@@ -68,14 +68,14 @@
         <v-col cols="12" md="8">
           <v-container fluid class="mx-auto mt-3">
             <v-row>
-              <v-col cols="12" class="mt-n1">
-                <PatientServiceComponent
-                  :serviceInformation="serviceInformation"
-                />
-              </v-col>
               <v-col cols="12">
                 <PatientInformationComponent
                   :patientInformation="patientInformation"
+                />
+              </v-col>
+              <v-col cols="12" class="mt-n1">
+                <PatientServiceComponent
+                  :serviceInformation="serviceInformation"
                 />
               </v-col>
               <v-col cols="12">
