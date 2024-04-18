@@ -12,7 +12,14 @@ export default {
     assignParams(payload) {
       for (const key in payload) {
         if (Object.hasOwnProperty.call(payload, key)) {
-          this.$set(this.query_params, key, payload[key]);
+          const value = payload[key];
+          if (value === null) {
+            // if value is null, delete in query_params
+            this.$delete(this.query_params, key);
+          } else {
+            // if property has data, add to query_params
+            this.$set(this.query_params, key, value);
+          }
         }
       }
       this.$emit("query_params", this.query_params);

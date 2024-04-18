@@ -135,7 +135,18 @@ export default {
     },
     resetFilter() {
       //Reset Query
-      this.$emit("filterQuery", {});
+      this.$emit(
+        "filterQuery",
+        this.type_of_filter === "CITIZENS INDEX"
+          ? {
+              category_ids: null,
+              sexes: null,
+              barangay_ids: null,
+            }
+          : {
+              dialysis_machine: null,
+            }
+      );
 
       //Reset Local Values
       this.filter_type = [];
@@ -144,7 +155,7 @@ export default {
       this.barangay = [];
       this.dialysis_machine = [];
 
-      //Close Values
+      //Close Dialog
       this.dialog = false;
     },
   },

@@ -26,12 +26,7 @@
         >
       </div>
       <FilterDialog
-        @filterQuery="
-          (data) => {
-            query_params.dialysis_machine = data.dialysis_machine;
-            $emit('query_params', query_params);
-          }
-        "
+        @filterQuery="(data) => assignParams(data)"
         :activator="dialog"
         @dialogResponse="resetActivator"
         :type_of_filter="type_of_filter"
@@ -71,10 +66,12 @@
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
+import TablePaginationMixin from "@/mixins/Tables/TablePagination";
 import { mapGetters } from "vuex";
 export default {
   name: "Dialysis-Table",
   props: ["dialysis"],
+  mixins: [TablePaginationMixin],
   data: () => ({
     dialog: false,
     search: "",
@@ -91,7 +88,6 @@ export default {
   },
   methods: {
     viewDialysisSession(id) {
-      console.log(id);
       this.$router.push({
         name: "dialysis-session",
         params: { id: id },
@@ -172,38 +168,6 @@ export default {
             status: item.status,
           }));
         }
-      },
-    },
-    options: {
-      deep: true,
-      handler(value) {
-        // console.log(value);
-        if (value.page > 1) {
-          this.query_params.page = value.page;
-        }
-        if (value.itemsPerPage) {
-          this.query_params.per_page = value.itemsPerPage;
-        }
-        if (value.sortBy.length === 1 && value.sortDesc.length === 1) {
-          this.query_params.sort_by = value.sortBy[0];
-          this.query_params.sort_order = value.sortDesc[0] ? "desc" : "asc";
-        } else {
-          delete this.query_params.sort_by;
-          delete this.query_params.sort_order;
-        }
-
-        this.$emit("query_params", this.query_params);
-      },
-    },
-    search: {
-      deep: true,
-      handler(value) {
-        clearTimeout(this.searchTimeout);
-
-        this.searchTimeout = setTimeout(() => {
-          this.query_params.search = value;
-          this.$emit("query_params", this.query_params);
-        }, 300);
       },
     },
   },
