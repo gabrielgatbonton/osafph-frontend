@@ -22,6 +22,7 @@
                 @change="(value) => initService(value)"
                 @blur="$v.payload.service_type.$touch()"
                 :error-messages="errorMessages.service_type"
+                :disabled="disabledValue"
               ></v-autocomplete>
             </v-col>
             <GeneralFormat
@@ -33,6 +34,7 @@
               :services_choices="services_choices"
               :crowd_fundings="crowd_fundings"
               :medical_sites="hospitals"
+              :disabled="disabledValue"
               :hospitalService="hospitalService"
               :type="payload.service_type"
               v-on:payload="assignPayload"
@@ -47,6 +49,7 @@
               :crowd_fundings="crowd_fundings"
               :hospitalService="hospitalService"
               :medical_sites="hospitals"
+              :disabled="disabledValue"
               v-on:payload="assignPayload"
               v-on:validationSuccess="checkValidation"
               @submitForm="submitForm"
@@ -61,7 +64,12 @@
                   payload.service_type !== null)
               "
             >
-              <v-btn dark block color="blue darken-4" @click="submitForm"
+              <v-btn
+                dark
+                block
+                color="blue darken-4"
+                :class="{ 'disabled-button': disabledValue }"
+                @click="submitForm"
                 >Submit</v-btn
               >
             </v-col>
@@ -74,7 +82,7 @@
 
 <script>
 // import { format, parse } from "date-fns";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import GeneralFormat from "./Service Format/GeneralFormat.vue";
 import DialysisFormat from "./Service Format/DialysisFormat.vue";
 import ServiceDialogMixin from "../../mixins/Validation/ServiceRequestValidation/ServiceDialog";
@@ -179,6 +187,18 @@ export default {
       "hospitals",
       "crowd_fundings",
     ]),
+    ...mapGetters("login", ["userRole"]),
+    disabledValue() {
+      let status = false;
+      if (
+        this.hospitalService &&
+        this.hospitalService.data.status === "IN PROGRESS" &&
+        this.userRole === "ENCODER"
+      ) {
+        status = true;
+      }
+      return status;
+    },
   },
   watch: {
     activator(newValue) {
@@ -211,10 +231,11 @@ export default {
     },
     hospitalService(value) {
       if (value) {
-        this.citizen_id = value.hospitalService.citizen_id;
-        this.hospital_service_id = value.hospitalService.id;
-        this.payload.service_type = value.hospitalService.service_type;
-        this.initService(value.hospitalService.service_type);
+        console.log(value);
+        this.citizen_id = value.data.citizen_id;
+        this.hospital_service_id = value.data.id;
+        this.payload.service_type = value.data.service_type;
+        this.initService(value.data.service_type);
       }
     },
   },
@@ -228,5 +249,9 @@ export default {
 .overflow-scroll {
   max-height: 600px;
   overflow-y: auto;
+}
+.disabled-button {
+  opacity: 0.5; /* Make it appear faded */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
 }
 </style>

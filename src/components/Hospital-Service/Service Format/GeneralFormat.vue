@@ -9,6 +9,7 @@
           item-text="name"
           @blur="$v.selects.serviceable_type.$touch()"
           :error-messages="errorMessages.serviceable_type"
+          :disabled="disabled"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
@@ -19,6 +20,7 @@
           item-text="name"
           @blur="$v.payload.hospital.$touch()"
           :error-messages="errorMessages.hospital"
+          :disabled="disabled"
         ></v-autocomplete>
       </v-col>
       <v-col cols="12" v-if="type !== 'CONSULTATION'">
@@ -27,6 +29,7 @@
           label="Funding"
           :items="crowd_fundings"
           item-text="backer"
+          :disabled="disabled"
         >
           <template v-slot:item="{ item }" v-if="funderPermission">
             <div class="d-flex flex-column">
@@ -57,6 +60,7 @@
               readonly
               @blur="$v.payload.scheduled_date.$touch()"
               :error-messages="errorMessages.scheduled_date"
+              :disabled="disabled"
             ></v-text-field>
           </template>
           <v-date-picker
@@ -85,6 +89,7 @@
               readonly
               @blur="$v.payload.date_released.$touch()"
               :error-messages="errorMessages.date_released"
+              :disabled="disabled"
             ></v-text-field>
           </template>
           <v-date-picker
@@ -100,6 +105,7 @@
           label="Remarks"
           @blur="$v.payload.remarks.$touch()"
           :error-messages="errorMessages.remarks"
+          :disabled="disabled"
         ></v-text-field>
       </v-col>
       <v-col cols="12">
@@ -109,6 +115,7 @@
           :items="statuses"
           @blur="$v.payload.status.$touch()"
           :error-messages="errorMessages.status"
+          :disabled="disabled"
         ></v-autocomplete>
       </v-col>
     </v-row>
@@ -143,6 +150,10 @@ export default {
       type: String,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      required: true,
+    }
   },
   data: () => ({
     payload: {
@@ -190,7 +201,7 @@ export default {
           const serviceable = this.services_choices.find(
             (serviceable) =>
               serviceable.name ===
-              this.hospitalService.hospitalService.serviceable_type_name
+              this.hospitalService.data.serviceable_type_name
           );
           if (serviceable) {
             this.selects.serviceable_type = serviceable.name;
@@ -206,13 +217,13 @@ export default {
         //   this.payload.doctor = doctor.doctor_id;
         // }
         this.payload.crowd_funding_backer =
-          this.hospitalService.hospitalService.crowd_funding_backer;
-        this.payload.hospital = this.hospitalService.hospitalService.hospital;
+          this.hospitalService.data.crowd_funding_backer;
+        this.payload.hospital = this.hospitalService.data.hospital;
         this.payload.scheduled_date =
-          this.hospitalService.hospitalService.scheduled_date;
-        this.payload.remarks = this.hospitalService.hospitalService.remarks;
-        this.date_released = this.hospitalService.hospitalService.date_released;
-        this.payload.status = this.hospitalService.hospitalService.status;
+          this.hospitalService.data.scheduled_date;
+        this.payload.remarks = this.hospitalService.data.remarks;
+        this.date_released = this.hospitalService.data.date_released;
+        this.payload.status = this.hospitalService.data.status;
       }
     },
     // filterDoctor(value) {
@@ -231,9 +242,9 @@ export default {
   computed: {
     ...mapGetters("login", ["userRole"]),
     statuses() {
-      return this.hospitalService
-        ? ["UNATTENDED", "COMPLETED"]
-        : ["PENDING", "WALK-IN"];
+      return this.disabled
+        ? ["PENDING", "UNATTENDED", "COMPLETED", "IN PROGRESS", "WALK-IN"]
+        : ["PENDING", "UNATTENDED", "COMPLETED", "WALK-IN"];
     },
     formattedDate_1() {
       return this.payload.scheduled_date
