@@ -48,7 +48,7 @@
         v-on:deleteItem="deleteItem"
       />
       <FilterDialog
-        @filterQuery="(data) => $emit('dialog:filter', data)"
+        @filterQuery="(data) => assignParams(data)"
         :activator="dialog"
         @dialogResponse="resetActivator"
         :type_of_filter="type_of_filter"
@@ -118,20 +118,18 @@ import { format, parseISO } from "date-fns";
 import ReusableDeleteDialog from "./ReusableDeleteDialog.vue";
 import DeleteRegistrantMixin from "@/mixins/Registrant/DeleteRegistrant";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
+import TablePaginationMixin from "@/mixins/Tables/TablePagination"
 import { mapGetters } from "vuex";
 export default {
-  mixins: [DeleteRegistrantMixin],
+  mixins: [DeleteRegistrantMixin, TablePaginationMixin],
   props: ["registrants"],
   components: {
     ReusableDeleteDialog,
     FilterDialog,
   },
   data: () => ({
-    search: "",
     offset: true,
     loading: true,
-    options: {},
-    query_params: {},
     dialog: false,
     type_of_filter: "CITIZENS INDEX",
   }),
@@ -259,35 +257,6 @@ export default {
         } else {
           this.loading = false;
         }
-      },
-    },
-    options: {
-      deep: true,
-      handler(value) {
-        if (value.page > 1) {
-          this.query_params.page = value.page;
-        } else {
-          delete this.query_params.page;
-        }
-        if (value.itemsPerPage) {
-          this.query_params.per_page = value.itemsPerPage;
-        }
-        if (value.sortBy.length === 1 && value.sortDesc.length === 1) {
-          this.query_params.sort_by = value.sortBy[0];
-          this.query_params.sort_order = value.sortDesc[0] ? "asc" : "desc";
-        } else {
-          delete this.query_params.sort_by;
-          delete this.query_params.sort_order;
-        }
-
-        this.$emit("query:options", this.query_params);
-      },
-    },
-    search: {
-      deep: true,
-      handler(value) {
-        this.query_params.search = value;
-        this.$emit("query:search", this.query_params);
       },
     },
   },

@@ -34,9 +34,7 @@
       <DataTable
         v-if="registrants"
         :registrants="registrants"
-        @query:options="filterQuery"
-        @query:search="filterQuery"
-        @dialog:filter="filterQuery"
+        @query_params="filterQuery"
       />
     </v-container>
   </div>
