@@ -150,6 +150,7 @@ export default {
   watch: {
     files: {
       handler(value) {
+        console.log(value);
         this.loading = true;
         if (!value.length) {
           setTimeout(() => {

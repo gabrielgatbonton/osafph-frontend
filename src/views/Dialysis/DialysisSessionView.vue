@@ -19,7 +19,7 @@
         </v-col>
         <v-col cols="auto" v-if="buttonPermissions.files">
           <v-btn dark color="blue darken-4" class="mr-3" @click="proceedToFiles"
-            >Upload Files</v-btn
+            >{{ buttonTitle ? "Uploaded Files" : "Upload Files"}}</v-btn
           >
         </v-col>
       </v-row>
@@ -79,6 +79,7 @@ export default {
       "completeDialysisSessionById",
       "toggleServiceProgress"
     ]),
+    ...mapActions("files", ["fetchFiles"]),
     fetchSessionData() {
       const id = this.$route.params.id;
       this.fetchDialysisSessionById(id).catch((error) => {
@@ -118,6 +119,7 @@ export default {
   computed: {
     ...mapGetters("dialysis_sessions", ["getDialysisSession"]),
     ...mapGetters("login", ["userRole"]),
+    ...mapGetters("files", ["getFiles"]),
     buttonPermissions() {
       let files = false;
       let complete = false;
@@ -270,10 +272,14 @@ export default {
         },
       };
     },
+    buttonTitle() {
+      return this.getFiles.length > 0 ? true : false
+    }
   },
   watch: {
     getDialysisSession(value) {
       this.session = value;
+      this.fetchFiles(this.session.hospital_service.id);
     },
   },
   created() {
