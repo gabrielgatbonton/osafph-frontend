@@ -115,7 +115,7 @@ export default {
           },
           { icon: "mdi-cog", text: "Management", route: "/management" },
         ];
-      } else if (this.userRole === "ENCODER") {
+      } else if (this.userRole === "ENCODER" || this.userRole === "VIP_ENCODER") {
         links = [
           {
             icon: "mdi-view-dashboard",

@@ -15,27 +15,6 @@
             class="mr-3"
             color="blue darken-4"
             dark
-            @click="switchServices"
-            >{{
-              servicesStatus ? "Pending Services" : "Archived Services"
-            }}</v-btn
-          >
-          <v-btn
-            v-else
-            class="mr-3"
-            color="blue darken-4"
-            dark
-            icon
-            @click="switchServices"
-            ><v-icon> mdi-swap-horizontal </v-icon></v-btn
-          >
-        </v-col>
-        <v-col cols="auto">
-          <v-btn
-            v-if="!$vuetify.breakpoint.xs"
-            class="mr-3"
-            color="blue darken-4"
-            dark
             @click="activator"
           >
             Add Service
@@ -60,21 +39,19 @@
     </v-container>
     <v-divider class="mx-3"></v-divider>
     <v-container fluid class="ma-1">
-      <ServicesTable :services="switchData" />
+      <ServicesTable @query_params="updateFetch" :services="services" />
     </v-container>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import ServicesTable from "@/components/Hospital-Service/Services-Table.vue";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import addServiceMixin from "@/mixins/Hospital-Service/AddService";
 import ErrorAlertsLogic from "../../mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
-  data: () => ({
-    servicesStatus: false,
-  }),
+  data: () => ({}),
   mixins: [addServiceMixin, ErrorAlertsLogic],
   components: {
     ServicesTable,
@@ -82,21 +59,21 @@ export default {
   },
   methods: {
     ...mapActions("services", ["fetchServicesById"]),
-    requestServices() {
+    requestServices(query_params = {}) {
       const id = this.$route.params.id;
-      this.fetchServicesById(id);
+      this.fetchServicesById({
+        id: id,
+        queryParams: query_params,
+      });
     },
-    switchServices() {
-      this.servicesStatus = !this.servicesStatus;
+    updateFetch(query_params) {
+      this.requestServices(query_params);
     },
   },
   computed: {
-    ...mapGetters("services", ["getPendingServices", "getArchivedServices"]),
-    switchData() {
-      return this.servicesStatus
-        ? this.getArchivedServices
-        : this.getPendingServices;
-    },
+    ...mapState("services", {
+      services: "hospitalServices",
+    }),
   },
   created() {
     this.requestServices();

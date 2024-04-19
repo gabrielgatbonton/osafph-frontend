@@ -28,7 +28,7 @@
           v-model="payload.crowd_funding_backer"
           label="Funding"
           :items="crowd_fundings"
-          item-text="backer"
+          item-text="name"
           :disabled="disabled"
         >
           <template v-slot:item="{ item }" v-if="funderPermission">

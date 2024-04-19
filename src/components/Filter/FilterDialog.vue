@@ -1,5 +1,26 @@
 <template>
   <v-dialog v-model="dialog" max-width="600">
+    <template v-slot:activator="{ on, attrs }" v-if="slot_activator">
+      <v-btn
+        v-if="!$vuetify.breakpoint.xs"
+        dark
+        class="mr-3"
+        color="blue darken-4"
+        v-bind="attrs"
+        v-on="on"
+        >Filter</v-btn
+      >
+      <v-btn
+        v-else
+        dark
+        class="mr-3"
+        color="blue darken-4"
+        icon
+        v-bind="attrs"
+        v-on="on"
+        ><v-icon>mdi-filter-multiple</v-icon></v-btn
+      >
+    </template>
     <v-card>
       <v-card-title class="blue darken-1 pb-4 white--text"
         ><v-icon dark left>mdi-filter-multiple</v-icon>Filter</v-card-title
@@ -46,6 +67,15 @@
               multiple
             ></v-select>
           </v-col>
+          <v-col cols="12" v-if="filterInputs.service_type">
+            <v-select
+              v-model="service_type"
+              label="Service Types"
+              :items="service_types"
+              item-text="name"
+              multiple
+            ></v-select>
+          </v-col>
           <v-col cols="12" v-if="filterInputs.status">
             <v-select
               v-model="status"
@@ -79,7 +109,7 @@ export default {
   props: {
     activator: {
       type: Boolean,
-      required: true,
+      required: false,
     },
     reset: {
       type: Object,
@@ -87,6 +117,10 @@ export default {
     },
     type_of_filter: {
       type: String,
+      required: true,
+    },
+    slot_activator: {
+      type: Boolean,
       required: true,
     },
   },
@@ -98,6 +132,7 @@ export default {
     barangay: [],
     dialysis_machine: [],
     status: [],
+    service_type: [],
     payload: {},
     sexes: ["MALE", "FEMALE"],
     filters: ["CATEGORY", "SEX", "BARANGAY"],
@@ -106,12 +141,15 @@ export default {
     ...mapActions("categories", ["fetchEnumCategories"]),
     ...mapActions("philippines", ["fetchEnumBarangayFilter"]),
     ...mapActions("dialysis", ["fetchEnumsFilter"]),
+    ...mapActions("services_choices", ["fetchServiceTypesEnum"]),
     fetchEnums() {
       if (this.type_of_filter === "CITIZENS INDEX") {
         this.fetchEnumCategories();
         this.fetchEnumBarangayFilter();
       } else if (this.type_of_filter === "DIALYSIS INDEX") {
         this.fetchEnumsFilter();
+      } else if (this.type_of_filter === "SERVICE INDEX") {
+        this.fetchServiceTypesEnum();
       }
     },
     submitFilter() {
@@ -140,6 +178,13 @@ export default {
         if (this.status.length > 0) {
           this.payload.status = this.status;
         }
+      } else if (this.type_of_filter === "SERVICE INDEX") {
+        if (this.status.length > 0) {
+          this.payload.filter_status = this.status;
+        }
+        if (this.service_type.length > 0) {
+          this.payload.service_types = this.service_type;
+        }
       }
       this.$emit("filterQuery", this.payload);
       this.payload = {};
@@ -147,19 +192,27 @@ export default {
     },
     resetFilter() {
       //Reset Query
-      this.$emit(
-        "filterQuery",
-        this.type_of_filter === "CITIZENS INDEX"
-          ? {
-              category_ids: null,
-              sexes: null,
-              barangay_ids: null,
-            }
-          : {
-              dialysis_machine: null,
-              status: null,
-            }
-      );
+      let query = {};
+
+      if (this.type_of_filter === "CITIZENS INDEX") {
+        query = {
+          category_ids: null,
+          sexes: null,
+          barangay_ids: null,
+        };
+      } else if (this.type_of_filter === "DIALYSIS INDEX") {
+        query = {
+          dialysis_machine: null,
+          status: null,
+        };
+      } else if (this.type_of_filter === "SERVICE INDEX") {
+        query = {
+          service_types: null,
+          filter_status: null,
+        };
+      }
+
+      this.$emit("filterQuery", query);
 
       //Reset Local Values
       this.filter_type = [];
@@ -167,6 +220,8 @@ export default {
       this.category = [];
       this.barangay = [];
       this.dialysis_machine = [];
+      this.service_type = [];
+      this.status = [];
 
       //Close Dialog
       this.dialog = false;
@@ -182,6 +237,9 @@ export default {
     ...mapState("dialysis", {
       dialysis_machines: "dialysis_machines",
     }),
+    ...mapState("services_choices", {
+      service_types: "service_types"
+    }),
     filterInputs() {
       let filter_type = false;
       let category = false;
@@ -190,6 +248,7 @@ export default {
       let barangay = false;
       let dialysis_machine = false;
       let status = false;
+      let service_type = false;
 
       if (this.type_of_filter === "CITIZENS INDEX") {
         filter_type = true;
@@ -209,6 +268,10 @@ export default {
         dialysis_machine = true;
         status = true;
         submit = true;
+      } else if (this.type_of_filter === "SERVICE INDEX") {
+        service_type = true;
+        status = true;
+        submit = true;
       }
 
       return {
@@ -219,16 +282,25 @@ export default {
         barangay: barangay,
         dialysis_machine: dialysis_machine,
         status: status,
+        service_type: service_type,
       };
     },
     statuses() {
       let statuses = null;
-      if (this.type_of_filter === 'DIALYSIS INDEX') {
-        statuses = ["PENDING", "IN PROGRESS", "UNATTENDED", "COMPLETED"]
+      if (this.type_of_filter === "DIALYSIS INDEX") {
+        statuses = ["PENDING", "IN PROGRESS", "UNATTENDED", "COMPLETED"];
+      } else if (this.type_of_filter === "SERVICE INDEX") {
+        statuses = [
+          "PENDING",
+          "IN PROGRESS",
+          "UNATTENDED",
+          "COMPLETED",
+          "WALK-IN",
+        ];
       }
 
       return statuses;
-    }
+    },
   },
   watch: {
     activator(newValue) {

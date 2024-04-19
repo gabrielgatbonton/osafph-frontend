@@ -8,14 +8,26 @@
     :custom-filter="filterOnlyCapsText"
     :loading="loading"
     loading-text="Loading... Please wait"
+    :server-items-length="serverItemsTotal"
+    :options.sync="options"
+    :footer-props="{
+      itemsPerPageOptions: [5, 10, 15],
+    }"
   >
     <template v-slot:top>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        class="mx-4"
-        prepend-icon="mdi-magnify"
-      ></v-text-field>
+      <div class="d-flex justify-space-between align-center">
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+          prepend-icon="mdi-magnify"
+        ></v-text-field>
+        <FilterDialog
+          @filterQuery="(data) => assignParams(data)"
+          :type_of_filter="type_of_filter"
+          :slot_activator="slot_activator"
+        />
+      </div>
       <ServiceDialog
         :activator="dialog"
         :hospitalService="getHospitalService"
@@ -84,17 +96,21 @@ import ServiceDialog from "./ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
 import { mapGetters } from "vuex";
 import DeleteServiceMixin from "@/mixins/Hospital-Service/DeleteService";
+import TablePaginationMixin from "@/mixins/Tables/TablePagination";
+import FilterDialog from "@/components/Filter/FilterDialog.vue";
 export default {
-  mixins: [EditServiceMixin, DeleteServiceMixin],
+  mixins: [EditServiceMixin, DeleteServiceMixin, TablePaginationMixin],
   props: ["services"],
   components: {
     ReusableDeleteDialog,
     ServiceDialog,
+    FilterDialog,
   },
   data: () => ({
-    search: "",
     offset: true,
     loading: true,
+    type_of_filter: "SERVICE INDEX",
+    slot_activator: true,
   }),
   methods: {
     filterOnlyCapsText(value, search) {
@@ -123,6 +139,7 @@ export default {
         {
           text: "SPECIALTY",
           value: "specialty",
+          sortable: false,
         },
         {
           text: "SCHEDULED DATE",
@@ -130,7 +147,7 @@ export default {
         },
         {
           text: "MEDICAL SITE",
-          value: "medical_site",
+          value: "hospital",
         },
         {
           text: "STATUS",
@@ -151,7 +168,10 @@ export default {
         view = true;
         edit = true;
         remove = true;
-      } else if (this.userRole === "ENCODER") {
+      } else if (
+        this.userRole === "ENCODER" ||
+        this.userRole === "VIP_ENCODER"
+      ) {
         view = true;
         edit = true;
         remove = true;
@@ -164,7 +184,7 @@ export default {
     },
     servicesData() {
       return this.services
-        ? this.services.map((service) => ({
+        ? this.services.data.map((service) => ({
             id: service.id,
             citizen_id: service.citizen_id,
             service_type: service.service_type,
@@ -174,16 +194,19 @@ export default {
               parseISO(service.scheduled_date),
               "MMMM dd, yyyy"
             ),
-            medical_site: service.hospital,
+            hospital: service.hospital,
           }))
         : [];
+    },
+    serverItemsTotal() {
+      return this.services ? this.services.meta.total : 0;
     },
   },
   watch: {
     services: {
       handler(value) {
         this.loading = true;
-        if (!value.length) {
+        if (!value.data.length) {
           setTimeout(() => {
             this.loading = false;
           }, 5000);

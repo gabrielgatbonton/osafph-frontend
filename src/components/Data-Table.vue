@@ -52,6 +52,7 @@
         :activator="dialog"
         @dialogResponse="resetActivator"
         :type_of_filter="type_of_filter"
+        :slot_activator="slot_activator"
       />
     </template>
     <template v-slot:[`item.mcg_cares_card`]="{ item }">
@@ -132,6 +133,7 @@ export default {
     loading: true,
     dialog: false,
     type_of_filter: "CITIZENS INDEX",
+    slot_activator: false,
   }),
   methods: {
     getOptions(item) {
@@ -220,7 +222,7 @@ export default {
       let remove = false;
       if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         remove = true;
-      } else if (this.userRole === "ENCODER") {
+      } else if (this.userRole === "ENCODER" || this.userRole === "VIP_ENCODER") {
         remove = false;
       }
       return {

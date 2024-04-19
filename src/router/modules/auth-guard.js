@@ -24,6 +24,11 @@ export function checkLoggedIn(to, from, next) {
   } else if (userRole === "ENCODER" && !isAllowedRoutes(to.name, userRole)) {
     next({ name: "dashboard" });
   } else if (
+    userRole === "VIP_ENCODER" &&
+    !isAllowedRoutes(to.name, userRole)
+  ) {
+    next({ name: "dashboard" });
+  } else if (
     userRole === "DIALYSIS_ENCODER" &&
     !isAllowedRoutes(to.name, userRole)
   ) {
@@ -67,7 +72,7 @@ function isAllowedRoutes(routeName, userRole) {
     if (userRole === "ROOT") {
       allowedRoutes.push("dialysis-queuing");
     }
-  } else if (userRole === "ENCODER") {
+  } else if (userRole === "ENCODER" || userRole === "VIP_ENCODER") {
     allowedRoutes = [
       "citizens",
       "register",

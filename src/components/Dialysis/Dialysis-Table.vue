@@ -44,6 +44,7 @@
         :activator="dialog"
         @dialogResponse="resetActivator"
         :type_of_filter="type_of_filter"
+        :slot_activator="slot_activator"
       />
     </template>
     <template v-slot:[`item.status`]="{ item }">
@@ -96,6 +97,7 @@ export default {
     query_params: {},
     searchTimeout: null,
     type_of_filter: "DIALYSIS INDEX",
+    slot_activator: false,
   }),
   components: {
     FilterDialog,
