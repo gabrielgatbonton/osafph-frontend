@@ -78,7 +78,7 @@
                   :serviceInformation="serviceInformation"
                 />
               </v-col>
-              <v-col cols="12">
+              <v-col cols="12" v-if="previous_consultations">
                 <PreviousConsultationsComponent
                   :previousConsultations="previousConsultations"
                 />
@@ -148,6 +148,7 @@ export default {
       "fetchAdminConsultationFormById",
       "deleteAdminConsultationFormById",
     ]),
+    ...mapActions("files", ["fetchFiles"]),
     fetchConsultation() {
       const consultation_id = this.$route.params.consultation_id;
       if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
@@ -243,57 +244,6 @@ export default {
       }
     },
   },
-  created() {
-    this.fetchConsultation();
-    const channel = this.$pusher.subscribe("public-hospital-services");
-    channel.bind("consultation-form.created", () => {
-      this.fetchConsultation();
-    });
-    channel.bind("consultation-form.updated", () => {
-      this.fetchConsultation();
-    });
-    channel.bind("consultation-form.deleted", () => {
-      this.fetchConsultation();
-    });
-  },
-  watch: {
-    getConsultation: {
-      handler(value) {
-        this.consultation = value;
-      },
-    },
-    getConsultationForm: {
-      handler(value) {
-        this.consultation_form = value;
-      },
-    },
-    getPreviousConsultations: {
-      handler(value) {
-        this.previous_consultations = value;
-      },
-    },
-    getAdminConsultation: {
-      handler(value) {
-        if (value) {
-          this.consultation = value;
-        }
-      },
-    },
-    getAdminConsultationForm: {
-      handler(value) {
-        if (value) {
-          this.consultation_form = value;
-        }
-      },
-    },
-    getAdminPreviousConsultations: {
-      handler(value) {
-        if (value) {
-          this.previous_consultations = value;
-        }
-      },
-    },
-  },
   computed: {
     ...mapGetters("login", ["userRole"]),
     ...mapGetters("consultations", [
@@ -306,6 +256,7 @@ export default {
       "getAdminConsultationForm",
       "getAdminPreviousConsultations",
     ]),
+    ...mapGetters("files", ["getFiles"]),
     buttonProperties() {
       let consultation_title = null;
       let consultation_color = null;
@@ -320,7 +271,7 @@ export default {
         if (this.consultation.hospital_service.status === "IN PROGRESS") {
           consultation_title = "Add Consultation Form";
         } else if (this.consultation.hospital_service.status === "COMPLETED") {
-          files_title = "Upload Files";
+          files_title = this.getFiles.length > 0 ? "Uploaded Files" : "Upload Files";
         }
       }
       return {
@@ -645,6 +596,63 @@ export default {
         messages: messages,
       };
     },
+  },
+  watch: {
+    getConsultation: {
+      handler(value) {
+        this.consultation = value;
+        this.fetchFiles(this.consultation.hospital_service.id);
+      },
+    },
+    getConsultationForm: {
+      handler(value) {
+        this.consultation_form = value;
+        console.log("getConsultationForm", value);
+      },
+    },
+    getPreviousConsultations: {
+      handler(value) {
+        this.previous_consultations = value;
+        console.log("getPreviousConsultations", value);
+      },
+    },
+    getAdminConsultation: {
+      handler(value) {
+        if (value) {
+          this.consultation = value;
+          console.log("getAdminConsultation", value);
+        }
+      },
+    },
+    getAdminConsultationForm: {
+      handler(value) {
+        if (value) {
+          this.consultation_form = value;
+          console.log("getAdminConsultationForm", value);
+        }
+      },
+    },
+    getAdminPreviousConsultations: {
+      handler(value) {
+        if (value) {
+          this.previous_consultations = value;
+          console.log("getAdminPreviousConsultations", value);
+        }
+      },
+    },
+  },
+  created() {
+    this.fetchConsultation();
+    const channel = this.$pusher.subscribe("public-hospital-services");
+    channel.bind("consultation-form.created", () => {
+      this.fetchConsultation();
+    });
+    channel.bind("consultation-form.updated", () => {
+      this.fetchConsultation();
+    });
+    channel.bind("consultation-form.deleted", () => {
+      this.fetchConsultation();
+    });
   },
 };
 </script>
