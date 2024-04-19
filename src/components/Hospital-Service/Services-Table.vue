@@ -53,7 +53,7 @@
       </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container class="ml-n8" style="width: 120px">
+      <v-container>
         <v-row no-gutters justify="center">
           <v-col cols="auto" v-if="iconPermissions.view" align-self="center">
             <v-icon
@@ -157,6 +157,7 @@ export default {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
+          align: "center"
         },
       ];
     },

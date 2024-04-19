@@ -29,6 +29,7 @@
     >
       <v-card>
         <QueuingTable
+          v-if="queuingDialysisList"
           :queue_data="queuingDialysisList"
           @dialog="updateDialog"
           :dialogResponse="dialog"
@@ -61,7 +62,6 @@ export default {
   created() {
     this.fetchDialysisQueue();
   },
-
 };
 </script>
 
