@@ -46,6 +46,14 @@
               multiple
             ></v-select>
           </v-col>
+          <v-col cols="12" v-if="filterInputs.status">
+            <v-select
+              v-model="status"
+              label="Status"
+              :items="statuses"
+              multiple
+            ></v-select>
+          </v-col>
           <v-col cols="12">
             <v-row dense justify="end">
               <v-col cols="auto">
@@ -89,6 +97,7 @@ export default {
     sex: null,
     barangay: [],
     dialysis_machine: [],
+    status: [],
     payload: {},
     sexes: ["MALE", "FEMALE"],
     filters: ["CATEGORY", "SEX", "BARANGAY"],
@@ -128,6 +137,9 @@ export default {
         if (this.dialysis_machine.length > 0) {
           this.payload.dialysis_machine = this.dialysis_machine;
         }
+        if (this.status.length > 0) {
+          this.payload.status = this.status;
+        }
       }
       this.$emit("filterQuery", this.payload);
       this.payload = {};
@@ -145,6 +157,7 @@ export default {
             }
           : {
               dialysis_machine: null,
+              status: null,
             }
       );
 
@@ -176,6 +189,7 @@ export default {
       let submit = false;
       let barangay = false;
       let dialysis_machine = false;
+      let status = false;
 
       if (this.type_of_filter === "CITIZENS INDEX") {
         filter_type = true;
@@ -193,6 +207,7 @@ export default {
         });
       } else if (this.type_of_filter === "DIALYSIS INDEX") {
         dialysis_machine = true;
+        status = true;
         submit = true;
       }
 
@@ -203,8 +218,17 @@ export default {
         submit: submit,
         barangay: barangay,
         dialysis_machine: dialysis_machine,
+        status: status,
       };
     },
+    statuses() {
+      let statuses = null;
+      if (this.type_of_filter === 'DIALYSIS INDEX') {
+        statuses = ["PENDING", "IN PROGRESS", "UNATTENDED", "COMPLETED"]
+      }
+
+      return statuses;
+    }
   },
   watch: {
     activator(newValue) {

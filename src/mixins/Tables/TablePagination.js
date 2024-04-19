@@ -8,7 +8,6 @@
 //   itemsPerPageOptions: [5, 10, 15],
 // }"
 
-
 export default {
   data: () => ({
     searchTimeout: null,
@@ -47,7 +46,7 @@ export default {
         }
         if (value.sortBy.length === 1 && value.sortDesc.length === 1) {
           this.query_params.sort_by = value.sortBy[0];
-          this.query_params.sort_order = value.sortDesc[0] ? "asc" : "desc";
+          this.query_params.sort_order = value.sortDesc[0] ? "desc" : "asc";
         } else {
           delete this.query_params.sort_by;
           delete this.query_params.sort_order;

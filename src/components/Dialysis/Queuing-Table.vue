@@ -15,22 +15,30 @@
         dark
         :rounded="dialog ? false : 'lg'"
       >
-        <v-toolbar-title class="header_size"
+        <v-toolbar-title :class="{ header_size: !$vuetify.breakpoint.xs }"
           >Dialysis Queuing, {{ formattedDate }}</v-toolbar-title
         >
         <v-spacer></v-spacer>
         <v-btn
-          v-if="dialog !== true"
+          v-if="dialog !== true && !$vuetify.breakpoint.xs"
           dark
           color="blue darken-4"
           @click="fullScreenEnable"
           >Full Screen</v-btn
         >
-        <v-btn v-else icon dark @click="fullScreenEnable"><v-icon>mdi-close</v-icon></v-btn>
+        <v-btn
+          v-else-if="dialog !== true && $vuetify.breakpoint.xs"
+          icon
+          dark
+          @click="fullScreenEnable"
+          ><v-icon>mdi-arrow-expand-all</v-icon></v-btn
+        >
+        <v-btn v-else icon dark @click="fullScreenEnable"
+          ><v-icon>mdi-close</v-icon></v-btn
+        >
       </v-toolbar>
     </template>
-
-    <template v-slot:item="{ item }">
+    <template v-slot:item="{ item }" v-if="!$vuetify.breakpoint.xs">
       <tr>
         <td class="py-5">
           <div :class="`${item_class}`">{{ item.dialysis_machine }}</div>
@@ -57,7 +65,11 @@
       </tr>
     </template>
     <template v-for="h in headers" v-slot:[`header.${h.value}`]="{ header }">
-      <div :class="`d-inline-block py-5 ${header_class}`" :key="h.text">
+      <div
+        :class="`d-inline-block py-5 ${header_class}`"
+        :key="h.text"
+        v-if="!$vuetify.breakpoint.xs"
+      >
         {{ header.text }}
       </div>
     </template>

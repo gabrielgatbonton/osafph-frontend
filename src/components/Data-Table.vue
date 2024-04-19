@@ -37,7 +37,7 @@
             color="blue darken-4"
             @click="activator"
             icon
-            ><v-icon>mdi-magnify</v-icon></v-btn
+            ><v-icon>mdi-filter-multiple</v-icon></v-btn
           >
         </div>
       </div>
@@ -183,7 +183,6 @@ export default {
         {
           text: "HUB REGISTRANT ID",
           align: "start",
-          sortable: false,
           value: "hub_registrant_id",
         },
         {
@@ -200,11 +199,11 @@ export default {
         },
         {
           text: "BARANGAY",
-          value: "barangay",
+          value: "barangay_name",
         },
         {
           text: "MUNICIPALITY",
-          value: "municipality",
+          value: "municipality_name",
         },
         {
           text: "MCG CARES CARD",
@@ -238,8 +237,8 @@ export default {
             } ${registrant.suffix ? " " + registrant.suffix : ""}`,
             sex: registrant.sex,
             birthday: format(parseISO(registrant.birthday), "MMMM dd, yyyy"),
-            barangay: registrant.barangay,
-            municipality: registrant.municipality,
+            barangay_name: registrant.barangay,
+            municipality_name: registrant.municipality,
             mcg_cares_card: registrant.mcg_cares_card,
           }))
         : [];

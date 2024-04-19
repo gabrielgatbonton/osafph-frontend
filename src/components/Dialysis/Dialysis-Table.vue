@@ -7,7 +7,7 @@
     :search="search"
     :loading="loading"
     loading-text="Loading... Please wait"
-    :server-items-length="dialysis.meta.total"
+    :server-items-length="totalDialysis"
     :options.sync="options"
     :footer-props="{
       itemsPerPageOptions: [5, 10, 15],
@@ -21,8 +21,22 @@
           class="mx-4"
           prepend-icon="mdi-magnify"
         ></v-text-field>
-        <v-btn dark class="mr-3" color="blue darken-4" @click="activator"
+        <v-btn
+          v-if="!$vuetify.breakpoint.xs"
+          dark
+          class="mr-3"
+          color="blue darken-4"
+          @click="activator"
           >Filter</v-btn
+        >
+        <v-btn
+          v-else
+          dark
+          class="mr-3"
+          color="blue darken-4"
+          icon
+          @click="activator"
+          ><v-icon>mdi-filter-multiple</v-icon></v-btn
         >
       </div>
       <FilterDialog
@@ -46,7 +60,7 @@
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-container class="ml-n8" style="width: 120px">
-        <v-row no-gutters justify="center">
+        <v-row no-gutters :justify="!$vuetify.breakpoint.xs ? 'center' : 'end'">
           <v-col cols="auto" v-if="iconPermissions.view" align-self="center">
             <v-icon
               @click="viewDialysisSession(item.dialysis_session_id)"
@@ -143,6 +157,9 @@ export default {
       return {
         view: view,
       };
+    },
+    totalDialysis() {
+      return this.dialysis ? this.dialysis.meta.total : 0;
     },
   },
   watch: {

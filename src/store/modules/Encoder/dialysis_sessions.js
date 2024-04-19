@@ -7,8 +7,8 @@ Vue.use(Vuex);
 export const dialysis_sessions = {
   namespaced: true,
   state: () => ({
-    dialysis_sessions: [],
-    dialysis_session: [],
+    dialysis_sessions: null,
+    dialysis_session: null,
   }),
   getters: {
     getPendingSessions: (state) => {
