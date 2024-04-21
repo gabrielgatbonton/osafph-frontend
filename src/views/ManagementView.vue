@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%; width: 100%;">
     <SubmissionAlert :message="success.message" v-if="success.alert" />
     <ErrorAlert :message="failed.message" v-if="failed.alert" />
     <v-container fluid class="ma-1">
@@ -11,37 +11,33 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider>
-    <v-container fluid class="ma-1">
+    <v-container fluid class="ma-1" v-if="userPermissions.usersTable">
       <v-row>
         <v-col cols="12">
-          <UsersTable v-if="userPermissions.usersTable" :users="users_index" @submitFilter="submitFilter"/>
-          <div
-            v-else
-            class="d-flex justify-center align-center"
-            style="margin-top: 5rem"
-          >
-            <h1>This is a management page</h1>
-          </div>
+          <UsersTable :users="users_index" @submitFilter="submitFilter" />
         </v-col>
       </v-row>
     </v-container>
+    <PageConstruction v-else/>
   </div>
 </template>
 <script>
-import UsersTable from "@/components/Management/Users-Table.vue";
+// import UsersTable from "@/components/Management/Users-Table.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
+import PageConstruction from "@/components/PageConstruction.vue";
 export default {
   name: "ManagementView",
   mixins: [ErrorAlertsLogic],
   components: {
-    UsersTable,
+    // UsersTable,
+    PageConstruction,
   },
   methods: {
     ...mapActions("accounts", ["fetchUsersIndex"]),
     submitFilter(filter) {
       this.fetchUsersIndex(filter);
-    }
+    },
   },
   computed: {
     ...mapGetters("login", ["userRole"]),
