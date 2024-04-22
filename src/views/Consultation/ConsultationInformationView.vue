@@ -78,7 +78,7 @@
                   :serviceInformation="serviceInformation"
                 />
               </v-col>
-              <v-col cols="12" v-if="previous_consultations">
+              <v-col cols="12">
                 <PreviousConsultationsComponent
                   :previousConsultations="previousConsultations"
                 />

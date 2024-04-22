@@ -33,6 +33,7 @@
           <DataTabs
             :data="getPublicData"
             :services="getPublicHospitalServices"
+            @query_params="updateFetch"
           />
         </v-col>
       </v-row>
@@ -50,9 +51,7 @@ export default {
     PrintQRJavaScript,
   },
   methods: {
-    ...mapActions("registrants", [
-      "fetchPublicCitizenRecord",
-    ]),
+    ...mapActions("registrants", ["fetchPublicCitizenRecord"]),
     ...mapActions("services", ["fetchPublicServicesById"]),
     fetchData() {
       const storedId = sessionStorage.getItem("hub_registrant_id");
@@ -70,11 +69,16 @@ export default {
           // this.$router.replace(route); // Replace the route
         });
     },
+
+    updateFetch(query_params) {
+      this.fetchPublicServicesById({
+        id: this.getPublicData.citizen.id,
+        queryParams: query_params,
+      });
+    },
   },
   computed: {
-    ...mapGetters("registrants", [
-      "getPublicData",
-    ]),
+    ...mapGetters("registrants", ["getPublicData"]),
     ...mapGetters("services", ["getPublicHospitalServices"]),
   },
   created() {
@@ -83,7 +87,7 @@ export default {
   watch: {
     getPublicData(value) {
       if (value.citizen.hub_registrant_id) {
-        this.fetchPublicServicesById(value.citizen.id);
+        this.fetchPublicServicesById({ id: value.citizen.id });
       }
     },
   },

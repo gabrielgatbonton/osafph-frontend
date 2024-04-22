@@ -10,6 +10,7 @@ export const services = {
     hospitalServices: null,
     hospitalService: null,
     publicHospitalServices: [],
+    service_types: []
   }),
   getters: {
     getPendingServices: (state) => {
@@ -63,6 +64,9 @@ export const services = {
     },
     SET_PUBLIC_HOSPITAL_SERVICES(state, publicServices) {
       state.publicHospitalServices = publicServices;
+    },
+    SET_SERVICE_TYPES(state, service_types) {
+      state.service_types = service_types;
     },
   },
   actions: {
@@ -143,8 +147,17 @@ export const services = {
           console.error("Error Deleting Service: ", error);
         });
     },
-    fetchPublicServicesById({ commit }, id) {
-      const url = `citizens/${id}/public/hospital-services`;
+    fetchPublicServicesById({ commit }, { id, queryParams = {} }) {
+      // Construct the query string from the queryParams object
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
+
+      // Add the query string to the URL if it exists
+      let url = `citizens/${id}/public/hospital-services`;
+      if (queryString) {
+        url += `?${queryString}`;
+      }
       return this.$axios
         .get(url)
         .then((response) => {
@@ -155,5 +168,6 @@ export const services = {
           console.error("Error requesting public services: ", error);
         });
     },
+
   },
 };

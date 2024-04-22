@@ -148,7 +148,10 @@ export default {
         this.fetchEnumBarangayFilter();
       } else if (this.type_of_filter === "DIALYSIS INDEX") {
         this.fetchEnumsFilter();
-      } else if (this.type_of_filter === "SERVICE INDEX") {
+      } else if (
+        this.type_of_filter === "SERVICE INDEX" ||
+        this.type_of_filter === "SERVICES AVAILED INDEX"
+      ) {
         this.fetchServiceTypesEnum();
       }
     },
@@ -185,6 +188,13 @@ export default {
         if (this.service_type.length > 0) {
           this.payload.service_types = this.service_type;
         }
+      } else if (this.type_of_filter === "SERVICES AVAILED INDEX") {
+        if (this.status.length > 0) {
+          this.payload.filter_status = this.status;
+        }
+        if (this.service_type.length > 0) {
+          this.payload.service_types = this.service_type;
+        }
       }
       this.$emit("filterQuery", this.payload);
       this.payload = {};
@@ -205,7 +215,7 @@ export default {
           dialysis_machine: null,
           status: null,
         };
-      } else if (this.type_of_filter === "SERVICE INDEX") {
+      } else if (this.type_of_filter === "SERVICE INDEX" || this.type_of_filter === "SERVICES AVAILED INDEX") {
         query = {
           service_types: null,
           filter_status: null,
@@ -238,7 +248,7 @@ export default {
       dialysis_machines: "dialysis_machines",
     }),
     ...mapState("services_choices", {
-      service_types: "service_types"
+      service_types: "service_types",
     }),
     filterInputs() {
       let filter_type = false;
@@ -272,6 +282,10 @@ export default {
         service_type = true;
         status = true;
         submit = true;
+      } else if (this.type_of_filter === "SERVICES AVAILED INDEX") {
+        service_type = true;
+        status = true;
+        submit = true;
       }
 
       return {
@@ -289,7 +303,7 @@ export default {
       let statuses = null;
       if (this.type_of_filter === "DIALYSIS INDEX") {
         statuses = ["PENDING", "IN PROGRESS", "UNATTENDED", "COMPLETED"];
-      } else if (this.type_of_filter === "SERVICE INDEX") {
+      } else if (this.type_of_filter === "SERVICE INDEX" || this.type_of_filter === "SERVICES AVAILED INDEX") {
         statuses = [
           "PENDING",
           "IN PROGRESS",
@@ -298,7 +312,6 @@ export default {
           "WALK-IN",
         ];
       }
-
       return statuses;
     },
   },

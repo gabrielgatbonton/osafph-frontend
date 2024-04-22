@@ -1,18 +1,21 @@
 <template>
-    <v-row justify="center" v-if="data">
-      <v-col cols="auto">
-        <v-tabs centered>
-          <v-tab>Personal Details</v-tab>
-          <v-tab>Services Availed</v-tab>
-          <v-tab-item>
-            <PersonalDetails :data="data" />
-          </v-tab-item>
-          <v-tab-item>
-            <RegistrantServices :data="services"/>
-          </v-tab-item>
-        </v-tabs>
-      </v-col>
-    </v-row>
+  <v-row justify="center" v-if="data">
+    <v-col cols="auto">
+      <v-tabs centered>
+        <v-tab>Personal Details</v-tab>
+        <v-tab>Services Availed</v-tab>
+        <v-tab-item>
+          <PersonalDetails :data="data" />
+        </v-tab-item>
+        <v-tab-item>
+          <RegistrantServices
+            @query_params="(data) => $emit('query_params', data)"
+            :data="services"
+          />
+        </v-tab-item>
+      </v-tabs>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -24,11 +27,11 @@ export default {
     PersonalDetails,
     RegistrantServices,
   },
-  watch:{
+  watch: {
     // booster(value){
     //   console.log("DATATABS:", value)
     // }
-  }
+  },
 };
 </script>
 
