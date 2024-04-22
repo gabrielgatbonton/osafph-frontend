@@ -19,8 +19,24 @@
         <div>
           <v-dialog max-width="600">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="blue darken-4" class="mr-3" dark v-bind="attrs" v-on="on"
+              <v-btn
+                v-if="!$vuetify.breakpoint.xs"
+                color="blue darken-4"
+                class="mr-3"
+                dark
+                v-bind="attrs"
+                v-on="on"
                 >Filter</v-btn
+              >
+              <v-btn
+                v-else
+                dark
+                class="mr-3"
+                color="blue darken-4"
+                icon
+                v-bind="attrs"
+                v-on="on"
+                ><v-icon>mdi-filter-multiple</v-icon></v-btn
               >
             </template>
             <v-card>
@@ -55,8 +71,24 @@
           </v-dialog>
           <v-dialog v-model="dialogUser" max-width="600" scrollable>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="blue darken-4" class="mr-3" dark v-bind="attrs" v-on="on"
+              <v-btn
+                v-if="!$vuetify.breakpoint.xs"
+                color="blue darken-4"
+                class="mr-3"
+                dark
+                v-bind="attrs"
+                v-on="on"
                 >Add User</v-btn
+              >
+              <v-btn
+                v-else
+                dark
+                class="mr-3"
+                color="blue darken-4"
+                icon
+                v-bind="attrs"
+                v-on="on"
+                ><v-icon>mdi-plus</v-icon></v-btn
               >
             </template>
             <v-card>
