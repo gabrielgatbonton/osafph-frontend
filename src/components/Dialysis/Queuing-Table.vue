@@ -145,7 +145,7 @@ export default {
       immediate: true,
       handler(value) {
         this.loading = true;
-        if (!value.data.length) {
+        if (!value.data && !value.data.length) {
           setTimeout(() => {
             this.loading = false;
           }, 5000);

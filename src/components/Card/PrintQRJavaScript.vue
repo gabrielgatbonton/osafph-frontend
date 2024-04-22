@@ -74,8 +74,8 @@
 </template>
 
 <script>
-  import format from "date-fns/format";
-  import parseISO from "date-fns/parseISO";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 import VueQrcode from "vue-qrcode";
 export default {
   name: "PrintQRJavaScript",
@@ -99,8 +99,8 @@ export default {
       this.qrDataURL = dataUrl;
     },
     formattedDate(date) {
-        const formattedDate = format(parseISO(date), "MMMM dd, yyyy");
-        return formattedDate;
+      const formattedDate = format(parseISO(date), "MMMM dd, yyyy");
+      return formattedDate;
     },
     async generateAndPrintID() {
       try {
@@ -250,12 +250,11 @@ export default {
     registrant: {
       immediate: true,
       handler(value) {
-        if(value.citizen) {
-            this.name = `${value.citizen.last_name}, ${value.citizen.first_name} ${value.citizen.middle_name}`
-        this.address = `${value.citizen.barangay}, ${value.citizen.province}`;
-        this.birthday = this.formattedDate(value.citizen.date_of_birth);
+        if (value.citizen) {
+          this.name = `${value.citizen.last_name}, ${value.citizen.first_name} ${value.citizen.middle_name}`;
+          this.address = `${value.citizen.barangay}, ${value.citizen.province}`;
+          this.birthday = this.formattedDate(value.citizen.date_of_birth);
         }
-
       },
     },
   },

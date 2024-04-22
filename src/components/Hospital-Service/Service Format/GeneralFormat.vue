@@ -33,9 +33,10 @@
         >
           <template v-slot:item="{ item }" v-if="funderPermission">
             <div class="d-flex flex-column">
-              <div>{{ item.backer }}</div>
+              <div>{{ item.name }}</div>
               <div class="item-description">
-                Amount: {{ item.contribution_left }} / {{ item.initial_contribution }} 
+                Amount: {{ item.contribution_left }} /
+                {{ item.initial_contribution }}
               </div>
             </div>
           </template>
@@ -153,7 +154,7 @@ export default {
     disabled: {
       type: Boolean,
       required: true,
-    }
+    },
   },
   data: () => ({
     payload: {
@@ -219,8 +220,7 @@ export default {
         this.payload.crowd_funding_backer =
           this.hospitalService.data.crowd_funding_backer;
         this.payload.hospital = this.hospitalService.data.hospital;
-        this.payload.scheduled_date =
-          this.hospitalService.data.scheduled_date;
+        this.payload.scheduled_date = this.hospitalService.data.scheduled_date;
         this.payload.remarks = this.hospitalService.data.remarks;
         this.date_released = this.hospitalService.data.date_released;
         this.payload.status = this.hospitalService.data.status;
@@ -242,9 +242,21 @@ export default {
   computed: {
     ...mapGetters("login", ["userRole"]),
     statuses() {
-      return this.disabled
-        ? ["PENDING", "UNATTENDED", "COMPLETED", "IN PROGRESS", "WALK-IN"]
-        : ["PENDING", "UNATTENDED", "COMPLETED", "WALK-IN"];
+      let statuses = [];
+      if (this.disabled) {
+        statuses = [
+          "PENDING",
+          "UNATTENDED",
+          "COMPLETED",
+          "IN PROGRESS",
+          "WALK-IN",
+        ];
+      } else if (!this.hospitalService) {
+        statuses = ["PENDING", "WALK-IN"];
+      } else {
+        statuses = ["PENDING", "UNATTENDED", "COMPLETED", "WALK-IN"];
+      }
+      return statuses;
     },
     formattedDate_1() {
       return this.payload.scheduled_date

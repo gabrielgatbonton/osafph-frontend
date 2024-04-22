@@ -13,6 +13,7 @@
       <v-row>
         <v-col cols="12">
           <QueuingTable
+            v-if="queuingDialysisList"
             :queue_data="queuingDialysisList"
             @dialog="updateDialog"
             :dialogResponse="dialog"
@@ -29,7 +30,6 @@
     >
       <v-card>
         <QueuingTable
-          v-if="queuingDialysisList"
           :queue_data="queuingDialysisList"
           @dialog="updateDialog"
           :dialogResponse="dialog"

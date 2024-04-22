@@ -47,6 +47,7 @@ export default {
           } ${
             parsedData.doctor.middle_name ? parsedData.doctor.middle_name : ""
           }`,
+          specialty: parsedData.specialty.name
         };
       }
       return basic_details;

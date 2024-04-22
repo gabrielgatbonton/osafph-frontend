@@ -32,7 +32,7 @@
               enhance our site to serve you better.
             </div>
           </div>
-          <div class="pa-4">
+          <div class="pa-4" :style="{'width: 500px': !$vuetify.breakpoint.smAndDown}">
             <img style="max-width: 100%; max-height: 100%" :src="imgSource" alt="Construction Image">
           </div>
           
