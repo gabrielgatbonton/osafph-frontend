@@ -50,7 +50,7 @@
                       >
                     </div>
                     <FilterDialog
-                      @filterQuery="(service) => assignParams(service)"
+                      @filterQuery="(data) => assignParams(data)"
                       :activator="dialog"
                       @dialogRespons="resetActivator"
                       :type_of_filter="type_of_filter"
@@ -135,6 +135,8 @@
                   :length="pageComputer(data)"
                   v-model="page"
                   :search="search"
+                  prev-icon="mdi-menu-left"
+                  next-icon="mdi-menu-right"
                 ></v-pagination>
               </v-container>
             </v-card>
@@ -152,14 +154,14 @@ import FilterDialog from "@/components/Filter/FilterDialog.vue";
 export default {
   props: ["data"],
   data: () => ({
-    query_params: {},
-    setTimeout: null,
     page: 1,
     total_items: null,
     search: "",
     slot_activator: false,
     dialog: false,
     type_of_filter: "SERVICES AVAILED INDEX",
+    query_params: {},
+    searchTimeout: null,
   }),
   components: {
     FilterDialog,
@@ -247,12 +249,26 @@ export default {
     pageComputer(data) {
       return Math.ceil(data.meta.total / 10);
     },
-
     activator() {
       this.dialog = !this.dialog;
     },
     resetActivator(data) {
       this.dialog = data;
+    },
+    assignParams(payload) {
+      for (const key in payload) {
+        if (Object.hasOwnProperty.call(payload, key)) {
+          const value = payload[key];
+          if (value === null) {
+            // if value is null, delete in query_params
+            this.$delete(this.query_params, key);
+          } else {
+            // if property has data, add to query_params
+            this.$set(this.query_params, key, value);
+          }
+        }
+      }
+      this.$emit("query_params", this.query_params);
     },
   },
   // mounted() {
@@ -262,8 +278,8 @@ export default {
   watch: {
     data: {
       immediate: true,
-      handler() {
-        // console.log(value);
+      handler(value) {
+        console.log(value);
       },
     },
 
