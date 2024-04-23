@@ -95,6 +95,7 @@
                                 sm="6"
                                 v-for="(detail, index) in service.details"
                                 :key="'detail-' + index"
+                                :search="search"
                               >
                                 <div class="ma-2">
                                   <div class="text-subtitle-2 grey--text">
@@ -134,7 +135,6 @@
                 <v-pagination
                   :length="pageComputer(data)"
                   v-model="page"
-                  :search="search"
                   prev-icon="mdi-menu-left"
                   next-icon="mdi-menu-right"
                 ></v-pagination>
@@ -151,8 +151,10 @@
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
+import ViewFileMixin from "../../mixins/Consultation Files/ViewFile";
 export default {
   props: ["data"],
+  mixins: [ViewFileMixin],
   data: () => ({
     page: 1,
     total_items: null,
@@ -276,19 +278,12 @@ export default {
   // },
 
   watch: {
-    data: {
-      immediate: true,
-      handler(value) {
-        console.log(value);
-      },
-    },
-
-    services: {
-      immediate: true,
-      handler() {
-        // console.log(value.length);
-      },
-    },
+    // data: {
+    //   immediate: true,
+    //   handler(value) {
+    //     console.log(value);
+    //   },
+    // },
 
     page: {
       deep: true,
@@ -302,18 +297,33 @@ export default {
         this.$emit("query_params", this.query_params);
       },
     },
-  },
+    search: {
+      deep: true,
+      handler(value) {
+        clearTimeout(this.searchTimeout);
 
-  search: {
-    deep: true,
-    handler(value) {
-      clearTimeout(this.searchTimeout);
-
-      this.searchTimeout = setTimeout(() => {
-        this.query_params.search = value;
-        this.$emit("query_params", this.query_params);
-      }, 300);
+        this.searchTimeout = setTimeout(() => {
+          this.query_params.search = value;
+          this.$emit("query_params", this.query_params);
+        }, 300);
+      },
     },
+
+    // options: {
+    //   deep: true,
+    //   handler(value) {
+    //     if (value.itemsPerPage) {
+    //       this.query_params.per_page = value.itemsPerPage;
+    //     }
+    //     if (value.sortBy.length === 1 && value.sortDesc.length === 1) {
+    //       this.query_params.sort_by = value.sortBy[0];
+    //       this.query_params.sort_order = value.sortDesc[0] ? "desc" : "asc";
+    //     } else {
+    //       delete this.query_params.sort_by;
+    //       delete this.query_params.sort_order;
+    //     }
+    //   },
+    // },
   },
 };
 </script>
