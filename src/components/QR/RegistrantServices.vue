@@ -52,7 +52,7 @@
                     <FilterDialog
                       @filterQuery="(data) => assignParams(data)"
                       :activator="dialog"
-                      @dialogRespons="resetActivator"
+                      @dialogResponse="resetActivator"
                       :type_of_filter="type_of_filter"
                       :slot_activator="slot_activator"
                     />

@@ -159,42 +159,38 @@ export default {
       if (this.type_of_filter === "CITIZENS INDEX") {
         this.filter_type.forEach((element) => {
           if (element === "CATEGORY") {
-            if (this.category.length > 0) {
-              this.payload.category_ids = this.category;
-            }
+            this.category.length > 0
+              ? (this.payload.category_ids = this.category)
+              : (this.payload.category_ids = null);
           }
           if (element === "SEX") {
-            if (this.sex) {
-              this.payload.sexes = this.sex;
-            }
+            this.sex
+              ? (this.payload.sexes = this.sex)
+              : (this.payload.sexes = null);
           }
           if (element === "BARANGAY") {
-            if (this.barangay.length > 0) {
-              this.payload.barangay_ids = this.barangay;
-            }
+            this.barangay.length > 0
+              ? (this.payload.barangay_ids = this.barangay)
+              : (this.payload.barangay_ids = null);
           }
         });
       } else if (this.type_of_filter === "DIALYSIS INDEX") {
-        if (this.dialysis_machine.length > 0) {
-          this.payload.dialysis_machine = this.dialysis_machine;
-        }
-        if (this.status.length > 0) {
-          this.payload.status = this.status;
-        }
-      } else if (this.type_of_filter === "SERVICE INDEX") {
-        if (this.status.length > 0) {
-          this.payload.filter_status = this.status;
-        }
-        if (this.service_type.length > 0) {
-          this.payload.service_types = this.service_type;
-        }
-      } else if (this.type_of_filter === "SERVICES AVAILED INDEX") {
-        if (this.status.length > 0) {
-          this.payload.filter_status = this.status;
-        }
-        if (this.service_type.length > 0) {
-          this.payload.service_types = this.service_type;
-        }
+        this.dialysis_machine.length > 0
+          ? (this.payload.dialysis_machine = this.dialysis_machine)
+          : (this.payload.dialysis_machine = null);
+        this.status.length > 0
+          ? (this.payload.status = this.status)
+          : (this.payload.status = null);
+      } else if (
+        this.type_of_filter === "SERVICE INDEX" ||
+        this.type_of_filter === "SERVICES AVAILED INDEX"
+      ) {
+        this.status.length > 0
+          ? (this.payload.filter_status = this.status)
+          : (this.payload.filter_status = null);
+        this.service_type.length > 0
+          ? (this.payload.service_types = this.service_type)
+          : (this.payload.service_types = null);
       }
       this.$emit("filterQuery", this.payload);
       this.payload = {};
@@ -215,7 +211,10 @@ export default {
           dialysis_machine: null,
           status: null,
         };
-      } else if (this.type_of_filter === "SERVICE INDEX" || this.type_of_filter === "SERVICES AVAILED INDEX") {
+      } else if (
+        this.type_of_filter === "SERVICE INDEX" ||
+        this.type_of_filter === "SERVICES AVAILED INDEX"
+      ) {
         query = {
           service_types: null,
           filter_status: null,
@@ -303,7 +302,10 @@ export default {
       let statuses = null;
       if (this.type_of_filter === "DIALYSIS INDEX") {
         statuses = ["PENDING", "IN PROGRESS", "UNATTENDED", "COMPLETED"];
-      } else if (this.type_of_filter === "SERVICE INDEX" || this.type_of_filter === "SERVICES AVAILED INDEX") {
+      } else if (
+        this.type_of_filter === "SERVICE INDEX" ||
+        this.type_of_filter === "SERVICES AVAILED INDEX"
+      ) {
         statuses = [
           "PENDING",
           "IN PROGRESS",
