@@ -134,7 +134,6 @@ export default {
   props: ["serviceStatus"],
   data: () => ({
     toggle_status: false,
-    expand: false,
   }),
   methods: {
     initToggleProgress() {
@@ -144,11 +143,6 @@ export default {
       } else {
         this.$emit("toggleProgress", this.serviceStatus.original_status);
       }
-    },
-    expandCollapse() {
-      // this.packageInformation[packIndex].expand =
-      //   !this.packageInformation[packIndex].expand;
-      this.expand = !this.expand;
     },
   },
   computed: {
