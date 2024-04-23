@@ -116,3 +116,11 @@ export const files = {
     // },
   },
 };
+
+export const public_files = {
+  namespaced: true,
+  state: () => ({}),
+  getters: {},
+  mutations: {},
+  actions: {},
+};
