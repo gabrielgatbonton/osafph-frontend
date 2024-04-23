@@ -28,14 +28,14 @@
         <v-col cols="12" md="8">
           <v-container fluid class="mx-auto mt-3">
             <v-row>
-              <v-col cols="12" class="mt-n1">
-                <PatientServiceComponent
-                  :serviceInformation="serviceInformation"
-                />
-              </v-col>
               <v-col cols="12">
                 <PatientInformationComponent
                   :patientInformation="patientInformation"
+                />
+              </v-col>
+              <v-col cols="12" class="mt-n1">
+                <PatientServiceComponent
+                  :serviceInformation="serviceInformation"
                 />
               </v-col>
             </v-row>
@@ -269,6 +269,14 @@ export default {
           inProgress: "Dialysis session is in progress...",
           unattended: "Dialysis session was unattended...",
           completed: "Dialysis session was successfully completed...",
+        },
+        header:{
+          title: "Packages Availed",
+          icon: "mdi-hospital-box-outline",
+        },
+        items_availed: {
+          service_type: this.session.hospital_service.service_type,
+          packages: this.session.dialysis_packages,
         },
       };
     },

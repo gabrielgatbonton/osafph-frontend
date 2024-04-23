@@ -22,7 +22,7 @@
             <div class="text-h5">{{ info.content }}</div>
           </div>
         </v-col>
-        <v-col cols="12" class="mt-3">
+        <!-- <v-col cols="12" class="mt-3">
           <v-expansion-panels>
             <v-expansion-panel
               v-for="(info, index) in serviceInformation.remarks"
@@ -39,7 +39,7 @@
             </v-expansion-panel>
           </v-expansion-panels>
         </v-col>
-        <!-- <v-col
+        <v-col
           cols="12"
           class="mt-3"
           v-if="serviceInformation.items_availed.service_type === 'DIALYSIS'"
@@ -90,6 +90,14 @@ export default {
       type: Object,
       required: true,
     },
+  },
+
+  watch: {
+    // serviceInformation: {
+    //   handler(value) {
+    //     console.log(value);
+    //   },
+    // },
   },
 };
 </script>
