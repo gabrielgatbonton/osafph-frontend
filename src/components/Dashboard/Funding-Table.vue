@@ -108,6 +108,9 @@
               </v-card>
             </v-dialog>
           </template>
+          <template v-slot:[`item.initial_contribution`]="{ item }">
+            {{ formattedNumber(item.initial_contribution) }}
+          </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-container>
               <v-row justify="center" no-gutters>
@@ -143,7 +146,7 @@ import { mapActions } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import FundingTableMixin from "@/mixins/Validation/DashboardValidation/FundingTable";
-import TablePaginationMixin from "@/mixins/Tables/TablePagination"
+import TablePaginationMixin from "@/mixins/Tables/TablePagination";
 export default {
   name: "Funding-Table",
   props: ["data"],
@@ -256,9 +259,7 @@ export default {
               this.dialog = false;
               this.$v.$reset();
               //Fetch Again for the updating of data
-              this.getRootData(this.query_params).catch((error) => {
-                console.error("Error Fetching Root Data: ", error);
-              });
+              this.$emit("query_params", this.query_params);
             });
         }
       } else {
@@ -280,9 +281,7 @@ export default {
               this.dialog = false;
               this.$v.$reset();
               //Fetch Again for the updating of data
-              this.getRootData(this.query_params).catch((error) => {
-                console.error("Error Fetching Root Data: ", error);
-              });
+              this.$emit("query_params", this.query_params);
             });
         }
       }
@@ -296,9 +295,7 @@ export default {
           this.id = null;
           this.deleteDialog = false;
           //Fetch Again for the updating of data
-          this.getRootData(this.query_params).catch((error) => {
-            console.error("Error Fetching Root Data: ", error);
-          });
+          this.$emit("query_params", this.query_params);
         });
     },
     formattedNumber(num) {
@@ -346,10 +343,9 @@ export default {
         } else {
           this.loading = false;
           this.items = value.tableContent.data.map((item) => ({
+            id: item.id,
             name: item.name,
-            initial_contribution: this.formattedNumber(
-              item.initial_contribution
-            ),
+            initial_contribution: item.initial_contribution,
             created_at: item.created_at,
             contribution_left: this.formattedNumber(item.contribution_left),
           }));
