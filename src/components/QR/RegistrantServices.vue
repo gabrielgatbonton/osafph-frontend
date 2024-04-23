@@ -227,6 +227,10 @@ export default {
         ? "mdi-alert-circle-outline"
         : service === "PENDING"
         ? "mdi-clock-outline"
+        : service === "WALK-IN"
+        ? "mdi-walk"
+        : service === "IN PROGRESS"
+        ? "mdi-progress-clock"
         : "";
     },
     serviceStatusColor(service) {
@@ -236,6 +240,8 @@ export default {
         ? "error"
         : service === "PENDING"
         ? "warning"
+        : service === "WALK-IN" || service === "IN PROGRESS"
+        ? "blue darken-4"
         : "";
     },
     pageComputer(data) {
@@ -245,9 +251,9 @@ export default {
     activator() {
       this.dialog = !this.dialog;
     },
-    resetActivator(data){
+    resetActivator(data) {
       this.dialog = data;
-    }
+    },
   },
   // mounted() {
   //   console.log("Registrant Services: ", this.data);
