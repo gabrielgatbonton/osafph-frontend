@@ -19,4 +19,11 @@ export default [
       }
     },
   },
+  {
+    path: "/vaccination/file",
+    name: "public-file-view",
+    component: () =>
+      import(/* webpackChunkName: "reroute" */ "@/views/FileView.vue"),
+    meta: { requiresAuth: false },
+  },
 ];

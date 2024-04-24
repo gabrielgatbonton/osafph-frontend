@@ -33,6 +33,7 @@
           <DataTabs
             :data="getPublicData"
             :services="getPublicHospitalServices"
+            :public_files="public_files"
             @query_params="updateFetch"
           />
         </v-col>
@@ -44,8 +45,9 @@
 <script>
 import DataTabs from "./DataTabs.vue";
 import PrintQRJavaScript from "../Card/PrintQRJavaScript.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 export default {
+  name: "ReroutePage",
   components: {
     DataTabs,
     PrintQRJavaScript,
@@ -53,6 +55,7 @@ export default {
   methods: {
     ...mapActions("registrants", ["fetchPublicCitizenRecord"]),
     ...mapActions("services", ["fetchPublicServicesById"]),
+    ...mapActions("public_files", ["fetchPublicFiles", "resetPublicFiles"]),
     fetchData() {
       const storedId = sessionStorage.getItem("hub_registrant_id");
       this.fetchPublicCitizenRecord(storedId)
@@ -80,6 +83,9 @@ export default {
   computed: {
     ...mapGetters("registrants", ["getPublicData"]),
     ...mapGetters("services", ["getPublicHospitalServices"]),
+    ...mapState("public_files", {
+      public_files: "public_files",
+    }),
   },
   created() {
     this.fetchData();
@@ -89,6 +95,22 @@ export default {
       if (value.citizen.hub_registrant_id) {
         this.fetchPublicServicesById({ id: value.citizen.id });
       }
+    },
+    getPublicHospitalServices: {
+      deep: true,
+      handler(value) {
+        let query_params = {
+          hospital_service_ids: [],
+        };
+        let citizen_id = value.data[0].citizen_id;
+        value.data.forEach((item) => {
+          query_params.hospital_service_ids.push(item.id)
+        });
+        this.fetchPublicFiles({
+            citizen_id: citizen_id,
+            queryParams: query_params,
+          });
+      },
     },
   },
 };

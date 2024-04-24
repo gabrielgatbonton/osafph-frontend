@@ -92,7 +92,7 @@ function isAllowedRoutes(routeName, userRole) {
   }
 
   //Allow all roles to use these routes:
-  allowedRoutes.push("reroute", "management", "dashboard", "test");
+  allowedRoutes.push("reroute","public-file-view", "management", "dashboard", "test");
 
   // Check if the provided routeName is in the restrictedRoutes array
   return allowedRoutes.includes(routeName);

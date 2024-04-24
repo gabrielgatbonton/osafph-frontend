@@ -1,4 +1,4 @@
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   data: () => ({
     data: {
@@ -8,9 +8,9 @@ export default {
   }),
   methods: {
     ...mapActions("files", ["fetchFile"]),
+    ...mapActions("public_files", ["fetchPublicFile"]),
     activator(file_id, hospital_service_id) {
       if (this.userRole === "DOCTOR") {
-        console.log("Check1")
         this.$router
           .push({
             name: "consultation-files-view",
@@ -80,12 +80,21 @@ export default {
   computed: {
     ...mapGetters("files", ["getFile"]),
     ...mapGetters("login", ["userRole"]),
+    ...mapState("public_files", {
+      public_file: "public_file"
+    })
   },
   watch: {
     getFile(value) {
       this.data.base64 = value.file;
       this.data.file_type = value.file_type;
     },
+    public_file: {
+      handler(value) {
+        this.data.base64 = value.file;
+        this.data.file_type = value.file_type;
+      }
+    }
   },
   // resetActivator(data) {
   //   this.deleteDialog = data;
