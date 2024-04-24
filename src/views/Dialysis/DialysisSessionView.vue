@@ -18,8 +18,12 @@
           <v-btn dark color="success">Complete Session</v-btn>
         </v-col>
         <v-col cols="auto" v-if="buttonPermissions.files">
-          <v-btn dark color="blue darken-4" class="mr-3" @click="proceedToFiles"
-            >{{ buttonTitle ? "Uploaded Files" : "Upload Files"}}</v-btn
+          <v-btn
+            dark
+            color="blue darken-4"
+            class="mr-3"
+            @click="proceedToFiles"
+            >{{ buttonTitle ? "Uploaded Files" : "Upload Files" }}</v-btn
           >
         </v-col>
       </v-row>
@@ -42,7 +46,11 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="4">
-          <ServiceStatusComponent @toggleProgress="toggleStatus" :serviceStatus="serviceStatus" />
+          <ServiceStatusComponent
+            @toggleProgress="toggleStatus"
+            :serviceStatus="serviceStatus"
+            :serviceInformation="serviceInformation"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -77,7 +85,7 @@ export default {
     ...mapActions("dialysis_sessions", [
       "fetchDialysisSessionById",
       "completeDialysisSessionById",
-      "toggleServiceProgress"
+      "toggleServiceProgress",
     ]),
     ...mapActions("files", ["fetchFiles"]),
     fetchSessionData() {
@@ -270,7 +278,7 @@ export default {
           unattended: "Dialysis session was unattended...",
           completed: "Dialysis session was successfully completed...",
         },
-        header:{
+        header: {
           title: "Packages Availed",
           icon: "mdi-hospital-box-outline",
         },
@@ -281,8 +289,8 @@ export default {
       };
     },
     buttonTitle() {
-      return this.getFiles.length > 0 ? true : false
-    }
+      return this.getFiles.length > 0 ? true : false;
+    },
   },
   watch: {
     getDialysisSession(value) {

@@ -93,11 +93,6 @@ export default {
   },
 
   watch: {
-    // serviceInformation: {
-    //   handler(value) {
-    //     console.log(value);
-    //   },
-    // },
   },
 };
 </script>

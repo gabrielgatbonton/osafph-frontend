@@ -293,6 +293,8 @@ export default {
 
       //Conditional for General Format and Dialysis Format Messages
       let messages = null;
+      let header = null;
+      let items_availed = null;
 
       if (this.service.data.service_type !== "DIALYSIS") {
         messages = {
@@ -301,6 +303,14 @@ export default {
           unattended: "Requested Service was unattended...",
           completed: "Requested Service was successfully completed...",
         };
+        header = {
+          title: null,
+          icon: null,
+        };
+        items_availed = {
+          service_type: null,
+          packages: null,
+        };
       } else {
         messages = {
           pending: "Dialysis session is pending...",
@@ -308,7 +318,16 @@ export default {
           unattended: "Dialysis session was unattended...",
           completed: "Dialysis session was successfully completed...",
         };
+        header = {
+          title: "Packages Availed",
+          icon: "mdi-hospital-box-outline",
+        };
+        items_availed = {
+          service_type: this.service.data.service_type,
+          packages: this.service.data.dialysis_packages,
+        };
       }
+
 
       return {
         status: this.service.data.status,
@@ -321,8 +340,12 @@ export default {
         },
         dateReleased: date_released_data,
         messages: messages,
+        header: header,
+        items_availed: items_availed
       };
     },
   },
+
+
 };
 </script>

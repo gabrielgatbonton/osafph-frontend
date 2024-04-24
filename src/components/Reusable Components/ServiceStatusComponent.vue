@@ -83,44 +83,39 @@
           </v-row>
         </v-card>
       </v-col>
-      <v-col cols="12" class="mt-n2">
+      <v-col cols="12" class="mt-n2" v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'">
         <v-card>
           <v-card-title class="blue darken-1 white--text">
             <v-icon dark class="mr-2">{{ serviceStatus.header.icon }}</v-icon>
             {{ serviceStatus.header.title }}
           </v-card-title>
-          <v-container>
-            <v-row
+          <v-expansion-panels>
+            <v-expansion-panel
               v-for="(info, packIndex) in serviceStatus.items_availed.packages"
               :key="packIndex"
-              class="mt-n3"
             >
-              <v-col cols="12">
-                <v-btn text @click="expandCollapse(packIndex)" width="100%"
-                  >{{ info.name }}
-                  <v-spacer></v-spacer>
-                  <v-icon>{{
-                    expand ? "mdi-chevron-up" : "mdi-chevron-down"
-                  }}</v-icon>
-                </v-btn>
-              </v-col>
-              <v-expand-transition>
-                <v-row v-if="expand" class="ma-1 mt-n4">
-                  <v-col
-                    cols="6"
-                    v-for="(item, itemIndex) in info.dialysis_items"
-                    :key="itemIndex"
-                  >
-                    <ul>
-                      <li>
-                        {{ item }}
-                      </li>
-                    </ul>
-                  </v-col>
-                </v-row>
-              </v-expand-transition>
-            </v-row>
-          </v-container>
+              <v-expansion-panel-header class="font-weight-bold">
+                {{ info.name }}
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-container>
+                  <v-row class="my-n6">
+                    <v-col
+                      cols="6"
+                      v-for="(item, itemIndex) in info.dialysis_items"
+                      :key="itemIndex"
+                    >
+                      <ul>
+                        <li>
+                          {{ item }}
+                        </li>
+                      </ul>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-card>
       </v-col>
     </v-row>

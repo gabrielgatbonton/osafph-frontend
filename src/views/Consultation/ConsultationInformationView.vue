@@ -594,6 +594,14 @@ export default {
         },
         dateReleased: date_released_data,
         messages: messages,
+        header: {
+          title: null,
+          icon: null,
+        },
+        items_availed: {
+          service_type: false,
+          items: null,
+        },
       };
     },
   },
