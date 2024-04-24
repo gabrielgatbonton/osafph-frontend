@@ -50,7 +50,7 @@
                       >
                     </div>
                     <FilterDialog
-                      @filterQuery="(data) => assignParams(data)"
+                      @filterQuery="(params) => assignParams(params)"
                       :activator="dialog"
                       @dialogResponse="resetActivator"
                       :type_of_filter="type_of_filter"
@@ -273,18 +273,7 @@ export default {
       this.$emit("query_params", this.query_params);
     },
   },
-  // mounted() {
-  //   console.log("Registrant Services: ", this.data);
-  // },
-
   watch: {
-    // data: {
-    //   immediate: true,
-    //   handler(value) {
-    //     console.log(value);
-    //   },
-    // },
-
     page: {
       deep: true,
       handler(value) {
@@ -308,22 +297,6 @@ export default {
         }, 300);
       },
     },
-
-    // options: {
-    //   deep: true,
-    //   handler(value) {
-    //     if (value.itemsPerPage) {
-    //       this.query_params.per_page = value.itemsPerPage;
-    //     }
-    //     if (value.sortBy.length === 1 && value.sortDesc.length === 1) {
-    //       this.query_params.sort_by = value.sortBy[0];
-    //       this.query_params.sort_order = value.sortDesc[0] ? "desc" : "asc";
-    //     } else {
-    //       delete this.query_params.sort_by;
-    //       delete this.query_params.sort_order;
-    //     }
-    //   },
-    // },
   },
 };
 </script>

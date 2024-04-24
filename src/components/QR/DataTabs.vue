@@ -9,7 +9,7 @@
         </v-tab-item>
         <v-tab-item>
           <RegistrantServices
-            @query_params="(data) => $emit('query_params', data)"
+            @query_params="(params) => $emit('query_params', params)"
             :data="services"
           />
         </v-tab-item>
