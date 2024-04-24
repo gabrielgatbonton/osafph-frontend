@@ -30,6 +30,8 @@ export default {
         }
       }
       this.$emit("query_params", this.query_params);
+      // Set Loading to true;
+      this.loading = true;
     },
   },
   watch: {
