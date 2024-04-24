@@ -25,12 +25,21 @@ export default {
       const hospital_service_id = JSON.parse(
         this.$route.query.hospital_service_id
       );
-      this.fetchFile({
-        hospital_service_id: hospital_service_id,
-        file_id: file_id,
-      }).catch((error) => {
-        console.error("Error Fetching Consultation File: ", error);
-      });
+      const citizen_id = JSON.parse(this.$route.query.citizen_id);
+      if (citizen_id) {
+        this.fetchPublicFile({
+          citizen_id: citizen_id,
+          hospital_service_id: hospital_service_id,
+          hospital_service_file_id: file_id,
+        })
+      } else {
+        this.fetchFile({
+          hospital_service_id: hospital_service_id,
+          file_id: file_id,
+        }).catch((error) => {
+          console.error("Error Fetching Consultation File: ", error);
+        });
+      }
     },
   },
   mounted() {

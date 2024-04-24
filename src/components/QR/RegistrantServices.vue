@@ -91,6 +91,34 @@
                             <v-row>
                               <v-col
                                 cols="12"
+                                v-if="
+                                  public_files && public_files.data.length > 0
+                                "
+                              >
+                                <div
+                                  class="d-inline-block mt-2"
+                                  v-for="(chip, chipIndex) in public_files.data[
+                                    index
+                                  ]"
+                                  :key="chipIndex"
+                                >
+                                  <v-chip
+                                    class="mr-2"
+                                    @click="
+                                      proceedToFileView(
+                                        service.citizen_id,
+                                        service.hospital_service_id,
+                                        chip.id
+                                      )
+                                    "
+                                    ><v-icon left color="blue darken-4"
+                                      >mdi-image</v-icon
+                                    >{{ chip.document_type }}</v-chip
+                                  >
+                                </div>
+                              </v-col>
+                              <v-col
+                                cols="12"
                                 md="6"
                                 sm="6"
                                 v-for="(detail, index) in service.details"
@@ -153,7 +181,7 @@ import parseISO from "date-fns/parseISO";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
 import ViewFileMixin from "../../mixins/Consultation Files/ViewFile";
 export default {
-  props: ["data"],
+  props: ["data", "public_files"],
   mixins: [ViewFileMixin],
   data: () => ({
     page: 1,
@@ -175,12 +203,15 @@ export default {
       }
 
       return this.data.data.map((item) => ({
+        citizen_id: item.citizen_id,
+        hospital_service_id: item.id,
         service_type: item.service_type,
         scheduled_date: format(
           parseISO(item.scheduled_date),
           "MMMM dd, yyyy"
         ).toUpperCase(),
         status: item.status,
+        public_files: [],
         details: [
           {
             title: "Service ID",
@@ -272,6 +303,20 @@ export default {
       }
       this.$emit("query_params", this.query_params);
     },
+    proceedToFileView(citizen_id, hospital_service_id, file_id) {
+      this.$router
+        .push({
+          name: "public-file-view",
+          query: {
+            citizen_id: JSON.stringify(citizen_id),
+            file_id: JSON.stringify(file_id),
+            hospital_service_id: JSON.stringify(hospital_service_id),
+          },
+        })
+        .catch((error) => {
+          console.error("Error Moving to Next Route:", error);
+        });
+    },
   },
   watch: {
     page: {
@@ -295,6 +340,11 @@ export default {
           this.query_params.search = value;
           this.$emit("query_params", this.query_params);
         }, 300);
+      },
+    },
+    public_files: {
+      handler(value) {
+        console.log(value);
       },
     },
   },

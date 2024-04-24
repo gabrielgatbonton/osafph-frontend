@@ -11,6 +11,7 @@
           <RegistrantServices
             @query_params="(params) => $emit('query_params', params)"
             :data="services"
+            :public_files="public_files"
           />
         </v-tab-item>
       </v-tabs>
@@ -22,15 +23,10 @@
 import PersonalDetails from "./PersonalDetails.vue";
 import RegistrantServices from "./RegistrantServices.vue";
 export default {
-  props: ["data", "services"],
+  props: ["data", "services", "public_files"],
   components: {
     PersonalDetails,
     RegistrantServices,
-  },
-  watch: {
-    // booster(value){
-    //   console.log("DATATABS:", value)
-    // }
   },
 };
 </script>
