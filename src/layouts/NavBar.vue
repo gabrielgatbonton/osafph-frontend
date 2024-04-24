@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-app-bar app flat color="grey lighten-2">
-      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+    <v-app-bar app dense flat>
+      <v-app-bar-nav-icon class="d-flex d-md-none" @click="toggleDrawer"></v-app-bar-nav-icon>
       <div>
         <v-img eager :src="logoUrl" width="120" height="60" contain></v-img>
       </div>
       <v-spacer></v-spacer>
-      <div class="title py-1 mr-3">{{ userName }}</div>
+      <div class="subtitle font-weight-bold py-1 mr-3">{{ userName }}</div>
       <v-menu bottom :offset-y="offset" class>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on" class="mr-1" :loading="loading">
@@ -37,7 +37,7 @@ import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
     offset: true,
-    drawer: false,
+    drawer: true,
     loading: false,
     logoUrl: require("../assets/MCG.png"),
   }),
