@@ -49,7 +49,6 @@
           <ServiceStatusComponent
             @toggleProgress="toggleStatus"
             :serviceStatus="serviceStatus"
-            :serviceInformation="serviceInformation"
           />
         </v-col>
       </v-row>
@@ -286,6 +285,12 @@ export default {
           service_type: this.session.hospital_service.service_type,
           packages: this.session.dialysis_packages,
         },
+        header_dialysis: {
+          header_title: "Dialysis",
+          date: "Date Scheduled",
+          status: "Status",
+          icon: "mdi-iv-bag"
+        }
       };
     },
     buttonTitle() {

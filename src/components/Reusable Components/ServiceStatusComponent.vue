@@ -83,7 +83,11 @@
           </v-row>
         </v-card>
       </v-col>
-      <v-col cols="12" class="mt-n2" v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'">
+      <v-col
+        cols="12"
+        class="mt-n2"
+        v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
+      >
         <v-card>
           <v-card-title class="blue darken-1 white--text">
             <v-icon dark class="mr-2">{{ serviceStatus.header.icon }}</v-icon>
@@ -118,6 +122,26 @@
           </v-expansion-panels>
         </v-card>
       </v-col>
+      <v-col cols="12">
+        <v-card>
+          <v-card-title class="blue darken-1 white--text">
+            <v-icon dark class="mr-2">{{
+              serviceStatus.header_dialysis.icon
+            }}</v-icon>
+            {{ serviceStatus.header_dialysis.header_title }}
+          </v-card-title>
+          <v-card-text>
+            <v-row class="mt-1">
+              <v-col cols="12" md="7" class="text-subtitle-1 font-italic font-weight-light">
+                {{ serviceStatus.header_dialysis.date }}
+              </v-col>
+              <v-col cols="12" md="5" class="text-subtitle-1 font-italic font-weight-light">
+                {{ serviceStatus.header_dialysis.status }}
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -126,7 +150,7 @@
 import { mapGetters } from "vuex";
 export default {
   name: "ServiceStatusComponent",
-  props: ["serviceStatus"],
+  props: ["serviceStatus", "services"],
   data: () => ({
     toggle_status: false,
   }),
