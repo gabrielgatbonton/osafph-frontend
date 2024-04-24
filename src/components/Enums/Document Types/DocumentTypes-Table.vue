@@ -46,13 +46,10 @@
       </v-dialog>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container
-        style="width: 120px; padding: 0"
-      >
-        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'center'">
+      <v-container class="pa-0">
+        <v-row no-gutters :justify="isJustify">
           <v-col cols="auto" v-if="iconPermissions.delete" align-self="center">
             <v-icon
-              class="mx-1"
               color="error"
               dense
               @click="deleteActivator(item.item_id)"
@@ -91,6 +88,7 @@ export default {
     payload: {
       name: null,
     },
+    isJustify: "",
   }),
   components: {
     ReusableDeleteDialog,
@@ -153,6 +151,9 @@ export default {
           }))
         : [];
     },
+    size() {
+      return this.$vuetify.breakpoint;
+    },
   },
   watch: {
     types: {
@@ -166,6 +167,7 @@ export default {
           this.loading = false;
         }
       },
+      immediate: true,
     },
     activator: {
       handler(value) {
@@ -178,6 +180,17 @@ export default {
           this.$emit("dialog:response", value);
         }
       },
+    },
+    size: {
+      handler: function (newVal) {
+        if (newVal.xs) {
+          this.isJustify = "end";
+        } else {
+          this.isJustify = "center";
+        }
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

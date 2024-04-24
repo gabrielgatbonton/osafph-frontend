@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export const admin_consultations = {
   namespaced: true,
   state: () => ({
-    consultations: [],
+    consultations: null,
     consultation: null,
     consultation_form: null,
   }),

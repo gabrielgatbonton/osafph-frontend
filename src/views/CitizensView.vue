@@ -2,41 +2,42 @@
   <div>
     <SubmissionAlert :message="success.message" v-if="success.alert" />
     <ErrorAlert :message="failed.message" v-if="failed.alert" />
-    <v-container fluid class="ma-1">
-      <v-row no-gutters>
-        <v-col cols="auto">
-          <v-icon left>mdi-account-box-multiple</v-icon>
-          <span class="title">List of Citizens</span>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="auto">
-          <v-btn
-            v-if="!$vuetify.breakpoint.xs"
-            dark
-            class="mr-3 blue darken-4"
-            @click="toRegister"
-            >Register</v-btn
-          >
-          <v-btn
-            v-else
-            dark
-            class="mr-3"
-            color="blue darken-4"
-            @click="toRegister"
-            icon
-            ><v-icon>mdi-plus</v-icon></v-btn
-          >
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-divider class="mx-3"></v-divider>
-    <v-container fluid class="ma-1">
-      <DataTable
-        v-if="registrants"
-        :registrants="registrants"
-        @query_params="filterQuery"
-      />
-    </v-container>
+    <div v-if="registrants">
+      <v-container fluid class="ma-1">
+        <v-row no-gutters>
+          <v-col cols="auto">
+            <v-icon left>mdi-account-box-multiple</v-icon>
+            <span class="title">List of Citizens</span>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-btn
+              v-if="!$vuetify.breakpoint.xs"
+              dark
+              class="mr-3 blue darken-4"
+              @click="toRegister"
+              >Register</v-btn
+            >
+            <v-btn
+              v-else
+              dark
+              class="mr-3"
+              color="blue darken-4"
+              @click="toRegister"
+              icon
+              ><v-icon>mdi-plus</v-icon></v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-divider class="mx-3"></v-divider>
+      <v-container fluid class="ma-1">
+        <DataTable :registrants="registrants" @query_params="filterQuery" />
+      </v-container>
+    </div>
+    <div v-else class="pa-6">
+      <v-skeleton-loader type="table"></v-skeleton-loader>
+    </div>
   </div>
 </template>
 

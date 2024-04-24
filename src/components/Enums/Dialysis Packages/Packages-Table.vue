@@ -37,11 +37,11 @@
       >
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container style="width: auto; padding: 0">
-        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'center'" class="ml-4">
+      <v-container class="pa-0">
+        <v-row no-gutters :justify="isJustify">
           <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
             <v-icon
-              class="mx-1"
+              class="ml-1"
               color="blue darken-4"
               dense
               @click="activator(item.id)"
@@ -50,7 +50,7 @@
           </v-col>
           <v-col cols="auto" v-if="iconPermissions.delete" align-self="center">
             <v-icon
-              class="mx-1"
+              class="ml-1"
               color="error"
               dense
               @click="deleteActivator(item.id)"
@@ -58,13 +58,15 @@
             >
           </v-col>
           <v-col cols="auto" v-if="iconPermissions.toggle" align-self="center">
-            <v-switch
-              v-model="item.is_active"
-              inset
-              class="mx-1"
-              dense
+            <v-icon
+              color="primary"
+              large
               @click="togglePackage(item.id)"
-            ></v-switch>
+              class="ml-1"
+              >{{
+                item.is_active ? "mdi-toggle-switch" : "mdi-toggle-switch-off"
+              }}</v-icon
+            >
           </v-col>
         </v-row>
       </v-container>
@@ -87,6 +89,7 @@ export default {
     search: "",
     offset: true,
     loading: true,
+    isJustify: "",
   }),
   components: {
     ReusableDeleteDialog,
@@ -157,6 +160,9 @@ export default {
           }))
         : [];
     },
+    size() {
+      return this.$vuetify.breakpoint;
+    },
   },
   watch: {
     packages: {
@@ -170,6 +176,20 @@ export default {
           this.loading = false;
         }
       },
+      immediate: true,
+    },
+    size: {
+      handler: function (newVal) {
+        if (newVal.sm) {
+          this.isJustify = "center";
+        } else if (newVal.xs) {
+          this.isJustify = "end";
+        } else {
+          this.isJustify = "center";
+        }
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

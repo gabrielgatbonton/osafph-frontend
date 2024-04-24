@@ -2,24 +2,29 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid class="ma-1">
-      <v-row no-gutters>
-        <v-col cols="auto">
-          <v-icon left>mdi-account-box-multiple</v-icon>
-          <span class="title">Uploaded Files</span>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="auto">
-          <v-btn dark class="mr-3" color="blue darken-4" @click="activator">
-            Upload</v-btn
-          >
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-divider class="my-4"></v-divider>
-    <v-container fluid class="ma-1">
-      <FilesTable :files="files" />
-    </v-container>
+    <div v-if="files">
+      <v-container fluid class="ma-1">
+        <v-row no-gutters>
+          <v-col cols="auto">
+            <v-icon left>mdi-account-box-multiple</v-icon>
+            <span class="title">Uploaded Files</span>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-btn dark class="mr-3" color="blue darken-4" @click="activator">
+              Upload</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-divider class="my-4"></v-divider>
+      <v-container fluid class="ma-1">
+        <FilesTable :files="files" />
+      </v-container>
+    </div>
+    <div v-else class="pa-6">
+      <v-skeleton-loader type="table"></v-skeleton-loader>
+    </div>
     <UploadDialog
       v-on:uploadFiles="uploadFiles"
       v-on:dialogResponse="resetActivator"

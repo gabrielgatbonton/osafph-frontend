@@ -1,27 +1,35 @@
 <template>
   <div>
-    <v-container fluid class="table-title ma-1">
-      <v-row>
-        <v-col cols="auto">
-          <v-icon left>mdi-medical-bag</v-icon>
-          <span class="title">Consultations</span>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="auto">
-          <v-btn
-            class="mr-3"
-            color="blue darken-4"
-            dark
-            @click="switchConsultations"
-            >{{ consultationsStatus ? "Pending" : "Archived" }}</v-btn
-          >
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-divider class="mx-3"></v-divider>
-    <v-container fluid class="ma-1">
-      <ConsultationsTable :routeName="routeName" :consultations="switchData" />
-    </v-container>
+    <div v-if="switchData">
+      <v-container fluid class="table-title ma-1">
+        <v-row>
+          <v-col cols="auto">
+            <v-icon left>mdi-medical-bag</v-icon>
+            <span class="title">Consultations</span>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-btn
+              class="mr-3"
+              color="blue darken-4"
+              dark
+              @click="switchConsultations"
+              >{{ consultationsStatus ? "Pending" : "Archived" }}</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-divider class="mx-3"></v-divider>
+      <v-container fluid class="ma-1">
+        <ConsultationsTable
+          :routeName="routeName"
+          :consultations="switchData"
+        />
+      </v-container>
+    </div>
+    <div v-else class="pa-6">
+      <v-skeleton-loader type="table"></v-skeleton-loader>
+    </div>
   </div>
 </template>
 

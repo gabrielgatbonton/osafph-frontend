@@ -23,12 +23,13 @@
         ></v-text-field>
         <div>
           <v-btn
-            v-if="!$vuetify.breakpoint.xs"
+            v-if="isIcon"
             dark
             class="mr-3"
             color="blue darken-4"
             @click="activator"
-            >Filter</v-btn
+            icon
+            ><v-icon>mdi-filter-multiple</v-icon></v-btn
           >
           <v-btn
             v-else
@@ -36,8 +37,7 @@
             class="mr-3"
             color="blue darken-4"
             @click="activator"
-            icon
-            ><v-icon>mdi-filter-multiple</v-icon></v-btn
+            >Filter</v-btn
           >
         </div>
       </div>
@@ -69,24 +69,21 @@
       <!-- Icon button for options -->
       <v-menu left :offset-x="offset">
         <template v-slot:activator="{ on, attrs }">
-          <v-icon
-            v-if="!$vuetify.breakpoint.xs"
-            class="ml-n8"
-            v-bind="attrs"
-            v-on="on"
-            >mdi-dots-vertical</v-icon
-          >
-          <v-btn
-            v-else
-            color="blue darken-4"
-            v-bind="attrs"
-            v-on="on"
-            icon
-            x-large
-            ><v-icon>mdi-dots-horizontal</v-icon></v-btn
-          >
+          <div>
+            <v-btn
+              v-if="isHorizontal"
+              color="blue darken-4"
+              v-bind="attrs"
+              v-on="on"
+              icon
+              x-large
+              ><v-icon>mdi-dots-horizontal</v-icon></v-btn
+            >
+            <v-btn v-else icon>
+              <v-icon v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
+            </v-btn>
+          </div>
         </template>
-
         <v-list dense>
           <v-list-item
             v-for="(option, index) in getOptions(item)"
@@ -119,7 +116,7 @@ import { format, parseISO } from "date-fns";
 import ReusableDeleteDialog from "./ReusableDeleteDialog.vue";
 import DeleteRegistrantMixin from "@/mixins/Registrant/DeleteRegistrant";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
-import TablePaginationMixin from "@/mixins/Tables/TablePagination"
+import TablePaginationMixin from "@/mixins/Tables/TablePagination";
 import { mapGetters } from "vuex";
 export default {
   mixins: [DeleteRegistrantMixin, TablePaginationMixin],
@@ -134,6 +131,8 @@ export default {
     dialog: false,
     type_of_filter: "CITIZENS INDEX",
     slot_activator: false,
+    isHorizontal: false,
+    isIcon: false,
   }),
   methods: {
     getOptions(item) {
@@ -215,6 +214,7 @@ export default {
           text: "",
           value: "actions",
           sortable: false,
+          align: "center",
         },
       ];
     },
@@ -222,7 +222,10 @@ export default {
       let remove = false;
       if (this.userRole === "ADMIN" || this.userRole === "ROOT") {
         remove = true;
-      } else if (this.userRole === "ENCODER" || this.userRole === "VIP_ENCODER") {
+      } else if (
+        this.userRole === "ENCODER" ||
+        this.userRole === "VIP_ENCODER"
+      ) {
         remove = false;
       }
       return {
@@ -245,6 +248,9 @@ export default {
           }))
         : [];
     },
+    size() {
+      return this.$vuetify.breakpoint;
+    },
   },
   watch: {
     registrants: {
@@ -259,6 +265,19 @@ export default {
           this.loading = false;
         }
       },
+    },
+    size: {
+      handler: function (newVal) {
+        if (newVal.xs) {
+          this.isHorizontal = true;
+          this.isIcon = true;
+        } else {
+          this.isHorizontal = false;
+          this.isIcon = false;
+        }
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

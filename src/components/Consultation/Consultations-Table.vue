@@ -33,11 +33,8 @@
       </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container
-        :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-3'"
-        style="width: auto; padding: 0;"
-      >
-        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'start'">
+      <v-container class="pa-0">
+        <v-row no-gutters :justify="isJustify">
           <v-col cols="auto" align-self="center">
             <v-icon
               @click="
@@ -46,7 +43,6 @@
                   item.hospital_service_id
                 )
               "
-              class="mx-1"
               color="grey darken-1"
               dense
               >mdi-eye</v-icon
@@ -67,6 +63,7 @@ export default {
     search: "",
     offset: true,
     loading: true,
+    isJustify: "",
   }),
   methods: {
     filterOnlyCapsText(value, search) {
@@ -114,6 +111,7 @@ export default {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
+          align: "center",
         },
       ];
     },
@@ -141,9 +139,13 @@ export default {
           }))
         : [];
     },
+    size() {
+      return this.$vuetify.breakpoint;
+    },
   },
   watch: {
     consultations: {
+      immediate: true,
       handler(value) {
         this.loading = true;
         if (!value.length) {
@@ -154,6 +156,17 @@ export default {
           this.loading = false;
         }
       },
+    },
+    size: {
+      handler: function (newVal) {
+        if (newVal.xs) {
+          this.isJustify = "end";
+        } else {
+          this.isJustify = "center";
+        }
+      },
+      immediate: true,
+      deep: true,
     },
   },
 };

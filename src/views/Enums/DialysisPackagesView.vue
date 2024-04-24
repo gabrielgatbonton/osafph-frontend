@@ -2,43 +2,48 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid class="ma-1">
-      <v-row no-gutters>
-        <v-col cols="auto">
-          <v-icon left>mdi-account-box-multiple</v-icon>
-          <span class="title">Dialysis Packages</span>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="auto">
-          <v-btn
-            v-if="!$vuetify.breakpoint.xs"
-            dark
-            class="mr-3"
-            color="blue darken-4"
-            @click="activator"
-          >
-            Add Package</v-btn
-          >
-          <v-btn
-            v-else
-            class="mr-3"
-            color="blue darken-4"
-            icon
-            @click="activator"
-          >
-            <v-icon>mdi-plus</v-icon></v-btn
-          >
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-divider class="mx-3"></v-divider>
-    <v-container fluid class="ma-1">
-      <v-row>
-        <v-col cols="12">
-          <PackagesTable :packages="dialysis_packages" />
-        </v-col>
-      </v-row>
-    </v-container>
+    <div v-if="dialysis_packages">
+      <v-container fluid class="ma-1">
+        <v-row no-gutters>
+          <v-col cols="auto">
+            <v-icon left>mdi-account-box-multiple</v-icon>
+            <span class="title">Dialysis Packages</span>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-btn
+              v-if="isIcon"
+              class="mr-3"
+              color="blue darken-4"
+              icon
+              @click="activator"
+            >
+              <v-icon>mdi-plus</v-icon></v-btn
+            >
+            <v-btn
+              v-else
+              dark
+              class="mr-3"
+              color="blue darken-4"
+              @click="activator"
+            >
+              Add Package</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-divider class="mx-3"></v-divider>
+      <v-container fluid class="ma-1">
+        <v-row>
+          <v-col cols="12">
+            <PackagesTable :packages="dialysis_packages" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+    <div v-else class="pa-6">
+      <v-skeleton-loader type="table"></v-skeleton-loader>
+    </div>
     <PackageDialog
       @dialogResponse="resetActivator"
       :activator="dialog"
@@ -59,6 +64,7 @@ export default {
   data: () => ({
     payload: {},
     dialog: false,
+    isIcon: false,
   }),
   components: {
     PackagesTable,
@@ -94,6 +100,21 @@ export default {
     ...mapState("dialysis_items_actions", {
       dialysis_packages: "dialysis_packages",
     }),
+    size() {
+      return this.$vuetify.breakpoint;
+    },
+  },
+  watch: {
+    size: {
+      handler: function (value) {
+        if (value.xs) {
+          this.isIcon = true;
+        } else {
+          this.isIcon = false;
+        }
+      },
+      deep: true,
+    },
   },
   created() {
     this.fetchDialysisPackages();

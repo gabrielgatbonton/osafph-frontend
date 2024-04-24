@@ -32,13 +32,11 @@
       <div>PHP {{ item.item_price }}</div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container
-        style="width: 120px; padding: 0"
-      >
-        <v-row no-gutters :justify="$vuetify.breakpoint.xs ? 'end' : 'center'">
+      <v-container class="pa-0">
+        <v-row no-gutters :justify="isJustify">
           <v-col cols="auto" v-if="iconPermissions.edit" align-self="center">
             <v-icon
-              class="mx-1"
+              class="ml-1"
               color="blue darken-4"
               dense
               @click="activator(item.item_id)"
@@ -47,7 +45,7 @@
           </v-col>
           <v-col cols="auto" v-if="iconPermissions.delete" align-self="center">
             <v-icon
-              class="mx-1"
+              class="ml-1"
               color="error"
               dense
               @click="deleteActivator(item.item_id)"
@@ -74,6 +72,7 @@ export default {
     search: "",
     offset: true,
     loading: true,
+    isJustify: "",
   }),
   components: {
     ReusableDeleteDialog,
@@ -129,6 +128,9 @@ export default {
           }))
         : [];
     },
+    size() {
+      return this.$vuetify.breakpoint;
+    },
   },
   watch: {
     items: {
@@ -142,10 +144,21 @@ export default {
           this.loading = false;
         }
       },
+      immediate: true,
+    },
+    size: {
+      handler: function (newVal) {
+        if (newVal.xs) {
+          this.isJustify = "end";
+        } else {
+          this.isJustify = "center";
+        }
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };
 </script>
 
 <style scoped></style>
-@/mixins/Admin/Enums/Dialysis/DeleteItem@/mixins/Admin/Enums/Dialysis/EditItem
