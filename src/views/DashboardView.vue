@@ -114,6 +114,9 @@
         <DoctorContent :data="dashboardRootValues" />
       </v-row>
     </v-container>
+    <div v-else class="pa-6">
+      <v-skeleton-loader type="card, table"></v-skeleton-loader>
+    </div>
   </div>
 </template>
 <script>
