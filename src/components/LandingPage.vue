@@ -23,7 +23,7 @@
             class="mx-auto d-block"
             id="image"
             :src="imageUrl"
-            :max-width="$vuetify.breakpoint.xs ? 260 : 400"
+            :max-width="maxWidth"
             contain
           ></v-img>
         </div>
@@ -83,6 +83,7 @@ export default {
     loginError: null,
     show: false,
     imageUrl: require("@/assets/Jose (1).png"),
+    maxWidth: null,
   }),
   validations: {
     username: {
@@ -92,33 +93,6 @@ export default {
     password: {
       required,
       minLength: minLength(4),
-    },
-  },
-  computed: {
-    usernameErrors() {
-      const errors = [];
-      if (!this.$v.username.$dirty) return errors;
-      !this.$v.username.required && errors.push("Username is required");
-      !this.$v.username.minLength &&
-        errors.push("Username must be at least 4 characters long");
-      // Add loginError message to errors if it exists
-      if (this.loginError) {
-        errors.push(this.loginError);
-      }
-
-      return errors;
-    },
-    passwordErrors() {
-      const errors = [];
-      if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.required && errors.push("Password is required");
-      !this.$v.password.minLength &&
-        errors.push("Password must be at least 4 characters long");
-
-      if (this.loginError) {
-        errors.push(this.loginError);
-      }
-      return errors;
     },
   },
   methods: {
@@ -162,6 +136,50 @@ export default {
             this.loading = false;
           });
       }
+    },
+  },
+  computed: {
+    usernameErrors() {
+      const errors = [];
+      if (!this.$v.username.$dirty) return errors;
+      !this.$v.username.required && errors.push("Username is required");
+      !this.$v.username.minLength &&
+        errors.push("Username must be at least 4 characters long");
+      // Add loginError message to errors if it exists
+      if (this.loginError) {
+        errors.push(this.loginError);
+      }
+
+      return errors;
+    },
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.password.$dirty) return errors;
+      !this.$v.password.required && errors.push("Password is required");
+      !this.$v.password.minLength &&
+        errors.push("Password must be at least 4 characters long");
+
+      if (this.loginError) {
+        errors.push(this.loginError);
+      }
+      return errors;
+    },
+    size() {
+      return this.$vuetify.breakpoint;
+    },
+  },
+  watch: {
+    size: {
+      handler: function (newVal) {
+        if (newVal.xs) {
+          this.maxWidth = 250;
+        } else {
+          this.maxWidth = 350;
+        }
+        console.log(this.maxWidth)
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

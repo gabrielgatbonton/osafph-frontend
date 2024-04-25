@@ -1,5 +1,5 @@
 <template>
-  <v-card flat outlined>
+  <v-card>
     <v-card-title class="blue darken-1 white--text"
       ><v-icon dark left v-if="patientInformation.header.icon">{{
         patientInformation.header.icon
@@ -10,18 +10,14 @@
       <v-row no-gutters>
         <v-col cols="12" md="4" align-self="center">
           <div class="text-center">
-            <v-avatar
-              rounded="lg"
-              size="175"
-              class="my-3"
-              color="blue darken-4"
-            >
+            <div :class="`d-inline-block ${imageSrc.class}`" :style="imageSrc.style">
               <v-img
-                max-height="170"
+                alt="Citizen Portrait"
+                class="rounded-lg"
                 max-width="170"
-                :src="patientInformation.image_url"
+                :src="imageSrc.src"
               ></v-img>
-            </v-avatar>
+            </div>
           </div>
         </v-col>
         <v-col cols="12" md="8" sm="12" xs="12">
@@ -43,7 +39,7 @@
           </v-row>
         </v-col>
         <v-col cols="12">
-          <div class="my-2">
+          <div class="mt-2">
             <v-expansion-panels>
               <v-expansion-panel>
                 <v-expansion-panel-header>
@@ -87,6 +83,20 @@ export default {
     patientInformation: {
       type: Object,
       required: true,
+    },
+  },
+  data: () => ({
+    placeholderImageSrc: require("@/assets/blank-avatar.png"),
+  }),
+  computed: {
+    imageSrc() {
+      return this.patientInformation.image_url.includes("null")
+        ? {
+            src: this.placeholderImageSrc,
+            style: "border: 1px solid;",
+            class: "rounded-lg pt-2",
+          }
+        : { src: this.patientInformation.image_url, style: "", class: "" };
     },
   },
 };

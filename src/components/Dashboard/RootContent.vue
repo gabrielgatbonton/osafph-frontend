@@ -34,7 +34,7 @@
           </div>
         </v-card>
       </v-col>
-      <v-col cols="12" v-for="(item, index) in data.encoder" :key="index">
+      <!-- <v-col cols="12" v-for="(item, index) in data.encoder" :key="index">
         <v-card class="pa-6" rounded="lg">
           <div class="d-flex justify-space-between align-center">
             <div class="card-title">{{ item.title }}</div>
@@ -51,7 +51,7 @@
             {{ item.value }}
           </div>
         </v-card>
-      </v-col>
+      </v-col> -->
       <v-col
         cols="12"
         v-for="(item, index) in data.doctor"

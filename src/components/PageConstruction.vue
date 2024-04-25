@@ -1,6 +1,6 @@
 <template>
   <v-container
-    style="height: 100%; width: 100%"
+    style="height: 100%;"
     class="d-flex justify-center align-center"
   >
     <v-row>
@@ -8,34 +8,33 @@
         <div
           class="d-flex"
           :class="{
-            'flex-column-reverse justify-center align-center':
-              $vuetify.breakpoint.smAndDown,
-            'justify-center align-center': !$vuetify.breakpoint.smAndDown,
+            'flex-column-reverse justify-center align-center': isSmAndDown,
+            'justify-center align-center': !isSmAndDown,
           }"
         >
           <div class="pa-4">
             <div
               class="text-h2"
-              :class="{ 'text-center text-h3': $vuetify.breakpoint.smAndDown }"
+              :class="{ 'text-center text-h3': isSmAndDown }"
             >
               Under<br />Construction
             </div>
-            <div
-              class="h-line"
-              :class="{ 'mx-auto': $vuetify.breakpoint.smAndDown }"
-            ></div>
+            <div class="h-line" :class="{ 'mx-auto': isSmAndDown }"></div>
             <div
               class="text-body-1 pa-1 mt-6"
-              :class="{ 'pa-3 text-center': $vuetify.breakpoint.smAndDown }"
+              :class="{ 'pa-3 text-center': isSmAndDown }"
             >
               Updates are currently underway. Thank you for your patience as we
               enhance our site to serve you better.
             </div>
           </div>
-          <div class="pa-4" :style="{'width: 500px': !$vuetify.breakpoint.smAndDown}">
-            <img style="max-width: 100%; max-height: 100%" :src="imgSource" alt="Construction Image">
+          <div class="pa-4">
+            <img
+              :style="styleImage"
+              :src="imgSource"
+              alt="Construction Image"
+            />
           </div>
-          
         </div>
       </v-col>
     </v-row>
@@ -66,7 +65,29 @@ export default {
   name: "PageConstruction",
   data: () => ({
     imgSource: require("@/assets/ConstructionWorker.jpg"),
+    isSmAndDown: false,
+    styleImage: "",
   }),
+  computed: {
+    size() {
+      return this.$vuetify.breakpoint;
+    },
+  },
+  watch: {
+    size: {
+      handler: function (newVal) {
+        if (newVal.smAndDown) {
+          this.isSmAndDown = true;
+          this.styleImage = "max-width: 100%; max-height: 100%";
+        } else {
+          this.isSmAndDown = false;
+          this.styleImage = "max-width: 500px; max-height: 500px";
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
 };
 </script>
 

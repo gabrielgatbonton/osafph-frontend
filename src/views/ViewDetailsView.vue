@@ -190,7 +190,7 @@
     <v-skeleton-loader
       v-else
       type="list-item-avatar-three-line, image, article"
-      class="mx-5 my-10"
+      class="pa-6"
       height="auto"
     ></v-skeleton-loader>
     <ReusableDeleteDialog
