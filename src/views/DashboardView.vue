@@ -4,6 +4,7 @@
       <p class="text-h6">Dashboard</p>
       <v-divider />
 
+      <!-- Registrations and hospital services created numeric data -->
       <v-row class="mt-2">
         <v-col cols="12">
           <v-card rounded class="gradient-background rounded-card pa-4">
@@ -38,7 +39,7 @@
                       >
                     </div>
                     <v-card-title
-                      class="text-h4 white--text font-weight-bold pt-0"
+                      class="text-h5 white--text font-weight-bold pt-0"
                       >{{ item.value }}</v-card-title
                     >
                   </v-card>
@@ -70,27 +71,94 @@
             </div>
           </v-card>
         </v-col> -->
-        <v-col cols="12">
-          <v-card outlined class="pa-0">
-            <div
-              v-for="(item, index) in dashboardValues.unique_services"
-              :key="'uniqServ' + index"
-              class="flex-grow-1 d-flex flex-column align-center"
-            >
-              <div class="fil-width d-flex justify-space-between">
-                <div
-                  v-for="(indivItem, index) in item.values"
-                  :key="'uniqServ' + index"
-                  class="flex-grow-1 bordered-card"
+
+        <!-- Sex, Vaccination, and Citizens' location numeric data -->
+        <v-col
+          cols="12"
+          md="4"
+          v-for="(item, index) in dashboardValues.sexVacLoc"
+          :key="'sexVacLoc' + index"
+        >
+          <v-card outlined class="pa-0 bordered-card colored-border">
+            <v-row no-gutters>
+              <v-col cols="12" class="d-flex align-center px-4">
+                <p class="text-subtitle-2 font-weight-bold pa-0 my-2">
+                  {{ item.title.toUpperCase() }}
+                </p>
+              </v-col>
+              <v-col cols="12">
+                <v-progress-linear
+                  height="2"
+                  :value="
+                    Math.floor(
+                      (item.values[0]?.value /
+                        (item.values[0]?.value + item.values[1]?.value)) *
+                        100
+                    )
+                  "
+                  color="red darken-3"
+                ></v-progress-linear>
+              </v-col>
+              <v-col
+                v-for="(indivItem, index) in item.values"
+                :key="'uniqServ' + index"
+              >
+                <v-card
+                  flat
+                  class="no-rounded-corners d-flex flex-column align-center justify-center"
                 >
-                  {{ indivItem.title }}
-                </div>
-              </div>
-              {{ item.title }}
-            </div>
+                  <v-card-title class="text-h5 font-weight-bold mb-1">{{
+                    indivItem.value
+                  }}</v-card-title>
+                  <v-card-subtitle class="text-subtitle-1">{{
+                    indivItem.title
+                  }}</v-card-subtitle>
+                </v-card>
+              </v-col>
+            </v-row>
           </v-card>
         </v-col>
-        <v-col
+
+        <!-- Unique services numeric data -->
+        <v-col cols="12">
+          <v-card outlined class="pa-0 bordered-card colored-border">
+            <v-row
+              no-gutters
+              v-for="(item, index) in dashboardValues.unique_services"
+              :key="'uniqServ' + index"
+            >
+              <v-col cols="12" class="d-flex align-center">
+                <v-card
+                  flat
+                  class="card-light-bgColor reversed-shaped-card px-4"
+                >
+                  <p
+                    class="text-subtitle-2 white--text font-weight-bold pa-0 my-2"
+                  >
+                    {{ item.title.toUpperCase() }}
+                  </p>
+                </v-card>
+              </v-col>
+              <v-col
+                v-for="(indivItem, index) in item.values"
+                :key="'uniqServ' + index"
+              >
+                <v-card
+                  flat
+                  class="no-rounded-corners d-flex flex-column align-center justify-center"
+                >
+                  <v-card-title class="text-h5 font-weight-bold mb-1">{{
+                    indivItem.value
+                  }}</v-card-title>
+                  <v-card-subtitle class="text-subtitle-1">{{
+                    indivItem.title
+                  }}</v-card-subtitle>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <!-- <v-col
           cols="12"
           md="4"
           v-for="(item, index) in dashboardValues.sexVacLoc"
@@ -127,7 +195,7 @@
               </div>
             </div>
           </v-card>
-        </v-col>
+        </v-col> -->
         <!-- <v-col
           cols="12"
           v-for="(item, index) in dashboardValues.unique_services"
@@ -428,9 +496,28 @@ export default {
 }
 .bordered-card {
   border-radius: 10px;
-  border: 1px solid white;
+  border: 1px solid whitesmoke;
+  overflow: hidden;
+}
+.colored-border {
+  border: 1px solid #ffd1d1;
 }
 .rounded-card {
-  border-radius: 10px !important;
+  border-radius: 12px !important;
+}
+.no-rounded-corners {
+  border-radius: 0 !important;
+}
+.card-dark-bgColor {
+  background-color: #a40e32;
+}
+.card-light-bgColor {
+  background-color: #ff4949;
+}
+.reversed-shaped-card {
+  border-top-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 </style>
