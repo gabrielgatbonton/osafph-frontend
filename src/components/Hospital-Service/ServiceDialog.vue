@@ -23,6 +23,9 @@
                 @blur="$v.payload.service_type.$touch()"
                 :error-messages="errorMessages.service_type"
                 :disabled="disabledValue"
+                :readonly="isServiceTypeReadonly"
+                :hint="isServiceTypeReadonly ? '(Readonly)' : ''"
+                persistent-hint
               ></v-autocomplete>
             </v-col>
             <GeneralFormat
@@ -194,6 +197,16 @@ export default {
         this.hospitalService &&
         this.hospitalService.data.status === "IN PROGRESS" &&
         this.userRole === "ENCODER"
+      ) {
+        status = true;
+      }
+      return status;
+    },
+    isServiceTypeReadonly() {
+      let status = false;
+      if (
+        this.hospitalService &&
+        this.hospitalService.data.service_type === "DIALYSIS"
       ) {
         status = true;
       }

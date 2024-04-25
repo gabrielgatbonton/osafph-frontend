@@ -23,7 +23,7 @@
           :disabled="disabled"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" v-if="type !== 'CONSULTATION'">
+      <!-- <v-col cols="12" v-if="type !== 'CONSULTATION'">
         <v-autocomplete
           v-model="payload.crowd_funding_backer"
           label="Funding"
@@ -41,7 +41,7 @@
             </div>
           </template>
         </v-autocomplete>
-      </v-col>
+      </v-col> -->
       <v-col cols="12">
         <v-menu
           max-width="290"

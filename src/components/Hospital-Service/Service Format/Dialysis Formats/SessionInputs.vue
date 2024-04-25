@@ -30,7 +30,7 @@
           item-value="package_name"
         >
           <template v-slot:item="{ item }">
-            <div id="d-flex flex-column justify-start align-start">
+            <div class="d-flex flex-column justify-start align-start">
               <div>{{ item.package_name }}</div>
               <div class="packages-description">
                 <span

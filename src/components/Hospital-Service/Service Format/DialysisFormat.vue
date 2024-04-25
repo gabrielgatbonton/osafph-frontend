@@ -85,6 +85,8 @@
           :hospitalService="hospitalService"
           :medical_sites="medical_sites"
           :dialysis_machines="dialysis_machines"
+          :dialysis_packages="dialysis_packages"
+          :crowd_fundings="crowd_fundings"
           @payload="assignPayload"
           @validationSuccess="checkValidationEdit"
           :disabled="disabled"

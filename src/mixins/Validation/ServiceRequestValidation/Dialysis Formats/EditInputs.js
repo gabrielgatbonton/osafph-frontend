@@ -9,6 +9,12 @@ export default {
       scheduled_session: { required },
       status: { required },
       remarks: {},
+      dialysis_packages: {
+        $each: {
+          name: { required },
+          funder: {},
+        },
+      },
     },
   },
   computed: {
@@ -50,6 +56,20 @@ export default {
         !this.$v.payload.hospital.required &&
           errors.hospital.push("Medical Site is required");
       }
+
+      errors.dialysis_package_name = this.payload.dialysis_packages.map(
+        (_, index) => {
+          const sessionErrors = [];
+
+          if (
+            this.$v.payload.dialysis_packages.$each.$iter[index].name.$dirty
+          ) {
+            !this.$v.payload.dialysis_packages.$each.$iter[index].name
+              .required && sessionErrors.push("Dialysis Package is required");
+          }
+          return sessionErrors;
+        }
+      );
 
       return errors;
     },

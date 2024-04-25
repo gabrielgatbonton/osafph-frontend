@@ -67,6 +67,7 @@ export default {
           scheduled_session: payload.scheduled_session,
           date_released: payload.date_released,
           status: payload.status,
+          dialysis_packages: payload.dialysis_packages,
         };
       }
       return this.updateHospitalService({
