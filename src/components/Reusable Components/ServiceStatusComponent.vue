@@ -122,7 +122,7 @@
           </v-expansion-panels>
         </v-card>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'">
         <v-card>
           <v-card-title class="blue darken-1 white--text">
             <v-icon dark class="mr-2">{{

@@ -295,6 +295,7 @@ export default {
       let messages = null;
       let header = null;
       let items_availed = null;
+      let header_dialysis = null;
 
       if (this.service.data.service_type !== "DIALYSIS") {
         messages = {
@@ -311,6 +312,12 @@ export default {
           service_type: null,
           packages: null,
         };
+        header_dialysis = {
+          header_title: null,
+          date: null,
+          status: null,
+          icon: null
+        };
       } else {
         messages = {
           pending: "Dialysis session is pending...",
@@ -325,6 +332,12 @@ export default {
         items_availed = {
           service_type: this.service.data.service_type,
           packages: this.service.data.dialysis_packages,
+        };
+        header_dialysis = {
+          header_title: "Dialysis",
+          date: "Date Scheduled",
+          status: "Status",
+          icon: "mdi-iv-bag"
         };
       }
 
@@ -341,7 +354,8 @@ export default {
         dateReleased: date_released_data,
         messages: messages,
         header: header,
-        items_availed: items_availed
+        items_availed: items_availed,
+        header_dialysis: header_dialysis
       };
     },
   },

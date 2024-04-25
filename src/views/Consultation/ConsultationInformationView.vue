@@ -602,6 +602,12 @@ export default {
           service_type: false,
           items: null,
         },
+        header_dialysis: {
+          header_title: null,
+          date: null,
+          status: null,
+          icon: null
+        }
       };
     },
   },
