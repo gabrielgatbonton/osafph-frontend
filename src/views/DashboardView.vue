@@ -1,8 +1,53 @@
 <template>
   <div class="background">
     <v-container fluid class="mx-auto" style="max-width: 85vw" v-if="dashData">
+      <p class="text-h6">Dashboard</p>
+      <v-divider />
+
       <v-row class="mt-2">
-        <v-col
+        <v-col cols="12">
+          <v-card rounded class="gradient-background rounded-card pa-4">
+            <v-row>
+              <v-col
+                v-for="(item, index) in dashboardValues.registrations"
+                :key="index"
+                cols="12"
+                md="4"
+              >
+                <div
+                  :class="{
+                    'bordered-card':
+                      item.title.toLowerCase() !== 'total registrations',
+                  }"
+                >
+                  <v-card flat color="transparent">
+                    <div class="d-flex justify-space-between px-4">
+                      <v-card-subtitle
+                        class="text-overline font-weight-bold white--text px-0"
+                      >
+                        {{ item.title.toUpperCase() }}
+                      </v-card-subtitle>
+                      <v-icon
+                        size="28"
+                        color="white"
+                        :class="{
+                          'd-none':
+                            item.title.toLowerCase() === 'total registrations',
+                        }"
+                        >{{ item.icon }}</v-icon
+                      >
+                    </div>
+                    <v-card-title
+                      class="text-h4 white--text font-weight-bold pt-0"
+                      >{{ item.value }}</v-card-title
+                    >
+                  </v-card>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <!-- <v-col
           cols="12"
           md="4"
           v-for="(item, index) in dashboardValues.registrations"
@@ -22,6 +67,26 @@
               :class="$vuetify.breakpoint.xs ? 'mt-3' : 'mt-5'"
             >
               {{ item.value }}
+            </div>
+          </v-card>
+        </v-col> -->
+        <v-col cols="12">
+          <v-card outlined class="pa-0">
+            <div
+              v-for="(item, index) in dashboardValues.unique_services"
+              :key="'uniqServ' + index"
+              class="flex-grow-1 d-flex flex-column align-center"
+            >
+              <div class="fil-width d-flex justify-space-between">
+                <div
+                  v-for="(indivItem, index) in item.values"
+                  :key="'uniqServ' + index"
+                  class="flex-grow-1 bordered-card"
+                >
+                  {{ indivItem.title }}
+                </div>
+              </div>
+              {{ item.title }}
             </div>
           </v-card>
         </v-col>
@@ -63,7 +128,7 @@
             </div>
           </v-card>
         </v-col>
-        <v-col
+        <!-- <v-col
           cols="12"
           v-for="(item, index) in dashboardValues.unique_services"
           :key="'uniqServ' + index"
@@ -99,7 +164,7 @@
               </div>
             </div>
           </v-card>
-        </v-col>
+        </v-col> -->
       </v-row>
       <v-row v-if="userRole === `ROOT` && dashRoot">
         <RootContent @query_params="updateFetch" :data="dashboardRootValues" />
@@ -351,7 +416,18 @@ export default {
   border-radius: 10%;
 }
 .background {
-  background: #f4f4f4;
+  background: #ffffff;
   height: 100%;
+}
+.gradient-background {
+  background-image: linear-gradient(to right, #a40e32, #db4a41);
+  color: white;
+}
+.bordered-card {
+  border-radius: 10px;
+  border: 1px solid white;
+}
+.rounded-card {
+  border-radius: 10px !important;
 }
 </style>
