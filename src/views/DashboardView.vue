@@ -107,9 +107,9 @@
       <v-row v-if="userRole === `ADMIN` && dashRoot">
         <AdminContent @query_params="updateFetch" :data="dashboardRootValues" />
       </v-row>
-      <v-row v-if="userRole === `ENCODER` && dashRoot">
+      <!-- <v-row v-if="userRole === `ENCODER` && dashRoot">
         <EncoderContent :data="dashboardRootValues" />
-      </v-row>
+      </v-row> -->
       <v-row v-if="userRole === `DOCTOR` && dashRoot">
         <DoctorContent :data="dashboardRootValues" />
       </v-row>
@@ -121,14 +121,14 @@ import { mapActions, mapState, mapGetters } from "vuex";
 import RootContent from "@/components/Dashboard/RootContent.vue";
 import AdminContent from "@/components/Dashboard/AdminContent.vue";
 import DoctorContent from "@/components/Dashboard/DoctorContent.vue";
-import EncoderContent from "@/components/Dashboard/EncoderContent.vue";
+// import EncoderContent from "@/components/Dashboard/EncoderContent.vue";
 export default {
   name: "DashboardView",
   components: {
     RootContent,
     AdminContent,
     DoctorContent,
-    EncoderContent,
+    // EncoderContent,
   },
   methods: {
     ...mapActions("dashboard", ["getDashboardData", "getRootData"]),
