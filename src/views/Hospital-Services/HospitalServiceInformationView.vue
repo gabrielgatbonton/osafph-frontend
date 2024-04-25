@@ -87,6 +87,7 @@ export default {
     loading: false,
     id: null,
     hospital_service_id: null,
+    full_name: "Runolfsson, Krystal Kozey DDS",
   }),
   components: {
     ServiceDialog,
@@ -96,6 +97,7 @@ export default {
   },
   methods: {
     ...mapActions("registrants", ["fetchRegistrantId"]),
+    ...mapActions("dialysis_sessions", ["fetchDialysisSessions"]),
     fetchRegistrant() {
       this.id = this.$route.params.id;
       this.hospital_service_id = this.$route.params.hospital_service_id;
@@ -117,11 +119,22 @@ export default {
   },
   created() {
     this.fetchRegistrant();
+    this.fetchDialysisSessions();
   },
   watch: {
     service: {
       handler(value) {
         console.log(value);
+      },
+    },
+    dialysis_sessions: {
+      handler(value) {
+        console.log("dialysis: ", value);
+      },
+    },
+    registrant: {
+      handler(value) {
+        console.log("registrant: ", value);
       },
     },
   },
@@ -133,6 +146,9 @@ export default {
       service: "hospitalService",
     }),
     ...mapGetters("login", ["userRole"]),
+    ...mapState("dialysis_sessions", {
+      dialysis_sessions: "dialysis_sessions",
+    }),
     editButtonProperties() {
       let edit = false;
       if (this.userRole === "ADMIN" || this.userRole === "ENCODER") {
@@ -302,6 +318,7 @@ export default {
       let header = null;
       let items_availed = null;
       let header_dialysis = null;
+      let scheduled_dialysis_sessions = [];
 
       if (this.service.data.service_type !== "DIALYSIS") {
         messages = {
@@ -345,6 +362,17 @@ export default {
           status: "Status",
           icon: "mdi-iv-bag",
         };
+        Object.keys(this.dialysis_sessions).forEach((item) => {
+          console.log(item);
+          if (item.includes("data")) {
+            if (this.registrant.citizen.full_name !== item.citizen_full_name) {
+              scheduled_dialysis_sessions.push({
+              scheduled_date_session: item.scheduled_date,
+              dialysis_session_status: item.status,
+            });
+            }
+          }
+        });
       }
 
       return {
@@ -361,6 +389,7 @@ export default {
         header: header,
         items_availed: items_availed,
         header_dialysis: header_dialysis,
+        scheduled_dialysis_sessions: scheduled_dialysis_sessions,
       };
     },
   },

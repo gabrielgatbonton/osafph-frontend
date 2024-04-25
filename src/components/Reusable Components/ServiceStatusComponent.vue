@@ -99,9 +99,13 @@
           <v-expansion-panel
             v-for="(info, packIndex) in serviceStatus.items_availed.packages"
             :key="packIndex"
-
           >
             <v-expansion-panel-header>
+              <div>
+                <v-btn color="red darken-4" icon :ripple="false">
+                  <v-icon>mdi-minus</v-icon>
+                </v-btn>
+              </div>
               <p class="text-button my-auto">{{ info.name }}</p>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -123,6 +127,11 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
+        <div class="d-flex justify-center align-center">
+          <v-btn color="blue darken-4" icon :ripple="false">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </div>
       </v-card>
     </v-col>
     <v-col

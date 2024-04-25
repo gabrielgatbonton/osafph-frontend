@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import { format, parseISO } from "date-fns";
 import PatientServiceComponent from "@/components/Reusable Components/PatientServiceComponent.vue";
 import PatientInformationComponent from "@/components/Reusable Components/PatientInformationComponent.vue";
@@ -93,6 +93,7 @@ export default {
       "toggleServiceProgress",
     ]),
     ...mapActions("files", ["fetchFiles"]),
+    ...mapActions("dialysis_sessions", ["fetchDialysisSessions"]),
     fetchSessionData() {
       const id = this.$route.params.id;
       this.fetchDialysisSessionById(id).catch((error) => {
@@ -133,6 +134,9 @@ export default {
     ...mapGetters("dialysis_sessions", ["getDialysisSession"]),
     ...mapGetters("login", ["userRole"]),
     ...mapGetters("files", ["getFiles"]),
+    ...mapState("dialysis_sessions", {
+      dialysis_sessions: "dialysis_sessions",
+    }),
     buttonPermissions() {
       let files = false;
       let complete = false;
@@ -311,6 +315,7 @@ export default {
   },
   created() {
     this.fetchSessionData();
+    this.fetchDialysisSessions();
   },
 };
 </script>
