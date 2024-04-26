@@ -41,6 +41,11 @@ export const dialysis = {
         dispatch("fetchDialysisMachines");
       }
     },
+    fetchEnumsPackages({ dispatch, state }) {
+      if (!state.dialysis_packages.length) {
+        dispatch("fetchDialysisPackages");
+      }
+    },
     fetchDialysisMachines({ commit }) {
       const url = `enums/hospital-services/dialysis/machines`;
       return this.$axios

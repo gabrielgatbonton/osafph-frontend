@@ -91,9 +91,15 @@
       v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
     >
       <v-card>
-        <v-card-title class="blue darken-1 white--text">
-          <v-icon dark class="mr-2">{{ serviceStatus.header.icon }}</v-icon>
-          {{ serviceStatus.header.title }}
+        <v-card-title
+          class="blue darken-1 white--text d-flex justify-space-between align-center"
+        >
+          <div>
+            <v-icon dark class="mr-2">{{ serviceStatus.header.icon }}</v-icon>
+            {{ serviceStatus.header.title }}
+          </div>
+
+          <PackagesDialog :packages_data="[{name: 'Funder', funder: 'Test'}]"/>
         </v-card-title>
         <v-expansion-panels accordion focusable>
           <v-expansion-panel
@@ -170,12 +176,16 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PackagesDialog from "../Dialysis/PackagesDialog.vue";
 export default {
   name: "ServiceStatusComponent",
   props: ["serviceStatus", "services"],
   data: () => ({
     toggle_status: false,
   }),
+  components: {
+    PackagesDialog,
+  },
   methods: {
     initToggleProgress() {
       this.toggle_status = !this.toggle_status;
@@ -239,12 +249,11 @@ export default {
         } else {
           this.toggle_status = false;
         }
-        console.log(value);
       },
     },
     packageInformation: {
-      handler(value) {
-        console.log(value);
+      handler() {
+        // console.log(value);
       },
     },
   },
