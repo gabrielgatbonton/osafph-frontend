@@ -102,14 +102,16 @@ export default {
         let query_params = {
           hospital_service_ids: [],
         };
-        let citizen_id = value.data[0].citizen_id;
-        value.data.forEach((item) => {
-          query_params.hospital_service_ids.push(item.id)
-        });
-        this.fetchPublicFiles({
+        if (value.data.length > 0) {
+          let citizen_id = value.data[0].citizen_id;
+          value.data.forEach((item) => {
+            query_params.hospital_service_ids.push(item.id);
+          });
+          this.fetchPublicFiles({
             citizen_id: citizen_id,
             queryParams: query_params,
           });
+        }
       },
     },
   },
