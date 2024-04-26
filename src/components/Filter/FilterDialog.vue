@@ -209,6 +209,7 @@ export default {
           ? (this.payload.service_types = this.service_type)
           : (this.payload.service_types = null);
       } else if (this.type_of_filter === "SERVICES AVAILED INDEX") {
+        console.log(this.sort_order)
         this.status.length > 0
           ? (this.payload.filter_status = this.status)
           : (this.payload.filter_status = null);
@@ -257,13 +258,13 @@ export default {
 
       //Reset Local Values
       this.filter_type = [];
-      this.sex = [];
+      this.sex = null;
       this.category = [];
       this.barangay = [];
       this.dialysis_machine = [];
       this.service_type = [];
       this.status = [];
-      this.sort_order = [];
+      this.sort_order = null;
 
       //Close Dialog
       this.dialog = false;
