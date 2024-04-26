@@ -122,21 +122,6 @@ export default {
     this.fetchDialysisSessions();
   },
   watch: {
-    service: {
-      handler(value) {
-        console.log(value);
-      },
-    },
-    dialysis_sessions: {
-      handler(value) {
-        console.log("dialysis: ", value);
-      },
-    },
-    registrant: {
-      handler(value) {
-        console.log("registrant: ", value);
-      },
-    },
   },
   computed: {
     ...mapState("registrants", {
@@ -363,14 +348,20 @@ export default {
           icon: "mdi-iv-bag",
         };
         Object.keys(this.dialysis_sessions).forEach((item) => {
-          console.log(item);
           if (item.includes("data")) {
-            if (this.registrant.citizen.full_name !== item.citizen_full_name) {
-              scheduled_dialysis_sessions.push({
-              scheduled_date_session: item.scheduled_date,
-              dialysis_session_status: item.status,
+            this.dialysis_sessions[item].forEach((info) => {
+              if (
+                this.registrant.citizen.full_name === info["citizen_full_name"]
+              ) {
+                scheduled_dialysis_sessions.push({
+                  scheduled_date_session: format(
+                    parseISO(info.scheduled_date),
+                    "MMMM dd, yyyy"
+                  ),
+                  dialysis_session_status: info.status,
+                });
+              }
             });
-            }
           }
         });
       }

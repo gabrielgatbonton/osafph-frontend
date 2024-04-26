@@ -146,20 +146,37 @@
           {{ serviceStatus.header_dialysis.header_title }}
         </v-card-title>
         <v-card-text>
-          <v-row class="mt-1">
-            <v-col
-              cols="12"
-              md="7"
-              class="text-subtitle-1 font-italic font-weight-light"
-            >
-              {{ serviceStatus.header_dialysis.date }}
+          <v-row
+            class="mt-1"
+            v-for="(
+              sessionsInfo, infoIndex
+            ) in serviceStatus.scheduled_dialysis_sessions"
+            :key="infoIndex"
+          >
+            <v-col cols="12" md="6">
+              <div class="text-subtitle-1 font-italic font-weight-light">
+                {{ serviceStatus.header_dialysis.date }}
+              </div>
+              <div class="text-h5 black--text">
+                {{ sessionsInfo.scheduled_date_session }}
+              </div>
             </v-col>
-            <v-col
-              cols="12"
-              md="5"
-              class="text-subtitle-1 font-italic font-weight-light"
-            >
-              {{ serviceStatus.header_dialysis.status }}
+            <v-col cols="12" md="6">
+              <div class="text-subtitle-1 font-italic font-weight-light">
+                {{ serviceStatus.header_dialysis.status }}
+              </div>
+              <div
+                class="text-h5 font-italic"
+                :class="{
+                  'orange--text': sessionsInfo.dialysis_session_status === 'PENDING' ||
+                  sessionsInfo.dialysis_session_status === 'WALK-IN',
+                  'red--text': sessionsInfo.dialysis_session_status === 'UNATTENDED',
+                  'green--text': sessionsInfo.dialysis_session_status === 'COMPLETED',
+                  'indigo--text': sessionsInfo.dialysis_session_status === 'IN PROGRESS',
+                }"
+              >
+                {{ sessionsInfo.dialysis_session_status }}
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -239,11 +256,6 @@ export default {
         } else {
           this.toggle_status = false;
         }
-        console.log(value);
-      },
-    },
-    packageInformation: {
-      handler(value) {
         console.log(value);
       },
     },
