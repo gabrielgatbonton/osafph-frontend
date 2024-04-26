@@ -1,8 +1,54 @@
 <template>
   <div class="background">
     <v-container fluid class="mx-auto" style="max-width: 85vw" v-if="dashData">
+      <p class="text-h6">Dashboard</p>
+      <v-divider />
+
+      <!-- Registrations and hospital services created numeric data -->
       <v-row class="mt-2">
-        <v-col
+        <v-col cols="12">
+          <v-card rounded class="gradient-background rounded-card pa-4">
+            <v-row>
+              <v-col
+                v-for="(item, index) in dashboardValues.registrations"
+                :key="index"
+                cols="12"
+                md="4"
+              >
+                <div
+                  :class="{
+                    'bordered-card':
+                      item.title.toLowerCase() !== 'total registrations',
+                  }"
+                >
+                  <v-card flat color="transparent">
+                    <div class="d-flex justify-space-between px-4">
+                      <v-card-subtitle
+                        class="text-overline font-weight-bold white--text px-0"
+                      >
+                        {{ item.title.toUpperCase() }}
+                      </v-card-subtitle>
+                      <v-icon
+                        size="28"
+                        color="white"
+                        :class="{
+                          'd-none':
+                            item.title.toLowerCase() === 'total registrations',
+                        }"
+                        >{{ item.icon }}</v-icon
+                      >
+                    </div>
+                    <v-card-title
+                      class="text-h5 white--text font-weight-bold pt-0"
+                      >{{ item.value }}</v-card-title
+                    >
+                  </v-card>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <!-- <v-col
           cols="12"
           md="4"
           v-for="(item, index) in dashboardValues.registrations"
@@ -24,8 +70,95 @@
               {{ item.value }}
             </div>
           </v-card>
-        </v-col>
+        </v-col> -->
+
+        <!-- Sex, Vaccination, and Citizens' location numeric data -->
         <v-col
+          cols="12"
+          md="4"
+          v-for="(item, index) in dashboardValues.sexVacLoc"
+          :key="'sexVacLoc' + index"
+        >
+          <v-card outlined class="pa-0 bordered-card colored-border">
+            <v-row no-gutters>
+              <v-col cols="12" class="d-flex align-center px-4">
+                <p class="text-subtitle-2 font-weight-bold pa-0 my-2">
+                  {{ item.title.toUpperCase() }}
+                </p>
+              </v-col>
+              <v-col cols="12">
+                <v-progress-linear
+                  height="2"
+                  :value="
+                    Math.floor(
+                      (item.values[0]?.value /
+                        (item.values[0]?.value + item.values[1]?.value)) *
+                        100
+                    )
+                  "
+                  color="red darken-3"
+                ></v-progress-linear>
+              </v-col>
+              <v-col
+                v-for="(indivItem, index) in item.values"
+                :key="'uniqServ' + index"
+              >
+                <v-card
+                  flat
+                  class="no-rounded-corners d-flex flex-column align-center justify-center"
+                >
+                  <v-card-title class="text-h5 font-weight-bold mb-1">{{
+                    indivItem.value
+                  }}</v-card-title>
+                  <v-card-subtitle class="text-subtitle-1">{{
+                    indivItem.title
+                  }}</v-card-subtitle>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+
+        <!-- Unique services numeric data -->
+        <v-col cols="12">
+          <v-card outlined class="pa-0 bordered-card colored-border">
+            <v-row
+              no-gutters
+              v-for="(item, index) in dashboardValues.unique_services"
+              :key="'uniqServ' + index"
+            >
+              <v-col cols="12" class="d-flex align-center">
+                <v-card
+                  flat
+                  class="card-light-bgColor reversed-shaped-card px-4"
+                >
+                  <p
+                    class="text-subtitle-2 white--text font-weight-bold pa-0 my-2"
+                  >
+                    {{ item.title.toUpperCase() }}
+                  </p>
+                </v-card>
+              </v-col>
+              <v-col
+                v-for="(indivItem, index) in item.values"
+                :key="'uniqServ' + index"
+              >
+                <v-card
+                  flat
+                  class="no-rounded-corners d-flex flex-column align-center justify-center"
+                >
+                  <v-card-title class="text-h5 font-weight-bold mb-1">{{
+                    indivItem.value
+                  }}</v-card-title>
+                  <v-card-subtitle class="text-subtitle-1">{{
+                    indivItem.title
+                  }}</v-card-subtitle>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <!-- <v-col
           cols="12"
           md="4"
           v-for="(item, index) in dashboardValues.sexVacLoc"
@@ -62,8 +195,8 @@
               </div>
             </div>
           </v-card>
-        </v-col>
-        <v-col
+        </v-col> -->
+        <!-- <v-col
           cols="12"
           v-for="(item, index) in dashboardValues.unique_services"
           :key="'uniqServ' + index"
@@ -99,7 +232,7 @@
               </div>
             </div>
           </v-card>
-        </v-col>
+        </v-col> -->
       </v-row>
       <v-row v-if="userRole === `ROOT` && dashRoot">
         <RootContent @query_params="updateFetch" :data="dashboardRootValues" />
@@ -358,7 +491,37 @@ export default {
   border-radius: 10%;
 }
 .background {
-  background: #f4f4f4;
+  background: #ffffff;
   height: 100%;
+}
+.gradient-background {
+  background-image: linear-gradient(to right, #a40e32, #db4a41);
+  color: white;
+}
+.bordered-card {
+  border-radius: 10px;
+  border: 1px solid whitesmoke;
+  overflow: hidden;
+}
+.colored-border {
+  border: 1px solid #ffd1d1;
+}
+.rounded-card {
+  border-radius: 12px !important;
+}
+.no-rounded-corners {
+  border-radius: 0 !important;
+}
+.card-dark-bgColor {
+  background-color: #a40e32;
+}
+.card-light-bgColor {
+  background-color: #ff4949;
+}
+.reversed-shaped-card {
+  border-top-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 </style>

@@ -57,107 +57,119 @@
                       :slot_activator="slot_activator"
                     />
                   </v-col>
-                  <v-col
-                    cols="12"
-                    class="py-0"
-                    v-for="(service, index) in services"
-                    :key="index"
-                  >
-                    <template>
-                      <v-expansion-panels popout class="my-1">
-                        <v-expansion-panel>
-                          <v-expansion-panel-header>
-                            <v-container class="py-1">
-                              <v-row>
-                                <v-col cols="auto" class="px-0">
-                                  <v-icon
-                                    :color="serviceStatusColor(service.status)"
-                                  >
-                                    {{ serviceStatus(service.status) }}
-                                  </v-icon>
-                                </v-col>
-                                <v-col cols="auto" class="py-0">
-                                  <div class="text-subtitle-2 font-weight-bold">
-                                    {{ service.service_type }}
-                                  </div>
-                                  <div class="text-subtitle-2">
-                                    {{ service.scheduled_date }}
-                                  </div>
-                                </v-col>
-                              </v-row>
-                            </v-container>
-                          </v-expansion-panel-header>
-                          <v-expansion-panel-content>
-                            <v-row>
-                              <v-col
-                                cols="12"
-                                v-if="
-                                  public_files && public_files.data.length > 0
-                                "
-                              >
-                                <div
-                                  class="d-inline-block mt-2"
-                                  v-for="(chip, chipIndex) in public_files.data[
-                                    index
-                                  ]"
-                                  :key="chipIndex"
-                                >
-                                  <v-chip
-                                    class="mr-2"
-                                    @click="
-                                      proceedToFileView(
-                                        service.citizen_id,
-                                        service.hospital_service_id,
-                                        chip.id
-                                      )
+                  <v-col cols="12" v-if="services.length > 0">
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        class="py-0"
+                        v-for="(service, index) in services"
+                        :key="index"
+                      >
+                        <template>
+                          <v-expansion-panels popout class="my-3">
+                            <v-expansion-panel>
+                              <v-expansion-panel-header>
+                                <v-container class="py-1">
+                                  <v-row>
+                                    <v-col cols="auto" class="px-0">
+                                      <v-icon
+                                        :color="
+                                          serviceStatusColor(service.status)
+                                        "
+                                      >
+                                        {{ serviceStatus(service.status) }}
+                                      </v-icon>
+                                    </v-col>
+                                    <v-col cols="auto" class="py-0">
+                                      <div
+                                        class="text-subtitle-2 font-weight-bold"
+                                      >
+                                        {{ service.service_type }}
+                                      </div>
+                                      <div class="text-subtitle-2">
+                                        {{ service.scheduled_date }}
+                                      </div>
+                                    </v-col>
+                                  </v-row>
+                                </v-container>
+                              </v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <v-row>
+                                  <v-col
+                                    cols="12"
+                                    v-if="
+                                      public_files &&
+                                      public_files.data.length > 0
                                     "
-                                    ><v-icon left color="blue darken-4"
-                                      >mdi-image</v-icon
-                                    >{{ chip.document_type }}</v-chip
                                   >
-                                </div>
-                              </v-col>
-                              <v-col
-                                cols="12"
-                                md="6"
-                                sm="6"
-                                v-for="(detail, index) in service.details"
-                                :key="'detail-' + index"
-                                :search="search"
-                              >
-                                <div class="ma-2">
-                                  <div class="text-subtitle-2 grey--text">
-                                    {{ detail.title }}
-                                  </div>
-                                  <div class="text-h5">
-                                    {{ detail.content }}
-                                  </div>
-                                </div>
-                              </v-col>
-                              <v-col cols="12">
-                                <v-divider class="mx-3"></v-divider>
-                              </v-col>
-                              <v-col
-                                cols="12"
-                                md="6"
-                                sm="6"
-                                v-for="(detail, index) in service.dates"
-                                :key="'date-' + index"
-                              >
-                                <div class="ma-2">
-                                  <div class="text-subtitle-2 grey--text">
-                                    {{ detail.title }}
-                                  </div>
-                                  <div class="text-h5">
-                                    {{ detail.content }}
-                                  </div>
-                                </div>
-                              </v-col>
-                            </v-row>
-                          </v-expansion-panel-content>
-                        </v-expansion-panel>
-                      </v-expansion-panels>
-                    </template>
+                                    <div
+                                      class="d-inline-block mt-2"
+                                      v-for="(chip, chipIndex) in public_files
+                                        .data[index]"
+                                      :key="chipIndex"
+                                    >
+                                      <v-chip
+                                        class="mr-2"
+                                        @click="
+                                          proceedToFileView(
+                                            service.citizen_id,
+                                            service.hospital_service_id,
+                                            chip.id
+                                          )
+                                        "
+                                        ><v-icon left color="blue darken-4"
+                                          >mdi-image</v-icon
+                                        >{{ chip.document_type }}</v-chip
+                                      >
+                                    </div>
+                                  </v-col>
+                                  <v-col
+                                    cols="12"
+                                    md="6"
+                                    sm="6"
+                                    v-for="(detail, index) in service.details"
+                                    :key="'detail-' + index"
+                                    :search="search"
+                                  >
+                                    <div class="ma-2">
+                                      <div class="text-subtitle-2 grey--text">
+                                        {{ detail.title }}
+                                      </div>
+                                      <div class="text-h5">
+                                        {{ detail.content }}
+                                      </div>
+                                    </div>
+                                  </v-col>
+                                  <v-col cols="12">
+                                    <v-divider class="mx-3"></v-divider>
+                                  </v-col>
+                                  <v-col
+                                    cols="12"
+                                    md="6"
+                                    sm="6"
+                                    v-for="(detail, index) in service.dates"
+                                    :key="'date-' + index"
+                                  >
+                                    <div class="ma-2">
+                                      <div class="text-subtitle-2 grey--text">
+                                        {{ detail.title }}
+                                      </div>
+                                      <div class="text-h5">
+                                        {{ detail.content }}
+                                      </div>
+                                    </div>
+                                  </v-col>
+                                </v-row>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                          </v-expansion-panels>
+                        </template>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <v-col v-else cols="12">
+                    <p class="subtitle-2 text-center grey--text">No Pending or Walk-in Services Available</p>
+                   
                   </v-col>
                 </v-row>
                 <v-pagination

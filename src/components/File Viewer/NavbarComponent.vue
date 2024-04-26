@@ -24,9 +24,7 @@ export default {
   data: () => ({}),
   methods: {
     returnToRoute() {
-      this.$router.go(-1).catch((error) => {
-        console.error("Error Returning to Route: ", error);
-      });
+      this.$router.go(-1);
     },
     printPDF() {
       this.$emit("print", true);
