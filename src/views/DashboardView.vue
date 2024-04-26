@@ -130,10 +130,11 @@
               <v-col cols="12" class="d-flex align-center">
                 <v-card
                   flat
-                  class="card-light-bgColor reversed-shaped-card px-4"
+                  class="card-light-bgColor reversed-shaped-card px-4 d-flex"
                 >
+                  <v-icon size="20" color="white">{{ item.icon }}</v-icon>
                   <p
-                    class="text-subtitle-2 white--text font-weight-bold pa-0 my-2"
+                    class="text-subtitle-2 white--text font-weight-bold pa-0 my-2 ml-2"
                   >
                     {{ item.title.toUpperCase() }}
                   </p>
