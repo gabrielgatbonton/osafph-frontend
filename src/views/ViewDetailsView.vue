@@ -2,11 +2,15 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid class="ma-1" v-if="registrant">
+    <v-container
+      fluid
+      class="mx-auto"
+      style="max-width: 85vw"
+      v-if="registrant"
+    >
       <v-row>
         <v-col cols="auto">
-          <v-icon left>mdi-account-box-multiple</v-icon>
-          <span class="title">Registrant Information</span>
+          <p class="text-h6">Registrant Information</p>
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
@@ -29,11 +33,70 @@
           >
         </v-col>
       </v-row>
-      <v-divider class="my-4"></v-divider>
+      <v-divider></v-divider>
       <v-row no-gutters>
-        <v-col cols="12" md="8">
-          <v-container fluid class="mx-auto mt-3">
+        <!-- Registrant text information -->
+        <v-col cols="12" md="9">
+          <v-container fluid class="mx-auto mt-3 px-md-0">
             <v-row>
+              <v-col cols="12">
+                <v-card
+                  flat
+                  rounded
+                  class="card-light-bgColor rounded-card pa-4"
+                >
+                  <v-row>
+                    <v-col cols="12" md="auto">
+                      <v-card outlined color="transparent">
+                        <v-img
+                          class="grey darken-1 mx-auto"
+                          :src="imagesLoaded.capturedImage"
+                          :key="imagesLoaded.capturedImage"
+                          max-height="100"
+                          max-width="100"
+                          style="transform: scaleX(-1)"
+                        ></v-img>
+                      </v-card>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="auto"
+                      class="flex-grow-1 d-flex flex-column justify-center"
+                    >
+                      <p
+                        class="text-h5 text-center text-md-left white--text font-weight-bold py-0 my-0"
+                      >
+                        {{
+                          `${registrant.citizen.last_name.toUpperCase()}, 
+                      ${registrant.citizen.first_name.toUpperCase()} 
+                      ${
+                        registrant.citizen.middle_name
+                          ? " " + registrant.citizen.middle_name.toUpperCase()
+                          : ""
+                      } 
+                      ${
+                        registrant.citizen.suffix
+                          ? " " + registrant.citizen.suffix.toUpperCase()
+                          : ""
+                      }`
+                        }}
+                      </p>
+
+                      <p
+                        class="text-subtitle-2 font-weight-regular text-center text-md-left white--text py-0 my-0"
+                      >
+                        {{ registrant.citizen.category.description }}
+                      </p>
+                      <p
+                        class="text-subtitle-2 font-weight-regular text-center text-md-left white--text py-0 my-0"
+                      >
+                        {{ registrant.citizen.hub_registrant_id }}
+                      </p>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-col>
+
               <v-col cols="12">
                 <CategoryCard :registrant="registrant" />
               </v-col>
@@ -46,140 +109,160 @@
             </v-row>
           </v-container>
         </v-col>
-        <v-col cols="12" md="4">
-          <v-container fluid class="mx-auto mt-3">
+        <v-col cols="12" md="3">
+          <v-container fluid class="mx-auto mt-3 pr-md-0">
             <v-row>
+              <!-- MCG Cares Card -->
               <v-col cols="12">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-needle</v-icon>Vaccine</v-card-title
-                  >
-                  <v-row justify="center" class="ma-2 pb-2">
-                    <v-col align-self="center" cols="12">
-                      <VaccinationComponent :id="routeID" />
-                    </v-col>
-                  </v-row>
+                <v-card outlined class="bordered-card colored-border">
+                  <v-container fluid class="py-4">
+                    <v-row dense justify="center" class="ma-2">
+                      <v-col cols="12">
+                        <p class="text-subtitle-2 black--text font-weight-bold">
+                          MCG CARES CARD
+                        </p>
+                      </v-col>
+                      <v-col align-self="center" cols="12">
+                        <v-btn
+                          outlined
+                          block
+                          :loading="loading"
+                          @click="submitClaimStatus"
+                          :color="cardStatus.card.status ? 'green' : 'red'"
+                          class="mb-2"
+                          :disabled="cardStatus.disable"
+                        >
+                          {{ cardStatus.card.description }}
+                        </v-btn>
+                        <PrintCardJavaScript
+                          :requirements="buttonProperties"
+                          :registrant="registrant"
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-container>
                 </v-card>
               </v-col>
+
+              <!-- Signature -->
               <v-col cols="12" class="mt-n2">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-image</v-icon>Image</v-card-title
-                  >
-                  <v-row justify="center" class="ma-2 pb-2">
-                    <v-col align-self="center" cols="12">
-                      <v-img
-                        class="grey darken-1 mx-auto"
-                        :src="imagesLoaded.capturedImage"
-                        :key="imagesLoaded.capturedImage"
-                        max-height="400"
-                        max-width="200"
-                        style="transform: scaleX(-1)"
-                      ></v-img>
-                      <CameraComponent
-                        :image="registrant.citizen.citizen_file.image_url"
-                        v-on:picture-taken="handleImageUpload"
-                      />
-                    </v-col>
-                  </v-row>
+                <v-card outlined class="bordered-card colored-border">
+                  <v-container fluid class="py-4">
+                    <v-row dense justify="center" class="ma-2">
+                      <v-col cols="12">
+                        <p class="text-subtitle-2 black--text font-weight-bold">
+                          SIGNATURE
+                        </p>
+                      </v-col>
+                      <v-col align-self="center" cols="12">
+                        <v-img
+                          class="grey darken-1 mx-auto"
+                          :src="imagesLoaded.capturedSignature"
+                          :key="imagesLoaded.capturedSignature"
+                          max-height="150"
+                          max-width="300"
+                        ></v-img>
+                        <SignatureComponent
+                          :requirements="buttonProperties"
+                          v-on:signature-taken="handleSignatureUpload"
+                        />
+                        <v-btn
+                          v-if="buttonProperties.checkSignature !== false"
+                          class="my-2"
+                          color="error"
+                          dark
+                          outlined
+                          block
+                          @click="deleteActivator('signature')"
+                          >Delete Signature</v-btn
+                        >
+                        <!-- <v-file-input
+                            label="File input"
+                            color="grey darken-1"
+                            @change="handleSignatureUpload"
+                            :append-icon="
+                              selectedSignature ? 'mdi-check' : 'mdi-upload'
+                            "
+                            :append-icon-cb="() => (selectedSignature = '')"
+                          ></v-file-input> -->
+                      </v-col>
+                    </v-row>
+                  </v-container>
                 </v-card>
               </v-col>
-              <v-col cols="12" class="mt-n2">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-draw-pen</v-icon
-                    >Signature</v-card-title
-                  >
-                  <v-row justify="center" class="ma-2 pb-2">
-                    <v-col align-self="center" cols="12">
-                      <v-img
-                        class="grey darken-1 mx-auto"
-                        :src="imagesLoaded.capturedSignature"
-                        :key="imagesLoaded.capturedSignature"
-                        max-height="150"
-                        max-width="300"
-                      ></v-img>
-                      <SignatureComponent
-                        :requirements="buttonProperties"
-                        v-on:signature-taken="handleSignatureUpload"
-                      />
-                      <v-btn
-                        v-if="buttonProperties.checkSignature !== false"
-                        class="my-2 error"
-                        dark
-                        block
-                        @click="deleteActivator('signature')"
-                        >Delete Signature</v-btn
-                      >
-                      <!-- <v-file-input
-                        label="File input"
-                        color="grey darken-1"
-                        @change="handleSignatureUpload"
-                        :append-icon="
-                          selectedSignature ? 'mdi-check' : 'mdi-upload'
-                        "
-                        :append-icon-cb="() => (selectedSignature = '')"
-                      ></v-file-input> -->
-                    </v-col>
-                  </v-row>
+
+              <!-- Vaccination details -->
+              <v-col cols="12">
+                <v-card outlined class="pa-0 bordered-card colored-border">
+                  <v-container fluid class="py-4">
+                    <v-row dense justify="center" class="ma-2">
+                      <v-col cols="12">
+                        <p class="text-subtitle-2 black--text font-weight-bold">
+                          VACCINE
+                        </p>
+                      </v-col>
+                      <v-col align-self="center" cols="12">
+                        <VaccinationComponent :id="routeID" />
+                      </v-col>
+                    </v-row>
+                  </v-container>
                 </v-card>
               </v-col>
+
+              <!-- Fingerprint capture -->
               <v-col cols="12" class="mt-n2">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-fingerprint</v-icon
-                    >Biometrics</v-card-title
-                  >
-                  <v-row justify="center" class="ma-2 pb-2">
-                    <v-col align-self="center" cols="12">
-                      <v-img
-                        class="grey darken-1 mx-auto"
-                        :src="imagesLoaded.capturedBiometrics"
-                        :key="imagesLoaded.capturedBiometrics"
-                        max-height="400"
-                        max-width="200"
-                      ></v-img>
-                      <BiometricComponent
-                        :requirements="buttonProperties"
-                        v-on:biometrics-taken="handleBiometricsUpload"
-                      />
-                      <v-btn
-                        v-if="buttonProperties.checkBiometrics !== false"
-                        class="my-2 error"
-                        dark
-                        block
-                        @click="deleteActivator('biometrics')"
-                        >Delete Biometrics</v-btn
-                      >
-                    </v-col>
-                  </v-row>
+                <v-card outlined class="pa-0 bordered-card colored-border">
+                  <v-container fluid class="py-4">
+                    <v-row dense justify="center" class="ma-2">
+                      <v-col cols="12">
+                        <p class="text-subtitle-2 black--text font-weight-bold">
+                          FINGERPRINT
+                        </p>
+                      </v-col>
+                      <v-col align-self="center" cols="12">
+                        <v-img
+                          class="grey darken-1 mx-auto"
+                          :src="imagesLoaded.capturedBiometrics"
+                          :key="imagesLoaded.capturedBiometrics"
+                          max-height="400"
+                          max-width="200"
+                        ></v-img>
+                        <BiometricComponent
+                          :requirements="buttonProperties"
+                          v-on:biometrics-taken="handleBiometricsUpload"
+                        />
+                        <v-btn
+                          v-if="buttonProperties.checkBiometrics !== false"
+                          class="my-2 error"
+                          dark
+                          block
+                          @click="deleteActivator('biometrics')"
+                          >Delete Biometrics</v-btn
+                        >
+                      </v-col>
+                    </v-row>
+                  </v-container>
                 </v-card>
               </v-col>
+
+              <!-- Profile image -->
               <v-col cols="12" class="mt-n2">
-                <v-card>
-                  <v-card-title class="blue darken-1 white--text"
-                    ><v-icon dark left>mdi-card-account-details</v-icon>MCG
-                    Cares Card</v-card-title
-                  >
-                  <v-row justify="center" class="ma-2 pb-2">
-                    <v-col align-self="center" cols="12">
-                      <v-btn
-                        outlined
-                        block
-                        :loading="loading"
-                        @click="submitClaimStatus"
-                        :color="cardStatus.card.status ? 'green' : 'red'"
-                        class="mb-2"
-                        :disabled="cardStatus.disable"
-                      >
-                        {{ cardStatus.card.description }}
-                      </v-btn>
-                      <PrintCardJavaScript
-                        :requirements="buttonProperties"
-                        :registrant="registrant"
-                      />
-                    </v-col>
-                  </v-row>
+                <v-card outlined class="pa-0 bordered-card colored-border">
+                  <v-container fluid class="py-4">
+                    <v-row dense justify="center" class="ma-2">
+                      <v-col cols="12">
+                        <p class="text-subtitle-2 black--text font-weight-bold">
+                          PROFILE IMAGE
+                        </p>
+                      </v-col>
+                      <v-col align-self="center" cols="12">
+                        <CameraComponent
+                          :image="registrant.citizen.citizen_file.image_url"
+                          v-on:picture-taken="handleImageUpload"
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-container>
                 </v-card>
               </v-col>
             </v-row>
@@ -343,7 +426,7 @@ export default {
       ) {
         disable = false;
       } else {
-        card.description = "Please capture the necessary images";
+        card.description = "Incomplete necessary images";
       }
       return {
         card: card,
@@ -357,3 +440,35 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.gradient-background {
+  background-image: linear-gradient(to right, #a40e32, #db4a41);
+  color: white;
+}
+
+.rounded-card {
+  border-radius: 12px !important;
+}
+
+.bordered-card {
+  border-radius: 10px;
+  border: 1px solid whitesmoke;
+  overflow: hidden;
+}
+.colored-border {
+  border: 1px solid #ffd1d1;
+}
+.card-light-bgColor {
+  background-color: #ff4949;
+}
+.reversed-shaped-card {
+  border-top-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.no-rounded-corners {
+  border-radius: 0 !important;
+}
+</style>
