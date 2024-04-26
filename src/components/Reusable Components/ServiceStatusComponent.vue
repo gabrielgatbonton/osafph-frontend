@@ -150,7 +150,6 @@
       cols="12"
       v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
     >
-      hellooooo
       <v-card>
         <v-card-title class="blue darken-1 white--text">
           <v-icon dark class="mr-2">{{
