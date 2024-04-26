@@ -1,21 +1,33 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-card
+      <!-- <v-card
         :class="{
           warning: status.title === 'PENDING' || status.title === 'WALK-IN',
           error: status.title === 'UNATTENDED',
           success: status.title === 'COMPLETED',
           indigo: status.title === 'IN PROGRESS',
         }"
-      >
+        class="primary"
+      > -->
+      <v-card flat class="gradient-background rounded-card">
         <v-container>
           <v-row justify="center" class="pa-2">
             <v-col align-self="center" cols="12">
               <div class="my-3 d-flex justify-space-between">
-                <v-avatar color="white">
-                  <v-icon :color="iconColor"> mdi-message-processing </v-icon>
-                </v-avatar>
+                <div class="d-flex align-center">
+                  <v-avatar color="primary">
+                    <v-icon color="white"> mdi-message-processing </v-icon>
+                  </v-avatar>
+                  <div class="ml-3 text-h5 text-left white--text">
+                    <p class="text-h5 white--text pa-0 ma-0">
+                      {{ status.title }}
+                    </p>
+                    <p class="text-subtitle-1 white--text pa-0 ma-0">
+                      {{ status.message }}
+                    </p>
+                  </div>
+                </div>
                 <v-icon
                   v-if="
                     userRole === 'DOCTOR' || userRole === 'DIALYSIS_ENCODER'
@@ -31,33 +43,29 @@
                   }}</v-icon
                 >
               </div>
-              <div class="my-3 text-h4 text-left white--text">
-                {{ status.title }}
-              </div>
-              <div class="text-subtitle-1 white--text">
-                {{ status.message }}
-              </div>
             </v-col>
           </v-row>
         </v-container>
       </v-card>
     </v-col>
     <v-col cols="12">
-      <v-card class="blue darken-1">
+      <v-card outlined class="rounded-card colored-border">
         <v-container>
           <v-row justify="center" class="pa-2">
             <v-col align-self="center" cols="12">
-              <div class="my-3">
-                <v-avatar color="white">
-                  <v-icon color="blue darken-1"> mdi-calendar-search </v-icon>
-                </v-avatar>
-              </div>
-              <div class="mt-4">
-                <div class="text-subtitle-2 white--text">
-                  {{ serviceStatus.scheduledDate.title }}
-                </div>
-                <div class="text-h4 text-left white--text">
-                  {{ serviceStatus.scheduledDate.content }}
+              <div class="my-3 d-flex justify-space-between">
+                <div class="d-flex align-center">
+                  <v-avatar color="primary">
+                    <v-icon color="white"> mdi-calendar-search </v-icon>
+                  </v-avatar>
+                  <div class="ml-3 text-h5 text-left">
+                    <p class="text-subtitle-2 font-weight-bold pa-0 ma-0">
+                      {{ serviceStatus.scheduledDate.title }}
+                    </p>
+                    <p class="text-h5 primary--text pa-0 ma-0">
+                      {{ serviceStatus.scheduledDate.content }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </v-col>
@@ -66,24 +74,28 @@
       </v-card>
     </v-col>
     <v-col cols="12" v-if="serviceStatus.dateReleased">
-      <v-card class="blue darken-1">
-        <v-row justify="center" class="ma-2">
-          <v-col align-self="center" cols="12">
-            <div class="my-3">
-              <v-avatar color="white">
-                <v-icon color="blue darken-1"> mdi-check </v-icon>
-              </v-avatar>
-            </div>
-            <div class="my-4">
-              <div class="text-subtitle-2 white--text">
-                {{ serviceStatus.dateReleased.title }}
+      <v-card outlined class="rounded-card colored-border">
+        <v-container>
+          <v-row justify="center" class="pa-2">
+            <v-col align-self="center" cols="12">
+              <div class="my-3 d-flex justify-space-between">
+                <div class="d-flex align-center">
+                  <v-avatar color="primary">
+                    <v-icon color="white"> mdi-check </v-icon>
+                  </v-avatar>
+                  <div class="ml-3 text-h5 text-left">
+                    <p class="text-subtitle-2 font-weight-bold pa-0 ma-0">
+                      {{ serviceStatus.dateReleased.title }}
+                    </p>
+                    <p class="text-h5 primary--text pa-0 ma-0">
+                      {{ serviceStatus.dateReleased.content }}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div class="text-h4 text-left white--text">
-                {{ serviceStatus.dateReleased.content }}
-              </div>
-            </div>
-          </v-col>
-        </v-row>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card>
     </v-col>
     <v-col
@@ -138,6 +150,7 @@
       cols="12"
       v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
     >
+      hellooooo
       <v-card>
         <v-card-title class="blue darken-1 white--text">
           <v-icon dark class="mr-2">{{
@@ -251,4 +264,15 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.rounded-card {
+  border-radius: 12px !important;
+}
+.gradient-background {
+  background-image: linear-gradient(to right, #a40e32, #db4a41);
+  color: white;
+}
+.colored-border {
+  border: 1px solid #ffd1d1 !important;
+}
+</style>
