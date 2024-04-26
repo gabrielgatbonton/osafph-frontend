@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-app-bar app dense flat>
-      <v-app-bar-nav-icon class="d-flex d-md-none" @click="toggleDrawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        class="d-flex d-md-none"
+        @click="toggleDrawer"
+      ></v-app-bar-nav-icon>
       <div>
         <v-img eager :src="logoUrl" width="120" height="60" contain></v-img>
       </div>
@@ -70,6 +73,13 @@ export default {
             this.loading = true;
             this.logout()
               .then(() => {
+                //Unsubscrible all Channels
+                this.$pusher.unsubscribe("public-hospital-services");
+                this.$pusher.unsubscribe("public-citizens");
+                this.$pusher.unsubscribe("consultations");
+                this.$pusher.unsubscribe("dashboard-notifications");
+                this.$pusher.unsubscribe("dialysis-queue");
+
                 this.$router.replace({ name: "login" });
               })
               .catch((error) => {
