@@ -2,10 +2,14 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid class="ma-1" v-if="consultation">
+    <v-container
+      fluid
+      class="mx-auto"
+      style="max-width: 85vw"
+      v-if="consultation"
+    >
       <v-row no-gutters>
         <v-col cols="auto">
-          <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Consultation Information</span>
         </v-col>
         <v-spacer></v-spacer>
@@ -14,7 +18,7 @@
             v-if="!$vuetify.breakpoint.xs"
             dark
             class="mr-3"
-            :color="buttonProperties.consultationForm.color"
+            color="primary"
             :class="{ 'disabled-button': disabled }"
             @click="alterConsultation"
             >{{ buttonProperties.consultationForm.title }}</v-btn
@@ -24,7 +28,7 @@
             dark
             icon
             class="mr-3"
-            :color="buttonProperties.consultationForm.color"
+            color="primary"
             :class="{ 'disabled-button': disabled }"
             @click="alterConsultation"
             ><v-icon>mdi-pencil</v-icon></v-btn
@@ -47,7 +51,7 @@
             v-if="!$vuetify.breakpoint.xs"
             dark
             class="mr-3"
-            :color="buttonProperties.files.color"
+            color="primary"
             :class="{ 'disabled-button': disabled }"
             @click="proceedToFiles"
             >{{ buttonProperties.files.title }}</v-btn
@@ -56,7 +60,7 @@
             v-else
             icon
             class="mr-3"
-            :color="buttonProperties.files.color"
+            color="primary"
             :class="{ 'disabled-button': disabled }"
             @click="proceedToFiles"
             ><v-icon left>mdi-file-upload</v-icon></v-btn
@@ -68,6 +72,40 @@
         <v-col cols="12" md="8">
           <v-container fluid class="mx-auto">
             <v-row>
+              <v-col cols="12">
+                <v-card
+                  flat
+                  rounded
+                  class="card-light-bgColor rounded-card pa-4"
+                >
+                  <v-row>
+                    <v-col cols="12" md="auto">
+                      <v-card outlined color="transparent">
+                        <v-img
+                          class="grey darken-1 mx-auto"
+                          :src="patientNameHeader?.image"
+                          :key="patientNameHeader?.image"
+                          max-height="100"
+                          max-width="100"
+                          style="transform: scaleX(-1)"
+                        ></v-img>
+                      </v-card>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="auto"
+                      class="flex-grow-1 d-flex flex-column justify-center"
+                    >
+                      <p
+                        class="text-h5 text-center text-md-left white--text font-weight-bold py-0 my-0"
+                      >
+                        {{ patientNameHeader?.name }}
+                      </p>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-col>
+
               <v-col cols="12">
                 <PatientInformationComponent
                   :patientInformation="patientInformation"
@@ -270,6 +308,24 @@ export default {
       "getAdminPreviousConsultations",
     ]),
     ...mapGetters("files", ["getFiles"]),
+    patientNameHeader() {
+      if (!this.consultation) return;
+
+      return {
+        image: this.$url + this.consultation.citizen.image_url,
+        name: `${this.consultation.citizen.last_name}, ${
+          this.consultation.citizen.first_name
+        } ${
+          this.consultation.citizen.middle_name
+            ? this.consultation.citizen.middle_name
+            : ""
+        } ${
+          this.consultation.citizen.suffix
+            ? this.consultation.citizen.suffix
+            : ""
+        }`,
+      };
+    },
     buttonProperties() {
       let consultation_title = null;
       let consultation_color = null;
@@ -682,5 +738,11 @@ export default {
 .disabled-button {
   opacity: 0.5; /* Make it appear faded */
   pointer-events: none; /* Disable pointer events to prevent interaction */
+}
+.card-light-bgColor {
+  background-color: #ff4949;
+}
+.rounded-card {
+  border-radius: 12px !important;
 }
 </style>
