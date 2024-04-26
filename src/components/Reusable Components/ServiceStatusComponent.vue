@@ -101,7 +101,7 @@
             :key="packIndex"
           >
             <v-expansion-panel-header>
-              <div>
+              <div v-if="userRole === 'DIALYSIS_ENCODER'">
                 <v-btn color="red darken-4" icon :ripple="false">
                   <v-icon>mdi-minus</v-icon>
                 </v-btn>
@@ -127,7 +127,7 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
-        <div class="d-flex justify-center align-center">
+        <div class="d-flex justify-center align-center" v-if="userRole === 'DIALYSIS_ENCODER'">
           <v-btn color="blue darken-4" icon :ripple="false">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
@@ -136,7 +136,7 @@
     </v-col>
     <v-col
       cols="12"
-      v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
+      v-if="serviceStatus.items_availed.service_type === 'DIALYSIS' && userRole === 'DIALYSIS_ENCODER'"
     >
       <v-card>
         <v-card-title class="blue darken-1 white--text">

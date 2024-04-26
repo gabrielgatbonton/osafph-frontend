@@ -260,6 +260,7 @@ export default {
     },
     serviceStatus() {
       //Assign Date Released Value and Logic.
+      let scheduled_dialysis_sessions = []
       let date_released_data = this.session.hospital_service.date_released
         ? {
             title: "Date Released",
@@ -269,6 +270,23 @@ export default {
             ),
           }
         : false;
+        Object.keys(this.dialysis_sessions).forEach((item) => {
+          if (item.includes("data")) {
+            this.dialysis_sessions[item].forEach((info) => {
+              if (
+                this.session.citizen.full_name === info["citizen_full_name"]
+              ) {
+                scheduled_dialysis_sessions.push({
+                  scheduled_date_session: format(
+                    parseISO(info.scheduled_date),
+                    "MMMM dd, yyyy"
+                  ),
+                  dialysis_session_status: info.status,
+                });
+              }
+            });
+          }
+        });
 
       return {
         status: this.session.hospital_service.status,
@@ -301,6 +319,7 @@ export default {
           status: "Status",
           icon: "mdi-iv-bag",
         },
+        scheduled_dialysis_sessions: scheduled_dialysis_sessions,
       };
     },
     buttonTitle() {
@@ -311,6 +330,9 @@ export default {
     getDialysisSession(value) {
       this.session = value;
       this.fetchFiles(this.session.hospital_service.id);
+    },
+    session(value) {
+      console.log(value)
     },
   },
   created() {
