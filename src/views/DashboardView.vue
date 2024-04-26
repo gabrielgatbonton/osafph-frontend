@@ -405,12 +405,16 @@ export default {
                 value: this.dashRoot[data]["specialty"],
               },
               {
-                title: "Pending Patients",
-                value: this.dashRoot[data]["pending_patients"],
+                title: "Pending Patients Today",
+                value: this.dashRoot[data]["pending_patients_today"],
+              },
+              {
+                title: "Total Pending Patients",
+                value: this.dashRoot[data]["pending_patients_overall"],
               },
               {
                 title: "Completed Patients",
-                value: this.dashRoot[data]["completed_patients"],
+                value: this.dashRoot[data]["completed_services"],
               },
             ],
           });

@@ -3,7 +3,7 @@
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
     <v-container fluid class="ma-1" v-if="session">
-      <v-row no-gutters>
+      <v-row>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Dialysis Center</span>
@@ -30,14 +30,14 @@
       <v-divider class="my-4"></v-divider>
       <v-row no-gutters>
         <v-col cols="12" md="8">
-          <v-container fluid class="mx-auto mt-3">
+          <v-container fluid class="mx-auto">
             <v-row>
               <v-col cols="12">
                 <PatientInformationComponent
                   :patientInformation="patientInformation"
                 />
               </v-col>
-              <v-col cols="12" class="mt-n1">
+              <v-col cols="12">
                 <PatientServiceComponent
                   :serviceInformation="serviceInformation"
                 />
@@ -46,10 +46,16 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="4">
-          <ServiceStatusComponent
-            @toggleProgress="toggleStatus"
-            :serviceStatus="serviceStatus"
-          />
+          <v-container class="mx-auto">
+            <v-row>
+              <v-col cols="12">
+                <ServiceStatusComponent
+                  @toggleProgress="toggleStatus"
+                  :serviceStatus="serviceStatus"
+                />
+              </v-col>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
     </v-container>
@@ -63,7 +69,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import { format, parseISO } from "date-fns";
 import PatientServiceComponent from "@/components/Reusable Components/PatientServiceComponent.vue";
 import PatientInformationComponent from "@/components/Reusable Components/PatientInformationComponent.vue";
@@ -87,6 +93,7 @@ export default {
       "toggleServiceProgress",
     ]),
     ...mapActions("files", ["fetchFiles"]),
+    ...mapActions("dialysis_sessions", ["fetchDialysisSessions"]),
     fetchSessionData() {
       const id = this.$route.params.id;
       this.fetchDialysisSessionById(id).catch((error) => {
@@ -127,6 +134,9 @@ export default {
     ...mapGetters("dialysis_sessions", ["getDialysisSession"]),
     ...mapGetters("login", ["userRole"]),
     ...mapGetters("files", ["getFiles"]),
+    ...mapState("dialysis_sessions", {
+      dialysis_sessions: "dialysis_sessions",
+    }),
     buttonPermissions() {
       let files = false;
       let complete = false;
@@ -289,8 +299,8 @@ export default {
           header_title: "Dialysis",
           date: "Date Scheduled",
           status: "Status",
-          icon: "mdi-iv-bag"
-        }
+          icon: "mdi-iv-bag",
+        },
       };
     },
     buttonTitle() {
@@ -305,6 +315,7 @@ export default {
   },
   created() {
     this.fetchSessionData();
+    this.fetchDialysisSessions();
   },
 };
 </script>

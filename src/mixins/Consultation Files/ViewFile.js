@@ -17,6 +17,7 @@ export default {
             query: {
               file_id: JSON.stringify(file_id),
               hospital_service_id: JSON.stringify(hospital_service_id),
+              citizen_id: JSON.stringify(false),
             },
           })
           .catch((error) => {
@@ -29,6 +30,7 @@ export default {
             query: {
               file_id: JSON.stringify(file_id),
               hospital_service_id: JSON.stringify(hospital_service_id),
+              citizen_id: JSON.stringify(false),
             },
           })
           .catch((error) => {

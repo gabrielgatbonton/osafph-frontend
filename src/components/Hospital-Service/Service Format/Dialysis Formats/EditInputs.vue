@@ -23,7 +23,7 @@
           :disabled="disabled"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <v-menu
           max-width="290"
           :close-on-content-click="false"
@@ -52,7 +52,7 @@
           ></v-date-picker>
         </v-menu>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <v-select
           :items="session_choices"
           label="Schedule Session"
@@ -62,7 +62,56 @@
           :disabled="disabled"
         ></v-select>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12">
+        <v-row v-for="(item, index) in payload.dialysis_packages" :key="index">
+          <v-col cols="12" md="6">
+            <v-select
+              v-model="item.name"
+              :items="dialysis_packages"
+              item-text="package_name"
+              :label="`Dialysis Package ${index + 1}`"
+              @blur="
+                $v.payload.dialysis_packages.$each.$iter[index].name.$touch()
+              "
+              :error-messages="errorMessages.dialysis_package_name[index]"
+            >
+              <template v-slot:item="{ item }">
+                <div class="d-flex flex-column justify-start align-start">
+                  <div>{{ item.package_name }}</div>
+                  <div class="packages-description">
+                    <span
+                      v-for="(dialysisItem, index) in item.dialysis_items"
+                      :key="index"
+                    >
+                      {{ dialysisItem
+                      }}{{ index < item.dialysis_items.length - 1 ? ", " : "" }}
+                    </span>
+                  </div>
+                </div>
+              </template>
+            </v-select>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-autocomplete
+              v-model="item.funder"
+              :items="crowd_fundings"
+              item-text="name"
+              :label="`Funder ${index + 1}`"
+            >
+              <template v-slot:item="{ item }" v-if="funderPermission">
+                <div class="d-flex flex-column">
+                  <div>{{ item.name }}</div>
+                  <div class="item-description">
+                    Amount: {{ item.contribution_left }} /
+                    {{ item.initial_contribution }}
+                  </div>
+                </div>
+              </template></v-autocomplete
+            >
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" md="6">
         <v-menu
           max-width="290"
           :close-on-content-click="false"
@@ -91,7 +140,7 @@
           ></v-date-picker>
         </v-menu>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="payload.status"
           label="Status"
@@ -108,6 +157,7 @@
 <script>
 import EditInputsMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/EditInputs";
 import { format, parseISO } from "date-fns";
+import { mapGetters } from "vuex";
 export default {
   name: "EditInputs",
   mixins: [EditInputsMixin],
@@ -128,6 +178,14 @@ export default {
       type: Boolean,
       required: true,
     },
+    dialysis_packages: {
+      type: Array,
+      required: true,
+    },
+    crowd_fundings: {
+      type: Array,
+      required: true,
+    },
   },
   data: () => ({
     payload: {
@@ -137,6 +195,7 @@ export default {
       scheduled_session: null,
       hospital: null,
       dialysis_machine: null,
+      dialysis_packages: null,
     },
     session_choices: ["MORNING", "NOON", "AFTERNOON"],
     menu_1: false,
@@ -167,10 +226,16 @@ export default {
         this.payload.date_released = this.hospitalService.data.date_released;
         this.payload.scheduled_session = this.hospitalService.data.session;
         this.payload.status = this.hospitalService.data.status;
+        this.payload.dialysis_packages =
+          this.hospitalService.data.dialysis_packages.map((item) => ({
+            name: item.name,
+            funder: item.funder,
+          }));
       }
     },
   },
   computed: {
+    ...mapGetters("login", ["userRole"]),
     formattedDate_1() {
       return this.payload.scheduled_date
         ? format(parseISO(this.payload.scheduled_date), "MMMM d, yyyy")
@@ -186,21 +251,35 @@ export default {
         ? ["PENDING", "UNATTENDED", "COMPLETED", "IN PROGRESS"]
         : ["PENDING", "UNATTENDED", "COMPLETED"];
     },
+    funderPermission() {
+      return this.userRole === "ADMIN" || this.userRole === "ROOT";
+    },
   },
   watch: {
     hospitalService: {
       handler(newVal) {
+        console.log(newVal);
         if (newVal) {
           this.checkEditData();
         }
       },
       deep: true,
+      immediate: true,
     },
-  },
-  mounted() {
-    this.checkEditData();
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.packages-description {
+  font-size: 12px;
+  color: #333;
+  font-weight: bold;
+}
+
+.item-description {
+  font-size: 12px;
+  color: #333;
+  font-weight: bold;
+}
+</style>

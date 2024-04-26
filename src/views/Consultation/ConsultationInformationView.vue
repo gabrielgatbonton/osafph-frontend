@@ -3,7 +3,7 @@
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
     <v-container fluid class="ma-1" v-if="consultation">
-      <v-row no-gutters>
+      <v-row>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Consultation Information</span>
@@ -66,14 +66,14 @@
       <v-divider class="my-4"></v-divider>
       <v-row no-gutters>
         <v-col cols="12" md="8">
-          <v-container fluid class="mx-auto mt-3">
+          <v-container fluid class="mx-auto">
             <v-row>
               <v-col cols="12">
                 <PatientInformationComponent
                   :patientInformation="patientInformation"
                 />
               </v-col>
-              <v-col cols="12" class="mt-n1">
+              <v-col cols="12">
                 <PatientServiceComponent
                   :serviceInformation="serviceInformation"
                 />
@@ -87,10 +87,16 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="4">
-          <ServiceStatusComponent
-            @toggleProgress="toggleStatus"
-            :serviceStatus="serviceStatus"
-          />
+          <v-container fluid class="mx-auto">
+            <v-row>
+              <v-col cols="12">
+                <ServiceStatusComponent
+                  @toggleProgress="toggleStatus"
+                  :serviceStatus="serviceStatus"
+                />
+              </v-col>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
     </v-container>
@@ -271,7 +277,8 @@ export default {
         if (this.consultation.hospital_service.status === "IN PROGRESS") {
           consultation_title = "Add Consultation Form";
         } else if (this.consultation.hospital_service.status === "COMPLETED") {
-          files_title = this.getFiles.length > 0 ? "Uploaded Files" : "Upload Files";
+          files_title =
+            this.getFiles && this.getFiles.length > 0 ? "Uploaded Files" : "Upload Files";
         }
       }
       return {
@@ -601,6 +608,12 @@ export default {
         items_availed: {
           service_type: false,
           items: null,
+        },
+        header_dialysis: {
+          header_title: null,
+          date: null,
+          status: null,
+          icon: null,
         },
       };
     },

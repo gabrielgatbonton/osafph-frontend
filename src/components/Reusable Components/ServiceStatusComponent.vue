@@ -1,16 +1,16 @@
 <template>
-  <v-container fluid class="mx-auto">
-    <v-row>
-      <v-col cols="12">
-        <v-card
-          :class="{
-            warning: status.title === 'PENDING' || status.title === 'WALK-IN',
-            error: status.title === 'UNATTENDED',
-            success: status.title === 'COMPLETED',
-            indigo: status.title === 'IN PROGRESS',
-          }"
-        >
-          <v-row justify="center" class="ma-2 pb-2">
+  <v-row>
+    <v-col cols="12">
+      <v-card
+        :class="{
+          warning: status.title === 'PENDING' || status.title === 'WALK-IN',
+          error: status.title === 'UNATTENDED',
+          success: status.title === 'COMPLETED',
+          indigo: status.title === 'IN PROGRESS',
+        }"
+      >
+        <v-container>
+          <v-row justify="center" class="pa-2">
             <v-col align-self="center" cols="12">
               <div class="my-3 d-flex justify-space-between">
                 <v-avatar color="white">
@@ -39,11 +39,13 @@
               </div>
             </v-col>
           </v-row>
-        </v-card>
-      </v-col>
-      <v-col cols="12" class="mt-n4">
-        <v-card class="blue darken-1">
-          <v-row justify="center" class="ma-2 pb-2">
+        </v-container>
+      </v-card>
+    </v-col>
+    <v-col cols="12">
+      <v-card class="blue darken-1">
+        <v-container>
+          <v-row justify="center" class="pa-2">
             <v-col align-self="center" cols="12">
               <div class="my-3">
                 <v-avatar color="white">
@@ -60,90 +62,110 @@
               </div>
             </v-col>
           </v-row>
-        </v-card>
-      </v-col>
-      <v-col cols="12" class="mt-n4" v-if="serviceStatus.dateReleased">
-        <v-card class="blue darken-1">
-          <v-row justify="center" class="ma-2 pb-2">
-            <v-col align-self="center" cols="12">
-              <div class="my-3">
-                <v-avatar color="white">
-                  <v-icon color="blue darken-1"> mdi-check </v-icon>
-                </v-avatar>
+        </v-container>
+      </v-card>
+    </v-col>
+    <v-col cols="12" v-if="serviceStatus.dateReleased">
+      <v-card class="blue darken-1">
+        <v-row justify="center" class="ma-2">
+          <v-col align-self="center" cols="12">
+            <div class="my-3">
+              <v-avatar color="white">
+                <v-icon color="blue darken-1"> mdi-check </v-icon>
+              </v-avatar>
+            </div>
+            <div class="my-4">
+              <div class="text-subtitle-2 white--text">
+                {{ serviceStatus.dateReleased.title }}
               </div>
-              <div class="my-4">
-                <div class="text-subtitle-2 white--text">
-                  {{ serviceStatus.dateReleased.title }}
-                </div>
-                <div class="text-h4 text-left white--text">
-                  {{ serviceStatus.dateReleased.content }}
-                </div>
+              <div class="text-h4 text-left white--text">
+                {{ serviceStatus.dateReleased.content }}
               </div>
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+    <v-col
+      cols="12"
+      v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
+    >
+      <v-card>
+        <v-card-title class="blue darken-1 white--text">
+          <v-icon dark class="mr-2">{{ serviceStatus.header.icon }}</v-icon>
+          {{ serviceStatus.header.title }}
+        </v-card-title>
+        <v-expansion-panels accordion focusable>
+          <v-expansion-panel
+            v-for="(info, packIndex) in serviceStatus.items_availed.packages"
+            :key="packIndex"
+          >
+            <v-expansion-panel-header>
+              <div>
+                <v-btn color="red darken-4" icon :ripple="false">
+                  <v-icon>mdi-minus</v-icon>
+                </v-btn>
+              </div>
+              <p class="text-button my-auto">{{ info.name }}</p>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-container>
+                <v-row>
+                  <v-col
+                    cols="6"
+                    v-for="(item, itemIndex) in info.dialysis_items"
+                    :key="itemIndex"
+                  >
+                    <ul>
+                      <li>
+                        {{ item }}
+                      </li>
+                    </ul>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+        <div class="d-flex justify-center align-center">
+          <v-btn color="blue darken-4" icon :ripple="false">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </div>
+      </v-card>
+    </v-col>
+    <v-col
+      cols="12"
+      v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
+    >
+      <v-card>
+        <v-card-title class="blue darken-1 white--text">
+          <v-icon dark class="mr-2">{{
+            serviceStatus.header_dialysis.icon
+          }}</v-icon>
+          {{ serviceStatus.header_dialysis.header_title }}
+        </v-card-title>
+        <v-card-text>
+          <v-row class="mt-1">
+            <v-col
+              cols="12"
+              md="7"
+              class="text-subtitle-1 font-italic font-weight-light"
+            >
+              {{ serviceStatus.header_dialysis.date }}
+            </v-col>
+            <v-col
+              cols="12"
+              md="5"
+              class="text-subtitle-1 font-italic font-weight-light"
+            >
+              {{ serviceStatus.header_dialysis.status }}
             </v-col>
           </v-row>
-        </v-card>
-      </v-col>
-      <v-col
-        cols="12"
-        class="mt-n2"
-        v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
-      >
-        <v-card>
-          <v-card-title class="blue darken-1 white--text">
-            <v-icon dark class="mr-2">{{ serviceStatus.header.icon }}</v-icon>
-            {{ serviceStatus.header.title }}
-          </v-card-title>
-          <v-expansion-panels>
-            <v-expansion-panel
-              v-for="(info, packIndex) in serviceStatus.items_availed.packages"
-              :key="packIndex"
-            >
-              <v-expansion-panel-header class="font-weight-bold">
-                {{ info.name }}
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-container>
-                  <v-row class="my-n6">
-                    <v-col
-                      cols="6"
-                      v-for="(item, itemIndex) in info.dialysis_items"
-                      :key="itemIndex"
-                    >
-                      <ul>
-                        <li>
-                          {{ item }}
-                        </li>
-                      </ul>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-card>
-      </v-col>
-      <v-col cols="12">
-        <v-card>
-          <v-card-title class="blue darken-1 white--text">
-            <v-icon dark class="mr-2">{{
-              serviceStatus.header_dialysis.icon
-            }}</v-icon>
-            {{ serviceStatus.header_dialysis.header_title }}
-          </v-card-title>
-          <v-card-text>
-            <v-row class="mt-1">
-              <v-col cols="12" md="7" class="text-subtitle-1 font-italic font-weight-light">
-                {{ serviceStatus.header_dialysis.date }}
-              </v-col>
-              <v-col cols="12" md="5" class="text-subtitle-1 font-italic font-weight-light">
-                {{ serviceStatus.header_dialysis.status }}
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
