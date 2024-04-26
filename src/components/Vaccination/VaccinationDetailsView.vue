@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="blue darken-4" block dark v-bind="attrs" v-on="on">
+        <v-btn color="primary" block dark v-bind="attrs" v-on="on">
           Vaccination Details
         </v-btn>
       </template>

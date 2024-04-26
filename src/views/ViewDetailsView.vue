@@ -17,7 +17,7 @@
           <v-btn
             v-if="!$vuetify.breakpoint.xs"
             dark
-            color="blue darken-4"
+            color="primary"
             class="mr-3"
             :to="{ name: 'edit', params: { id: routeID } }"
             ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
@@ -26,7 +26,7 @@
             v-else
             dark
             class="mr-3"
-            color="blue darken-4"
+            color="primary"
             icon
             :to="{ name: 'edit', params: { id: routeID } }"
             ><v-icon>mdi-square-edit-outline</v-icon></v-btn

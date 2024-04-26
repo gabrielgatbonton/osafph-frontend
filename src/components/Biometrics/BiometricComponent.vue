@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="blue darken-4"
+          color="primary"
           :class="{ 'disabled-button': checkDisabledButton }"
           block
           dark

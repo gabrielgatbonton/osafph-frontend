@@ -2,7 +2,6 @@
   <div>
     <v-navigation-drawer
       v-model="localDrawer"
-      dark
       app
       :permanent="isPermanent"
       :mini-variant="miniVariant"

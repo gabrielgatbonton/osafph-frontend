@@ -1,9 +1,10 @@
 <template>
   <div>
-    <v-app-bar app dense flat>
+    <v-app-bar app dense class="gradient-background">
       <v-app-bar-nav-icon
         class="d-flex d-md-none"
         @click="toggleDrawer"
+        color="white"
       ></v-app-bar-nav-icon>
       <div>
         <v-img eager :src="logoUrl" width="120" height="60" contain></v-img>
@@ -101,4 +102,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.gradient-background {
+  background-image: linear-gradient(to right, #db4a41, #a40e32, #db4a41);
+  color: white;
+}
+</style>
