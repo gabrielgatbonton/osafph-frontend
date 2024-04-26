@@ -144,6 +144,27 @@
                 </v-card>
               </v-col>
 
+              <!-- Profile image -->
+              <v-col cols="12" class="mt-n2">
+                <v-card outlined class="pa-0 bordered-card colored-border">
+                  <v-container fluid class="py-4">
+                    <v-row dense justify="center" class="ma-2">
+                      <v-col cols="12">
+                        <p class="text-subtitle-2 black--text font-weight-bold">
+                          PROFILE IMAGE
+                        </p>
+                      </v-col>
+                      <v-col align-self="center" cols="12">
+                        <CameraComponent
+                          :image="registrant.citizen.citizen_file.image_url"
+                          v-on:picture-taken="handleImageUpload"
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card>
+              </v-col>
+
               <!-- Signature -->
               <v-col cols="12" class="mt-n2">
                 <v-card outlined class="bordered-card colored-border">
@@ -239,27 +260,6 @@
                           @click="deleteActivator('biometrics')"
                           >Delete Biometrics</v-btn
                         >
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-col>
-
-              <!-- Profile image -->
-              <v-col cols="12" class="mt-n2">
-                <v-card outlined class="pa-0 bordered-card colored-border">
-                  <v-container fluid class="py-4">
-                    <v-row dense justify="center" class="ma-2">
-                      <v-col cols="12">
-                        <p class="text-subtitle-2 black--text font-weight-bold">
-                          PROFILE IMAGE
-                        </p>
-                      </v-col>
-                      <v-col align-self="center" cols="12">
-                        <CameraComponent
-                          :image="registrant.citizen.citizen_file.image_url"
-                          v-on:picture-taken="handleImageUpload"
-                        />
                       </v-col>
                     </v-row>
                   </v-container>
