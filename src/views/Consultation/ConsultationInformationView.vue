@@ -278,7 +278,7 @@ export default {
           consultation_title = "Add Consultation Form";
         } else if (this.consultation.hospital_service.status === "COMPLETED") {
           files_title =
-            this.getFiles.length > 0 ? "Uploaded Files" : "Upload Files";
+            this.getFiles && this.getFiles.length > 0 ? "Uploaded Files" : "Upload Files";
         }
       }
       return {

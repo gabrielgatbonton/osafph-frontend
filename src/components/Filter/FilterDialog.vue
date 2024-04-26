@@ -89,6 +89,8 @@
               v-model="sort_order"
               label="Sort Order"
               :items="sort_order_options"
+              item-text="name"
+              item-value="value"
             ></v-select>
           </v-col>
           <v-col cols="12">
@@ -142,7 +144,16 @@ export default {
     service_type: [],
     payload: {},
     sort_order: null,
-    sort_order_options: ["ASCENDING", "DESCENDING"],
+    sort_order_options: [
+      {
+        name: "ASCENDING",
+        value: "asc",
+      },
+      {
+        name: "DESCENDING",
+        value: "desc",
+      },
+    ],
     sexes: ["MALE", "FEMALE"],
     filters: ["CATEGORY", "SEX", "BARANGAY"],
   }),
@@ -190,18 +201,14 @@ export default {
         this.status.length > 0
           ? (this.payload.status = this.status)
           : (this.payload.status = null);
-      } else if (
-        this.type_of_filter === "SERVICE INDEX"
-      ) {
+      } else if (this.type_of_filter === "SERVICE INDEX") {
         this.status.length > 0
           ? (this.payload.filter_status = this.status)
           : (this.payload.filter_status = null);
         this.service_type.length > 0
           ? (this.payload.service_types = this.service_type)
           : (this.payload.service_types = null);
-      } else if (
-        this.type_of_filter === "SERVICES AVAILED INDEX"
-      ) {
+      } else if (this.type_of_filter === "SERVICES AVAILED INDEX") {
         this.status.length > 0
           ? (this.payload.filter_status = this.status)
           : (this.payload.filter_status = null);
@@ -209,9 +216,10 @@ export default {
           ? (this.payload.service_types = this.service_type)
           : (this.payload.service_types = null);
         this.sort_order
-          ? (this.payload.sort_order = this.sort_order)
-          : (this.payload.sort_order = null);
-      }  
+          ? ((this.payload.sort_order = this.sort_order),
+            (this.payload.sort_by = "scheduled_date"))
+          : ((this.payload.sort_order = null), (this.payload.sort_by = null));
+      }
       this.$emit("filterQuery", this.payload);
       this.payload = {};
       this.dialog = false;
@@ -231,20 +239,17 @@ export default {
           dialysis_machine: null,
           status: null,
         };
-      } else if (
-        this.type_of_filter === "SERVICE INDEX"
-      ) {
+      } else if (this.type_of_filter === "SERVICE INDEX") {
         query = {
           service_types: null,
           filter_status: null,
         };
-      } else if (
-        this.type_of_filter === "SERVICES AVAILED INDEX"
-      ) {
+      } else if (this.type_of_filter === "SERVICES AVAILED INDEX") {
         query = {
           service_types: null,
           filter_status: null,
           sort_order: null,
+          sort_by: null,
         };
       }
 
