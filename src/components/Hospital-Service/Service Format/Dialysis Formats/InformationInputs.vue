@@ -113,7 +113,6 @@ export default {
   },
   computed: {
     summary() {
-      console.log(this.data);
       if (this.data)
         return {
           hospital: this.data.hospital,

@@ -42,12 +42,26 @@ export default {
   },
   methods: {
     ...mapActions("admin_consultations", ["fetchConsultations"]),
+    routeEvents() {
+      const channel = this.$pusher.subscribe("public-hospital-services");
+
+      channel.bind("consultation-form.created", () => {
+        this.fetchConsultations();
+      });
+      channel.bind("consultation-form.updated", () => {
+        this.fetchConsultations();
+      });
+      channel.bind("consultation-form.deleted", () => {
+        this.fetchConsultations();
+      });
+    },
   },
   computed: {
     ...mapGetters("admin_consultations", ["getAdminConsultations"]),
   },
   created() {
     this.fetchConsultations();
+    this.routeEvents();
   },
 };
 </script>

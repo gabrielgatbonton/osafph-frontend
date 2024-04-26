@@ -74,6 +74,22 @@ export default {
     updateFetch(query_params) {
       this.requestServices(query_params);
     },
+    routeEvents() {
+      const channel = this.$pusher.subscribe("public-hospital-services");
+
+      channel.bind("status.changed", () => {
+        this.requestServices();
+      });
+      channel.bind("hospital-service.created", () => {
+        this.requestServices();
+      });
+      channel.bind("hospital-service.updated", () => {
+        this.requestServices();
+      });
+      channel.bind("hospital-service.deleted", () => {
+        this.requestServices();
+      });
+    },
   },
   computed: {
     ...mapState("services", {
@@ -82,16 +98,7 @@ export default {
   },
   created() {
     this.requestServices();
-    const channel = this.$pusher.subscribe("public-hospital-services");
-    channel.bind("hospital-service.created", () => {
-      this.requestServices();
-    });
-    channel.bind("hospital-service.updated", () => {
-      this.requestServices();
-    });
-    channel.bind("hospital-service.deleted", () => {
-      this.requestServices();
-    });
+    this.routeEvents();
   },
 };
 </script>

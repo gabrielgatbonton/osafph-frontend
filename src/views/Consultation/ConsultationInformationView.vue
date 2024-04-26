@@ -3,7 +3,7 @@
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
     <v-container fluid class="ma-1" v-if="consultation">
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="auto">
           <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Consultation Information</span>
@@ -30,10 +30,10 @@
             ><v-icon>mdi-pencil</v-icon></v-btn
           >
         </v-col>
-        <v-col cols="auto" class="mr-3" v-if="buttonPermissions.delete">
+        <v-col cols="auto" v-if="buttonPermissions.delete">
           <v-btn
             v-if="!$vuetify.breakpoint.xs"
-            class="error"
+            class="error mr-3"
             @click="deleteActivator"
             dark
             ><v-icon left>mdi-trash-can</v-icon>Delete Form</v-btn
@@ -226,7 +226,7 @@ export default {
       })
         .then(() => {
           this.loading = false;
-          this.$router.push({ name: "citizens-consultations" });
+          this.$router.replace({ name: "citizens-consultations" });
         })
         .catch((error) => {
           console.log("Error Proceding with delete:", error);
@@ -248,6 +248,13 @@ export default {
           });
         }
       }
+    },
+    routeEvents() {
+      const channel = this.$pusher.subscribe("public-hospital-services");
+
+      channel.bind("status.changed", () => {
+        this.fetchConsultation();
+      });
     },
   },
   computed: {
@@ -278,7 +285,9 @@ export default {
           consultation_title = "Add Consultation Form";
         } else if (this.consultation.hospital_service.status === "COMPLETED") {
           files_title =
-            this.getFiles && this.getFiles.length > 0 ? "Uploaded Files" : "Upload Files";
+            this.getFiles && this.getFiles.length > 0
+              ? "Uploaded Files"
+              : "Upload Files";
         }
       }
       return {
@@ -628,20 +637,20 @@ export default {
     getConsultationForm: {
       handler(value) {
         this.consultation_form = value;
-        console.log("getConsultationForm", value);
+        // console.log("getConsultationForm", value);
       },
     },
     getPreviousConsultations: {
       handler(value) {
         this.previous_consultations = value;
-        console.log("getPreviousConsultations", value);
+        // console.log("getPreviousConsultations", value);
       },
     },
     getAdminConsultation: {
       handler(value) {
         if (value) {
           this.consultation = value;
-          console.log("getAdminConsultation", value);
+          // console.log("getAdminConsultation", value);
         }
       },
     },
@@ -649,7 +658,7 @@ export default {
       handler(value) {
         if (value) {
           this.consultation_form = value;
-          console.log("getAdminConsultationForm", value);
+          // console.log("getAdminConsultationForm", value);
         }
       },
     },
@@ -657,23 +666,14 @@ export default {
       handler(value) {
         if (value) {
           this.previous_consultations = value;
-          console.log("getAdminPreviousConsultations", value);
+          // console.log("getAdminPreviousConsultations", value);
         }
       },
     },
   },
   created() {
     this.fetchConsultation();
-    const channel = this.$pusher.subscribe("public-hospital-services");
-    channel.bind("consultation-form.created", () => {
-      this.fetchConsultation();
-    });
-    channel.bind("consultation-form.updated", () => {
-      this.fetchConsultation();
-    });
-    channel.bind("consultation-form.deleted", () => {
-      this.fetchConsultation();
-    });
+    this.routeEvents();
   },
 };
 </script>

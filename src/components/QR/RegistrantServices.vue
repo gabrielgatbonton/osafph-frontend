@@ -354,11 +354,6 @@ export default {
         }, 300);
       },
     },
-    public_files: {
-      handler(value) {
-        console.log(value);
-      },
-    },
   },
 };
 </script>

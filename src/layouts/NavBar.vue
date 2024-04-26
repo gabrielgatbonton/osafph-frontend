@@ -74,6 +74,13 @@ export default {
             this.loading = true;
             this.logout()
               .then(() => {
+                //Unsubscrible all Channels
+                this.$pusher.unsubscribe("public-hospital-services");
+                this.$pusher.unsubscribe("public-citizens");
+                this.$pusher.unsubscribe("consultations");
+                this.$pusher.unsubscribe("dashboard-notifications");
+                this.$pusher.unsubscribe("dialysis-queue");
+
                 this.$router.replace({ name: "login" });
               })
               .catch((error) => {

@@ -282,6 +282,16 @@ export default {
         console.error("Error updating fetch: ", error);
       });
     },
+    routeEvents() {
+      const channel = this.$pusher.subscribe("dashboard-notifications");
+
+    
+        channel.bind("notification.created", () => {
+          this.getDashboardData();
+          this.getRootData();
+        });
+      
+    },
   },
   computed: {
     ...mapState("dashboard", {
@@ -473,6 +483,7 @@ export default {
   created() {
     this.getDashboardData();
     this.getRootData();
+    this.routeEvents();
   },
 };
 </script>

@@ -176,7 +176,6 @@ export default {
         } else {
           this.maxWidth = 350;
         }
-        console.log(this.maxWidth)
       },
       deep: true,
       immediate: true,
