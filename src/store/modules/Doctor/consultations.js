@@ -56,7 +56,7 @@ export const consultations = {
     },
     getConsultationForm: (state) => state.consultation_form,
     getPreviousConsultations: (state) =>
-      state.consultation.consultation.previous_consultation_forms,
+      state.consultation?.consultation.previous_consultation_forms,
   },
   mutations: {
     SET_CONSULTATIONS(state, consultations) {
