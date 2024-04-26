@@ -209,7 +209,6 @@ export default {
           ? (this.payload.service_types = this.service_type)
           : (this.payload.service_types = null);
       } else if (this.type_of_filter === "SERVICES AVAILED INDEX") {
-        console.log(this.sort_order)
         this.status.length > 0
           ? (this.payload.filter_status = this.status)
           : (this.payload.filter_status = null);

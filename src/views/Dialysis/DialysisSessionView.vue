@@ -2,10 +2,9 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid class="ma-1" v-if="session">
+    <v-container fluid class="mx-auto" style="max-width: 85vw" v-if="session">
       <v-row>
         <v-col cols="auto">
-          <v-icon left>mdi-account-box-multiple</v-icon>
           <span class="title">Dialysis Center</span>
         </v-col>
         <v-spacer></v-spacer>
@@ -28,10 +27,46 @@
         </v-col>
       </v-row>
       <v-divider class="my-4"></v-divider>
+
+      <!-- Patient information -->
       <v-row no-gutters>
         <v-col cols="12" md="8">
           <v-container fluid class="mx-auto">
             <v-row>
+              <v-col cols="12">
+                <v-card
+                  flat
+                  rounded
+                  class="card-light-bgColor rounded-card pa-4"
+                >
+                  <v-row>
+                    <v-col cols="12" md="auto">
+                      <v-card outlined color="transparent">
+                        <v-img
+                          class="grey darken-1 mx-auto"
+                          :src="patientNameHeader?.image"
+                          :key="patientNameHeader?.image"
+                          max-height="100"
+                          max-width="100"
+                          style="transform: scaleX(-1)"
+                        ></v-img>
+                      </v-card>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="auto"
+                      class="flex-grow-1 d-flex flex-column justify-center"
+                    >
+                      <p
+                        class="text-h5 text-center text-md-left white--text font-weight-bold py-0 my-0"
+                      >
+                        {{ patientNameHeader?.name }}
+                      </p>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-col>
+
               <v-col cols="12">
                 <PatientInformationComponent
                   :patientInformation="patientInformation"
@@ -137,6 +172,14 @@ export default {
     ...mapState("dialysis_sessions", {
       dialysis_sessions: "dialysis_sessions",
     }),
+    patientNameHeader() {
+      if (!this.session) return;
+
+      return {
+        image: this.$url + this.session.citizen.image_url,
+        name: this.session.citizen.full_name,
+      };
+    },
     buttonPermissions() {
       let files = false;
       let complete = false;
@@ -342,4 +385,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.card-light-bgColor {
+  background-color: #ff4949;
+}
+.rounded-card {
+  border-radius: 12px !important;
+}
+</style>

@@ -2,43 +2,44 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-          <v-card outlined class="pa-0 bordered-card colored-border">
-            <v-row
-              no-gutters
-              v-for="(item, index) in data.doctor"
+        <v-card outlined class="pa-0 bordered-card colored-border">
+          <v-row
+            no-gutters
+            v-for="(item, index) in data.doctor"
+            :key="'uniqServ' + index"
+          >
+            <v-col cols="12" class="d-flex align-center">
+              <v-card
+                flat
+                class="card-light-bgColor reversed-shaped-card px-4 d-flex"
+              >
+                <v-icon size="20" color="white">{{ item.icon }}</v-icon>
+                <p
+                  class="text-subtitle-2 white--text font-weight-bold pa-0 my-2 ml-2"
+                >
+                  {{ item.title.toUpperCase() }}
+                </p>
+              </v-card>
+            </v-col>
+            <v-col
+              v-for="(indivItem, index) in item.values"
               :key="'uniqServ' + index"
             >
-              <v-col cols="12" class="d-flex align-center">
-                <v-card
-                  flat
-                  class="card-light-bgColor reversed-shaped-card px-4"
-                >
-                  <p
-                    class="text-subtitle-2 white--text font-weight-bold pa-0 my-2"
-                  >
-                    {{ item.title.toUpperCase() }}
-                  </p>
-                </v-card>
-              </v-col>
-              <v-col
-                v-for="(indivItem, index) in item.values"
-                :key="'uniqServ' + index"
+              <v-card
+                flat
+                class="no-rounded-corners d-flex flex-column align-center justify-center"
               >
-                <v-card
-                  flat
-                  class="no-rounded-corners d-flex flex-column align-center justify-center"
-                >
-                  <v-card-title class="text-h5 font-weight-bold mb-1">{{
-                    indivItem.value ? indivItem.value : 0
-                  }}</v-card-title>
-                  <v-card-subtitle class="text-subtitle-1 text-center">{{
-                    indivItem.title
-                  }}</v-card-subtitle>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
+                <v-card-title class="text-h5 font-weight-bold mb-1">{{
+                  indivItem.value ? indivItem.value : 0
+                }}</v-card-title>
+                <v-card-subtitle class="text-subtitle-1 text-center">{{
+                  indivItem.title
+                }}</v-card-subtitle>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
       <!-- <v-col
         cols="12"
         v-for="(item, index) in data.doctor"

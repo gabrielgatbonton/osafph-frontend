@@ -1,0 +1,168 @@
+<template>
+  <div>
+    <v-dialog v-model="dialog" max-width="600">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on" dark icon
+          ><v-icon dark>mdi-pencil</v-icon></v-btn
+        >
+      </template>
+      <v-card>
+        <v-card-title class="primary pb-4 white--text"
+          ><v-icon dark left>mdi-pencil</v-icon>Edit Inputs</v-card-title
+        >
+        <v-container class="pa-8 mx-auto overflow-scroll">
+          <v-row v-for="(set, index) in packages_data" :key="index">
+            <v-col cols="12" md="6" sm="6">
+              <div>
+                <v-select
+                  v-model="set.name"
+                  :label="`Dialysis Package ${index + 1}`"
+                  :items="packages_enum"
+                  item-text="package_name"
+                  item-value="package_name"
+                  @blur="
+                    $v.payload.dialysis_packages.$each.$iter[
+                      index
+                    ].name.$touch()
+                  "
+                  :error-messages="errorMessages.dialysis_package_name[index]"
+                >
+                  <template v-slot:item="{ item }">
+                    <div id="d-flex flex-column justify-start align-start">
+                      <div>{{ item.package_name }}</div>
+                      <div class="packages-description">
+                        <span
+                          v-for="(dialysisItem, index) in item.dialysis_items"
+                          :key="index"
+                        >
+                          {{ dialysisItem
+                          }}{{
+                            index < item.dialysis_items.length - 1 ? ", " : ""
+                          }}
+                        </span>
+                      </div>
+                    </div>
+                  </template>
+                </v-select>
+              </div>
+            </v-col>
+            <v-col cols="12" md="6" sm="6" class="relative-position">
+              <v-autocomplete
+                v-model="set.funder"
+                :label="`Funder ${index + 1}`"
+                :items="funders_enum"
+                item-text="name"
+              >
+              </v-autocomplete>
+              <v-btn
+                color="red darken-4"
+                icon
+                @click="removeIndex(index, subIndex)"
+                fab
+                class="absolute-position"
+                :ripple="false"
+              >
+                <v-icon>mdi-minus</v-icon>
+              </v-btn>
+            </v-col>
+
+            <v-col cols="12">
+              <div class="text-right">
+                <v-btn dark class="primary" @click="submitForm"
+                  >Submit</v-btn
+                >
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+  </div>
+</template>
+
+<script>
+import { mapActions, mapState } from "vuex";
+import { required } from "vuelidate/lib/validators";
+export default {
+  name: "PackagesDialog",
+  props: {
+    packages_data: {
+      type: Array,
+      required: true,
+    },
+  },
+  data: () => ({
+    dialog: false,
+    payload: {
+      dialysis_packages: [],
+    },
+  }),
+  validations: {
+    payload: {
+      dialysis_packages: {
+        $each: {
+          name: { required },
+          funder: { required },
+        },
+      },
+    },
+  },
+  methods: {
+    ...mapActions("dialysis", ["fetchEnumsPackages"]),
+    ...mapActions("services_choices", ["fetchCrowdFundersEnum"]),
+    submitForm() {
+      //Algorithm
+    },
+    removeIndex() {
+      //Algorithm
+    },
+  },
+  computed: {
+    ...mapState("dialysis", {
+      packages_enum: "dialysis_packages",
+    }),
+    ...mapState("services_choices", {
+      funders_enum: "crowd_fundings",
+    }),
+    errorMessages() {
+      const errors = {};
+      errors.dialysis_package_name = this.payload.dialysis_packages.map(
+        (_, index) => {
+          const sessionErrors = [];
+
+          if (
+            this.$v.payload.dialysis_packages.$each.$iter[index].name.$dirty
+          ) {
+            !this.$v.payload.dialysis_packages.$each.$iter[index].name
+              .required && sessionErrors.push(`Dialysis Package is required`);
+          }
+
+          return sessionErrors;
+        }
+      );
+      return errors;
+    },
+  },
+  watch: {
+    watch: {
+      packages_data: {
+        handler(newVal) {
+          //Change this if you are going to do the algorithm here
+          this.payload.dialysis_packages = newVal;
+        },
+      },
+    },
+  },
+  created() {
+    this.fetchEnumsPackages();
+    this.fetchCrowdFundersEnum();
+  },
+};
+</script>
+
+<style scoped>
+.overflow-scroll {
+  overflow-y: auto;
+  height: 100%;
+}
+</style>

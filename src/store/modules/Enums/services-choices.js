@@ -75,9 +75,14 @@ export const services_choices = {
         dispatch("fetchSpecialties");
       }
     },
-    fetchServiceTypesEnum({dispatch, state}) {
+    fetchServiceTypesEnum({ dispatch, state }) {
       if (!state.service_types.length) {
         dispatch("fetchServiceTypes");
+      }
+    },
+    fetchCrowdFundersEnum({ dispatch, state }) {
+      if (!state.crowd_fundings.length) {
+        dispatch("fetchCrowdFundings");
       }
     },
     fetchDoctors({ commit }) {

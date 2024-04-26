@@ -5,7 +5,7 @@
         <v-btn
           dark
           block
-          class="mb-2 blue darken-4"
+          class="mb-2 primary"
           :class="{ 'disabled-button': disabledButton }"
           v-bind="attrs"
           v-on="on"

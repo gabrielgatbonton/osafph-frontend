@@ -49,6 +49,17 @@ export default {
     switchConsultations() {
       this.consultationsStatus = !this.consultationsStatus;
     },
+    routeEvents() {
+      const channel = this.$pusher.subscribe("public-hospital-services");
+      const channel2 = this.$pusher.subscribe("consultations");
+
+      channel.bind("status.changed", () => {
+        this.fetchConsultations();
+      });
+      channel2.bind("consultation.event", () => {
+        this.fetchConsultations();
+      });
+    },
   },
   computed: {
     ...mapGetters("consultations", [
@@ -63,11 +74,9 @@ export default {
   },
   created() {
     this.fetchConsultations();
-    const channel = this.$pusher.subscribe("public-hospital-services");
-    channel.bind("status.changed", () => {
-      this.fetchConsultations();
-    });
+    this.routeEvents();
   },
+ 
 };
 </script>
 

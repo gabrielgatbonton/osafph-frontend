@@ -1,78 +1,74 @@
 <template>
-  <v-card>
-    <v-card-title class="blue darken-1 white--text"
-      ><v-icon dark left v-if="patientInformation.header.icon">{{
-        patientInformation.header.icon
-      }}</v-icon
-      >{{ patientInformation.header.title }}</v-card-title
-    >
-    <v-container fluid class="py-4">
-      <v-row no-gutters>
-        <v-col cols="12" md="4" align-self="center">
-          <div class="text-center">
-            <div :class="`d-inline-block ${imageSrc.class}`" :style="imageSrc.style">
-              <v-img
-                alt="Citizen Portrait"
-                class="rounded-lg"
-                max-width="170"
-                :src="imageSrc.src"
-              ></v-img>
-            </div>
-          </div>
-        </v-col>
-        <v-col cols="12" md="8" sm="12" xs="12">
-          <v-row no-gutters>
-            <v-col
-              cols="12"
-              :md="info.title !== 'Address' ? 6 : 12"
-              :sm="info.title !== 'Address' ? 6 : 12"
-              v-for="(info, index) in patientInformation.info"
-              :key="index"
+  <v-card outlined class="pa-0 bordered-card colored-border">
+    <v-row no-gutters>
+      <v-col cols="12" class="d-flex align-center">
+        <v-card
+          flat
+          class="card-light-bgColor reversed-shaped-card px-4 d-flex"
+        >
+          <v-icon
+            size="20"
+            color="white"
+            v-if="patientInformation.header.icon"
+            >{{ patientInformation.header.icon }}</v-icon
+          >
+          <p
+            class="text-subtitle-2 white--text font-weight-bold pa-0 my-2 ml-2"
+          >
+            {{ patientInformation.header.title }}
+          </p>
+        </v-card>
+      </v-col>
+
+      <v-container fluid class="py-4">
+        <v-row
+          v-for="(info, index) in patientInformation.info"
+          :key="index"
+          no-gutters
+          :class="{
+            'mb-3': $vuetify.breakpoint.xs && index < categories.length - 1,
+          }"
+        >
+          <v-col cols="12" md="6" sm="6">
+            <v-card-subtitle class="py-0">{{ info.title }}</v-card-subtitle>
+          </v-col>
+          <v-col cols="12" md="6" sm="6">
+            <v-card-text
+              :class="{
+                font: $vuetify.breakpoint.xs,
+                'font-weight-bold': !$vuetify.breakpoint.xs,
+              }"
+              class="py-0"
+              >{{ info.content }}</v-card-text
             >
-              <div class="ma-2">
-                <div class="text-subtitle-1 grey--text">
-                  {{ info.title }}
-                </div>
-                <div class="text-h5">{{ info.content }}</div>
-              </div>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="12">
-          <div class="mt-2">
-            <v-expansion-panels>
-              <v-expansion-panel>
-                <v-expansion-panel-header>
-                  <div class="text-subtitle-1 font-weight-bold">
-                    Additional Information
-                  </div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="ma-2">
-                    <v-row>
-                      <v-col
-                        cols="6"
-                        v-for="(
-                          info, index
-                        ) in patientInformation.additional_info"
-                        :key="index"
-                      >
-                        <div class="text-subtitle-1 grey--text">
-                          {{ info.title }}
-                        </div>
-                        <div class="text-h5">
-                          {{ info.content }}
-                        </div>
-                      </v-col>
-                    </v-row>
-                  </div>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+          </v-col>
+        </v-row>
+        <v-divider class="ma-3"></v-divider>
+        <div class="mx-4 mb-2 font-weight-medium">Additional Information</div>
+        <v-row
+          v-for="(info, index) in patientInformation.additional_info"
+          :key="'emergency' + index"
+          no-gutters
+          :class="{
+            'mb-3': $vuetify.breakpoint.xs && index < emergency.length - 1,
+          }"
+        >
+          <v-col cols="12" md="6" sm="6">
+            <v-card-subtitle class="py-0">{{ info.title }}</v-card-subtitle>
+          </v-col>
+          <v-col cols="12" md="6" sm="6">
+            <v-card-text
+              :class="{
+                font: $vuetify.breakpoint.xs,
+                'font-weight-bold': !$vuetify.breakpoint.xs,
+              }"
+              class="py-0"
+              >{{ info.content }}</v-card-text
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-row>
   </v-card>
 </template>
 
@@ -102,4 +98,25 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.bordered-card {
+  border-radius: 10px;
+  border: 1px solid whitesmoke;
+  overflow: hidden;
+}
+.colored-border {
+  border: 1px solid #ffd1d1;
+}
+.card-light-bgColor {
+  background-color: #ff4949;
+}
+.reversed-shaped-card {
+  border-top-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.no-rounded-corners {
+  border-radius: 0 !important;
+}
+</style>

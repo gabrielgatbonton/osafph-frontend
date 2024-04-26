@@ -519,7 +519,6 @@ export default {
     "payload.schedule": {
       handler(newVal) {
         this.setupDateWatchers(newVal);
-        console.log(newVal);
       },
       deep: true,
     },

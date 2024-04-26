@@ -2,7 +2,6 @@
   <div>
     <v-navigation-drawer
       v-model="localDrawer"
-      dark
       app
       :permanent="isPermanent"
       :mini-variant="miniVariant"
@@ -19,7 +18,7 @@
 
       <!-- Shows only when nav drawer is collapsible -->
       <v-container v-else>
-        <v-row class="blue-grey darken-4">
+        <v-row class="red darken-1">
           <v-col cols="auto" class="d-flex align-start">
             <v-img :src="logoUrl" height="35" width="35" contain eager></v-img>
           </v-col>

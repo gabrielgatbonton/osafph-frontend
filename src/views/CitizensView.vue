@@ -66,6 +66,21 @@ export default {
       // Fetch registrants' data when the component is created
       this.fetchRegistrants();
     },
+    routeEvents() {
+      const channel = this.$pusher.subscribe("public-citizens");
+
+
+        channel.bind("citizen.created", () => {
+          this.fetchData();
+        });
+        channel.bind("citizen.updated", () => {
+          this.fetchData();
+        });
+        channel.bind("citizen.deleted", () => {
+          this.fetchData();
+        });
+      
+    },
   },
   computed: {
     ...mapState("registrants", {
@@ -82,16 +97,7 @@ export default {
   },
   created() {
     this.fetchData();
-    const channel = this.$pusher.subscribe("public-citizens");
-    channel.bind("citizen.created", () => {
-      this.fetchData();
-    });
-    channel.bind("citizen.updated", () => {
-      this.fetchData();
-    });
-    channel.bind("citizen.deleted", () => {
-      this.fetchData();
-    });
+    this.routeEvents();
   },
 };
 </script>

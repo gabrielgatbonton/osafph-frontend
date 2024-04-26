@@ -57,12 +57,20 @@ export default {
     updateDialog(value) {
       this.dialog = value;
     },
+    routeEvents() {
+      const channel = this.$pusher.subscribe("dialysis-queue");
+
+      channel.bind("queue.changed", () => {
+        this.fetchDialysisQueue();
+      });
+    },
   },
   computed: {
     ...mapGetters("dialysis_general", ["queuingDialysisList"]),
   },
   created() {
     this.fetchDialysisQueue();
+    this.routeEvents();
   },
 };
 </script>
