@@ -58,7 +58,13 @@
                 :label="`Funder ${index + 1}`"
                 :items="funders_enum"
                 item-text="name"
+                @blur="
+                    $v.payload.dialysis_packages.$each.$iter[
+                      index
+                    ].name.$touch()
+                  "
               >
+              
               </v-autocomplete>
               <v-btn
                 color="red darken-4"
@@ -128,10 +134,17 @@ export default {
       });
     },
     submitForm() {
-      //Algorithm
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.$emit("validationSuccess", true);
+        this.$v.$reset();
+        this.dialog = !this.dialog
+      }
     },
     removeIndex(index) {
+      if(this.payload.dialysis_packages.length > 1){
         this.payload.dialysis_packages.splice(index, 1);
+      }
     },
   },
   computed: {
@@ -192,14 +205,19 @@ export default {
         this.payload.dialysis_packages = newVal;
       },
     },
-    payload: {
+    "payload.dialysis_packages": {
       handler(value) {
         console.log("payload", value);
       },
     },
-    serviceStatus: {
+    packages_enum: {
       handler(value) {
-        console.log("package_dialysis", value);
+        console.log("packages_enum", value);
+      },
+    },
+    funders_enum: {
+      handler(value) {
+        console.log("funders_enum", value);
       },
     },
   },
@@ -211,6 +229,14 @@ export default {
 </script>
 
 <style scoped>
+.packages-description {
+  font-size: 12px;
+  color: #333;
+  font-weight: bold;
+}
+
+
+
 .overflow-scroll {
   overflow-y: auto;
   height: 100%;
