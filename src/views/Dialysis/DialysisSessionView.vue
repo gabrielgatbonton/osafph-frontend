@@ -126,9 +126,9 @@ export default {
       "fetchDialysisSessionById",
       "completeDialysisSessionById",
       "toggleServiceProgress",
+      "fetchDialysisSessions"
     ]),
     ...mapActions("files", ["fetchFiles"]),
-    ...mapActions("dialysis_sessions", ["fetchDialysisSessions"]),
     fetchSessionData() {
       const id = this.$route.params.id;
       this.fetchDialysisSessionById(id).catch((error) => {
@@ -374,14 +374,12 @@ export default {
       this.session = value;
       this.fetchFiles(this.session.hospital_service.id);
     },
-    session(value) {
-      console.log(value)
-    },
   },
   created() {
     this.fetchSessionData();
     this.fetchDialysisSessions();
   },
+
 };
 </script>
 

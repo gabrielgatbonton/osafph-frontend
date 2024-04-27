@@ -1,17 +1,23 @@
 <template>
   <div>
     <v-dialog v-model="dialog" max-width="600">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on" dark icon
-          ><v-icon dark>mdi-pencil</v-icon></v-btn
-        >
+      <template
+        v-slot:activator="{ on, attrs }"
+        v-if="userRole === 'DIALYSIS_ENCODER'"
+      >
+        <v-btn v-bind="attrs" v-on="on" dark icon>
+          <v-icon dark>mdi-pencil</v-icon>
+        </v-btn>
       </template>
       <v-card>
         <v-card-title class="primary pb-4 white--text"
           ><v-icon dark left>mdi-pencil</v-icon>Edit Inputs</v-card-title
         >
         <v-container class="pa-8 mx-auto overflow-scroll">
-          <v-row v-for="(set, index) in packages_data" :key="index">
+          <v-row
+            v-for="(set, index) in payload.dialysis_packages"
+            :key="index"
+          >
             <v-col cols="12" md="6" sm="6">
               <div>
                 <v-select
@@ -57,7 +63,7 @@
               <v-btn
                 color="red darken-4"
                 icon
-                @click="removeIndex(index, subIndex)"
+                @click="removeIndex(index)"
                 fab
                 class="absolute-position"
                 :ripple="false"
@@ -65,15 +71,25 @@
                 <v-icon>mdi-minus</v-icon>
               </v-btn>
             </v-col>
-
-            <v-col cols="12">
-              <div class="text-right">
-                <v-btn dark class="primary" @click="submitForm"
-                  >Submit</v-btn
-                >
-              </div>
-            </v-col>
           </v-row>
+          <v-col cols="12">
+            <div class="d-flex justify-center align-center">
+              <v-btn
+                color="blue darken-4"
+                icon
+                @click="addIndex"
+                fab
+                :ripple="false"
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </div>
+          </v-col>
+          <v-col cols="12">
+            <div class="text-right my-n5">
+              <v-btn dark class="primary" @click="submitForm">Submit</v-btn>
+            </div>
+          </v-col>
         </v-container>
       </v-card>
     </v-dialog>
@@ -81,16 +97,11 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
 export default {
   name: "PackagesDialog",
-  props: {
-    packages_data: {
-      type: Array,
-      required: true,
-    },
-  },
+  props: ["serviceStatus"],
   data: () => ({
     dialog: false,
     payload: {
@@ -110,11 +121,17 @@ export default {
   methods: {
     ...mapActions("dialysis", ["fetchEnumsPackages"]),
     ...mapActions("services_choices", ["fetchCrowdFundersEnum"]),
+    addIndex() {
+      this.payload.dialysis_packages.push({
+        name: null,
+        funder: null,
+      });
+    },
     submitForm() {
       //Algorithm
     },
-    removeIndex() {
-      //Algorithm
+    removeIndex(index) {
+        this.payload.dialysis_packages.splice(index, 1);
     },
   },
   computed: {
@@ -124,6 +141,7 @@ export default {
     ...mapState("services_choices", {
       funders_enum: "crowd_fundings",
     }),
+    ...mapGetters("login", ["userRole"]),
     errorMessages() {
       const errors = {};
       errors.dialysis_package_name = this.payload.dialysis_packages.map(
@@ -142,14 +160,46 @@ export default {
       );
       return errors;
     },
+
+    // ExistingPackages(){
+    //   let package_dialysis = [];
+
+    //   Object.keys(this.serviceStatus).forEach((items) => {
+    //     console.log(items);
+    //       const packages_info = this.serviceStatus[items];
+
+    //       Object.keys(packages_info).forEach((innerItems) => {
+    //         if(innerItems.includes("packages")) {
+    //           console.log("yehey")
+    //             packages_info[innerItems].forEach((package_data) => {
+    //               package_dialysis.push({
+    //                 name: package_data["name"],
+    //                 funder: package_data["funder"]
+    //               })
+    //             })
+    //         }
+    //       })
+    //     });
+    //   return {
+    //     package_dialysis: package_dialysis
+    //   };
+    // }
   },
   watch: {
-    watch: {
-      packages_data: {
-        handler(newVal) {
-          //Change this if you are going to do the algorithm here
-          this.payload.dialysis_packages = newVal;
-        },
+    packages_data: {
+      handler(newVal) {
+        //Change this if you are going to do the algorithm here
+        this.payload.dialysis_packages = newVal;
+      },
+    },
+    payload: {
+      handler(value) {
+        console.log("payload", value);
+      },
+    },
+    serviceStatus: {
+      handler(value) {
+        console.log("package_dialysis", value);
       },
     },
   },
@@ -164,5 +214,15 @@ export default {
 .overflow-scroll {
   overflow-y: auto;
   height: 100%;
+}
+
+.relative-position {
+  position: relative;
+}
+
+.absolute-position {
+  position: absolute;
+  top: -10px;
+  right: -10px;
 }
 </style>

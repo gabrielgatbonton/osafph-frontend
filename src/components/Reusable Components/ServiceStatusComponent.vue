@@ -111,7 +111,7 @@
             {{ serviceStatus.header.title }}
           </div>
 
-          <PackagesDialog :packages_data="[{name: 'Funder', funder: 'Test'}]"/>
+          <PackagesDialog :serviceStatus="serviceStatus"/>
         </v-card-title>
         <v-expansion-panels accordion focusable>
           <v-expansion-panel
@@ -119,11 +119,6 @@
             :key="packIndex"
           >
             <v-expansion-panel-header>
-              <div v-if="userRole === 'DIALYSIS_ENCODER'">
-                <v-btn color="red darken-4" icon :ripple="false">
-                  <v-icon>mdi-minus</v-icon>
-                </v-btn>
-              </div>
               <p class="text-button my-auto">{{ info.name }}</p>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -145,11 +140,6 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
-        <div class="d-flex justify-center align-center" v-if="userRole === 'DIALYSIS_ENCODER'">
-          <v-btn color="blue darken-4" icon :ripple="false">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </div>
       </v-card>
     </v-col>
     <v-col
@@ -208,7 +198,7 @@ import { mapGetters } from "vuex";
 import PackagesDialog from "../Dialysis/PackagesDialog.vue";
 export default {
   name: "ServiceStatusComponent",
-  props: ["serviceStatus", "services"],
+  props: ["serviceStatus"],
   data: () => ({
     toggle_status: false,
   }),
@@ -282,7 +272,7 @@ export default {
     },
     packageInformation: {
       handler(value) {
-        console.log(value);
+        console.log("packageInformation", value);
       },
     },
   },
