@@ -126,7 +126,7 @@ export default {
       "fetchDialysisSessionById",
       "completeDialysisSessionById",
       "toggleServiceProgress",
-      "fetchDialysisSessions"
+      "fetchDialysisSessions",
     ]),
     ...mapActions("files", ["fetchFiles"]),
     fetchSessionData() {
@@ -303,7 +303,8 @@ export default {
     },
     serviceStatus() {
       //Assign Date Released Value and Logic.
-      let scheduled_dialysis_sessions = []
+      let scheduled_dialysis_sessions = [];
+      let machine_value = null;
       let date_released_data = this.session.hospital_service.date_released
         ? {
             title: "Date Released",
@@ -313,23 +314,56 @@ export default {
             ),
           }
         : false;
-        Object.keys(this.dialysis_sessions).forEach((item) => {
-          if (item.includes("data")) {
-            this.dialysis_sessions[item].forEach((info) => {
-              if (
-                this.session.citizen.full_name === info["citizen_full_name"]
-              ) {
-                scheduled_dialysis_sessions.push({
-                  scheduled_date_session: format(
-                    parseISO(info.scheduled_date),
-                    "MMMM dd, yyyy"
-                  ),
-                  dialysis_session_status: info.status,
-                });
-              }
-            });
-          }
-        });
+      Object.keys(this.dialysis_sessions).forEach((item) => {
+        if (item.includes("data")) {
+          this.dialysis_sessions[item].forEach((info) => {
+            if (this.session.citizen.full_name === info["citizen_full_name"]) {
+              scheduled_dialysis_sessions.push({
+                scheduled_date_session: format(
+                  parseISO(info.scheduled_date),
+                  "MMMM dd, yyyy"
+                ),
+                dialysis_session_status: info.status,
+              });
+            }
+          });
+        }
+      });
+      scheduled_dialysis_sessions.sort((a, b) => {
+        const dateA = new Date(a.scheduled_date_session);
+        const dateB = new Date(b.scheduled_date_session);
+        return dateA - dateB;
+      });
+
+      switch (this.session.machine) {
+        case "DIALYSIS MACHINE 3R":
+          machine_value = "3R";
+          break;
+        case "DIALYSIS MACHINE 4R":
+          machine_value = "4R";
+          break;
+        case "DIALYSIS MACHINE 5R":
+          machine_value = "5R";
+          break;
+        case "DIALYSIS MACHINE 6R":
+          machine_value = "6R";
+          break;
+        case "DIALYSIS MACHINE 7R":
+          machine_value = "7R";
+          break;
+        case "DIALYSIS MACHINE 8R":
+          machine_value = "8R";
+          break;
+        case "DIALYSIS MACHINE 9R":
+          machine_value = "9R";
+          break;
+        case "DIALYSIS MACHINE 10R":
+          machine_value = "10R";
+          break;
+        case "DIALYSIS MACHINE 2V":
+          machine_value = "2V";
+          break;
+      }
 
       return {
         status: this.session.hospital_service.status,
@@ -357,10 +391,18 @@ export default {
           packages: this.session.dialysis_packages,
         },
         header_dialysis: {
-          header_title: "Dialysis",
+          header_title: "DIALYSIS",
           date: "Date Scheduled",
           status: "Status",
           icon: "mdi-iv-bag",
+          time: "Time",
+          time_value: this.session.session,
+          sessions_available:
+            scheduled_dialysis_sessions.length > 1
+              ? `${scheduled_dialysis_sessions.length} sessions available`
+              : `${scheduled_dialysis_sessions.length} session available`,
+          machine_num: "Machine No.",
+          machine_value: machine_value,
         },
         scheduled_dialysis_sessions: scheduled_dialysis_sessions,
       };
@@ -373,13 +415,19 @@ export default {
     getDialysisSession(value) {
       this.session = value;
       this.fetchFiles(this.session.hospital_service.id);
+      console.log("getDialysisSession", value);
+    },
+    session(value) {
+      console.log("session", value);
+    },
+    dialysis_sessions(value) {
+      console.log("dialysis_sessions", value);
     },
   },
   created() {
     this.fetchSessionData();
     this.fetchDialysisSessions();
   },
-
 };
 </script>
 

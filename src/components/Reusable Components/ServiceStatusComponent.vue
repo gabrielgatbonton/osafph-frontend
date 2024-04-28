@@ -111,7 +111,7 @@
             {{ serviceStatus.header.title }}
           </div>
 
-          <PackagesDialog :serviceStatus="serviceStatus"/>
+          <PackagesDialog :serviceStatus="serviceStatus" />
         </v-card-title>
         <v-expansion-panels accordion focusable>
           <v-expansion-panel
@@ -144,14 +144,34 @@
     </v-col>
     <v-col
       cols="12"
-      v-if="serviceStatus.items_availed.service_type === 'DIALYSIS' && userRole === 'DIALYSIS_ENCODER'"
+      v-if="
+        serviceStatus.items_availed.service_type === 'DIALYSIS' &&
+        userRole === 'DIALYSIS_ENCODER'
+      "
     >
       <v-card>
-        <v-card-title class="blue darken-1 white--text">
+        <v-card-title class="blue darken-1">
           <v-icon dark class="mr-2">{{
             serviceStatus.header_dialysis.icon
           }}</v-icon>
-          {{ serviceStatus.header_dialysis.header_title }}
+          <v-col class="my-n3 white--text">
+            <div class="text-subtitle-1">
+              {{ serviceStatus.header_dialysis.header_title }}
+            </div>
+            <div class="text-subtitle-1 font-italic font-weight-light">
+              {{ serviceStatus.header_dialysis.sessions_available }}
+            </div>
+          </v-col>
+          <v-col class="my-n3 white--text">
+            <div class="text-subtitle-1 font-italic font-weight-light">
+              {{ serviceStatus.header_dialysis.time }}:
+              {{ serviceStatus.header_dialysis.time_value }}
+            </div>
+            <div class="text-subtitle-1 font-italic font-weight-light">
+              {{ serviceStatus.header_dialysis.machine_num }}:
+              {{ serviceStatus.header_dialysis.machine_value }}
+            </div>
+          </v-col>
         </v-card-title>
         <v-card-text>
           <v-row
@@ -176,11 +196,15 @@
               <div
                 class="text-h5 font-italic"
                 :class="{
-                  'orange--text': sessionsInfo.dialysis_session_status === 'PENDING' ||
-                  sessionsInfo.dialysis_session_status === 'WALK-IN',
-                  'red--text': sessionsInfo.dialysis_session_status === 'UNATTENDED',
-                  'green--text': sessionsInfo.dialysis_session_status === 'COMPLETED',
-                  'indigo--text': sessionsInfo.dialysis_session_status === 'IN PROGRESS',
+                  'orange--text':
+                    sessionsInfo.dialysis_session_status === 'PENDING' ||
+                    sessionsInfo.dialysis_session_status === 'WALK-IN',
+                  'red--text':
+                    sessionsInfo.dialysis_session_status === 'UNATTENDED',
+                  'green--text':
+                    sessionsInfo.dialysis_session_status === 'COMPLETED',
+                  'indigo--text':
+                    sessionsInfo.dialysis_session_status === 'IN PROGRESS',
                 }"
               >
                 {{ sessionsInfo.dialysis_session_status }}
