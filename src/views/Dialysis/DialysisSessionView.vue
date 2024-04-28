@@ -336,6 +336,12 @@ export default {
       });
 
       switch (this.session.machine) {
+        case "DIALYSIS MACHINE 1V":
+          machine_value = "1V";
+          break;
+        case "DIALYSIS MACHINE 2V":
+          machine_value = "2V";
+          break;
         case "DIALYSIS MACHINE 3R":
           machine_value = "3R";
           break;
@@ -359,9 +365,6 @@ export default {
           break;
         case "DIALYSIS MACHINE 10R":
           machine_value = "10R";
-          break;
-        case "DIALYSIS MACHINE 2V":
-          machine_value = "2V";
           break;
       }
 
@@ -415,13 +418,6 @@ export default {
     getDialysisSession(value) {
       this.session = value;
       this.fetchFiles(this.session.hospital_service.id);
-      console.log("getDialysisSession", value);
-    },
-    session(value) {
-      console.log("session", value);
-    },
-    dialysis_sessions(value) {
-      console.log("dialysis_sessions", value);
     },
   },
   created() {

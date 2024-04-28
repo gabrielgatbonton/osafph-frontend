@@ -294,11 +294,6 @@ export default {
         }
       },
     },
-    packageInformation: {
-      handler(value) {
-        console.log("packageInformation", value);
-      },
-    },
   },
 };
 </script>

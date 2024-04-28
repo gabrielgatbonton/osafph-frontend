@@ -173,51 +173,52 @@ export default {
       );
       return errors;
     },
+    ExistingPackages(){
+      if(this.payload.dialysis_packages.length === 0){
+        Object.keys(this.serviceStatus).forEach((items) => {
+          const packages_info = this.serviceStatus[items];
 
-    // ExistingPackages(){
-    //   let package_dialysis = [];
-
-    //   Object.keys(this.serviceStatus).forEach((items) => {
-    //     console.log(items);
-    //       const packages_info = this.serviceStatus[items];
-
-    //       Object.keys(packages_info).forEach((innerItems) => {
-    //         if(innerItems.includes("packages")) {
-    //           console.log("yehey")
-    //             packages_info[innerItems].forEach((package_data) => {
-    //               package_dialysis.push({
-    //                 name: package_data["name"],
-    //                 funder: package_data["funder"]
-    //               })
-    //             })
-    //         }
-    //       })
-    //     });
-    //   return {
-    //     package_dialysis: package_dialysis
-    //   };
-    // }
+          Object.keys(packages_info).forEach((innerItems) => {
+            if(innerItems.includes("packages")) {
+                packages_info[innerItems].forEach((package_data) => {
+                  this.payload.dialysis_packages.push({
+                    name: package_data["name"],
+                    funder: package_data["funder"]
+                  })
+                })
+            }
+          })
+        });
+      }
+        return this.payload.dialysis_packages;
+    }
   },
   watch: {
-    packages_data: {
-      handler(newVal) {
-        //Change this if you are going to do the algorithm here
-        this.payload.dialysis_packages = newVal;
-      },
-    },
+    // packages_data: {
+    //   handler(newVal) {
+    //     console.log("packages_data", newVal)
+    //     //Change this if you are going to do the algorithm here
+    //     this.payload.dialysis_packages = newVal;
+    //   },
+    // },
     "payload.dialysis_packages": {
       handler(value) {
         console.log("payload", value);
       },
     },
-    packages_enum: {
+    serviceStatus: {
+      immediate: true,
       handler(value) {
-        console.log("packages_enum", value);
+        console.log("serviceStatus", value);
       },
     },
-    funders_enum: {
-      handler(value) {
-        console.log("funders_enum", value);
+    "serviceStatus.status": {
+      handler(newVal) {
+        this.serviceStatus.scheduled_dialysis_sessions.forEach((item) => {
+          if(item["scheduled_date_session"] === this.serviceStatus.scheduledDate.content){
+            item["dialysis_session_status"] = newVal
+          }
+        })
       },
     },
   },
