@@ -254,9 +254,11 @@
                         />
                         <v-btn
                           v-if="buttonProperties.checkBiometrics !== false"
-                          class="my-2 error"
+                          class="my-2"
+                          color="error"
                           dark
                           block
+                          outlined
                           @click="deleteActivator('biometrics')"
                           >Delete Biometrics</v-btn
                         >

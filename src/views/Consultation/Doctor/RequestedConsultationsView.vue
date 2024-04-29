@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="switchData">
+    <div v-if="consultations">
       <v-container fluid class="table-title ma-1">
         <v-row>
           <v-col cols="auto">
@@ -8,7 +8,7 @@
             <span class="title">Consultations</span>
           </v-col>
           <v-spacer></v-spacer>
-          <v-col cols="auto">
+          <!-- <v-col cols="auto">
             <v-btn
               class="mr-3"
               color="primary"
@@ -16,14 +16,15 @@
               @click="switchConsultations"
               >{{ consultationsStatus ? "Pending" : "Archived" }}</v-btn
             >
-          </v-col>
+          </v-col> -->
         </v-row>
       </v-container>
       <v-divider class="mx-3"></v-divider>
       <v-container fluid class="ma-1">
         <ConsultationsTable
           :routeName="routeName"
-          :consultations="switchData"
+          :consultations="consultations"
+          @query_params="updateFetch"
         />
       </v-container>
     </div>
@@ -34,11 +35,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import ConsultationsTable from "@/components/Consultation/Consultations-Table.vue";
 export default {
   data: () => ({
-    consultationsStatus: false,
+    // consultationsStatus: false,
     routeName: "consultation-view",
   }),
   components: {
@@ -46,9 +47,6 @@ export default {
   },
   methods: {
     ...mapActions("consultations", ["fetchConsultations"]),
-    switchConsultations() {
-      this.consultationsStatus = !this.consultationsStatus;
-    },
     routeEvents() {
       const channel = this.$pusher.subscribe("public-hospital-services");
       const channel2 = this.$pusher.subscribe("consultations");
@@ -60,17 +58,14 @@ export default {
         this.fetchConsultations();
       });
     },
+    updateFetch(query_params) {
+      this.fetchConsultations(query_params);
+    }
   },
   computed: {
-    ...mapGetters("consultations", [
-      "getPendingConsultations",
-      "getArchivedConsultations",
-    ]),
-    switchData() {
-      return this.consultationsStatus
-        ? this.getArchivedConsultations
-        : this.getPendingConsultations;
-    },
+    ...mapState("consultations", {
+      consultations: "consultations",
+    })
   },
   created() {
     this.fetchConsultations();

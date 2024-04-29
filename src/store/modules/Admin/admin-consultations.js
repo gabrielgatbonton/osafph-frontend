@@ -20,7 +20,7 @@ export const admin_consultations = {
     },
     getAdminConsultationForm: (state) => state.consultation_form,
     getAdminPreviousConsultations: (state) =>
-      state.consultation.consultation.previous_consultation_forms,
+      state.consultation?.consultation?.previous_consultation_forms,
   },
   mutations: {
     SET_CONSULTATIONS(state, consultations) {

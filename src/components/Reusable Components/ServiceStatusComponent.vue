@@ -74,7 +74,7 @@
       </v-card>
     </v-col>
     <v-col cols="12" v-if="serviceStatus.dateReleased">
-      <v-card outlined class="rounded-card colored-border">
+      <v-card outlined class="bordered-card colored-border">
         <v-container>
           <v-row justify="center" class="pa-2">
             <v-col align-self="center" cols="12">
@@ -102,103 +102,179 @@
       cols="12"
       v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
     >
-      <v-card>
-        <v-card-title
-          class="blue darken-1 white--text d-flex justify-space-between align-center"
-        >
-          <div>
-            <v-icon dark class="mr-2">{{ serviceStatus.header.icon }}</v-icon>
-            {{ serviceStatus.header.title }}
-          </div>
-
-          <PackagesDialog :serviceStatus="serviceStatus" />
-        </v-card-title>
-        <v-expansion-panels accordion focusable>
-          <v-expansion-panel
-            v-for="(info, packIndex) in serviceStatus.items_availed.packages"
-            :key="packIndex"
-          >
-            <v-expansion-panel-header>
-              <p class="text-button my-auto">{{ info.name }}</p>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-                <span
-                  v-for="(item, itemIndex) in info.dialysis_items"
-                  :key="itemIndex"
-                > {{ item }}{{ itemIndex < info.dialysis_items.length - 1 ? ", ": ""}}
-                </span>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+      <v-card outlined class="rounded-card colored-border">
+        <v-container fluid class="py-4">
+          <v-row dense justify="center" class="ma-2">
+            <v-col cols="12">
+              <div class="d-flex justify-space-between align-center">
+                <p class="text-subtitle-1 black--text font-weight-bold">
+                  {{ serviceStatus.header.title.toUpperCase() }}
+                </p>
+                <PackagesDialog :serviceStatus="serviceStatus" />
+              </div>
+            </v-col>
+            <v-col align-self="center" cols="12">
+              <v-expansion-panels flat accordion focusable>
+                <v-expansion-panel
+                  v-for="(info, packIndex) in serviceStatus.items_availed
+                    .packages"
+                  :key="packIndex"
+                >
+                  <v-expansion-panel-header class="py-0">
+                    <p class="text-button my-0 py-0">{{ info.name }}</p>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <v-container>
+                      <v-row>
+                        <v-col
+                          cols="6"
+                          v-for="(item, itemIndex) in info.dialysis_items"
+                          :key="itemIndex"
+                        >
+                          <ul>
+                            <li>
+                              {{ item }}
+                            </li>
+                          </ul>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card>
     </v-col>
     <v-col
       cols="12"
       v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
     >
-      <v-card>
-        <v-card-title class="blue darken-1">
-          <v-icon dark class="mr-2">{{
-            serviceStatus.header_dialysis.icon
-          }}</v-icon>
-          <v-col class="my-n3 white--text">
-            <div class="text-subtitle-1">
-              {{ serviceStatus.header_dialysis.header_title }}
-            </div>
-            <div class="text-subtitle-1 font-italic font-weight-light">
-              {{ serviceStatus.header_dialysis.sessions_available }}
-            </div>
-          </v-col>
-          <v-col class="my-n3 white--text">
-            <div class="text-subtitle-1 font-italic font-weight-light">
-              {{ serviceStatus.header_dialysis.time }}:
-              {{ serviceStatus.header_dialysis.time_value }}
-            </div>
-            <div class="text-subtitle-1 font-italic font-weight-light">
-              {{ serviceStatus.header_dialysis.machine_num }}:
-              {{ serviceStatus.header_dialysis.machine_value }}
-            </div>
-          </v-col>
-        </v-card-title>
-        <v-card-text>
-          <v-row
-            class="mt-1"
-            v-for="(
-              sessionsInfo, infoIndex
-            ) in serviceStatus.scheduled_dialysis_sessions"
-            :key="infoIndex"
-          >
-            <v-col cols="12" md="6">
-              <div class="text-subtitle-1 font-italic font-weight-light">
-                {{ serviceStatus.header_dialysis.date }}
-              </div>
-              <div class="text-h5 black--text">
-                {{ sessionsInfo.scheduled_date_session }}
-              </div>
+      <v-card outlined class="bordered-card colored-border">
+        <v-container fluid class="py-4">
+          <v-row dense justify="center" class="ma-2">
+            <!-- <v-icon class="mr-2">{{
+                  serviceStatus.header_dialysis.icon
+                }}</v-icon> -->
+            <v-col cols="12">
+              <p class="text-subtitle-1 py-0 my-0 black--text font-weight-bold">
+                {{ serviceStatus.header_dialysis.header_title }}
+              </p>
             </v-col>
-            <v-col cols="12" md="6">
-              <div class="text-subtitle-1 font-italic font-weight-light">
-                {{ serviceStatus.header_dialysis.status }}
-              </div>
-              <div
-                class="text-h5 font-italic"
-                :class="{
-                  'orange--text':
-                    sessionsInfo.dialysis_session_status === 'PENDING' ||
-                    sessionsInfo.dialysis_session_status === 'WALK-IN',
-                  'red--text':
-                    sessionsInfo.dialysis_session_status === 'UNATTENDED',
-                  'green--text':
-                    sessionsInfo.dialysis_session_status === 'COMPLETED',
-                  'indigo--text':
-                    sessionsInfo.dialysis_session_status === 'IN PROGRESS',
-                }"
-              >
-                {{ sessionsInfo.dialysis_session_status }}
-              </div>
+
+            <v-col cols="12">
+              <v-container fluid class="py-4">
+                <v-card flat>
+                  <v-row
+                    no-gutters
+                    :class="{
+                      'mb-3':
+                        $vuetify.breakpoint.xs &&
+                        index < personal_informations.length - 1,
+                    }"
+                  >
+                    <v-col cols="12" md="6" sm="6">
+                      <v-card-subtitle class="py-0"
+                        >Available Sessions</v-card-subtitle
+                      >
+                    </v-col>
+                    <v-col cols="12" md="6" sm="6">
+                      <v-card-text
+                        :class="{
+                          font: $vuetify.breakpoint.xs,
+                          'font-weight-bold': !$vuetify.breakpoint.xs,
+                        }"
+                        class="py-0"
+                      >
+                        {{ serviceStatus.header_dialysis.sessions_available }}
+                      </v-card-text>
+                    </v-col>
+
+                    <v-col cols="12" md="6" sm="6">
+                      <v-card-subtitle class="py-0">
+                        {{ serviceStatus.header_dialysis.time }}
+                      </v-card-subtitle>
+                    </v-col>
+                    <v-col cols="12" md="6" sm="6">
+                      <v-card-text
+                        :class="{
+                          font: $vuetify.breakpoint.xs,
+                          'font-weight-bold': !$vuetify.breakpoint.xs,
+                        }"
+                        class="py-0"
+                      >
+                        {{ serviceStatus.header_dialysis.time_value }}
+                      </v-card-text>
+                    </v-col>
+
+                    <v-col cols="12" md="6" sm="6">
+                      <v-card-subtitle class="py-0">
+                        {{ serviceStatus.header_dialysis.machine_num }}
+                      </v-card-subtitle>
+                    </v-col>
+                    <v-col cols="12" md="6" sm="6">
+                      <v-card-text
+                        :class="{
+                          font: $vuetify.breakpoint.xs,
+                          'font-weight-bold': !$vuetify.breakpoint.xs,
+                        }"
+                        class="py-0"
+                      >
+                        {{ serviceStatus.header_dialysis.machine_value }}
+                      </v-card-text>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-container>
+            </v-col>
+
+            <v-col align-self="center" cols="12">
+              <v-card-text>
+                <v-simple-table>
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">Date Scheduled</th>
+                        <th class="text-left">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(
+                          sessionsInfo, infoIndex
+                        ) in serviceStatus.scheduled_dialysis_sessions"
+                        :key="infoIndex"
+                      >
+                        <td>{{ sessionsInfo.scheduled_date_session }}</td>
+                        <td
+                          :class="{
+                            'orange--text':
+                              sessionsInfo.dialysis_session_status ===
+                                'PENDING' ||
+                              sessionsInfo.dialysis_session_status ===
+                                'WALK-IN',
+                            'red--text':
+                              sessionsInfo.dialysis_session_status ===
+                              'UNATTENDED',
+                            'green--text':
+                              sessionsInfo.dialysis_session_status ===
+                              'COMPLETED',
+                            'indigo--text':
+                              sessionsInfo.dialysis_session_status ===
+                              'IN PROGRESS',
+                          }"
+                        >
+                          {{ sessionsInfo.dialysis_session_status }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </v-card-text>
             </v-col>
           </v-row>
-        </v-card-text>
+        </v-container>
       </v-card>
     </v-col>
   </v-row>
@@ -295,5 +371,11 @@ export default {
 }
 .colored-border {
   border: 1px solid #ffd1d1 !important;
+}
+
+.bordered-card {
+  border-radius: 10px;
+  border: 1px solid whitesmoke;
+  overflow: hidden;
 }
 </style>

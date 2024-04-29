@@ -99,9 +99,7 @@
                 <v-btn color="error" outlined @click="resetFilter">Reset</v-btn>
               </v-col>
               <v-col cols="auto" v-if="filterInputs.submit">
-                <v-btn dark class="primary" @click="submitFilter"
-                  >Submit</v-btn
-                >
+                <v-btn dark class="primary" @click="submitFilter">Submit</v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -219,6 +217,10 @@ export default {
           ? ((this.payload.sort_order = this.sort_order),
             (this.payload.sort_by = "scheduled_date"))
           : ((this.payload.sort_order = null), (this.payload.sort_by = null));
+      } else if (this.type_of_filter === "DOCTOR INDEX") {
+        this.status.length > 0
+          ? (this.payload.filter_status = this.status)
+          : (this.payload.filter_status = null);
       }
       this.$emit("filterQuery", this.payload);
       this.payload = {};
@@ -250,6 +252,10 @@ export default {
           filter_status: null,
           sort_order: null,
           sort_by: null,
+        };
+      } else if (this.type_of_filter === "DOCTOR INDEX") {
+        query = {
+          filter_status: null,
         };
       }
 
@@ -320,6 +326,9 @@ export default {
         status = true;
         sort_order = true;
         submit = true;
+      } else if (this.type_of_filter === "DOCTOR INDEX") {
+        status = true;
+        submit = true;
       }
 
       return {
@@ -340,7 +349,8 @@ export default {
         statuses = ["PENDING", "IN PROGRESS", "UNATTENDED", "COMPLETED"];
       } else if (
         this.type_of_filter === "SERVICE INDEX" ||
-        this.type_of_filter === "SERVICES AVAILED INDEX"
+        this.type_of_filter === "SERVICES AVAILED INDEX" ||
+        this.type_of_filter === "DOCTOR INDEX"
       ) {
         statuses = [
           "PENDING",

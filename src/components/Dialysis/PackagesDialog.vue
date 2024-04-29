@@ -5,13 +5,13 @@
         v-slot:activator="{ on, attrs }"
         v-if="userRole === 'DIALYSIS_ENCODER'"
       >
-        <v-btn v-bind="attrs" v-on="on" dark icon>
-          <v-icon dark>mdi-pencil</v-icon>
+        <v-btn v-bind="attrs" v-on="on" icon>
+          <v-icon color="primary">mdi-pencil</v-icon>
         </v-btn>
       </template>
       <v-card>
         <v-card-title class="primary pb-4 white--text"
-          ><v-icon dark left>mdi-pencil</v-icon>Edit Inputs</v-card-title
+          ><v-icon color="white" left>mdi-pencil</v-icon>Edit Inputs</v-card-title
         >
         <v-container class="pa-8 mx-auto overflow-scroll">
           <v-row
