@@ -9,13 +9,39 @@
             <v-icon left>mdi-account-box-multiple</v-icon>
             <span class="title">User Management</span>
           </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-btn
+              v-if="!$vuetify.breakpoint.xs"
+              color="primary"
+              class="mr-3"
+              dark
+              @click="dialog = !dialog"
+              >Add User</v-btn
+            >
+            <v-btn
+              v-else
+              dark
+              class="mr-3"
+              color="primary"
+              icon
+              @click="dialog = !dialog"
+              ><v-icon>mdi-plus</v-icon></v-btn
+            >
+          </v-col>
         </v-row>
       </v-container>
       <v-divider class="mx-3"></v-divider>
       <v-container fluid class="ma-1">
         <v-row>
           <v-col cols="12">
-            <UsersTable :users="users_index" @submitFilter="submitFilter" />
+            <UsersTable
+              :slot_activator_user="slot_activator_user"
+              :users="users_index"
+              :response-user="dialog"
+              @submitFilter="submitFilter"
+              @dialog:user="(newVal) => (dialog = newVal)"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -31,6 +57,10 @@ import PageConstruction from "@/components/PageConstruction.vue";
 export default {
   name: "ManagementView",
   mixins: [ErrorAlertsLogic],
+  data: () => ({
+    dialog: false,
+    slot_activator_user: false,
+  }),
   components: {
     UsersTable,
     PageConstruction,

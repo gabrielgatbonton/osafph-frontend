@@ -34,7 +34,7 @@
         ></v-text-field>
       </v-col>
       <v-col cols="12">
-        <v-btn block dark class="blue darken-4" @click="submitForm"
+        <v-btn block dark class="primary" @click="submitForm"
           >Submit</v-btn
         >
       </v-col>

@@ -21,7 +21,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-if="!$vuetify.breakpoint.xs"
-                color="blue darken-4"
+                color="primary"
                 class="mr-3"
                 dark
                 v-bind="attrs"
@@ -32,7 +32,7 @@
                 v-else
                 dark
                 class="mr-3"
-                color="blue darken-4"
+                color="primary"
                 icon
                 v-bind="attrs"
                 v-on="on"
@@ -40,7 +40,7 @@
               >
             </template>
             <v-card>
-              <v-card-title class="blue darken-1 pb-4 white--text">
+              <v-card-title class="primary pb-4 white--text">
                 <v-icon left dark>mdi-filter-multiple</v-icon> Filter
               </v-card-title>
               <v-container fluid class="py-8 mx-auto">
@@ -56,10 +56,12 @@
                   <v-col cols="12">
                     <v-row dense justify="end">
                       <v-col cols="auto">
-                        <v-btn color="error" @click="resetFilter">Reset</v-btn>
+                        <v-btn color="error" outlined @click="resetFilter"
+                          >Reset</v-btn
+                        >
                       </v-col>
                       <v-col cols="auto">
-                        <v-btn dark class="blue darken-4" @click="submitFilter"
+                        <v-btn dark class="primary" @click="submitFilter"
                           >Submit</v-btn
                         >
                       </v-col>
@@ -70,10 +72,13 @@
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogUser" max-width="600" scrollable>
-            <template v-slot:activator="{ on, attrs }">
+            <template
+              v-slot:activator="{ on, attrs }"
+              v-if="slot_activator_user"
+            >
               <v-btn
                 v-if="!$vuetify.breakpoint.xs"
-                color="blue darken-4"
+                color="primary"
                 class="mr-3"
                 dark
                 v-bind="attrs"
@@ -84,7 +89,7 @@
                 v-else
                 dark
                 class="mr-3"
-                color="blue darken-4"
+                color="primary"
                 icon
                 v-bind="attrs"
                 v-on="on"
@@ -92,7 +97,7 @@
               >
             </template>
             <v-card>
-              <v-card-title class="blue darken-1 pb-4 white--text"
+              <v-card-title class="primary pb-4 white--text"
                 ><v-icon left dark>mdi-account</v-icon> Create
                 User</v-card-title
               >
@@ -218,7 +223,20 @@ import CredentailsStepper from "./Steppers/CredentailsStepper.vue";
 export default {
   name: "Users-Table",
   mixins: [UserManagementMixin],
-  props: ["users"],
+  props: {
+    users: {
+      type: Array,
+      required: true,
+    },
+    slot_activator_user: {
+      type: Boolean,
+      required: true,
+    },
+    responseUser: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data: () => ({
     search: "",
     offset: true,
@@ -388,6 +406,20 @@ export default {
         }
       },
     },
+    responseUser: {
+      immediate: true,
+      handler(newVal) {
+        this.dialogUser = newVal;
+      },
+    },
+    dialogUser: {
+      deep: true,
+      handler(newVal) {
+        if (newVal === false) {
+          this.$emit('dialog:user', newVal);
+        }
+      }
+    }
   },
   created() {
     this.fetchEnum();

@@ -52,7 +52,7 @@
         ></v-autocomplete>
       </v-col>
       <v-col cols="12">
-        <v-btn block dark class="blue darken-4" @click="proceedWithStepper"
+        <v-btn block dark class="primary" @click="proceedWithStepper"
           >Proceed</v-btn
         >
       </v-col>
@@ -79,7 +79,6 @@ export default {
   }),
   methods: {
     proceedWithStepper() {
-      console.log(this.$v);
       this.$v.information_payload.$touch();
 
       if (!this.$v.information_payload.$invalid) {
