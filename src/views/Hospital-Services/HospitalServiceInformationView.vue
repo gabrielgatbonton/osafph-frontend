@@ -123,6 +123,11 @@ export default {
     this.fetchDialysisSessions();
   },
   watch: {
+    service: {
+      handler(value){
+        console.log("service", value)
+      }
+    }
   },
   computed: {
     ...mapState("registrants", {
@@ -305,6 +310,40 @@ export default {
       let items_availed = null;
       let header_dialysis = null;
       let scheduled_dialysis_sessions = [];
+      let machine_value = null;
+
+      switch (this.service.data.dialysis_machine) {
+        case "DIALYSIS MACHINE 1V":
+          machine_value = "1V";
+          break;
+        case "DIALYSIS MACHINE 2V":
+          machine_value = "2V";
+          break;
+        case "DIALYSIS MACHINE 3R":
+          machine_value = "3R";
+          break;
+        case "DIALYSIS MACHINE 4R":
+          machine_value = "4R";
+          break;
+        case "DIALYSIS MACHINE 5R":
+          machine_value = "5R";
+          break;
+        case "DIALYSIS MACHINE 6R":
+          machine_value = "6R";
+          break;
+        case "DIALYSIS MACHINE 7R":
+          machine_value = "7R";
+          break;
+        case "DIALYSIS MACHINE 8R":
+          machine_value = "8R";
+          break;
+        case "DIALYSIS MACHINE 9R":
+          machine_value = "9R";
+          break;
+        case "DIALYSIS MACHINE 10R":
+          machine_value = "10R";
+          break;
+      }
 
       if (this.service.data.service_type !== "DIALYSIS") {
         messages = {
@@ -326,6 +365,11 @@ export default {
           date: null,
           status: null,
           icon: null,
+          time: null,
+          time_value: null,
+          sessions_available: null,
+          machine_num: null,
+          machine_value: null,
         };
       } else {
         messages = {
@@ -341,12 +385,6 @@ export default {
         items_availed = {
           service_type: this.service.data.service_type,
           packages: this.service.data.dialysis_packages,
-        };
-        header_dialysis = {
-          header_title: "Dialysis",
-          date: "Date Scheduled",
-          status: "Status",
-          icon: "mdi-iv-bag",
         };
         Object.keys(this.dialysis_sessions).forEach((item) => {
           if (item.includes("data")) {
@@ -366,6 +404,21 @@ export default {
           }
         });
       }
+        header_dialysis = {
+          header_title: "DIALYSIS",
+          date: "Date Scheduled",
+          status: "Status",
+          icon: "mdi-iv-bag",
+          time: "Time",
+          time_value: this.service.data.session,
+          sessions_available:
+            scheduled_dialysis_sessions.length > 1
+              ? `${scheduled_dialysis_sessions.length} sessions available`
+              : `${scheduled_dialysis_sessions.length} session available`,
+          machine_num: "Machine No",
+          machine_value: machine_value,
+        };
+        
 
       return {
         status: this.service.data.status,

@@ -145,8 +145,7 @@
     <v-col
       cols="12"
       v-if="
-        serviceStatus.items_availed.service_type === 'DIALYSIS' &&
-        userRole === 'DIALYSIS_ENCODER'
+        serviceStatus.items_availed.service_type === 'DIALYSIS'
       "
     >
       <v-card>
