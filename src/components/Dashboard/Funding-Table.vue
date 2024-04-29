@@ -4,7 +4,7 @@
       <div class="d-flex justify-space-between align-center">
         <div class="card-title">Funding</div>
         <div
-          class="card-icon blue lighten-5 d-flex justify-center align-center"
+          class="card-icon d-flex justify-center align-center"
         >
           <v-icon size="28" color="primary">mdi-cash-multiple</v-icon>
         </div>
@@ -370,6 +370,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 10%;
+  background: #fdd1d1;
 }
 .overflow-scroll {
   max-height: 600px;

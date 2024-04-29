@@ -42,6 +42,7 @@
             @blur="$v.username.$touch()"
             :success="!$v.username.$invalid && $v.username.$dirty"
             label="Username"
+            @keyup.enter="handleLogin"
           ></v-text-field>
           <v-text-field
             solo
@@ -60,7 +61,7 @@
           <v-btn
             x-large
             rounded
-            class="primary"
+            color="primary"
             block
             dark
             :loading="loading"
