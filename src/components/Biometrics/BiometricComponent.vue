@@ -14,33 +14,35 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="blue darken-1 pb-4 white--text"
+        <v-card-title class="primary pb-4 white--text"
           ><v-icon dark left>mdi-fingerprint</v-icon>Biometrics</v-card-title
         >
         <v-container fluid>
           <v-row justify="center">
-            <v-col cols="12" align-self="center">
+            <v-col cols="12" align-self="center" class="mt-4">
               <div class="text-center">
-                <img
-                  class="mx-auto"
-                  style="width: 300px; height: 300px; border: 3px solid black"
-                  id="fingerprintImage"
-                  ref="fingerprintImageRef"
-                  :src="defaultImageSrc"
-                />
+                <div class="pa-3 d-inline-block bordered-card bordered-color">
+                  <img
+                    class="ma-auto"
+                    style="max-width: 300px"
+                    id="fingerprintImage"
+                    ref="fingerprintImageRef"
+                    :src="defaultImageSrc"
+                  />
+                </div>
                 <div class="font-weight-bold">{{ status }}</div>
                 <div class="font-weight-bold">{{ prompt }}</div>
               </div>
             </v-col>
             <v-col cols="12">
               <v-card-actions>
-                <v-btn color="blue darken-1" dark @click="startCapture"
-                  >Start</v-btn
-                >
+                <v-btn color="primary" dark @click="startCapture">Start</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="grey" dark @click="cancelScanning">Cancel</v-btn>
+                <v-btn outlined color="grey" dark @click="cancelScanning"
+                  >Cancel</v-btn
+                >
                 <v-btn
-                  color="blue darken-4"
+                  color="primary"
                   dark
                   :class="{ 'disabled-button': disabled }"
                   @click="stopCapture"
@@ -127,6 +129,9 @@ export default {
 
       // You can use currentSrc as needed in the component.
       this.fingerprintSdk(false);
+      this.status = null;
+      this.prompt = null;
+      this.disabled = true;
       this.$emit("biometrics-taken", currentSrc);
       this.dialog = false;
       fingerprintImage.src = this.defaultImageSrc;
@@ -134,6 +139,9 @@ export default {
     cancelScanning() {
       //Will Reset upon Canceling the Scanning Process.
       this.fingerprintSdk(false);
+      this.status = null;
+      this.prompt = null;
+      this.disabled = true;
       this.dialog = false;
       const fingerprintImage = this.$refs.fingerprintImageRef;
       fingerprintImage.src = this.defaultImageSrc;
@@ -155,5 +163,13 @@ export default {
 .disabled-button {
   opacity: 0.5; /* Make it appear faded */
   pointer-events: none; /* Disable pointer events to prevent interaction */
+}
+.bordered-card {
+  border-radius: 10px;
+  border: 1px solid whitesmoke;
+  overflow: hidden;
+}
+.bordered-color {
+  border: 1px solid #ffd1d1;
 }
 </style>

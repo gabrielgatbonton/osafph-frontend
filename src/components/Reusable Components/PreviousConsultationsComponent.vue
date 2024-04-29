@@ -281,9 +281,13 @@
           </v-col>
         </v-row>
       </v-container>
-      <div v-else class="error--text text-center my-5 text-h6">
-        No Recorded Consultations
-      </div>
+      <v-col v-else >
+        <div class="my-4">
+          <p class="subtitle-2 text-center grey--text">
+            No Recorded Consultations
+          </p>
+        </div>
+      </v-col>
     </v-row>
   </v-card>
 </template>

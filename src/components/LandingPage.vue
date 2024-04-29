@@ -31,7 +31,7 @@
       <v-col cols="12" md="6">
         <div class="card-container">
           <div class="headline text-center mb-4">
-            DIALYSIS PATIENTS INFORMATION AND MANAGEMENT SYSTEM
+            CITIZEN'S HEALTH INFORMATION <br> AND MANAGEMENT SYSTEM
           </div>
           <v-text-field
             solo
@@ -60,7 +60,7 @@
           <v-btn
             x-large
             rounded
-            class="blue darken-3"
+            class="primary"
             block
             dark
             :loading="loading"

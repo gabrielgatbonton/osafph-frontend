@@ -26,7 +26,7 @@
             v-if="isIcon"
             dark
             class="mr-3"
-            color="blue darken-4"
+            color="primary"
             @click="activator"
             icon
             ><v-icon>mdi-filter-multiple</v-icon></v-btn
@@ -35,7 +35,7 @@
             v-else
             dark
             class="mr-3"
-            color="blue darken-4"
+            color="primary"
             @click="activator"
             >Filter</v-btn
           >

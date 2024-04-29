@@ -25,7 +25,7 @@
           v-if="!$vuetify.breakpoint.xs"
           dark
           class="mr-3"
-          color="blue darken-4"
+          color="primary"
           @click="activator"
           >Filter</v-btn
         >
@@ -33,7 +33,7 @@
           v-else
           dark
           class="mr-3"
-          color="blue darken-4"
+          color="primary"
           icon
           @click="activator"
           ><v-icon>mdi-filter-multiple</v-icon></v-btn

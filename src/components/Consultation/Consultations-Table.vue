@@ -9,14 +9,23 @@
     no-data-text="No Consultations Available"
     :loading="loading"
     loading-text="Loading... Please wait"
+    :server-items-length="totalItems"
+    :options.sync="options"
   >
     <template v-slot:top>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        class="mx-4"
-        prepend-icon="mdi-magnify"
-      ></v-text-field>
+      <div class="d-flex justify-space-between align-center">
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+          prepend-icon="mdi-magnify"
+        ></v-text-field>
+        <FilterDialog
+          :type_of_filter="filter_type"
+          @filterQuery="(params) => assignParams(params)"
+          :slot_activator="slot_activator"
+        />
+      </div>
     </template>
     <template v-slot:[`item.status`]="{ item }">
       <div
@@ -57,14 +66,21 @@
 <script>
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
+import TablePagination from "@/mixins/Tables/TablePagination";
+import FilterDialog from "../Filter/FilterDialog.vue";
 export default {
   props: ["consultations", "routeName"],
+  mixins: [TablePagination],
   data: () => ({
-    search: "",
     offset: true,
     loading: true,
     isJustify: "",
+    slot_activator: true,
+    filter_type: "DOCTOR INDEX",
   }),
+  components: {
+    FilterDialog,
+  },
   methods: {
     filterOnlyCapsText(value, search) {
       return (
@@ -117,7 +133,7 @@ export default {
     },
     tableData() {
       return this.consultations
-        ? this.consultations.map((consultation) => ({
+        ? this.consultations.consultations.map((consultation) => ({
             patient_name: `${consultation.citizen.last_name}, ${
               consultation.citizen.first_name
             } ${
@@ -142,13 +158,18 @@ export default {
     size() {
       return this.$vuetify.breakpoint;
     },
+    totalItems() {
+      return this.consultations.pagination?.total
+        ? this.consultations.pagination.total
+        : 0;
+    },
   },
   watch: {
     consultations: {
       immediate: true,
       handler(value) {
         this.loading = true;
-        if (!value.length) {
+        if (!value.consultations.length) {
           setTimeout(() => {
             this.loading = false;
           }, 5000);

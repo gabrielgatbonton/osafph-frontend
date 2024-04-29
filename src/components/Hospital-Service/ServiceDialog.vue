@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" max-width="600" scrollable>
       <v-card>
-        <v-card-title class="blue darken-1 pb-4 white--text"
+        <v-card-title class="primary pb-4 white--text"
           ><v-icon dark left>mdi-medical-bag</v-icon
           >{{ hospitalService ? "Edit" : "Add" }} Medical Service</v-card-title
         >
@@ -70,7 +70,7 @@
               <v-btn
                 dark
                 block
-                color="blue darken-4"
+                color="primary"
                 :class="{ 'disabled-button': disabledValue }"
                 @click="submitForm"
                 >Submit</v-btn

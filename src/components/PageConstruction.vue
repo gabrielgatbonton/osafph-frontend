@@ -95,7 +95,7 @@ export default {
 .h-line {
   width: 100px;
   height: 5px;
-  background: green;
+  background: #ff4949;
   margin: 1rem 0;
 }
 </style>

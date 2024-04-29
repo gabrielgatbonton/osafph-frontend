@@ -95,7 +95,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-btn dark block class="blue darken-4" @click="continueForm"
+        <v-btn dark block class="primary" @click="continueForm"
           >Submit</v-btn
         >
       </v-col>

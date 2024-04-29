@@ -5,7 +5,7 @@
         v-if="!$vuetify.breakpoint.xs"
         dark
         class="mr-3"
-        color="blue darken-4"
+        color="primary"
         v-bind="attrs"
         v-on="on"
         >Filter</v-btn
@@ -14,7 +14,7 @@
         v-else
         dark
         class="mr-3"
-        color="blue darken-4"
+        color="primary"
         icon
         v-bind="attrs"
         v-on="on"
@@ -22,7 +22,7 @@
       >
     </template>
     <v-card>
-      <v-card-title class="blue darken-1 pb-4 white--text"
+      <v-card-title class="primary pb-4 white--text"
         ><v-icon dark left>mdi-filter-multiple</v-icon>Filter</v-card-title
       >
       <v-container fluid class="py-8 mx-auto overflow-scroll">
@@ -96,12 +96,10 @@
           <v-col cols="12">
             <v-row dense justify="end">
               <v-col cols="auto">
-                <v-btn color="error" @click="resetFilter">Reset</v-btn>
+                <v-btn color="error" outlined @click="resetFilter">Reset</v-btn>
               </v-col>
               <v-col cols="auto" v-if="filterInputs.submit">
-                <v-btn dark class="blue darken-4" @click="submitFilter"
-                  >Submit</v-btn
-                >
+                <v-btn dark class="primary" @click="submitFilter">Submit</v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -219,6 +217,10 @@ export default {
           ? ((this.payload.sort_order = this.sort_order),
             (this.payload.sort_by = "scheduled_date"))
           : ((this.payload.sort_order = null), (this.payload.sort_by = null));
+      } else if (this.type_of_filter === "DOCTOR INDEX") {
+        this.status.length > 0
+          ? (this.payload.filter_status = this.status)
+          : (this.payload.filter_status = null);
       }
       this.$emit("filterQuery", this.payload);
       this.payload = {};
@@ -250,6 +252,10 @@ export default {
           filter_status: null,
           sort_order: null,
           sort_by: null,
+        };
+      } else if (this.type_of_filter === "DOCTOR INDEX") {
+        query = {
+          filter_status: null,
         };
       }
 
@@ -320,6 +326,9 @@ export default {
         status = true;
         sort_order = true;
         submit = true;
+      } else if (this.type_of_filter === "DOCTOR INDEX") {
+        status = true;
+        submit = true;
       }
 
       return {
@@ -340,7 +349,8 @@ export default {
         statuses = ["PENDING", "IN PROGRESS", "UNATTENDED", "COMPLETED"];
       } else if (
         this.type_of_filter === "SERVICE INDEX" ||
-        this.type_of_filter === "SERVICES AVAILED INDEX"
+        this.type_of_filter === "SERVICES AVAILED INDEX" ||
+        this.type_of_filter === "DOCTOR INDEX"
       ) {
         statuses = [
           "PENDING",

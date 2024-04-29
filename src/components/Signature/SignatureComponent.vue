@@ -14,15 +14,15 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="blue darken-1 pb-4 white--text"
+        <v-card-title class="primary pb-4 white--text"
           ><v-icon dark left>mdi-draw-pen</v-icon>Signature</v-card-title
         >
         <v-container fluid>
           <v-row>
             <v-col cols="12" align-self="center">
-              <div class="text-center">
+              <div class="text-center mt-6">
                 <canvas
-                  class="canvas-border"
+                  class="bordered-card bordered-color"
                   id="cnv"
                   name="cnv"
                   :width="$vuetify.breakpoint.xs ? 300 : 500"
@@ -38,23 +38,22 @@
             </v-col>
             <v-col cols="12">
               <v-card-actions>
-                <v-btn
-                  v-if="buttonStart"
-                  color="blue darken-1"
-                  dark
-                  @click="Start"
+                <v-btn v-if="buttonStart" color="primary" dark @click="Start"
                   >Start</v-btn
                 >
                 <v-btn
                   v-if="buttonClear"
                   color="red darken-4"
                   dark
+                  outlined
                   @click="Clear"
                   >Clear</v-btn
                 >
                 <v-spacer></v-spacer>
-                <v-btn color="grey" dark @click="dialog = false">Cancel</v-btn>
-                <v-btn color="blue darken-4" dark @click="Save">Save</v-btn>
+                <v-btn outlined color="grey" dark @click="Cancel"
+                  >Cancel</v-btn
+                >
+                <v-btn color="primary" dark @click="Save">Save</v-btn>
               </v-card-actions>
             </v-col>
           </v-row>
@@ -131,6 +130,13 @@ export default {
           this.status = null;
         });
     },
+    Cancel() {
+      this.dialog = false;
+      this.buttonStart = true;
+      this.buttonClear = false;
+      this.tmr = null;
+      this.status = null;
+    },
   },
   computed: {
     checkDisabledButton() {
@@ -152,7 +158,12 @@ export default {
   opacity: 0.5; /* Make it appear faded */
   pointer-events: none; /* Disable pointer events to prevent interaction */
 }
-.canvas-border {
-  border: 3px solid black;
+.bordered-card {
+  border-radius: 10px;
+  border: 1px solid whitesmoke;
+  overflow: hidden;
+}
+.bordered-color {
+  border: 1px solid #ffd1d1;
 }
 </style>

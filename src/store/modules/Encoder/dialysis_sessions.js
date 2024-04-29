@@ -126,3 +126,7 @@ export const dialysis_sessions = {
     },
   },
 };
+
+export const dialysis_sessions_packages = {
+  namespaced: true
+}

@@ -411,7 +411,7 @@ export default {
       };
     },
     buttonTitle() {
-      return this.getFiles.length > 0 ? true : false;
+      return this.getFiles?.length > 0 ? true : false;
     },
   },
   watch: {
