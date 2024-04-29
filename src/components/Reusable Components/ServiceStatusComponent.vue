@@ -122,21 +122,11 @@
               <p class="text-button my-auto">{{ info.name }}</p>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="6"
-                    v-for="(item, itemIndex) in info.dialysis_items"
-                    :key="itemIndex"
-                  >
-                    <ul>
-                      <li>
-                        {{ item }}
-                      </li>
-                    </ul>
-                  </v-col>
-                </v-row>
-              </v-container>
+                <span
+                  v-for="(item, itemIndex) in info.dialysis_items"
+                  :key="itemIndex"
+                > {{ item }}{{ itemIndex < info.dialysis_items.length - 1 ? ", ": ""}}
+                </span>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -144,9 +134,7 @@
     </v-col>
     <v-col
       cols="12"
-      v-if="
-        serviceStatus.items_availed.service_type === 'DIALYSIS'
-      "
+      v-if="serviceStatus.items_availed.service_type === 'DIALYSIS'"
     >
       <v-card>
         <v-card-title class="blue darken-1">
