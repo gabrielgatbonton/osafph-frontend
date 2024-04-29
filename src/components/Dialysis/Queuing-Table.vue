@@ -11,7 +11,7 @@
     <template v-slot:top>
       <v-toolbar
         flat
-        color="blue darken-1"
+        color="primary"
         dark
         :rounded="dialog ? false : 'lg'"
       >
