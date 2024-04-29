@@ -31,6 +31,7 @@
                   <v-btn
                     large
                     dark
+                    outlined
                     color="grey"
                     class="px-10 mx-2"
                     @click="dialog = false"
@@ -41,7 +42,7 @@
                     large
                     depressed
                     class="px-10 mx-2"
-                    color="red"
+                    color="error"
                     :loading="loading"
                     @click="deleteItem"
                     >Delete</v-btn
