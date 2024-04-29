@@ -356,7 +356,7 @@
           <v-col></v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn @click="toContinuation" dark class="blue darken-4"
+            <v-btn @click="toContinuation" dark class="primary"
               >Proceed</v-btn
             >
           </v-col>

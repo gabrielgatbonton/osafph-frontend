@@ -11,7 +11,7 @@
           <v-col cols="auto">
             <v-btn
               class="mr-3"
-              color="blue darken-4"
+              color="primary"
               dark
               @click="switchConsultations"
               >{{ consultationsStatus ? "Pending" : "Archived" }}</v-btn

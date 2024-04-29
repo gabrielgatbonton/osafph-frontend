@@ -14,7 +14,8 @@
             <v-btn
               v-if="!$vuetify.breakpoint.xs"
               dark
-              class="mr-3 blue darken-4"
+              class="mr-3"
+              color="primary"
               @click="toRegister"
               >Register</v-btn
             >
@@ -22,7 +23,7 @@
               v-else
               dark
               class="mr-3"
-              color="blue darken-4"
+              color="primary"
               @click="toRegister"
               icon
               ><v-icon>mdi-plus</v-icon></v-btn

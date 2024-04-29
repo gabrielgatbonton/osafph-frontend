@@ -13,14 +13,15 @@
           <v-btn
             v-if="!$vuetify.breakpoint.xs"
             dark
-            class="blue darken-4 mr-3"
+            class="mr-3"
+            color="primary"
             @click="activator(id, hospital_service_id)"
             ><v-icon dark left>mdi-square-edit-outline</v-icon>Edit</v-btn
           >
           <v-btn
             v-else
             class="mr-3"
-            color="blue darken-4"
+            color="primary"
             dark
             icon
             @click="activator(id, hospital_service_id)"

@@ -7,7 +7,7 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="blue darken-1 pb-4 white--text"
+        <v-card-title class="primary pb-4 white--text"
           ><v-icon dark left>mdi-needle</v-icon>Registrant Vaccine
           Information</v-card-title
         >

@@ -22,7 +22,7 @@
       />
       <v-dialog v-model="dialog" max-width="600">
         <v-card>
-          <v-card-title class="blue darken-1 pb-4 white--text"
+          <v-card-title class="primary pb-4 white--text"
             ><v-icon left dark>mdi-plus</v-icon>Create File Type</v-card-title
           >
           <v-container fluid class="py-8 mx-auto">
@@ -35,7 +35,7 @@
               </v-col>
               <v-col cols="12">
                 <div class="text-right">
-                  <v-btn dark class="blue darken-4" @click="submitForm"
+                  <v-btn dark class="primary" @click="submitForm"
                     >Submit</v-btn
                   >
                 </div>

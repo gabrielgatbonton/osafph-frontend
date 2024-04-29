@@ -37,7 +37,9 @@
         <v-col cols="auto" v-if="buttonPermissions.delete">
           <v-btn
             v-if="!$vuetify.breakpoint.xs"
-            class="error mr-3"
+            class="mr-3"
+            color="error"
+            outlined
             @click="deleteActivator"
             dark
             ><v-icon left>mdi-trash-can</v-icon>Delete Form</v-btn

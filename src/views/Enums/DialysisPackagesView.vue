@@ -14,7 +14,7 @@
             <v-btn
               v-if="isIcon"
               class="mr-3"
-              color="blue darken-4"
+              color="primary"
               icon
               @click="activator"
             >
@@ -24,7 +24,7 @@
               v-else
               dark
               class="mr-3"
-              color="blue darken-4"
+              color="primary"
               @click="activator"
             >
               Add Package</v-btn

@@ -10,8 +10,8 @@
       ></v-file-input>
     </template>
     <v-card rounded="lg">
-      <v-card-title class="justify-center blue darken-1 pb-5 white--text"
-        >Camera</v-card-title
+      <v-card-title class="primary pb-4 white--text"
+        ><v-icon left dark>mdi-camera</v-icon>Camera</v-card-title
       >
       <div class="text-center">
         <v-card-text class="my-5">
@@ -20,12 +20,12 @@
       </div>
 
       <v-card-actions>
-        <v-btn block dark color="blue darken-4" @click="takePicture">
+        <v-btn block dark color="primary" @click="takePicture">
           Take Picture
         </v-btn>
       </v-card-actions>
       <v-card-actions>
-        <v-btn dark outlined color="red" block @click="closeCameraDialog">
+        <v-btn dark outlined color="error" block @click="closeCameraDialog">
           Back
         </v-btn>
       </v-card-actions>

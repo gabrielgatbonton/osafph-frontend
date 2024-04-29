@@ -5,7 +5,7 @@
         v-if="!$vuetify.breakpoint.xs"
         dark
         class="mr-3"
-        color="blue darken-4"
+        color="primary"
         v-bind="attrs"
         v-on="on"
         >Filter</v-btn
@@ -14,7 +14,7 @@
         v-else
         dark
         class="mr-3"
-        color="blue darken-4"
+        color="primary"
         icon
         v-bind="attrs"
         v-on="on"
@@ -22,7 +22,7 @@
       >
     </template>
     <v-card>
-      <v-card-title class="blue darken-1 pb-4 white--text"
+      <v-card-title class="primary pb-4 white--text"
         ><v-icon dark left>mdi-filter-multiple</v-icon>Filter</v-card-title
       >
       <v-container fluid class="py-8 mx-auto overflow-scroll">
@@ -96,10 +96,10 @@
           <v-col cols="12">
             <v-row dense justify="end">
               <v-col cols="auto">
-                <v-btn color="error" @click="resetFilter">Reset</v-btn>
+                <v-btn color="error" outlined @click="resetFilter">Reset</v-btn>
               </v-col>
               <v-col cols="auto" v-if="filterInputs.submit">
-                <v-btn dark class="blue darken-4" @click="submitFilter"
+                <v-btn dark class="primary" @click="submitFilter"
                   >Submit</v-btn
                 >
               </v-col>

@@ -14,7 +14,7 @@
             <v-btn
               v-if="isIcon"
               class="mr-3"
-              color="blue darken-4"
+              color="primary"
               icon
               @click="activator"
             >
@@ -23,7 +23,7 @@
             <v-btn
               v-else
               class="mr-3"
-              color="blue darken-4"
+              color="primary"
               dark
               @click="activator"
             >

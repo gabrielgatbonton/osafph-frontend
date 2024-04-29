@@ -14,7 +14,7 @@
       <v-menu bottom :offset-y="offset" class>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on" class="mr-1" :loading="loading">
-            <v-icon large>mdi-menu-down</v-icon>
+            <v-icon color="white" dark large>mdi-menu-down</v-icon>
           </v-btn>
         </template>
         <v-list dense>

@@ -126,9 +126,11 @@
           :landscape="landscape"
           full-width
           @input="appendDate"
+          color="#ffd1d1"
+          header-color="primary"
         >
           <v-spacer></v-spacer>
-          <v-btn @click="resetButton" color="blue darken-4" block dark
+          <v-btn @click="resetButton" color="primary" outlined block dark
             >Clear</v-btn
           >
         </v-date-picker>
@@ -237,7 +239,7 @@
                   </template>
                 </v-autocomplete>
                 <v-btn
-                  color="red darken-4"
+                  color="error"
                   icon
                   @click="removeIndex(index, subIndex)"
                   fab
@@ -252,7 +254,7 @@
           <v-col cols="12">
             <div class="d-flex justify-center align-center">
               <v-btn
-                color="blue darken-4"
+                color="primary"
                 icon
                 @click="addIndex(index)"
                 :ripple="false"
@@ -267,7 +269,7 @@
         </v-row>
       </v-col>
       <v-col cols="12">
-        <v-btn color="blue darken-4" block dark @click="touchValidations"
+        <v-btn color="primary" block dark @click="touchValidations"
           >Proceed</v-btn
         >
       </v-col>

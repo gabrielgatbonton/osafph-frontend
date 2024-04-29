@@ -53,7 +53,7 @@
         <v-btn
           block
           dark
-          color="blue darken-4"
+          color="primary"
           :loading="loading"
           @click="submitForm"
           >Submit</v-btn

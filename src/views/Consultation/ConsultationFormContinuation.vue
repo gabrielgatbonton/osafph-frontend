@@ -192,7 +192,7 @@
                 <v-row>
                   <v-spacer></v-spacer>
                   <v-col cols="auto">
-                    <v-btn @click="submitForm" dark class="blue darken-4"
+                    <v-btn @click="submitForm" dark class="primary"
                       >Submit</v-btn
                     >
                   </v-col>
