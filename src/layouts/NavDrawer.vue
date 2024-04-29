@@ -122,7 +122,7 @@ export default {
           filledIcon: "mdi-human-queue",
           text: "Dialysis Queuing",
           route: "/dialysis-queuing",
-          users: ["DIALYSIS_ENCODER"],
+          users: ["DIALYSIS_ENCODER", "ROOT"],
         },
         {
           icon: "mdi-hospital-box-outline",

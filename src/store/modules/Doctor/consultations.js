@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export const consultations = {
   namespaced: true,
   state: () => ({
-    consultations: [],
+    consultations: null,
     consultation: null,
     doctorConsultationForms: [],
     consultation_form: null,
@@ -77,8 +77,18 @@ export const consultations = {
     },
   },
   actions: {
-    fetchConsultations({ commit }) {
-      const url = `doctors/consultations`;
+    fetchConsultations({ commit }, queryParams = {}) {
+      // Construct the query string from the queryParams object
+      let queryString = Object.keys(queryParams)
+        .map((key) => `${key}=${queryParams[key]}`)
+        .join("&");
+
+      // Add the query string to the URL if it exists
+      let url = `doctors/consultations`;
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
       return this.$axios
         .get(url)
         .then((response) => {
