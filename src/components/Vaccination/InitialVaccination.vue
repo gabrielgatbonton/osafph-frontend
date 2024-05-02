@@ -17,6 +17,9 @@
               :value="vaccineOne.dose"
               label="Dose"
               :items="checkJanssenDose"
+              @blur="$v.vaccineOne.dose.$touch()"
+              :error-messages="errorMessages.vaccineOne.dose"
+              clearable
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -24,6 +27,8 @@
               v-model="vaccineOne.vaccination_date"
               hint="Format (January 04, 2023)"
               label="Date"
+              @blur="$v.vaccineOne.vaccination_date.$touch()"
+              :error-messages="errorMessages.vaccineOne.vaccination_date"
             ></v-text-field>
           </v-col>
           <v-col cols="6">
@@ -32,6 +37,8 @@
               :value="vaccineOne.vaccine"
               label="Vaccine"
               :items="checkJanssenVaccine"
+              @blur="$v.vaccineOne.vaccine.$touch()"
+              :error-messages="errorMessages.vaccineOne.vaccine"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -39,6 +46,8 @@
               v-model="vaccineOne.lot_number"
               :value="vaccineOne.lot_number"
               label="Lot no."
+              @blur="$v.vaccineOne.lot_number.$touch()"
+              :error-messages="errorMessages.vaccineOne.lot_number"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -46,6 +55,8 @@
               v-model="vaccineOne.vaccination_site"
               :value="vaccineOne.vaccination_site"
               label="Vaccination Site"
+              @blur="$v.vaccineOne.vaccination_site.$touch()"
+              :error-messages="errorMessages.vaccineOne.vaccination_site"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -53,6 +64,8 @@
               v-model="vaccineOne.healthcare_professional"
               :value="vaccineOne.healthcare_professional"
               label="Healthcare Professional"
+              @blur="$v.vaccineOne.healthcare_professional.$touch()"
+              :error-messages="errorMessages.vaccineOne.healthcare_professional"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -60,6 +73,12 @@
               v-model="vaccineOne.healthcare_professional_license_number"
               :value="vaccineOne.healthcare_professional_license_number"
               label="Healthcare Professional License Number"
+              @blur="
+                $v.vaccineOne.healthcare_professional_license_number.$touch()
+              "
+              :error-messages="
+                errorMessages.vaccineOne.healthcare_professional_license_number
+              "
             ></v-text-field>
           </v-col>
           <v-col cols="12" v-if="showDeleteButton.vaccineOne">
@@ -82,6 +101,9 @@
               :value="vaccineTwo.dose"
               label="Dose"
               :items="checkJanssenDose"
+              @blur="$v.vaccineTwo.dose.$touch()"
+              :error-messages="errorMessages.vaccineTwo.dose"
+              clearable
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -89,6 +111,8 @@
               v-model="vaccineTwo.vaccination_date"
               hint="Format (January 04, 2023)"
               label="Date"
+              @blur="$v.vaccineTwo.vaccination_date.$touch()"
+              :error-messages="errorMessages.vaccineTwo.vaccination_date"
             ></v-text-field>
           </v-col>
           <v-col cols="6">
@@ -97,6 +121,8 @@
               :value="vaccineTwo.vaccine"
               label="Vaccine"
               :items="checkJanssenVaccine"
+              @blur="$v.vaccineTwo.vaccine.$touch()"
+              :error-messages="errorMessages.vaccineTwo.vaccine"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -104,6 +130,8 @@
               :value="vaccineTwo.lot_number"
               v-model="vaccineTwo.lot_number"
               label="Lot no."
+              @blur="$v.vaccineTwo.lot_number.$touch()"
+              :error-messages="errorMessages.vaccineTwo.lot_number"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -111,6 +139,8 @@
               :value="vaccineTwo.vaccination_site"
               v-model="vaccineTwo.vaccination_site"
               label="Vaccination Site"
+              @blur="$v.vaccineTwo.vaccination_site.$touch()"
+              :error-messages="errorMessages.vaccineTwo.vaccination_site"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -118,6 +148,8 @@
               v-model="vaccineTwo.healthcare_professional"
               :value="vaccineTwo.healthcare_professional"
               label="Healthcare Professional"
+              @blur="$v.vaccineTwo.healthcare_professional.$touch()"
+              :error-messages="errorMessages.vaccineTwo.healthcare_professional"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
@@ -125,6 +157,12 @@
               v-model="vaccineTwo.healthcare_professional_license_number"
               :value="vaccineTwo.healthcare_professional_license_number"
               label="Healthcare Professional License Number"
+              @blur="
+                $v.vaccineTwo.healthcare_professional_license_number.$touch()
+              "
+              :error-messages="
+                errorMessages.vaccineTwo.healthcare_professional_license_number
+              "
             ></v-text-field>
           </v-col>
           <v-col cols="12" v-if="showDeleteButton.vaccineTwo">
@@ -148,7 +186,7 @@
               dark
               block
             >
-              Save
+              Update
             </v-btn>
           </v-col>
         </v-row>
@@ -190,7 +228,7 @@ export default {
   methods: {
     submitData() {
       this.vaccines = [];
-      // this.$v.$touch();
+      this.$v.$touch();
 
       if (this.checkbox) {
         this.vaccines.push(this.vaccineTwo);
@@ -202,10 +240,9 @@ export default {
           }
         }
       }
-      this.$emit("submitData", this.vaccines);
-      // if (!this.$v.$invalid) {
-      //   this.$emit("submitData", this.vaccines);
-      // }
+      if (!this.$v.$invalid) {
+        this.$emit("submitData", this.vaccines);
+      }
     },
     deleteVaccine(vaccine_id) {
       //Emit the event which needs to be deleted

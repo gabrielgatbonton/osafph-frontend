@@ -240,7 +240,7 @@ export default {
 
 .overflow-scroll {
   overflow-y: auto;
-  height: 100%;
+  max-height: 100%;
 }
 
 .relative-position {

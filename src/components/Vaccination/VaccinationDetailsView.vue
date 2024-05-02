@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="600">
+    <v-dialog v-model="dialog" max-width="600" scrollable>
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" block dark v-bind="attrs" v-on="on">
-          Vaccination Details
+          See Details
         </v-btn>
       </template>
       <v-card>
@@ -11,7 +11,7 @@
           ><v-icon dark left>mdi-needle</v-icon>Registrant Vaccine
           Information</v-card-title
         >
-        <v-container>
+        <v-container class="overflow-scroll">
           <v-row>
             <v-col cols="12">
               <v-tabs centered>
@@ -219,3 +219,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.overflow-scroll {
+  overflow-y: auto;
+  max-height: 100%;
+}
+</style>
