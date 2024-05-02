@@ -1,22 +1,26 @@
-import { required } from "vuelidate/lib/validators";
+import { required, } from "vuelidate/lib/validators";
 // import { isBefore, subYears } from "date-fns";
 export default {
   validations: {
-    responses: {
-      dose_1: { required },
-      date_1: { required },
-      vaccine_1: { required },
-      lot_number_1: { required },
-      vaccination_site_1: { required },
-      healthcare_professional_1: { required },
-      healthcare_professional_license_number_1: { required },
-      dose_2: {},
-      date_2: {},
-      vaccine_2: {},
-      lot_number_2: {},
-      vaccination_site_2: {},
-      healthcare_professional_2: {},
-      healthcare_professional_license_number_2: {},
+    vaccineOne: {
+      dose: { required },
+      vaccination_date: { required },
+      vaccine: { required },
+      lot_number: { required },
+      vaccination_site: { required },
+      healthcare_professional: { required },
+      healthcare_professional_license_number: { required },
+      id: { required },
+    },
+    vaccineTwo: {
+      dose: { required },
+      vaccination_date: { required },
+      vaccine: { required },
+      lot_number: { required },
+      vaccination_site: { required },
+      healthcare_professional: { required },
+      healthcare_professional_license_number: { required },
+      id: { required },
     },
   },
   computed: {
@@ -24,9 +28,9 @@ export default {
       const errors = {};
 
       //Dose 1
-      errors.dose_1 = [];
-      if (this.$v.responses.dose_1.$dirty) {
-        !this.$v.responses.dose_1.required &&
+      errors.vaccineOne.dose = [];
+      if (this.$v.vaccineOne.dose.$dirty) {
+        !this.$v.vaccineOne.dose.required &&
           errors.dose_1.push("Dose is required");
       }
 
@@ -38,7 +42,7 @@ export default {
       // }
 
       //Date 1
-      errors.date_1 = [];
+      errors.vaccineOne.vaccination_date = [];
       if (this.$v.responses.date_1.$dirty) {
         !this.$v.responses.date_1.required &&
           errors.date_1.push("Date is required");
