@@ -119,11 +119,28 @@
           />
         </v-expand-transition>
         <v-date-picker
+        v-if="!$vuetify.breakpoint.xs"
           multiple
           v-model="selectedDates"
           :min="minDate"
           :disabled="disable"
           :landscape="landscape"
+          full-width
+          @input="appendDate"
+          color="#ffd1d1"
+          header-color="primary"
+        >
+          <v-spacer></v-spacer>
+          <v-btn @click="resetButton" color="primary" outlined block dark
+            >Clear</v-btn
+          >
+        </v-date-picker>
+        <v-date-picker
+        v-else
+          multiple
+          v-model="selectedDates"
+          :min="minDate"
+          :disabled="disable"
           full-width
           @input="appendDate"
           color="#ffd1d1"
