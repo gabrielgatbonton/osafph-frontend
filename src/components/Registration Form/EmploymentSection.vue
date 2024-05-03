@@ -1,103 +1,108 @@
 <template>
-  <v-container class="mx-auto mt-3">
-    <v-row>
-      <v-col cols="auto">
-        <v-icon left>mdi-history</v-icon>
-        <span>Employment Details</span>
+  <v-container class="mx-auto">
+    <v-row class="mb-5">
+      <v-col cols="12">
+        <div class="d-flex align-center">
+          <v-icon size="20" color="primary">mdi-history</v-icon>
+          <p class="text-subtitle-1 font-weight-bold pa-0 my-0 ml-2">
+            Employment Details
+          </p>
+        </div>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" lg="6" md="6" sm="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-text-field
           :value="data.employer_name"
           v-model="data.employer_name"
           label="Employer Name"
           @blur="$v.data.employer_name.$touch()"
           :error-messages="errorMessages.employer_name"
-        ></v-text-field>
+          outlined
+        />
       </v-col>
-      <v-col cols="12" lg="6" md="6" sm="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-text-field
           :value="data.employer_address"
           v-model="data.employer_address"
           label="Employer Address"
           @blur="$v.data.employer_address.$touch()"
           :error-messages="errorMessages.employer_address"
-        ></v-text-field>
+          outlined
+        />
       </v-col>
-      <v-col cols="12" lg="6" md="6" sm="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-text-field
           :value="data.employer_contact_number"
           v-model="data.employer_contact_number"
+          outlined
           type="number"
           label="Employer Contact Number"
           counter="11"
-        ></v-text-field>
+        />
       </v-col>
-      <v-col cols="12" lg="6" md="6" sm="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-autocomplete
           :value="data.employment_status"
           v-model="data.employment_status"
+          outlined
           label="Employment Status"
           :items="statuses"
-        ></v-autocomplete>
+        />
       </v-col>
       <v-col
         cols="12"
-        lg="12"
-        md="12"
-        sm="12"
+        md="6"
+        class="mt-n5"
         v-if="data.employment_status === 'OTHERS'"
       >
         <v-text-field
           :value="data.other_employment_status"
           v-model="data.other_employment_status"
+          outlined
           label="Other Employement Status"
-        ></v-text-field>
+        />
       </v-col>
-      <v-col cols="12" lg="12" md="12" sm="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-text-field
           :value="data.occupation"
           v-model="data.occupation"
+          outlined
           label="Occupation"
-        ></v-text-field>
+        />
       </v-col>
-      <v-col cols="12" lg="12" md="12" sm="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-autocomplete
           :value="data.profession"
           v-model="data.profession"
+          outlined
           label="Profession"
           item-text="name"
           :items="professions_enum"
           @blur="$v.data.profession.$touch()"
           :error-messages="errorMessages.profession"
-        ></v-autocomplete>
+        />
       </v-col>
-      <v-col
-        cols="12"
-        lg="12"
-        md="12"
-        sm="12"
-        v-if="data.profession === 'OTHERS'"
-      >
+      <v-col cols="12" md="6" class="mt-n5" v-if="data.profession === 'OTHERS'">
         <v-text-field
           :value="data.other_profession"
           v-model="data.other_profession"
+          outlined
           label="Other Profession"
-        ></v-text-field>
+        />
       </v-col>
-      <v-col cols="12" lg="12" md="12" sm="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-text-field
           label="Philhealth ID Number"
           v-model="data.philhealth_id_number"
-        ></v-text-field>
+          outlined
+        />
       </v-col>
-    </v-row>
-    <v-row>
+
       <v-col cols="12">
-        <v-btn dark block class="primary" @click="continueForm"
-          >Submit</v-btn
-        >
+        <div class="w-full d-flex">
+          <v-btn class="primary ml-auto" @click="continueForm">Submit</v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>

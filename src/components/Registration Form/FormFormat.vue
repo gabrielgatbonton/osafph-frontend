@@ -1,7 +1,11 @@
 <template>
   <div>
-    <v-stepper v-model="stepper" flat :non-linear="nonLinearFunction.linear">
-      <v-stepper-header>
+    <v-stepper
+      v-model="stepper"
+      outlined
+      :non-linear="nonLinearFunction.linear"
+    >
+      <v-stepper-header class="elevation-0">
         <v-stepper-step
           :complete="stepper > 1"
           step="1"
@@ -42,6 +46,9 @@
           Employment Details
         </v-stepper-step>
       </v-stepper-header>
+
+      <v-divider />
+
       <v-stepper-items>
         <v-stepper-content step="1">
           <CategorySection
