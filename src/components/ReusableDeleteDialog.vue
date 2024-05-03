@@ -9,12 +9,8 @@
       <v-card>
         <v-container>
           <v-row>
-            <v-col cols="12">
-              <v-img
-                class="mx-auto"
-                max-width="150"
-                src="@/assets/delete-1.svg"
-              ></v-img>
+            <v-col cols="12" class="d-flex justify-center align-center">
+              <v-img v-if="imgSrc" max-width="150" :src="imgSrc" eager></v-img>
             </v-col>
             <v-col cols="12">
               <div class="text-center text-h5 modal-title">Are you sure?</div>
@@ -68,6 +64,7 @@ export default {
   data: () => ({
     dialog: false,
     loading: false,
+    imgSrc: require("@/assets/delete-1.svg"),
   }),
   methods: {
     deleteItem() {

@@ -156,7 +156,7 @@
 
       <v-dialog v-model="dialogPassword" max-width="600">
         <v-card>
-          <v-card-title class="blue darken-1 pb-4 white--text">
+          <v-card-title class="primary pb-4 white--text">
             <v-icon left dark>mdi-lock-reset</v-icon>
             Change Password
           </v-card-title>
@@ -190,7 +190,7 @@
                 <div class="text-right">
                   <v-btn
                     dark
-                    class="blue darken-4"
+                    class="primary"
                     @click="submitPasswordChange"
                     >Submit</v-btn
                   >
