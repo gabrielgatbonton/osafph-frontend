@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { registrants } from "./modules/Citizens/registrants";
+import { registrants, registrant_vaccines } from "./modules/Citizens/registrants";
 import { login } from "./modules/Citizens/login";
 import { categories } from "./modules/Enums/categories";
 import { philippines } from "./modules/Enums/philippines";
@@ -35,6 +35,7 @@ export default new Vuex.Store({
     services,
     alerts,
     consultations,
+    registrant_vaccines,
 
     //Admin Exclusive Stores
     admin_consultations,

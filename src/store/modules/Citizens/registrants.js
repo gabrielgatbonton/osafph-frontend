@@ -11,8 +11,6 @@ export const registrants = {
   state: () => ({
     registrants: null,
     registrant: null,
-    vaccinationDetails: [],
-    boosterDetails: [],
     publicData: null,
   }),
   getters: {
@@ -31,23 +29,6 @@ export const registrants = {
     //     registrant.citizen.mcg_cares_card = claim;
     //   }
     // },
-    SET_VACCINATION_INFORMATION(state, vaccineInformation) {
-      state.vaccinationDetails = vaccineInformation;
-    },
-    SET_BOOSTER_INFORMATION(state, boosterInformation) {
-      state.boosterDetails = boosterInformation;
-    },
-    UPDATE_BOOSTER_INFORMATION(state, { id, updateBoosterInformation }) {
-      // console.log(updateVaccineInformation)
-      const boosterInformation = state.boosterDetails;
-      if (
-        boosterInformation &&
-        boosterInformation.boosterStat.citizen_id === id &&
-        boosterInformation.boosterStat.id === updateBoosterInformation.id
-      ) {
-        boosterInformation.boosterStat = updateBoosterInformation;
-      }
-    },
     SET_PUBLIC_DATA(state, publicData) {
       state.publicData = publicData;
     },
@@ -157,6 +138,65 @@ export const registrants = {
           console.error("Error requesting claim:", error);
         });
     },
+    deleteRegistrant({ dispatch }, id) {
+      const url = `citizens/${id}`;
+      return this.$axios
+        .delete(url)
+        .then((response) => {
+          // const data = response.data;
+          // commit("DELETE_REGISTRANT", data);
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("fetchRegistrants");
+        })
+        .catch((error) => {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+          console.error("Error deleting registrant:", error);
+        });
+    },
+    fetchPublicCitizenRecord({ commit }, hub_registrant_id) {
+      const url = `public-citizen/${hub_registrant_id}`;
+      return this.$axios
+        .get(url)
+        .then((response) => {
+          const publicData = response.data;
+          commit("SET_PUBLIC_DATA", publicData);
+        })
+        .catch((error) => {
+          console.error("Error fetching registrant:", error);
+        });
+    },
+  },
+};
+
+export const registrant_vaccines = {
+  namespaced: true,
+  state: () => ({
+    vaccinationDetails: [],
+    boosterDetails: [],
+  }),
+  getters: {},
+  mutations: {
+    SET_VACCINATION_INFORMATION(state, vaccineInformation) {
+      state.vaccinationDetails = vaccineInformation;
+    },
+    SET_BOOSTER_INFORMATION(state, boosterInformation) {
+      state.boosterDetails = boosterInformation;
+    },
+    UPDATE_BOOSTER_INFORMATION(state, { id, updateBoosterInformation }) {
+      // console.log(updateVaccineInformation)
+      const boosterInformation = state.boosterDetails;
+      if (
+        boosterInformation &&
+        boosterInformation.boosterStat.citizen_id === id &&
+        boosterInformation.boosterStat.id === updateBoosterInformation.id
+      ) {
+        boosterInformation.boosterStat = updateBoosterInformation;
+      }
+    },
+  },
+  actions: {
     fetchVaccineInformation({ commit }, id) {
       commit("SET_VACCINATION_INFORMATION", []);
       const url = `citizens/${id}/vaccines`;
@@ -217,33 +257,19 @@ export const registrants = {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
-    deleteRegistrant({ dispatch }, id) {
-      const url = `citizens/${id}`;
+    deleteVaccineById({ dispatch }, { id, vaccine_id }) {
+      const url = `citizens/${id}/vaccines/${vaccine_id}`;
       return this.$axios
         .delete(url)
         .then((response) => {
-          // const data = response.data;
-          // commit("DELETE_REGISTRANT", data);
           //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
-          dispatch("fetchRegistrants");
+          dispatch("fetchVaccineInformation", id);
         })
         .catch((error) => {
           //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
-          console.error("Error deleting registrant:", error);
-        });
-    },
-    fetchPublicCitizenRecord({ commit }, hub_registrant_id) {
-      const url = `public-citizen/${hub_registrant_id}`;
-      return this.$axios
-        .get(url)
-        .then((response) => {
-          const publicData = response.data;
-          commit("SET_PUBLIC_DATA", publicData);
-        })
-        .catch((error) => {
-          console.error("Error fetching registrant:", error);
+          console.error("Error Deleting Vaccine: ", error);
         });
     },
   },
