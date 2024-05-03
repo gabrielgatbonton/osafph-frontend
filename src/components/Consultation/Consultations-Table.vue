@@ -17,7 +17,7 @@
         <v-text-field
           v-model="search"
           label="Search"
-          class="mx-4"
+          class="mr-4"
           prepend-icon="mdi-magnify"
         ></v-text-field>
         <FilterDialog

@@ -10,13 +10,13 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="auto">
-          <v-btn dark class="mr-3" color="blue darken-4" @click="activator">
+          <v-btn dark class="mr-3" color="primary" @click="activator">
             Upload</v-btn
           >
         </v-col>
       </v-row>
     </v-container>
-    <v-divider class="my-4"></v-divider>
+    <v-divider class="mx-4"></v-divider>
     <v-container fluid class="ma-1">
       <FilesTable :files="getFiles" />
     </v-container>

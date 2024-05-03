@@ -1,36 +1,23 @@
 <template>
   <div>
-    <div v-if="consultations">
-      <v-container fluid class="table-title ma-1">
-        <v-row>
-          <v-col cols="auto">
-            <v-icon left>mdi-medical-bag</v-icon>
-            <span class="title">Consultations</span>
-          </v-col>
-          <v-spacer></v-spacer>
-          <!-- <v-col cols="auto">
-            <v-btn
-              class="mr-3"
-              color="primary"
-              dark
-              @click="switchConsultations"
-              >{{ consultationsStatus ? "Pending" : "Archived" }}</v-btn
-            >
-          </v-col> -->
-        </v-row>
-      </v-container>
-      <v-divider class="mx-3"></v-divider>
-      <v-container fluid class="ma-1">
+    <v-container>
+      <div v-if="consultations">
+        <div class="d-flex justify-start align-center">
+          <v-icon class="mb-4" left>mdi-medical-bag</v-icon>
+          <p class="text-h6">Consultations</p>
+        </div>
+        <v-divider></v-divider>
+
         <ConsultationsTable
           :routeName="routeName"
           :consultations="consultations"
           @query_params="updateFetch"
         />
-      </v-container>
-    </div>
-    <div v-else class="pa-6">
-      <v-skeleton-loader type="table"></v-skeleton-loader>
-    </div>
+      </div>
+      <div v-else>
+        <v-skeleton-loader type="table"></v-skeleton-loader>
+      </div>
+    </v-container>
   </div>
 </template>
 
@@ -38,8 +25,8 @@
 import { mapActions, mapState } from "vuex";
 import ConsultationsTable from "@/components/Consultation/Consultations-Table.vue";
 export default {
+  name: "RequestedConsultationsView",
   data: () => ({
-    // consultationsStatus: false,
     routeName: "consultation-view",
   }),
   components: {
@@ -60,18 +47,17 @@ export default {
     },
     updateFetch(query_params) {
       this.fetchConsultations(query_params);
-    }
+    },
   },
   computed: {
     ...mapState("consultations", {
       consultations: "consultations",
-    })
+    }),
   },
   created() {
     this.fetchConsultations();
     this.routeEvents();
   },
- 
 };
 </script>
 
