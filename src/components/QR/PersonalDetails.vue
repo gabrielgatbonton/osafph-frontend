@@ -251,19 +251,13 @@
             </v-card>
           </v-col>
         </v-row>
-        <v-row
-          v-if="
-            data.citizen.vaccination_stat[0] && data.citizen.vaccination_stat[1]
-              ? true
-              : false
-          "
-        >
+        <v-row v-if="boosterUnlock">
           <BoosterHistory :data="data" />
         </v-row>
         <v-row>
           <v-col cols="12">
             <v-btn
-              color="blue darken-4 white--text"
+              color="primary white--text"
               block
               :disabled="!data.citizen.vaccination_stat[0]"
               ><v-icon left dark>mdi-file-document</v-icon>Print VaxCert</v-btn
@@ -389,6 +383,12 @@ export default {
           ).toUpperCase(),
         },
       ];
+    },
+    boosterUnlock() {
+      return (
+        this.data.citizen.vaccination_stat.length > 2 ||
+        this.data.citizen.vaccination_stat[0]?.vaccine_name === "JANSSEN"
+      );
     },
   },
   // created() {

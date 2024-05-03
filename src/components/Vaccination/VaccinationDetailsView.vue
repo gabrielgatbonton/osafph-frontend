@@ -182,7 +182,7 @@ export default {
     }),
     boosterUnlock() {
       return (
-        this.vaccinationInformation.length > 1 ||
+        this.vaccinationInformation.length > 2 ||
         this.vaccinationInformation[0]?.vaccine_name === "JANSSEN"
       );
     },
