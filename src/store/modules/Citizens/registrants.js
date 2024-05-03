@@ -221,7 +221,7 @@ export const registrant_vaccines = {
           //Commit to the other module for alert
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
           dispatch("fetchVaccineInformation", id);
-          dispatch("fetchRegistrantId", id);
+          store.dispatch("registrants/fetchRegistrantId", id);
         })
         .catch((error) => {
           console.error("Error updating vaccination information:", error);

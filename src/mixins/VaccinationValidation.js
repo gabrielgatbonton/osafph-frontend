@@ -11,6 +11,7 @@ const checkValues = (value) => {
     return false;
   }
 };
+
 export default {
   validations: {
     vaccineOne: {
@@ -24,11 +25,21 @@ export default {
       id: {},
     },
     vaccineTwo: {
-      dose: { required: requiredIf((value) => checkValues(value)) },
-      vaccination_date: { required: requiredIf((value) => checkValues(value)) },
-      vaccine: { required: requiredIf((value) => checkValues(value)) },
-      lot_number: { required: requiredIf((value) => checkValues(value)) },
-      vaccination_site: { required: requiredIf((value) => checkValues(value)) },
+      dose: {
+        required: requiredIf((value) => checkValues(value)),
+      },
+      vaccination_date: {
+        required: requiredIf((value) => checkValues(value)),
+      },
+      vaccine: {
+        required: requiredIf((value) => checkValues(value)),
+      },
+      lot_number: {
+        required: requiredIf((value) => checkValues(value)),
+      },
+      vaccination_site: {
+        required: requiredIf((value) => checkValues(value)),
+      },
       healthcare_professional: {
         required: requiredIf((value) => checkValues(value)),
       },
@@ -39,6 +50,9 @@ export default {
     },
   },
   computed: {
+    checkBoxValue() {
+      return this.checkbox !== true;
+    },
     errorMessages() {
       const errors = {
         vaccineOne: {},
@@ -56,6 +70,7 @@ export default {
       errors.vaccineTwo.dose = [];
       if (this.$v.vaccineTwo.dose.$dirty) {
         !this.$v.vaccineOne.dose.required &&
+          this.checkBoxValue &&
           errors.vaccineTwo.dose.push("Dose 1 is required");
         !this.$v.vaccineTwo.dose.required &&
           errors.vaccineTwo.dose.push("Dose is required");
@@ -72,6 +87,7 @@ export default {
       errors.vaccineTwo.vaccination_date = [];
       if (this.$v.vaccineTwo.vaccination_date.$dirty) {
         !this.$v.vaccineOne.vaccination_date.required &&
+          this.checkBoxValue &&
           errors.vaccineTwo.vaccination_date.push("Date 1 is required");
         !this.$v.vaccineTwo.vaccination_date.required &&
           errors.vaccineTwo.vaccination_date.push("Date is required");
@@ -88,6 +104,7 @@ export default {
       errors.vaccineTwo.vaccine = [];
       if (this.$v.vaccineTwo.vaccine.$dirty) {
         !this.$v.vaccineOne.vaccine.required &&
+          this.checkBoxValue &&
           errors.vaccineTwo.vaccine.push("Vaccine 1 is required");
         !this.$v.vaccineTwo.vaccine.required &&
           errors.vaccineTwo.vaccine.push("Vaccine is required");
@@ -104,6 +121,7 @@ export default {
       errors.vaccineTwo.lot_number = [];
       if (this.$v.vaccineTwo.lot_number.$dirty) {
         !this.$v.vaccineOne.lot_number.required &&
+          this.checkBoxValue &&
           errors.vaccineTwo.lot_number.push("Lot number 1 is required");
         !this.$v.vaccineTwo.lot_number.required &&
           errors.vaccineTwo.lot_number.push("Lot number is required");
@@ -122,6 +140,7 @@ export default {
       errors.vaccineTwo.vaccination_site = [];
       if (this.$v.vaccineTwo.vaccination_site.$dirty) {
         !this.$v.vaccineOne.vaccination_site.required &&
+          this.checkBoxValue &&
           errors.vaccineTwo.vaccination_site.push(
             "Vaccination site 1 is required"
           );
@@ -144,6 +163,7 @@ export default {
       errors.vaccineTwo.healthcare_professional = [];
       if (this.$v.vaccineTwo.healthcare_professional.$dirty) {
         !this.$v.vaccineOne.healthcare_professional.required &&
+          this.checkBoxValue &&
           errors.vaccineTwo.healthcare_professional.push(
             "Healthcare professional 1 is required"
           );
@@ -166,6 +186,7 @@ export default {
       errors.vaccineTwo.healthcare_professional_license_number = [];
       if (this.$v.vaccineTwo.healthcare_professional_license_number.$dirty) {
         !this.$v.vaccineOne.healthcare_professional_license_number.required &&
+          this.checkBoxValue &&
           errors.vaccineTwo.healthcare_professional_license_number.push(
             "License number 1 is required"
           );

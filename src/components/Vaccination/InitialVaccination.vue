@@ -10,13 +10,13 @@
             ></v-checkbox>
           </v-col>
         </v-row>
-        <v-row class="mx-2" v-if="checkJanssen">
+        <v-row class="mx-2">
           <v-col cols="6">
             <v-select
               v-model="vaccineOne.dose"
               :value="vaccineOne.dose"
               label="Dose"
-              :items="checkJanssenDose"
+              :items="checkJanssenDose.doseOne"
               @blur="$v.vaccineOne.dose.$touch()"
               :error-messages="errorMessages.vaccineOne.dose"
               clearable
@@ -39,6 +39,7 @@
               :items="checkJanssenVaccine"
               @blur="$v.vaccineOne.vaccine.$touch()"
               :error-messages="errorMessages.vaccineOne.vaccine"
+              clearable
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -94,13 +95,13 @@
           </v-col>
         </v-row>
         <v-divider class="ma-5" v-if="checkJanssen"></v-divider>
-        <v-row class="mx-2">
+        <v-row class="mx-2" v-if="checkJanssen">
           <v-col cols="6">
             <v-select
               v-model="vaccineTwo.dose"
               :value="vaccineTwo.dose"
               label="Dose"
-              :items="checkJanssenDose"
+              :items="checkJanssenDose.doseTwo"
               @blur="$v.vaccineTwo.dose.$touch()"
               :error-messages="errorMessages.vaccineTwo.dose"
               clearable
@@ -123,6 +124,7 @@
               :items="checkJanssenVaccine"
               @blur="$v.vaccineTwo.vaccine.$touch()"
               :error-messages="errorMessages.vaccineTwo.vaccine"
+              clearable
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -227,12 +229,17 @@ export default {
   }),
   methods: {
     submitData() {
+      let checkInvalidity = null;
       this.vaccines = [];
+      console.log(this.$v);
       this.$v.$touch();
 
       if (this.checkbox) {
-        this.vaccines.push(this.vaccineTwo);
+        checkInvalidity = this.$v.vaccineOne.$invalid;
+        this.vaccines.push(this.vaccineOne);
       } else {
+        this.$v.$touch();
+        checkInvalidity = this.$v.$invalid;
         if (this.vaccineOne.dose !== null) {
           this.vaccines.push(this.vaccineOne);
           if (this.vaccineTwo.dose !== null) {
@@ -240,7 +247,7 @@ export default {
           }
         }
       }
-      if (!this.$v.$invalid) {
+      if (!checkInvalidity) {
         this.$emit("submitData", this.vaccines);
       }
     },
@@ -249,12 +256,13 @@ export default {
       this.$emit("delete-vaccine", vaccine_id);
       //Reset the chosen vaccine to null
       this.resetVariables(vaccine_id);
+      this.$v.$reset();
     },
     updateVariables(value) {
       if (value.length === 1 && value[0]?.vaccine_name === "JANSSEN") {
         this.checkbox = true;
         value.forEach((item) => {
-          this.vaccineTwo = {
+          this.vaccineOne = {
             dose: item.dose,
             vaccination_date: format(
               parseISO(item.vaccination_date),
@@ -277,10 +285,9 @@ export default {
 
           this.vaccineOne = {
             dose: objectOne.dose,
-            vaccination_date: format(
-              parseISO(objectOne.vaccination_date),
-              "MMMM dd, yyyy"
-            ),
+            vaccination_date: objectOne.vaccination_date
+              ? format(parseISO(objectOne.vaccination_date), "MMMM dd, yyyy")
+              : null,
             vaccine: objectOne.vaccine_name,
             lot_number: objectOne.lot_no,
             vaccination_site: objectOne.site_name,
@@ -292,10 +299,9 @@ export default {
 
           this.vaccineTwo = {
             dose: objectTwo.dose,
-            vaccination_date: format(
-              parseISO(objectTwo.vaccination_date),
-              "MMMM dd, yyyy"
-            ),
+            vaccination_date: objectTwo.vaccination_date
+              ? format(parseISO(objectTwo.vaccination_date), "MMMM dd, yyyy")
+              : null,
             vaccine: objectTwo.vaccine_name,
             lot_number: objectTwo.lot_no,
             vaccination_site: objectTwo.site_name,
@@ -340,13 +346,17 @@ export default {
       return this.checkbox === true ? false : true;
     },
     checkJanssenDose() {
-      let doses = [];
+      let doseOne = ["1"];
+      let doseTwo = [];
       if (this.checkbox === true) {
-        doses = ["2"];
-      } else {
-        doses = ["1", "2"];
-      }
-      return doses;
+        doseOne = ["2"];
+      } else if (this.vaccineOne.dose === "1") {
+        doseTwo = ["2"];
+      } 
+      return {
+        doseOne: doseOne,
+        doseTwo: doseTwo,
+      };
     },
     checkJanssenVaccine() {
       let vaccines = [
@@ -367,13 +377,15 @@ export default {
       let vaccineOne = false;
       let vaccineTwo = false;
       this.payload.forEach((item) => {
-        if (item.dose === "2") {
-          vaccineTwo = true;
-        } else if (item.dose === "1" && this.payload.length === 1) {
+        if (item.dose === "2" && item.vaccine_name === "JANSSEN") {
           vaccineOne = true;
-        } else {
-          vaccineOne = false;
-          vaccineTwo = false;
+        } 
+
+        if (item.dose === "1") {
+          vaccineOne = true;
+        }
+        if (item.dose === "2" && this.payload.length === 2) {
+          vaccineTwo = true;
         }
       });
       return {
