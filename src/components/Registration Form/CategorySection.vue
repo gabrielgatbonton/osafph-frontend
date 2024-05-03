@@ -1,13 +1,17 @@
 <template>
-  <v-container class="mx-auto mt-3">
-    <v-row>
-      <v-col cols="auto">
-        <v-icon left>mdi-folder-multiple</v-icon>
-        <span>Category</span>
+  <v-container class="mx-auto">
+    <v-row class="mb-5">
+      <v-col cols="12">
+        <div class="d-flex align-center">
+          <v-icon size="20" color="primary">mdi-folder-multiple</v-icon>
+          <p class="text-subtitle-1 font-weight-bold pa-0 my-0 ml-2">
+            Category
+          </p>
+        </div>
       </v-col>
     </v-row>
-    <v-row class="mt-n3">
-      <v-col cols="12" class="mt-n3">
+    <v-row>
+      <v-col cols="12" class="mt-n5">
         <v-select
           :value="data.category"
           v-model="data.category"
@@ -17,9 +21,10 @@
           placeholder="Choose..."
           @blur="$v.data.category.$touch()"
           :error-messages="errorMessages.category"
-        ></v-select>
+          outlined
+        />
       </v-col>
-      <v-col cols="12" lg="6" md="6" class="mt-n3">
+      <v-col cols="12" class="mt-n5">
         <v-autocomplete
           :items="identification_cards_enum"
           item-text="name"
@@ -27,46 +32,43 @@
           v-model="data.identification_card"
           @blur="$v.data.identification_card.$touch()"
           :error-messages="errorMessages.identification_card"
-        ></v-autocomplete>
+          outlined
+        />
       </v-col>
-      <v-col cols="12" lg="6" md="6" class="mt-n3">
+      <v-col cols="12" class="mt-n5">
         <v-autocomplete
           label="Type of Id"
           :items="type_of_ids"
           v-model="data.type_of_id"
           @blur="$v.data.type_of_id.$touch()"
           :error-messages="errorMessages.type_of_id"
-        ></v-autocomplete>
+          outlined
+        />
       </v-col>
-      <v-col
-        cols="12"
-        lg="6"
-        md="6"
-        v-if="data.type_of_id === 'OTHERS'"
-        class="mt-n3"
-      >
+      <v-col cols="12" v-if="data.type_of_id === 'OTHERS'" class="mt-n5">
         <v-text-field
           v-model="data.other_id"
           label="Other Id"
           @blur="$v.data.other_id.$touch()"
           :error-messages="errorMessages.other_id"
-        ></v-text-field>
+          outlined
+        />
       </v-col>
-      <v-col cols="12" lg="6" md="6" class="mt-n3">
+      <v-col cols="12" class="mt-n5">
         <v-text-field
           :value="data.id_number"
           v-model="data.id_number"
           label="Id Number"
           @blur="$v.data.id_number.$touch()"
           :error-messages="errorMessages.id_number"
-        ></v-text-field>
+          outlined
+        />
       </v-col>
-    </v-row>
-    <v-row>
+
       <v-col cols="12">
-        <v-btn dark block class="primary" @click="continueForm"
-          >Proceed</v-btn
-        >
+        <div class="w-full d-flex">
+          <v-btn class="primary ml-auto" @click="continueForm">Proceed</v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -158,8 +160,7 @@ export default {
       deep: true,
     },
   },
-  mounted() {
-  }
+  mounted() {},
 };
 </script>
 
