@@ -184,17 +184,6 @@ export const registrant_vaccines = {
     SET_BOOSTER_INFORMATION(state, boosterInformation) {
       state.boosterDetails = boosterInformation;
     },
-    UPDATE_BOOSTER_INFORMATION(state, { id, updateBoosterInformation }) {
-      // console.log(updateVaccineInformation)
-      const boosterInformation = state.boosterDetails;
-      if (
-        boosterInformation &&
-        boosterInformation.boosterStat.citizen_id === id &&
-        boosterInformation.boosterStat.id === updateBoosterInformation.id
-      ) {
-        boosterInformation.boosterStat = updateBoosterInformation;
-      }
-    },
   },
   actions: {
     fetchVaccineInformation({ commit }, id) {
@@ -272,5 +261,20 @@ export const registrant_vaccines = {
           console.error("Error Deleting Vaccine: ", error);
         });
     },
+    deleteBoosterById({dispatch}, {id, vaccine_id}) {
+      const url = `citizens/${id}/boosters/${vaccine_id}`;
+      return this.$axios
+        .delete(url)
+        .then((response) => {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("fetchBoosterInformation", id);
+        })
+        .catch((error) => {
+          //Commit to the other module for alert
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+          console.error("Error Deleting Booster: ", error);
+        });
+    }
   },
 };

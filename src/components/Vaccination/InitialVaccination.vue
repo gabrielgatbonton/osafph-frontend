@@ -229,9 +229,9 @@ export default {
   }),
   methods: {
     submitData() {
+      // Reset Payload Data
       let checkInvalidity = null;
       this.vaccines = [];
-      console.log(this.$v);
       this.$v.$touch();
 
       if (this.checkbox) {
@@ -386,6 +386,7 @@ export default {
         }
         if (item.dose === "2" && this.payload.length === 2) {
           vaccineTwo = true;
+          vaccineOne = false;
         }
       });
       return {
