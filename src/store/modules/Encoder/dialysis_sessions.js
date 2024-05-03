@@ -107,10 +107,7 @@ export const dialysis_sessions = {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
-    toggleServiceProgress(
-      { dispatch },
-      { hospital_service_id, id, status }
-    ) {
+    toggleServiceProgress({ dispatch }, { hospital_service_id, id, status }) {
       const url = `hospital-services/${hospital_service_id}/toggle-status`;
       return this.$axios
         .patch(url, status)
@@ -128,5 +125,42 @@ export const dialysis_sessions = {
 };
 
 export const dialysis_sessions_packages = {
-  namespaced: true
-}
+  namespaced: true,
+  state: () => ({}),
+  getters: {},
+  mutations: {},
+  actions: {
+    updateDialysisSession(_, { id, data }) {
+      console.log(id);
+      console.log(data);
+      const url = `encoder/dialysis/sessions/${id}/packages/create-or-update`;
+      return this.$axios
+        .post(url, data)
+        .then((response) => {
+          store.dispatch("dialysis_sessions/fetchDialysisSessionById", id);
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+        })
+        .catch((error) => {
+          console.error("Error Updating Dialysis Session: ", error);
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+        });
+    },
+    deleteDialysisPackageById(
+      _,
+      { dialysis_session_id, dialysis_session_package_id }
+    ) {
+      const url = `encoder/dialysis/sessions/${dialysis_session_id}/packages/${dialysis_session_package_id}`;
+
+      return this.$axios
+        .delete(url)
+        .then((response) => {
+          store.dispatch("dialysis_sessions/fetchDialysisSessionById", dialysis_session_id);
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+        })
+        .catch((error) => {
+          console.error("Error Deleting Dialysis Session Package: ", error);
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
+        });
+    },
+  },
+};

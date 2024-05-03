@@ -11,13 +11,11 @@
       </template>
       <v-card>
         <v-card-title class="primary pb-4 white--text"
-          ><v-icon color="white" left>mdi-pencil</v-icon>Edit Inputs</v-card-title
+          ><v-icon color="white" left>mdi-pencil</v-icon>Edit
+          Inputs</v-card-title
         >
         <v-container class="pa-8 mx-auto overflow-scroll">
-          <v-row
-            v-for="(set, index) in payload.dialysis_packages"
-            :key="index"
-          >
+          <v-row v-for="(set, index) in payload.dialysis_packages" :key="index">
             <v-col cols="12" md="6" sm="6">
               <div>
                 <v-select
@@ -59,17 +57,14 @@
                 :items="funders_enum"
                 item-text="name"
                 @blur="
-                    $v.payload.dialysis_packages.$each.$iter[
-                      index
-                    ].name.$touch()
-                  "
+                  $v.payload.dialysis_packages.$each.$iter[index].name.$touch()
+                "
               >
-              
               </v-autocomplete>
               <v-btn
                 color="red darken-4"
                 icon
-                @click="removeIndex(index)"
+                @click="deletePackage(set.id)"
                 fab
                 class="absolute-position"
                 :ripple="false"
@@ -107,7 +102,7 @@ import { mapActions, mapState, mapGetters } from "vuex";
 import { required } from "vuelidate/lib/validators";
 export default {
   name: "PackagesDialog",
-  props: ["serviceStatus"],
+  props: ["dialysis_packages"],
   data: () => ({
     dialog: false,
     payload: {
@@ -127,6 +122,10 @@ export default {
   methods: {
     ...mapActions("dialysis", ["fetchEnumsPackages"]),
     ...mapActions("services_choices", ["fetchCrowdFundersEnum"]),
+    ...mapActions("dialysis_sessions_packages", [
+      "updateDialysisSession",
+      "deleteDialysisPackageById",
+    ]),
     addIndex() {
       this.payload.dialysis_packages.push({
         name: null,
@@ -135,16 +134,40 @@ export default {
     },
     submitForm() {
       this.$v.$touch();
-      if (!this.$v.$invalid) {
-        this.$emit("validationSuccess", true);
-        this.$v.$reset();
-        this.dialog = !this.dialog
+
+      let dialysis_session_id = this.dialysis_packages.dialysis_session_id;
+
+      if (!this.$v.invalid) {
+        this.updateDialysisSession({
+          data: this.payload,
+          id: dialysis_session_id,
+        })
+          .catch((error) => {
+            console.error("Error Updating Dialysis Session Packages: ", error);
+          })
+          .finally(() => {
+            this.dialog = false;
+            this.$v.$reset();
+          });
       }
     },
     removeIndex(index) {
-      if(this.payload.dialysis_packages.length > 1){
+      if (this.payload.dialysis_packages.length > 1) {
         this.payload.dialysis_packages.splice(index, 1);
       }
+    },
+    deletePackage(dialysis_session_package_id) {
+      this.deleteDialysisPackageById({
+        dialysis_session_id: this.dialysis_packages.dialysis_session_id,
+        dialysis_session_package_id: dialysis_session_package_id,
+      });
+    },
+    initPackages(newVal) {
+      this.payload.dialysis_packages = newVal.dialysis_packages.map((item) => ({
+        name: item.name,
+        funder: item.funder,
+        id: item.id,
+      }));
     },
   },
   computed: {
@@ -173,25 +196,26 @@ export default {
       );
       return errors;
     },
-    ExistingPackages(){
-      if(this.payload.dialysis_packages.length === 0){
-        Object.keys(this.serviceStatus).forEach((items) => {
-          const packages_info = this.serviceStatus[items];
+    // ExistingPackages() {
+    //   if (this.payload.dialysis_packages.length === 0) {
+    //     Object.keys(this.serviceStatus).forEach((items) => {
+    //       const packages_info = this.serviceStatus[items];
 
-          Object.keys(packages_info).forEach((innerItems) => {
-            if(innerItems.includes("packages")) {
-                packages_info[innerItems].forEach((package_data) => {
-                  this.payload.dialysis_packages.push({
-                    name: package_data["name"],
-                    funder: package_data["funder"]
-                  })
-                })
-            }
-          })
-        });
-      }
-        return this.payload.dialysis_packages;
-    }
+    //       Object.keys(packages_info).forEach((innerItems) => {
+    //         if (innerItems.includes("packages")) {
+    //           packages_info[innerItems].forEach((package_data) => {
+    //             this.payload.dialysis_packages.push({
+    //               name: package_data["name"],
+    //               funder: package_data["funder"],
+    //               package_id: package_data["id"],
+    //             });
+    //           });
+    //         }
+    //       });
+    //     });
+    //   }
+    //   return this.payload.dialysis_packages;
+    // },
   },
   watch: {
     // packages_data: {
@@ -206,19 +230,34 @@ export default {
         console.log("payload", value);
       },
     },
-    serviceStatus: {
+    // "serviceStatus.dialysis_session_id": {
+    //   immediate: true,
+    //   handler(value) {
+    //     console.log("serviceStatus", value);
+    //   },
+    // },
+    // ExistingPackages: {
+    //   handler(value) {
+    //     console.log("ExistingPackages", value);
+    //   },
+    // },
+    // "serviceStatus.status": {
+    //   handler(newVal) {
+    //     this.serviceStatus.scheduled_dialysis_sessions.forEach((item) => {
+    //       if (
+    //         item["scheduled_date_session"] ===
+    //         this.serviceStatus.scheduledDate.content
+    //       ) {
+    //         item["dialysis_session_status"] = newVal;
+    //       }
+    //     });
+    //   },
+    // },
+    dialysis_packages: {
       immediate: true,
-      handler(value) {
-        console.log("serviceStatus", value);
-      },
-    },
-    "serviceStatus.status": {
-      handler(newVal) {
-        this.serviceStatus.scheduled_dialysis_sessions.forEach((item) => {
-          if(item["scheduled_date_session"] === this.serviceStatus.scheduledDate.content){
-            item["dialysis_session_status"] = newVal
-          }
-        })
+      handler: function (newVal) {
+        console.log(newVal);
+        this.initPackages(newVal);
       },
     },
   },
@@ -235,8 +274,6 @@ export default {
   color: #333;
   font-weight: bold;
 }
-
-
 
 .overflow-scroll {
   overflow-y: auto;

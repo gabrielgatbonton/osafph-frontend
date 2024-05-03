@@ -110,7 +110,7 @@
                 <p class="text-subtitle-1 black--text font-weight-bold">
                   {{ serviceStatus.header.title.toUpperCase() }}
                 </p>
-                <PackagesDialog :serviceStatus="serviceStatus" />
+                <PackagesDialog :dialysis_packages="showDialysisPackages" />
               </div>
             </v-col>
             <v-col align-self="center" cols="12">
@@ -345,6 +345,9 @@ export default {
       }
       return iconColor;
     },
+    showDialysisPackages() {
+      return this.serviceStatus.dialysis_session_packages;
+    }
   },
   watch: {
     serviceStatus: {

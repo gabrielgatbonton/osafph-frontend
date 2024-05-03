@@ -16,7 +16,7 @@ import { professions } from "./modules/Enums/professions";
 import { consultation_form } from "./modules/Encoder/consultation-form";
 import { file_types, file_types_actions } from "./modules/Enums/file-types";
 import { dialysis, dialysis_items_actions } from "./modules/Enums/dialysis";
-import { dialysis_sessions } from "./modules/Encoder/dialysis_sessions";
+import { dialysis_sessions, dialysis_sessions_packages } from "./modules/Encoder/dialysis_sessions";
 import { files, public_files } from "./modules/General/files";
 import { dialysis_calendar } from "./modules/Encoder/dialysis_calendar";
 import { dashboard, funders_actions } from "./modules/General/dashboard";
@@ -47,6 +47,7 @@ export default new Vuex.Store({
     //Encoder
     consultation_form,
     dialysis_sessions,
+    dialysis_sessions_packages,
     dialysis_calendar,
 
     //Enums

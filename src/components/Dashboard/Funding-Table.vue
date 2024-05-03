@@ -238,7 +238,7 @@ export default {
     submitRequest() {
       if (this.dialogStatus === "UPDATE") {
         this.$v.$touch();
-
+        
         if (!this.$v.$invalid) {
           this.updateFunder({
             data: this.payload,

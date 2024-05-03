@@ -408,6 +408,10 @@ export default {
           machine_value: machine_value,
         },
         scheduled_dialysis_sessions: scheduled_dialysis_sessions,
+        dialysis_session_packages: {
+          dialysis_session_id: this.session.dialysis_session_id,
+          dialysis_packages: this.session.dialysis_packages,
+        },
       };
     },
     buttonTitle() {
@@ -418,6 +422,11 @@ export default {
     getDialysisSession(value) {
       this.session = value;
       this.fetchFiles(this.session.hospital_service.id);
+    },
+    session: {
+      handler(value) {
+        console.log(value);
+      },
     },
   },
   created() {
