@@ -74,6 +74,6 @@ export default {
 #svg {
   height: 100px;
   width: 100px;
-  color: #2196f3;
+  color: #ff4949;
 }
 </style>

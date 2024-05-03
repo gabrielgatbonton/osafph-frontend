@@ -9,12 +9,12 @@
           :class="{ 'disabled-button': disabledButton }"
           v-bind="attrs"
           v-on="on"
-          ><v-icon left>mdi-smart-card-outline</v-icon>Print Card</v-btn
+          ><v-icon left>mdi-card-account-details</v-icon>Print Card</v-btn
         >
       </template>
       <v-card>
-        <v-card-title class="blue darken-1 pb-4 white--text"
-          >ID Card Generator</v-card-title
+        <v-card-title class="primary pb-4 white--text"
+          ><v-icon dark left>mdi-card-account-details</v-icon>ID Card Generator</v-card-title
         >
         <div class="text-center mx-4 mt-4 scroll-overflow">
           <canvas
@@ -39,7 +39,7 @@
           ></vue-qrcode>
           <!-- Button to trigger generating and printing the ID -->
           <v-card-actions>
-            <v-btn dark class="blue darken-4" block @click="generateAndPrintID"
+            <v-btn dark class="primary" block @click="generateAndPrintID"
               >Print ID</v-btn
             >
           </v-card-actions>

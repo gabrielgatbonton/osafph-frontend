@@ -123,7 +123,7 @@ export default {
   name: "NavButtons",
   props: ["links", "user", "isMini"],
   data: () => ({
-    activeBtn: "",
+    activeBtn: "Dashboard",
   }),
   computed: {
     isMiniVariant() {

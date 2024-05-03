@@ -20,14 +20,19 @@
                 <v-tab-item>
                   <InitialVaccination
                     @submitData="submitVaccine"
-                    @delete-vaccine="deleteVaccine"
+                    @delete-vaccine="
+                      (vac_id) => deleteVaccine('vaccination', vac_id)
+                    "
                     :payload="vaccinationInformation"
                     :loadingStatus="loading_vaccine"
                   />
                 </v-tab-item>
                 <v-tab-item>
                   <BoosterVaccination
-                    v-on:submitData="submitBooster"
+                    @submitData="submitBooster"
+                    @delete-vaccine="
+                      (vac_id) => deleteVaccine('booster', vac_id)
+                    "
                     :payload="boosterInformation"
                     :loadingStatus="loading_booster"
                   />
@@ -64,6 +69,7 @@ export default {
       "fetchBoosterInformation",
       "updateBoosterInformation",
       "deleteVaccineById",
+      "deleteBoosterById",
     ]),
     submitVaccine(data) {
       this.loading_vaccine = true;
@@ -104,82 +110,46 @@ export default {
           this.dialog = false;
         });
     },
-    deleteVaccine(vaccine_id) {
+    deleteVaccine(type, vaccine_id) {
       //Delete Vaccine through the store.
-      this.deleteVaccineById({
-        id: this.id,
-        vaccine_id: vaccine_id,
-      });
+      if (type === "vaccination") {
+        this.deleteVaccineById({
+          id: this.id,
+          vaccine_id: vaccine_id,
+        });
+      } else if (type === "booster") {
+        this.deleteBoosterById({
+          id: this.id,
+          vaccine_id: vaccine_id,
+        });
+      }
     },
     submitBooster(data) {
       this.loading_booster = true;
-      let data1 = null;
-      let data2 = null;
-      if (this.boosterInformation[0]?.id && this.boosterInformation[1]?.id) {
-        data1 = {
-          dose: data.dose_1,
-          booster_date: format(
-            parse(data.date_1, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
-          booster_name: data.vaccine_1,
-          lot_no: data.lot_number_1,
-          site_name: data.vaccination_site_1,
-          healthcare_professional: data.healthcare_professional_1,
-          healthcare_professional_license_number:
-            data.healthcare_professional_license_number_1,
-          id: data.vaccine_id_1,
-        };
-        data2 = {
-          dose: data.dose_2,
-          booster_date: data.date_2
-            ? format(
-                parse(data.date_2, "MMMM dd, yyyy", new Date()),
-                "yyyy-MM-d"
-              )
-            : null,
-          booster_name: data.vaccine_2,
-          lot_no: data.lot_number_2,
-          site_name: data.vaccination_site_2,
-          healthcare_professional: data.healthcare_professional_2,
-          healthcare_professional_license_number:
-            data.healthcare_professional_license_number_2,
-          id: data.vaccine_id_2,
-        };
-      } else {
-        data1 = {
-          dose: data.dose_1,
-          booster_date: format(
-            parse(data.date_1, "MMMM dd, yyyy", new Date()),
-            "yyyy-MM-d"
-          ),
-          booster_name: data.vaccine_1,
-          lot_no: data.lot_number_1,
-          site_name: data.vaccination_site_1,
-          healthcare_professional: data.healthcare_professional_1,
-          healthcare_professional_license_number:
-            data.healthcare_professional_license_number_1,
-        };
-        data2 = {
-          dose: data.dose_2,
-          booster_date: data.date_2
-            ? format(
-                parse(data.date_2, "MMMM dd, yyyy", new Date()),
-                "yyyy-MM-d"
-              )
-            : null,
-          booster_name: data.vaccine_2,
-          lot_no: data.lot_number_2,
-          site_name: data.vaccination_site_2,
-          healthcare_professional: data.healthcare_professional_2,
-          healthcare_professional_license_number:
-            data.healthcare_professional_license_number_2,
-        };
-      }
-
-      const payload = {
-        boosters: [data1, data2],
+      let payload = {
+        boosters: [],
       };
+
+      data.forEach((item) => {
+        let vaccine = {
+          id: item.id,
+          dose: item.dose,
+          booster_date: format(
+            parse(item.vaccination_date, "MMMM dd, yyyy", new Date()),
+            "yyyy-MM-d"
+          ),
+          lot_no: item.lot_number,
+          healthcare_professional: item.healthcare_professional,
+          healthcare_professional_license_number:
+            item.healthcare_professional_license_number,
+          site_name: item.vaccination_site,
+          booster_name: item.vaccine,
+        };
+        if (item.id === null) {
+          delete vaccine.id;
+        }
+        payload.boosters.push(vaccine);
+      });
 
       this.updateBoosterInformation({
         id: this.id,
@@ -212,7 +182,7 @@ export default {
     }),
     boosterUnlock() {
       return (
-        this.vaccinationInformation.length > 1 ||
+        this.vaccinationInformation.length > 2 ||
         this.vaccinationInformation[0]?.vaccine_name === "JANSSEN"
       );
     },

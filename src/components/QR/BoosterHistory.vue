@@ -4,9 +4,7 @@
       <v-container>
         <v-row dense class="ma-2">
           <v-col cols="auto" class="">
-            <v-avatar
-              :color="data.citizen.booster_stat[0] ? 'green' : 'red'"
-            >
+            <v-avatar :color="data.citizen.booster_stat[0] ? 'green' : 'red'">
               <v-icon dark> mdi-needle </v-icon>
             </v-avatar>
           </v-col>
@@ -31,13 +29,10 @@
                   small
                   :color="data.citizen.booster_stat[0] ? 'green' : 'red'"
                   >{{
-                    data.citizen.booster_stat[0]
-                      ? "mdi-check-all"
-                      : "mdi-close"
+                    data.citizen.booster_stat[0] ? "mdi-check-all" : "mdi-close"
                   }}</v-icon
                 >{{
-                  data.citizen.booster_stat[0] &&
-                  data.citizen.booster_stat[1]
+                  data.citizen.booster_stat[0] && data.citizen.booster_stat[1]
                     ? "Booster History"
                     : data.citizen.booster_stat[0] ||
                       data.citizen.booster_stat[1]
@@ -47,10 +42,7 @@
               </div>
             </v-card>
           </v-col>
-          <div
-            class="custom-divider"
-            v-if="data.citizen.booster_stat[0]"
-          ></div>
+          <div class="custom-divider" v-if="data.citizen.booster_stat[0]"></div>
           <v-col cols="12" class="py-0" v-if="data.citizen.booster_stat[0]">
             <v-card rounded="lg" flat outlined>
               <v-container class="pb-0">
@@ -90,10 +82,7 @@
               </div>
             </v-card>
           </v-col>
-          <div
-            v-if="data.citizen.booster_stat[1]"
-            class="custom-divider"
-          ></div>
+          <div v-if="data.citizen.booster_stat[1]" class="custom-divider"></div>
           <v-col v-if="data.citizen.booster_stat[1]" cols="12" class="pt-0">
             <v-card rounded="lg" flat outlined>
               <v-container class="pb-0">
@@ -164,6 +153,13 @@ export default {
           title: "Vaccination Site",
           content: this.data.citizen.booster_stat[0].site_name.toUpperCase(),
         },
+        {
+          title: "Date Vaccinated",
+          content: format(
+            parseISO(this.data.citizen.booster_stat[0]?.booster_date),
+            "MMMM dd, yyyy"
+          ).toUpperCase(),
+        },
       ];
     },
     vaccinesdata_4() {
@@ -184,6 +180,13 @@ export default {
         {
           title: "Vaccination Site",
           content: this.data.citizen.booster_stat[1].site_name.toUpperCase(),
+        },
+        {
+          title: "Date Vaccinated",
+          content: format(
+            parseISO(this.data.citizen.booster_stat[1]?.booster_date),
+            "MMMM dd, yyyy"
+          ).toUpperCase(),
         },
       ];
     },

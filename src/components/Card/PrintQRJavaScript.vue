@@ -9,7 +9,7 @@
       scrollable
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn right dark class="mb-2 blue darken-4" v-bind="attrs" v-on="on"
+        <v-btn right dark class="mb-2" color="primary" v-bind="attrs" v-on="on"
           ><v-icon left>mdi-qrcode</v-icon>Print QR</v-btn
         >
       </template>
@@ -251,7 +251,7 @@ export default {
       immediate: true,
       handler(value) {
         if (value.citizen) {
-          this.name = `${value.citizen.last_name}, ${value.citizen.first_name} ${value.citizen.middle_name}`;
+          this.name = `${value.citizen.last_name}, ${value.citizen.first_name} ${value.citizen.middle_name ? value.citizen.middle_name : ""}`;
           this.address = `${value.citizen.barangay}, ${value.citizen.province}`;
           this.birthday = this.formattedDate(value.citizen.date_of_birth);
         }

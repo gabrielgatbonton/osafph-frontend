@@ -11,7 +11,7 @@
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn dark class="mr-3" color="blue darken-4" @click="activator">
+            <v-btn dark class="mr-3" color="primary" @click="activator">
               Upload</v-btn
             >
           </v-col>

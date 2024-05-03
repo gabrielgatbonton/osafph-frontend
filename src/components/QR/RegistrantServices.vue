@@ -13,7 +13,7 @@
                             white
                           "
                     >
-                      <v-icon color="blue darken-1"> mdi-medical-bag </v-icon>
+                      <v-icon color="primary"> mdi-medical-bag </v-icon>
                     </v-avatar>
                   </v-col>
                   <v-col cols="auto" class="pt-2">
@@ -34,7 +34,7 @@
                       ></v-text-field>
                       <v-btn
                         v-if="!$vuetify.breakpoint.xs"
-                        class="blue darken-4"
+                        class="primary"
                         dark
                         @click="activator"
                         >Filter</v-btn
@@ -43,7 +43,7 @@
                         v-else
                         dark
                         class="mr-3"
-                        color="blue darken-4"
+                        color="primary"
                         icon
                         @click="activator"
                         ><v-icon>mdi-filter-multiple</v-icon></v-btn

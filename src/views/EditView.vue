@@ -1,15 +1,20 @@
 <template>
   <div>
-    <v-container fluid class="ma-1">
-      <v-row>
-        <v-col cols="auto">
-          <!-- <v-icon left>mdi-account-box-multiple</v-icon> -->
-          <span class="title">Edit Registrant</span>
+    <v-container fluid class="mx-auto" style="max-width: 85vw">
+      <v-row dense>
+        <v-col cols="12">
+          <p class="text-h6">Edit Registrant</p>
+          <!-- <v-divider /> -->
+        </v-col>
+        <v-col cols="12">
+          <FormFormat
+            :id="routeID"
+            :loading="loading"
+            v-on:submitData="submit"
+          />
         </v-col>
       </v-row>
     </v-container>
-    <v-divider class="mx-3"></v-divider>
-    <FormFormat :id="routeID" :loading="loading" v-on:submitData="submit" />
   </div>
 </template>
 
@@ -54,7 +59,7 @@ export default {
         //   region: data.region,
         //   mcg_cares_card: data.mcg_cares_card,
         // };
-        
+
         const registrantData = {
           ...data,
         };

@@ -1,22 +1,25 @@
 <template>
-  <v-container class="mx-auto mt-3">
-    <v-row class="mt-3">
-      <v-col cols="auto">
-        <v-icon left>mdi-map-marker</v-icon>
-        <span>Address</span>
+  <v-container class="mx-auto">
+    <v-row class="mb-5">
+      <v-col cols="12">
+        <div class="d-flex align-center">
+          <v-icon size="20" color="primary">mdi-map-marker</v-icon>
+          <p class="text-subtitle-1 font-weight-bold pa-0 my-0 ml-2">Address</p>
+        </div>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-text-field
           :value="data.address"
           v-model="data.address"
           label="Unit/Building/House No./Purok/Street/Subdivision"
           @blur="$v.data.address.$touch()"
           :error-messages="errorMessages.address"
+          outlined
         ></v-text-field>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-autocomplete
           label="Country"
           v-model="selects.country"
@@ -26,9 +29,10 @@
           @change="(id) => initRegions(id)"
           @blur="$v.data.country.$touch()"
           :error-messages="errorMessages.country"
+          outlined
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" lg="6" md="6">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-autocomplete
           :value="selects.region"
           v-model="selects.region"
@@ -38,10 +42,11 @@
           item-value="id"
           @blur="$v.data.region.$touch()"
           :error-messages="errorMessages.region"
+          outlined
           @change="(id) => initProvinces(id)"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" lg="6" md="6">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-autocomplete
           :value="selects.province"
           v-model="selects.province"
@@ -51,10 +56,11 @@
           item-value="id"
           @blur="$v.data.province.$touch()"
           :error-messages="errorMessages.province"
+          outlined
           @change="(id) => initMunicipalities(id)"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" lg="6" md="6">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-autocomplete
           :value="selects.municipality"
           v-model="selects.municipality"
@@ -64,10 +70,11 @@
           item-value="id"
           @blur="$v.data.municipality.$touch()"
           :error-messages="errorMessages.municipality"
+          outlined
           @change="(id) => initBarangays(id)"
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" lg="6" md="6">
+      <v-col cols="12" md="6" class="mt-n5">
         <v-autocomplete
           :value="selects.barangay"
           v-model="selects.barangay"
@@ -77,15 +84,15 @@
           item-value="id"
           @blur="$v.data.barangay.$touch()"
           :error-messages="errorMessages.barangay"
+          outlined
           @change="(id) => setBarangay(id)"
         ></v-autocomplete>
       </v-col>
-    </v-row>
-    <v-row>
+
       <v-col cols="12">
-        <v-btn dark block class="primary" @click="continueForm"
-          >Proceed</v-btn
-        >
+        <div class="w-full d-flex">
+          <v-btn class="primary ml-auto" @click="continueForm">Proceed</v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>

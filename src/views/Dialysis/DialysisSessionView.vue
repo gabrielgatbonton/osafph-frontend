@@ -14,12 +14,12 @@
           @click="completeDialysisSession"
           class="mr-3"
         >
-          <v-btn dark color="success">Complete Session</v-btn>
+          <v-btn dark outlined color="success">Complete Session</v-btn>
         </v-col>
         <v-col cols="auto" v-if="buttonPermissions.files">
           <v-btn
             dark
-            color="blue darken-4"
+            color="primary"
             class="mr-3"
             @click="proceedToFiles"
             >{{ buttonTitle ? "Uploaded Files" : "Upload Files" }}</v-btn
