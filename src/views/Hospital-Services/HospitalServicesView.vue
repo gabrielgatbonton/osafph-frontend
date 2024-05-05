@@ -2,18 +2,17 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <div v-if="services">
-      <v-container fluid class="table-title ma-1">
-        <v-row no-gutters>
+    <v-container>
+      <div v-if="services">
+        <v-row no-gutters align="center">
           <v-col cols="auto">
-            <v-icon left>mdi-account-box-multiple</v-icon>
-            <span class="title">Acquired Services</span>
+            <p class="title">Acquired Services</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
             <v-btn
               v-if="!$vuetify.breakpoint.xs"
-              class="mr-3"
+              class="mr-3 mb-4"
               color="primary"
               dark
               @click="activator"
@@ -22,7 +21,7 @@
             </v-btn>
             <v-btn
               v-else
-              class="mr-3"
+              class="mr-3 mb-4"
               color="primary"
               dark
               icon
@@ -31,15 +30,13 @@
             >
           </v-col>
         </v-row>
-      </v-container>
-      <v-divider class="mx-3"></v-divider>
-      <v-container fluid class="ma-1">
+        <v-divider></v-divider>
         <ServicesTable @query_params="updateFetch" :services="services" />
-      </v-container>
-    </div>
-    <div v-else class="pa-6">
-      <v-skeleton-loader type="table"></v-skeleton-loader>
-    </div>
+      </div>
+      <div v-else>
+        <v-skeleton-loader type="table"></v-skeleton-loader>
+      </div>
+    </v-container>
     <ServiceDialog
       v-on:dialogResponse="resetActivator"
       v-on:submitForm="submitForm"

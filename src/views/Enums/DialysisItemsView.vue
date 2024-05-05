@@ -2,18 +2,17 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <div v-if="dialysis_items">
-      <v-container fluid class="ma-1">
-        <v-row no-gutters>
+    <v-container>
+      <div v-if="dialysis_items">
+        <v-row no-gutters align="center">
           <v-col cols="auto">
-            <v-icon left>mdi-account-box-multiple</v-icon>
-            <span class="title">Dialysis Items</span>
+            <p class="title">Dialysis Items</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
             <v-btn
               v-if="isIcon"
-              class="mr-3"
+              class="mr-3 mb-4"
               color="primary"
               icon
               @click="activator"
@@ -22,7 +21,7 @@
             >
             <v-btn
               v-else
-              class="mr-3"
+              class="mr-3 mb-4"
               color="primary"
               dark
               @click="activator"
@@ -31,19 +30,14 @@
             >
           </v-col>
         </v-row>
-      </v-container>
-      <v-divider class="mx-3"></v-divider>
-      <v-container fluid class="ma-1">
-        <v-row>
-          <v-col cols="12">
-            <ItemsTable :items="dialysis_items" />
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
-    <div v-else class="pa-6">
-      <v-skeleton-loader type="table"></v-skeleton-loader>
-    </div>
+        <v-divider></v-divider>
+        <ItemsTable :items="dialysis_items" />
+      </div>
+      <div v-else>
+        <v-skeleton-loader type="table"></v-skeleton-loader>
+      </div>
+    </v-container>
+
     <ItemDialog
       :activator="dialog"
       @dialogResponse="resetActivator"

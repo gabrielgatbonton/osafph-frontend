@@ -2,18 +2,18 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <div v-if="file_type_enum">
-      <v-container fluid class="ma-1">
-        <v-row no-gutters>
+
+    <v-container>
+      <div v-if="file_type_enum">
+        <v-row no-gutters align="center">
           <v-col cols="auto">
-            <v-icon left>mdi-account-box-multiple</v-icon>
-            <span class="title">Document Types</span>
+            <p class="title">Document Types</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
             <v-btn
               v-if="isIcon"
-              class="mr-3"
+              class="mr-3 mb-4"
               color="primary"
               icon
               @click="activator"
@@ -23,7 +23,7 @@
             <v-btn
               v-else
               dark
-              class="mr-3"
+              class="mr-3 mb-4"
               color="primary"
               @click="activator"
             >
@@ -31,29 +31,17 @@
             >
           </v-col>
         </v-row>
-      </v-container>
-      <v-divider class="mx-3"></v-divider>
-      <v-container fluid class="ma-1">
-        <v-row>
-          <v-col cols="12">
-            <DocumentTypesTable
-              :types="file_type_enum"
-              :activator="dialog"
-              @dialog:response="resetActivator"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
-    <div v-else class="pa-6">
-      <v-skeleton-loader type="table"></v-skeleton-loader>
-    </div>
-    <!-- <ItemDialog
-      :activator="dialog"
-      @dialogResponse="resetActivator"
-      @submitForm="submitForm"
-      :reset="payload"
-    /> -->
+        <v-divider></v-divider>
+        <DocumentTypesTable
+          :types="file_type_enum"
+          :activator="dialog"
+          @dialog:response="resetActivator"
+        />
+      </div>
+      <div v-else>
+        <v-skeleton-loader type="table"></v-skeleton-loader>
+      </div>
+    </v-container>
   </div>
 </template>
 

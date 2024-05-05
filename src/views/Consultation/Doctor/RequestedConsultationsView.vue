@@ -3,8 +3,7 @@
     <v-container>
       <div v-if="consultations">
         <div class="d-flex justify-start align-center">
-          <v-icon class="mb-4" left>mdi-medical-bag</v-icon>
-          <p class="text-h6">Consultations</p>
+          <p class="title">Consultations</p>
         </div>
         <v-divider></v-divider>
 

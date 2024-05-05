@@ -5,7 +5,6 @@
     item-key="name"
     class="elevation-0"
     :search="search"
-    :custom-filter="filterOnlyCapsText"
     no-data-text="No Consultations Available"
     :loading="loading"
     loading-text="Loading... Please wait"
@@ -42,23 +41,21 @@
       </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container class="pa-0">
-        <v-row no-gutters :justify="isJustify">
-          <v-col cols="auto" align-self="center">
-            <v-icon
-              @click="
-                viewRegistrantService(
-                  item.consultation_id,
-                  item.hospital_service_id
-                )
-              "
-              color="grey darken-1"
-              dense
-              >mdi-eye</v-icon
-            >
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-row no-gutters :justify="isJustify">
+        <v-col cols="auto" align-self="center">
+          <v-icon
+            @click="
+              viewRegistrantService(
+                item.consultation_id,
+                item.hospital_service_id
+              )
+            "
+            color="grey darken-1"
+            dense
+            >mdi-eye</v-icon
+          >
+        </v-col>
+      </v-row>
     </template>
   </v-data-table>
 </template>
@@ -82,14 +79,6 @@ export default {
     FilterDialog,
   },
   methods: {
-    filterOnlyCapsText(value, search) {
-      return (
-        value != null &&
-        search != null &&
-        typeof value === "string" &&
-        value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-      );
-    },
     viewRegistrantService(consultation_id, hospital_service_id) {
       this.$router.push({
         name: this.routeName,
