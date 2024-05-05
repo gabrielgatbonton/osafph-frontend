@@ -33,37 +33,35 @@
       </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-container :class="$vuetify.breakpoint.xs ? 'ml-0' : 'ml-n3'" style="width: auto; padding: 0;">
-        <v-row no-gutters justify="start">
-          <v-col cols="auto" align-self="center">
-            <v-icon
-              class="mx-1"
-              color="grey darken-1"
-              dense
-              @click="activator(item.file_id, item.hospital_service_id)"
-              >mdi-eye</v-icon
-            >
-          </v-col>
-          <v-col cols="auto" align-self="center">
-            <v-icon
-              class="mx-1"
-              color="blue darken-4"
-              dense
-              @click="downloadTrigger(item.file_id, item.hospital_service_id)"
-              >mdi-download</v-icon
-            >
-          </v-col>
-          <v-col cols="auto" align-self="center">
-            <v-icon
-              @click="deleteActivator(item.file_id, item.hospital_service_id)"
-              class="mx-1"
-              color="error"
-              dense
-              >mdi-trash-can</v-icon
-            >
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-row no-gutters justify="center">
+        <v-col cols="auto" align-self="center">
+          <v-icon
+            class="mx-1"
+            color="grey darken-1"
+            dense
+            @click="activator(item.file_id, item.hospital_service_id)"
+            >mdi-eye</v-icon
+          >
+        </v-col>
+        <v-col cols="auto" align-self="center">
+          <v-icon
+            class="mx-1"
+            color="blue darken-4"
+            dense
+            @click="downloadTrigger(item.file_id, item.hospital_service_id)"
+            >mdi-download</v-icon
+          >
+        </v-col>
+        <v-col cols="auto" align-self="center">
+          <v-icon
+            @click="deleteActivator(item.file_id, item.hospital_service_id)"
+            class="mx-1"
+            color="error"
+            dense
+            >mdi-trash-can</v-icon
+          >
+        </v-col>
+      </v-row>
     </template>
   </v-data-table>
 </template>
@@ -132,25 +130,28 @@ export default {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
+          align: "center",
         },
       ];
     },
     filesData() {
-      return this.files ? this.files.map((file) => ({
-        file_name: file.file_name,
-        document_type: file.document_type,
-        uploaded_by: file.uploaded_by,
-        date_uploaded: format(parseISO(file.date_uploaded), "MMMM d, yyyy"),
-        upload_status: file.upload_status,
-        file_id: file.id,
-        hospital_service_id: file.hospital_service_id,
-      })) : [];
-    }
+      return this.files
+        ? this.files.map((file) => ({
+            file_name: file.file_name,
+            document_type: file.document_type,
+            uploaded_by: file.uploaded_by,
+            date_uploaded: format(parseISO(file.date_uploaded), "MMMM d, yyyy"),
+            upload_status: file.upload_status,
+            file_id: file.id,
+            hospital_service_id: file.hospital_service_id,
+          }))
+        : [];
+    },
   },
   watch: {
     files: {
+      immediate: true,
       handler(value) {
-        console.log(value);
         this.loading = true;
         if (!value.length) {
           setTimeout(() => {
@@ -161,7 +162,7 @@ export default {
         }
       },
     },
-  }
+  },
 };
 </script>
 

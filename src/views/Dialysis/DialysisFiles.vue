@@ -2,29 +2,28 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <div v-if="files">
-      <v-container fluid class="ma-1">
+    <v-container>
+      <div v-if="files">
+        <!-- Header -->
         <v-row no-gutters>
           <v-col cols="auto">
-            <v-icon left>mdi-account-box-multiple</v-icon>
-            <span class="title">Uploaded Files</span>
+            <p class="text-h6">Uploaded Files</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn dark class="mr-3" color="primary" @click="activator">
+            <v-btn dark class="mb-4" color="primary" @click="activator">
               Upload</v-btn
             >
           </v-col>
         </v-row>
-      </v-container>
-      <v-divider class="my-4"></v-divider>
-      <v-container fluid class="ma-1">
+        <v-divider></v-divider>
+        <!-- Content -->
         <FilesTable :files="files" />
-      </v-container>
-    </div>
-    <div v-else class="pa-6">
-      <v-skeleton-loader type="table"></v-skeleton-loader>
-    </div>
+      </div>
+      <div v-else>
+        <v-skeleton-loader type="table"></v-skeleton-loader>
+      </div>
+    </v-container>
     <UploadDialog
       v-on:uploadFiles="uploadFiles"
       v-on:dialogResponse="resetActivator"
