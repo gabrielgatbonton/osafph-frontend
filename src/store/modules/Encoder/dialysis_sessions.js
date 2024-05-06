@@ -131,8 +131,6 @@ export const dialysis_sessions_packages = {
   mutations: {},
   actions: {
     updateDialysisSession(_, { id, data }) {
-      console.log(id);
-      console.log(data);
       const url = `encoder/dialysis/sessions/${id}/packages/create-or-update`;
       return this.$axios
         .post(url, data)
