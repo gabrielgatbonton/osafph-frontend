@@ -2,7 +2,7 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container>
+    <v-container fluid style="max-width: 85vw">
       <div v-if="dialysis_items">
         <v-row no-gutters align="center">
           <v-col cols="auto">

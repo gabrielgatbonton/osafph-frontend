@@ -2,11 +2,11 @@
   <div>
     <SubmissionAlert :message="success.message" v-if="success.alert" />
     <ErrorAlert :message="failed.message" v-if="failed.alert" />
-    <v-container>
+    <v-container fluid style="max-width: 85vw">
       <div v-if="registrants">
         <v-row no-gutters align="center">
           <v-col cols="auto">
-            <p class="title">List of Citizens</p>
+            <p class="title">Citizens</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">

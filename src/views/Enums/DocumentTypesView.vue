@@ -3,7 +3,7 @@
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
 
-    <v-container>
+    <v-container fluid style="max-width: 85vw">
       <div v-if="file_type_enum">
         <v-row no-gutters align="center">
           <v-col cols="auto">

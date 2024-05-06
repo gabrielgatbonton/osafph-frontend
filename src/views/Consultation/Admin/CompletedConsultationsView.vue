@@ -2,28 +2,25 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <div v-if="getAdminConsultations">
-      <v-container fluid class="table-title ma-1">
+    <v-container fluid style="max-width: 85vw">
+      <div v-if="getAdminConsultations">
         <v-row no-gutters>
           <v-col cols="auto">
-            <v-icon left>mdi-medical-bag</v-icon>
-            <span class="title">List of Requested Consultations</span>
+            <p class="title">Completed Consultations</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto"></v-col>
         </v-row>
-      </v-container>
-      <v-divider class="mx-3"></v-divider>
-      <v-container fluid class="ma-1">
+        <v-divider></v-divider>
         <ConsultationsTable
           :route-name="routeName"
           :consultations="getAdminConsultations"
         />
-      </v-container>
-    </div>
-    <div v-else class="pa-6">
-      <v-skeleton-loader type="table"></v-skeleton-loader>
-    </div>
+      </div>
+      <div v-else>
+        <v-skeleton-loader type="table"></v-skeleton-loader>
+      </div>
+    </v-container>
   </div>
 </template>
 

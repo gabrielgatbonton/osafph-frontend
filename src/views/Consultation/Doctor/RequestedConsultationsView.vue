@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container fluid style="max-width: 85vw">
       <div v-if="consultations">
         <div class="d-flex justify-start align-center">
           <p class="title">Consultations</p>

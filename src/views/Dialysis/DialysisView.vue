@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container fluid style="max-width: 85vw">
       <div v-if="dialysis_sessions">
         <p class="text-h6">Acquired Dialysis</p>
         <v-divider></v-divider>

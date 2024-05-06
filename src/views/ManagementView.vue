@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <SubmissionAlert :message="success.message" v-if="success.alert" />
     <ErrorAlert :message="failed.message" v-if="failed.alert" />
-    <v-container>
+    <v-container fluid style="max-width: 85vw;">
       <div v-if="userPermissions.usersTable">
         <v-row no-gutters align="center">
           <v-col cols="auto">

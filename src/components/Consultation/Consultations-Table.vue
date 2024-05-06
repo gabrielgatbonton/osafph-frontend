@@ -66,6 +66,7 @@ import parseISO from "date-fns/parseISO";
 import TablePagination from "@/mixins/Tables/TablePagination";
 import FilterDialog from "../Filter/FilterDialog.vue";
 export default {
+  name: "Consultations-Table",
   props: ["consultations", "routeName"],
   mixins: [TablePagination],
   data: () => ({

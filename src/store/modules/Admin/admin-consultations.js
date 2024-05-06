@@ -47,7 +47,7 @@ export const admin_consultations = {
       return this.$axios
         .get(url)
         .then((response) => {
-          const consultations = response.data.consultations;
+          const consultations = response.data;
           commit("SET_CONSULTATIONS", consultations);
         })
         .catch((error) => {
