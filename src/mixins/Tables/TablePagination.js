@@ -29,9 +29,9 @@ export default {
           }
         }
       }
-      this.$emit("query_params", this.query_params);
-      // Set Loading to true;
+      // Trigger Loading upon change for slow devices and for filter
       this.loading = true;
+      this.$emit("query_params", this.query_params);
     },
   },
   watch: {
@@ -53,7 +53,8 @@ export default {
           delete this.query_params.sort_by;
           delete this.query_params.sort_order;
         }
-
+        // Trigger Loading upon change for slow devices
+        this.loading = true;
         this.$emit("query_params", this.query_params);
       },
     },
@@ -62,6 +63,9 @@ export default {
       handler(value) {
         clearTimeout(this.searchTimeout);
 
+        // Trigger Loading upon change for slow devices
+        this.loading = true;
+        
         this.searchTimeout = setTimeout(() => {
           this.query_params.search = value;
           this.$emit("query_params", this.query_params);
