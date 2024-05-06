@@ -423,11 +423,6 @@ export default {
       this.session = value;
       this.fetchFiles(this.session.hospital_service.id);
     },
-    session: {
-      handler(value) {
-        console.log(value);
-      },
-    },
   },
   created() {
     this.fetchSessionData();

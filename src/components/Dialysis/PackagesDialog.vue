@@ -5,7 +5,7 @@
         v-slot:activator="{ on, attrs }"
         v-if="userRole === 'DIALYSIS_ENCODER'"
       >
-        <v-btn v-bind="attrs" v-on="on" icon>
+        <v-btn v-bind="attrs" v-on="on" icon @click="initPackages">
           <v-icon color="primary">mdi-pencil</v-icon>
         </v-btn>
       </template>
@@ -133,40 +133,53 @@ export default {
       });
     },
     submitForm() {
-      this.$v.$touch();
+      if (this.payload.dialysis_packages.length > 0) {
+        this.$v.$touch();
 
-      let dialysis_session_id = this.dialysis_packages.dialysis_session_id;
+        let dialysis_session_id = this.dialysis_packages.dialysis_session_id;
 
-      if (!this.$v.invalid) {
-        this.updateDialysisSession({
-          data: this.payload,
-          id: dialysis_session_id,
-        })
-          .catch((error) => {
-            console.error("Error Updating Dialysis Session Packages: ", error);
+        if (!this.$v.$invalid) {
+          this.updateDialysisSession({
+            data: this.payload,
+            id: dialysis_session_id,
           })
-          .finally(() => {
-            this.dialog = false;
-            this.$v.$reset();
-          });
+            .catch((error) => {
+              console.error(
+                "Error Updating Dialysis Session Packages: ",
+                error
+              );
+            })
+            .finally(() => {
+              this.dialog = false;
+              this.$v.$reset();
+            });
+        }
       }
     },
     deletePackage(dialysis_session_package_id, index) {
-      if (this.payload.dialysis_packages.length > 1 && index < this.dialysis_packages.dialysis_packages.length) {
+      if (
+        this.payload.dialysis_packages.length > 1 &&
+        index < this.dialysis_packages.dialysis_packages.length
+      ) {
         this.deleteDialysisPackageById({
           dialysis_session_id: this.dialysis_packages.dialysis_session_id,
           dialysis_session_package_id: dialysis_session_package_id,
         });
-      } else if(this.payload.dialysis_packages.length > 1 && index >= this.dialysis_packages.dialysis_packages.length){
+        this.payload.dialysis_packages.splice(index, 1);
+      } else if (
+        this.payload.dialysis_packages.length > 1 &&
+        index >= this.dialysis_packages.dialysis_packages.length
+      ) {
         this.payload.dialysis_packages.splice(index, 1);
       }
     },
-    initPackages(newVal) {
-      this.payload.dialysis_packages = newVal.dialysis_packages.map((item) => ({
-        name: item.name,
-        funder: item.funder,
-        id: item.id,
-      }));
+    initPackages() {
+      this.payload.dialysis_packages =
+        this.dialysis_packages.dialysis_packages.map((item) => ({
+          name: item.name,
+          funder: item.funder,
+          id: item.id,
+        }));
     },
   },
   computed: {
@@ -195,70 +208,18 @@ export default {
       );
       return errors;
     },
-    // ExistingPackages() {
-    //   if (this.payload.dialysis_packages.length === 0) {
-    //     Object.keys(this.serviceStatus).forEach((items) => {
-    //       const packages_info = this.serviceStatus[items];
-
-    //       Object.keys(packages_info).forEach((innerItems) => {
-    //         if (innerItems.includes("packages")) {
-    //           packages_info[innerItems].forEach((package_data) => {
-    //             this.payload.dialysis_packages.push({
-    //               name: package_data["name"],
-    //               funder: package_data["funder"],
-    //               package_id: package_data["id"],
-    //             });
-    //           });
-    //         }
-    //       });
-    //     });
-    //   }
-    //   return this.payload.dialysis_packages;
-    // },
   },
   watch: {
-    // packages_data: {
-    //   handler(newVal) {
-    //     console.log("packages_data", newVal)
-    //     //Change this if you are going to do the algorithm here
-    //     this.payload.dialysis_packages = newVal;
+    // "payload.dialysis_packages": {
+    //   handler: function (newVal) {
+    //     this.initPackages(newVal);
     //   },
     // },
-    "payload.dialysis_packages": {
-      handler(value) {
-        console.log("payload.dialysis_packages", value);
-      },
-    },
-    // "serviceStatus.dialysis_session_id": {
-    //   immediate: true,
-    //   handler(value) {
-    //     console.log("serviceStatus", value);
+    // dialysis_packages: {
+    //   handler: function (newVal) {
+    //     this.initPackages(newVal);
     //   },
     // },
-    // ExistingPackages: {
-    //   handler(value) {
-    //     console.log("ExistingPackages", value);
-    //   },
-    // },
-    // "serviceStatus.status": {
-    //   handler(newVal) {
-    //     this.serviceStatus.scheduled_dialysis_sessions.forEach((item) => {
-    //       if (
-    //         item["scheduled_date_session"] ===
-    //         this.serviceStatus.scheduledDate.content
-    //       ) {
-    //         item["dialysis_session_status"] = newVal;
-    //       }
-    //     });
-    //   },
-    // },
-    dialysis_packages: {
-      immediate: true,
-      handler: function (newVal) {
-        console.log("dialysis_packages", newVal);
-        this.initPackages(newVal);
-      },
-    },
   },
   created() {
     this.fetchEnumsPackages();
