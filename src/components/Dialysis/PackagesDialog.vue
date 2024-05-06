@@ -64,7 +64,7 @@
               <v-btn
                 color="red darken-4"
                 icon
-                @click="deletePackage(set.id)"
+                @click="deletePackage(set.id, index)"
                 fab
                 class="absolute-position"
                 :ripple="false"
@@ -151,16 +151,15 @@ export default {
           });
       }
     },
-    removeIndex(index) {
-      if (this.payload.dialysis_packages.length > 1) {
+    deletePackage(dialysis_session_package_id, index) {
+      if (this.payload.dialysis_packages.length > 1 && index < this.dialysis_packages.dialysis_packages.length) {
+        this.deleteDialysisPackageById({
+          dialysis_session_id: this.dialysis_packages.dialysis_session_id,
+          dialysis_session_package_id: dialysis_session_package_id,
+        });
+      } else if(this.payload.dialysis_packages.length > 1 && index >= this.dialysis_packages.dialysis_packages.length){
         this.payload.dialysis_packages.splice(index, 1);
       }
-    },
-    deletePackage(dialysis_session_package_id) {
-      this.deleteDialysisPackageById({
-        dialysis_session_id: this.dialysis_packages.dialysis_session_id,
-        dialysis_session_package_id: dialysis_session_package_id,
-      });
     },
     initPackages(newVal) {
       this.payload.dialysis_packages = newVal.dialysis_packages.map((item) => ({
@@ -227,7 +226,7 @@ export default {
     // },
     "payload.dialysis_packages": {
       handler(value) {
-        console.log("payload", value);
+        console.log("payload.dialysis_packages", value);
       },
     },
     // "serviceStatus.dialysis_session_id": {
@@ -256,7 +255,7 @@ export default {
     dialysis_packages: {
       immediate: true,
       handler: function (newVal) {
-        console.log(newVal);
+        console.log("dialysis_packages", newVal);
         this.initPackages(newVal);
       },
     },
