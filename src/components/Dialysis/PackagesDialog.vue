@@ -108,6 +108,7 @@ export default {
     payload: {
       dialysis_packages: [],
     },
+    delete_packages: [],
   }),
   validations: {
     payload: {
@@ -139,6 +140,12 @@ export default {
         let dialysis_session_id = this.dialysis_packages.dialysis_session_id;
 
         if (!this.$v.$invalid) {
+          this.delete_packages.forEach((item_id) => {
+            this.deleteDialysisPackageById({
+              dialysis_session_id: dialysis_session_id,
+              dialysis_session_package_id: item_id,
+            });
+          });
           this.updateDialysisSession({
             data: this.payload,
             id: dialysis_session_id,
@@ -152,6 +159,7 @@ export default {
             .finally(() => {
               this.dialog = false;
               this.$v.$reset();
+              this.delete_packages = [];
             });
         }
       }
@@ -159,16 +167,20 @@ export default {
     deletePackage(dialysis_session_package_id, index) {
       if (
         this.payload.dialysis_packages.length > 1 &&
-        index < this.dialysis_packages.dialysis_packages.length
+        this.payload.dialysis_packages[index].id
+        // && index < this.dialysis_packages.dialysis_packages.length
       ) {
-        this.deleteDialysisPackageById({
-          dialysis_session_id: this.dialysis_packages.dialysis_session_id,
-          dialysis_session_package_id: dialysis_session_package_id,
-        });
+        // this.deleteDialysisPackageById({
+        //   dialysis_session_id: this.dialysis_packages.dialysis_session_id,
+        //   dialysis_session_package_id: dialysis_session_package_id,
+        // });
+        this.delete_packages.push(
+          this.payload.dialysis_packages[index].id,
+        );
         this.payload.dialysis_packages.splice(index, 1);
       } else if (
         this.payload.dialysis_packages.length > 1 &&
-        index >= this.dialysis_packages.dialysis_packages.length
+        !this.payload.dialysis_packages[index].id
       ) {
         this.payload.dialysis_packages.splice(index, 1);
       }
@@ -220,6 +232,14 @@ export default {
     //     this.initPackages(newVal);
     //   },
     // },
+    delete_packages: {
+      handler(value) {
+        console.log("delete_packages: ", value);
+        this.delete_packages.forEach((item_id) => {
+          console.log("id: ", item_id);
+        });
+      },
+    },
   },
   created() {
     this.fetchEnumsPackages();
