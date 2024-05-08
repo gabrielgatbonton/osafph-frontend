@@ -88,7 +88,9 @@
           </v-col>
           <v-col cols="12">
             <div class="text-right my-n5">
-              <v-btn dark class="primary" @click="submitForm">Submit</v-btn>
+              <v-btn dark class="primary" block :loading="loading" @click="submitForm"
+                >Submit</v-btn
+              >
             </div>
           </v-col>
         </v-container>
@@ -109,6 +111,7 @@ export default {
       dialysis_packages: [],
     },
     delete_packages: [],
+    loading: false,
   }),
   validations: {
     payload: {
@@ -140,6 +143,7 @@ export default {
         let dialysis_session_id = this.dialysis_packages.dialysis_session_id;
 
         if (!this.$v.$invalid) {
+          this.loading = true;
           this.delete_packages.forEach((item_id) => {
             this.deleteDialysisPackageById({
               dialysis_session_id: dialysis_session_id,
@@ -150,6 +154,9 @@ export default {
             data: this.payload,
             id: dialysis_session_id,
           })
+            .then(() => {
+              this.loading = false;
+            })
             .catch((error) => {
               console.error(
                 "Error Updating Dialysis Session Packages: ",
@@ -174,9 +181,7 @@ export default {
         //   dialysis_session_id: this.dialysis_packages.dialysis_session_id,
         //   dialysis_session_package_id: dialysis_session_package_id,
         // });
-        this.delete_packages.push(
-          this.payload.dialysis_packages[index].id,
-        );
+        this.delete_packages.push(this.payload.dialysis_packages[index].id);
         this.payload.dialysis_packages.splice(index, 1);
       } else if (
         this.payload.dialysis_packages.length > 1 &&
