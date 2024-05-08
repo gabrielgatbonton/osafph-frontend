@@ -118,7 +118,6 @@ export default {
       dialysis_packages: {
         $each: {
           name: { required },
-          funder: { required },
         },
       },
     },
@@ -233,18 +232,19 @@ export default {
     //   },
     // },
     // dialysis_packages: {
-    //   handler: function (newVal) {
-    //     this.initPackages(newVal);
+    //   immediate: true,
+    //   handler(value){
+    //     console.log(value)
+    //   }
+    // },
+    // delete_packages: {
+    //   handler(value) {
+    //     console.log("delete_packages: ", value);
+    //     this.delete_packages.forEach((item_id) => {
+    //       console.log("id: ", item_id);
+    //     });
     //   },
     // },
-    delete_packages: {
-      handler(value) {
-        console.log("delete_packages: ", value);
-        this.delete_packages.forEach((item_id) => {
-          console.log("id: ", item_id);
-        });
-      },
-    },
   },
   created() {
     this.fetchEnumsPackages();
