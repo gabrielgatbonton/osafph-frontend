@@ -4,6 +4,7 @@ import {
   minLength,
   sameAs,
   email,
+  maxLength,
 } from "vuelidate/lib/validators";
 export default {
   validations: {
@@ -29,7 +30,7 @@ export default {
       },
     },
     credentials_payload: {
-      username: { required },
+      username: { required, maxLength: maxLength(15) },
       password: { required },
       password_confirmation: { required },
     },
@@ -77,6 +78,10 @@ export default {
       if (this.$v.credentials_payload.username.$dirty) {
         !this.$v.credentials_payload.username.required &&
           errors.credentials_payload.username.push("Username is required");
+        !this.$v.credentials_payload.username.maxLength &&
+          errors.credentials_payload.username.push(
+            "Must not exceed 15 characters"
+          );
       }
 
       errors.credentials_payload.password = [];
@@ -88,7 +93,9 @@ export default {
       errors.credentials_payload.password_confirmation = [];
       if (this.$v.credentials_payload.password_confirmation.$dirty) {
         !this.$v.credentials_payload.password_confirmation.required &&
-          errors.credentials_payload.password_confirmation.push("Confirm Password");
+          errors.credentials_payload.password_confirmation.push(
+            "Confirm Password"
+          );
       }
 
       //New Password Error Messages

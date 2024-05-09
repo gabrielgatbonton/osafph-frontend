@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <SubmissionAlert :message="success.message" v-if="success.alert" />
     <ErrorAlert :message="failed.message" v-if="failed.alert" />
-    <v-container fluid style="max-width: 85vw;">
+    <v-container fluid style="max-width: 85vw">
       <div v-if="userPermissions.usersTable">
         <v-row no-gutters align="center">
           <v-col cols="auto">
@@ -34,8 +34,11 @@
           :slot_activator_user="slot_activator_user"
           :users="users_index"
           :response-user="dialog"
-          @submitFilter="submitFilter"
+          @query_params="submitFilter"
           @dialog:user="(newVal) => (dialog = newVal)"
+          @requestPasswordChange="submitPasswordChange"
+          @requestNewUser="submitNewUser"
+          @requestDeleteUser="submitDelete"
         />
       </div>
       <PageConstruction v-else />
@@ -53,15 +56,38 @@ export default {
   data: () => ({
     dialog: false,
     slot_activator_user: false,
+    rolesAllowed: ["ROOT", "ADMIN"],
   }),
   components: {
     UsersTable,
     PageConstruction,
   },
   methods: {
-    ...mapActions("accounts", ["fetchUsersIndex"]),
+    ...mapActions("accounts", [
+      "fetchUsersIndex",
+      "changeUserPassword",
+      "createNewUser",
+      "deleteUser",
+    ]),
     submitFilter(filter) {
       this.fetchUsersIndex(filter);
+    },
+    fetchData() {
+      if (this.rolesAllowed.includes(this.userRole)) {
+        this.fetchUsersIndex();
+      }
+    },
+    submitPasswordChange(payload) {
+      this.changeUserPassword({
+        user_id: payload.id,
+        data: payload.password_payload,
+      });
+    },
+    submitNewUser(payload) {
+      this.createNewUser(payload);
+    },
+    submitDelete(id) {
+      this.deleteUser(id);
     },
   },
   computed: {
@@ -71,16 +97,14 @@ export default {
     }),
     userPermissions() {
       let usersTable = false;
-      if (this.userRole === "ROOT" || this.userRole === "ADMIN") {
-        usersTable = true;
-      }
+      this.rolesAllowed.includes(this.userRole) && (usersTable = true);
       return {
         usersTable: usersTable,
       };
     },
   },
   created() {
-    this.fetchUsersIndex();
+    this.fetchData();
   },
 };
 </script>

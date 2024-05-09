@@ -55,6 +55,11 @@
 
 <script>
 export default {
+  //Requirements Binds and Listeners
+  // :activator
+  // @deleteItem
+  // @dialogResponse
+  name: "ReusableDeleteDialog",
   props: {
     activator: {
       type: Boolean,

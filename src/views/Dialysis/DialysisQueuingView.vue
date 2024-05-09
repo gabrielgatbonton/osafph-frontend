@@ -9,20 +9,22 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider> -->
-    <v-container fluid class="ma-1" v-if="queuingDialysisList">
-      <v-row>
-        <v-col cols="12">
-          <QueuingTable
-            :queue_data="queuingDialysisList"
-            @dialog="updateDialog"
-            :dialogResponse="dialog"
-          />
-        </v-col>
-      </v-row>
+    <v-container fluid>
+      <div v-if="queuingDialysisList">
+        <v-row no-gutters>
+          <v-col cols="12">
+            <QueuingTable
+              :queue_data="queuingDialysisList"
+              @dialog="updateDialog"
+              :dialogResponse="dialog"
+            />
+          </v-col>
+        </v-row>
+      </div>
+      <div v-else>
+        <v-skeleton-loader type="table"></v-skeleton-loader>
+      </div>
     </v-container>
-    <div v-else class="pa-6">
-      <v-skeleton-loader type="table"></v-skeleton-loader>
-    </div>
     <v-dialog
       fullscreen
       hide-overlay

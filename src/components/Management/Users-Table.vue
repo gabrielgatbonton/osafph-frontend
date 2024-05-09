@@ -17,6 +17,7 @@
           prepend-icon="mdi-magnify"
         ></v-text-field>
         <div>
+          <!-- Filter Dialog -->
           <v-dialog max-width="600">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -71,6 +72,7 @@
               </v-container>
             </v-card>
           </v-dialog>
+          <!-- User Dialog -->
           <v-dialog v-model="dialogUser" max-width="600" scrollable>
             <template
               v-slot:activator="{ on, attrs }"
@@ -153,7 +155,7 @@
           </v-dialog>
         </div>
       </div>
-
+      <!-- Password Dialog -->
       <v-dialog v-model="dialogPassword" max-width="600">
         <v-card>
           <v-card-title class="primary pb-4 white--text">
@@ -188,10 +190,7 @@
               </v-col>
               <v-col cols="12">
                 <div class="text-right">
-                  <v-btn
-                    dark
-                    class="primary"
-                    @click="submitPasswordChange"
+                  <v-btn dark class="primary" @click="submitPasswordChange"
                     >Submit</v-btn
                   >
                 </div>
@@ -200,17 +199,64 @@
           </v-container>
         </v-card>
       </v-dialog>
+      <!-- Delete Dialog -->
+      <ReusableDeleteDialog
+        :activator="dialogDelete"
+        @dialogResponse="(bool) => (dialogDelete = bool)"
+        @deleteItem="submitDelete"
+      />
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <div class="text-center">
-        <v-icon
-          :disabled="iconPermissions.edit"
-          small
-          color="primary"
-          @click="changePassword(item.user_id)"
-          >mdi-pencil</v-icon
-        >
-      </div>
+      <v-row dense justify="center" align="center">
+        <v-col cols="auto">
+          <v-tooltip v-if="iconPermissions" top open-on-hover max-width="225">
+            <template #activator="{ on }">
+              <div v-on="on">
+                <v-icon
+                  disabled
+                  dense
+                  color="blue darken-4"
+                  @click="changePassword(item.user_id)"
+                  >mdi-pencil</v-icon
+                >
+              </div>
+            </template>
+            <span
+              >You do not have permission. Request the administrator for
+              access.</span
+            >
+          </v-tooltip>
+          <v-icon
+            v-else
+            dense
+            color="blue darken-4"
+            @click="changePassword(item.user_id)"
+            >mdi-pencil</v-icon
+          >
+        </v-col>
+        <v-col cols="auto">
+          <v-tooltip v-if="iconPermissions" top open-on-hover max-width="225">
+            <template #activator="{ on }">
+              <div v-on="on">
+                <v-icon
+                  disabled
+                  dense
+                  color="error"
+                  @click="deleteUser(item.user_id)"
+                  >mdi-trash-can</v-icon
+                >
+              </div>
+            </template>
+            <span
+              >You do not have permission. Request the administrator for
+              access.</span
+            >
+          </v-tooltip>
+          <v-icon v-else dense color="error" @click="deleteUser(item.user_id)"
+            >mdi-trash-can</v-icon
+          >
+        </v-col>
+      </v-row>
     </template>
   </v-data-table>
 </template>
@@ -220,6 +266,7 @@ import { mapGetters, mapActions, mapState } from "vuex";
 import UserManagementMixin from "../../mixins/Validation/ManagementValidation/UserManagement";
 import InformationStepper from "./Steppers/InformationStepper.vue";
 import CredentailsStepper from "./Steppers/CredentailsStepper.vue";
+import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 export default {
   name: "Users-Table",
   mixins: [UserManagementMixin],
@@ -244,6 +291,7 @@ export default {
     stepper: 1,
     dialogPassword: false,
     dialogUser: false,
+    dialogDelete: false,
     password_payload: {
       new_password: null,
       new_password_confirmation: null,
@@ -259,9 +307,9 @@ export default {
   components: {
     InformationStepper,
     CredentailsStepper,
+    ReusableDeleteDialog,
   },
   methods: {
-    ...mapActions("accounts", ["changeUserPassword", "createNewUser"]),
     ...mapActions("management", ["fetchEnum"]),
     ...mapActions("services_choices", ["fetchSpecialtiesEnum"]),
     changePassword(id) {
@@ -271,40 +319,42 @@ export default {
       this.id = id;
       this.dialogPassword = !this.dialogPassword;
     },
-
+    deleteUser(id) {
+      this.id = id;
+      this.dialogDelete = !this.dialogDelete;
+    },
     submitPasswordChange() {
       this.$v.password_payload.$touch();
 
       if (!this.$v.password_payload.$invalid) {
-        this.changeUserPassword({
+        this.$emit("requestPasswordChange", {
           id: this.id,
-          data: this.password_payload,
-        })
-          .catch((error) => {
-            console.error("Error Submitting Password Change: ", error);
-          })
-          .finally(() => {
-            this.id = null;
-            this.password_payload = {
-              new_password: null,
-              new_password_confirmation: null,
-            };
-            this.dialogPassword = false;
-            this.$v.password_payload.$reset();
-          });
+          password_payload: this.password_payload,
+        });
+        // Reset Values
+        this.id = null;
+        this.password_payload = {
+          new_password: null,
+          new_password_confirmation: null,
+        };
+        this.dialogPassword = false;
+        this.$v.password_payload.$reset();
       }
     },
     submitUser() {
-      this.createNewUser(this.user_payload)
-        .catch((error) => {
-          console.error("Error Creating User: ", error);
-        })
-        .finally(() => {
-          this.$refs.informationStepper.resetValidations();
-          this.$refs.credentialsStepper.resetValidations();
-          this.dialogUser = false;
-          this.stepper = 1;
-        });
+      this.$emit("requestNewUser", this.user_payload);
+      // Reset Values
+      this.$refs.informationStepper.resetValidations();
+      this.$refs.credentialsStepper.resetValidations();
+      this.dialogUser = false;
+      this.stepper = 1;
+    },
+    submitDelete(bool) {
+      if (bool) {
+        this.$emit("requestDeleteUser", this.id);
+        this.id = null;
+        this.dialogDelete = false;
+      }
     },
     updateStepper(stepper) {
       this.stepper = stepper;
@@ -318,13 +368,13 @@ export default {
       }
     },
     submitFilter() {
-      this.$emit("submitFilter", this.table_filter);
+      this.$emit("query_params", this.table_filter);
     },
     resetFilter() {
       this.table_filter = {
         roles: [],
       };
-      this.$emit("submitFilter", {});
+      this.$emit("query_params", {});
     },
   },
   computed: {
@@ -375,13 +425,11 @@ export default {
       };
     },
     iconPermissions() {
-      let edit = true;
+      let actions = true;
       if (this.userRole === "ROOT") {
-        edit = false;
+        actions = false;
       }
-      return {
-        edit: edit,
-      };
+      return actions;
     },
     itemData() {
       return this.users
@@ -416,10 +464,10 @@ export default {
       deep: true,
       handler(newVal) {
         if (newVal === false) {
-          this.$emit('dialog:user', newVal);
+          this.$emit("dialog:user", newVal);
         }
-      }
-    }
+      },
+    },
   },
   created() {
     this.fetchEnum();

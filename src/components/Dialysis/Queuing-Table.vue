@@ -22,7 +22,7 @@
         <v-btn
           v-if="dialog !== true && !$vuetify.breakpoint.xs"
           dark
-          color="blue darken-4"
+          outlined
           @click="fullScreenEnable"
           >Full Screen</v-btn
         >

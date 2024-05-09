@@ -261,6 +261,9 @@ import DoctorContent from "@/components/Dashboard/DoctorContent.vue";
 // import EncoderContent from "@/components/Dashboard/EncoderContent.vue";
 export default {
   name: "DashboardView",
+  data: () => ({
+    allowedRoles: ["DOCTOR", "ADMIN", "ROOT"],
+  }),
   components: {
     RootContent,
     AdminContent,
@@ -284,13 +287,14 @@ export default {
     },
     routeEvents() {
       const channel = this.$pusher.subscribe("dashboard-notifications");
-
-    
-        channel.bind("notification.created", () => {
-          this.getDashboardData();
-          this.getRootData();
-        });
-      
+      channel.bind("notification.created", () => {
+        this.getDashboardData();
+        this.getRootData();
+      });
+    },
+    fetchData() {
+      this.allowedRoles.includes(this.userRole) && this.getRootData();
+      this.getDashboardData();
     },
   },
   computed: {
@@ -481,8 +485,7 @@ export default {
     },
   },
   created() {
-    this.getDashboardData();
-    this.getRootData();
+    this.fetchData();
     this.routeEvents();
   },
 };
