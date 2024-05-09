@@ -347,7 +347,7 @@ export default {
     },
     showDialysisPackages() {
       return this.serviceStatus.dialysis_session_packages;
-    }
+    },
   },
   watch: {
     serviceStatus: {
@@ -358,6 +358,19 @@ export default {
         } else {
           this.toggle_status = false;
         }
+        console.log(value);
+      },
+    },
+    "serviceStatus.status": {
+      handler(newVal) {
+        this.serviceStatus.scheduled_dialysis_sessions.forEach((date) => {
+          if (
+            this.serviceStatus.scheduledDate.content ===
+            date.scheduled_date_session
+          ) {
+            date.dialysis_session_status = newVal
+          }
+        });
       },
     },
   },
