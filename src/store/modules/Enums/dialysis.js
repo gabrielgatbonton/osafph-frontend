@@ -129,6 +129,7 @@ export const dialysis_items_actions = {
         .post(url, data)
         .then((response) => {
           dispatch("fetchDialysisItems");
+          store.dispatch("dialysis/fetchDialysisPackages");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -142,6 +143,7 @@ export const dialysis_items_actions = {
         .delete(url)
         .then((response) => {
           dispatch("fetchDialysisItems");
+          store.dispatch("dialysis/fetchDialysisPackages");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -155,6 +157,7 @@ export const dialysis_items_actions = {
         .put(url, data)
         .then((response) => {
           dispatch("fetchDialysisItems");
+          store.dispatch("dialysis/fetchDialysisPackages");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -194,6 +197,7 @@ export const dialysis_items_actions = {
         .post(url, data)
         .then((response) => {
           dispatch("fetchDialysisPackages");
+          store.dispatch("dialysis/fetchDialysisPackages");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -219,6 +223,7 @@ export const dialysis_items_actions = {
         .put(url, data)
         .then((response) => {
           dispatch("fetchDialysisPackages");
+          store.dispatch("dialysis/fetchDialysisPackages");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -232,6 +237,7 @@ export const dialysis_items_actions = {
         .delete(url)
         .then((response) => {
           dispatch("fetchDialysisPackages");
+          store.dispatch("dialysis/fetchDialysisPackages");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -245,6 +251,7 @@ export const dialysis_items_actions = {
         .patch(url)
         .then((response) => {
           dispatch("fetchDialysisPackages");
+          store.dispatch("dialysis/fetchDialysisPackages");
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
