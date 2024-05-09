@@ -34,8 +34,11 @@
           :slot_activator_user="slot_activator_user"
           :users="users_index"
           :response-user="dialog"
-          @submitFilter="submitFilter"
+          @query_params="submitFilter"
           @dialog:user="(newVal) => (dialog = newVal)"
+          @requestPasswordChange="submitPasswordChange"
+          @requestNewUser="submitNewUser"
+          @requestDeleteUser="submitDelete"
         />
       </div>
       <PageConstruction v-else />
@@ -60,7 +63,12 @@ export default {
     PageConstruction,
   },
   methods: {
-    ...mapActions("accounts", ["fetchUsersIndex"]),
+    ...mapActions("accounts", [
+      "fetchUsersIndex",
+      "changeUserPassword",
+      "createNewUser",
+      "deleteUser",
+    ]),
     submitFilter(filter) {
       this.fetchUsersIndex(filter);
     },
@@ -68,6 +76,18 @@ export default {
       if (this.rolesAllowed.includes(this.userRole)) {
         this.fetchUsersIndex();
       }
+    },
+    submitPasswordChange(payload) {
+      this.changeUserPassword({
+        user_id: payload.id,
+        data: payload.password_payload,
+      });
+    },
+    submitNewUser(payload) {
+      this.createNewUser(payload);
+    },
+    submitDelete(id) {
+      this.deleteUser(id);
     },
   },
   computed: {

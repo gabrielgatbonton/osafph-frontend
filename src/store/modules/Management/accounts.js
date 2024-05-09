@@ -38,8 +38,8 @@ export const accounts = {
           console.error("Error Fetching Users Index: ", error);
         });
     },
-    changeUserPassword({ dispatch }, { id, data }) {
-      const url = `account/users/${id}/change-others-password`;
+    changeUserPassword({ dispatch }, { user_id, data }) {
+      const url = `account/users/${user_id}/change-others-password`;
       return this.$axios
         .put(url, data)
         .then((response) => {
@@ -62,6 +62,19 @@ export const accounts = {
         .catch((error) => {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Failed to Register User: ", error);
+        });
+    },
+    deleteUser({ dispatch }, user_id) {
+      const url = `account/users/${user_id}`;
+      return this.$axios
+        .delete(url)
+        .then((response) => {
+          dispatch("fetchUsersIndex");
+          store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+        })
+        .catch((error) => {
+          console.error("Failed to Delete User: ", error);
+          store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
         });
     },
   },
