@@ -91,72 +91,64 @@ export default {
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature", "fetchBiometrics"]),
     values() {
-      console.log(this.registrant);
       if (this.registrant) {
         if (
-          this.registrant.citizen.vaccination_stats[0] &&
-          this.registrant.citizen.vaccination_stats[1]
-        ) {
-          if (
-            this.registrant.citizen.vaccination_stats[0].vaccine_name ===
+          this.registrant.citizen.vaccination_stats.length === 1 &&
+          this.registrant.citizen.vaccination_stats[0]?.vaccine_name ===
             "JANSSEN"
-          ) {
-            this.date_1 = `-`;
-            this.date_2 = `${format(
-              parseISO(
-                this.registrant.citizen.vaccination_stats[0].vaccination_date
-              ),
-              "MMMM d, yyyy"
-            ).toUpperCase()}`;
-            this.vaccination_site_1 = `-`;
-            this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stats[0].site_name.toUpperCase()}`;
-            this.vaccine_1 = `-`;
-            this.vaccine_2 = `${this.registrant.citizen.vaccination_stats[0].vaccine_name.toUpperCase()}`;
-            this.lot_number_1 = `-`;
-            this.lot_number_2 = `${this.registrant.citizen.vaccination_stats[0].lot_no.toUpperCase()}`;
-          } else if (
-            this.registrant.citizen.vaccination_stats[0].vaccine_name !==
-              null &&
-            this.registrant.citizen.vaccination_stats[1].vaccine_name === null
-          ) {
-            this.date_1 = `${format(
-              parseISO(
-                this.registrant.citizen.vaccination_stats[0].vaccination_date
-              ),
-              "MMMM d, yyyy"
-            ).toUpperCase()}`;
-            this.date_2 = `-`;
-            this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stats[0].site_name.toUpperCase()}`;
-            this.vaccination_site_2 = `-`;
-            this.vaccine_1 = `${this.registrant.citizen.vaccination_stats[0].vaccine_name.toUpperCase()}`;
-            this.vaccine_2 = `-`;
-            this.lot_number_1 = `${this.registrant.citizen.vaccination_stats[0].lot_no.toUpperCase()}`;
-            this.lot_number_2 = `-`;
-          } else if (
-            this.registrant.citizen.vaccination_stats[0].vaccine_name !==
-              null &&
-            this.registrant.citizen.vaccination_stats[1].vaccine_name !== null
-          ) {
-            this.date_1 = `${format(
-              parseISO(
-                this.registrant.citizen.vaccination_stats[0].vaccination_date
-              ),
-              "MMMM d, yyyy"
-            ).toUpperCase()}`;
-            this.date_2 = `${format(
-              parseISO(
-                this.registrant.citizen.vaccination_stats[1].vaccination_date
-              ),
-              "MMMM d, yyyy"
-            ).toUpperCase()}`;
-            this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stats[0].site_name.toUpperCase()}`;
-            this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stats[1].site_name.toUpperCase()}`;
-            this.vaccine_1 = `${this.registrant.citizen.vaccination_stats[0].vaccine_name.toUpperCase()}`;
-            this.vaccine_2 = `${this.registrant.citizen.vaccination_stats[1].vaccine_name.toUpperCase()}`;
-            this.lot_number_1 = `${this.registrant.citizen.vaccination_stats[0].lot_no.toUpperCase()}`;
-            this.lot_number_2 = `${this.registrant.citizen.vaccination_stats[1].lot_no.toUpperCase()}`;
-          }
+        ) {
+          this.date_1 = `N/A`;
+          this.date_2 = `${format(
+            parseISO(
+              this.registrant.citizen.vaccination_stats[0].vaccination_date
+            ),
+            "MMMM d, yyyy"
+          ).toUpperCase()}`;
+          this.vaccination_site_1 = `N/A`;
+          this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stats[0].site_name.toUpperCase()}`;
+          this.vaccine_1 = `N/A`;
+          this.vaccine_2 = `${this.registrant.citizen.vaccination_stats[0].vaccine_name.toUpperCase()}`;
+          this.lot_number_1 = ``;
+          this.lot_number_2 = `${this.registrant.citizen.vaccination_stats[0].lot_no.toUpperCase()}`;
+        } else if (
+          this.registrant.citizen.vaccination_stats &&
+          this.registrant.citizen.vaccination_stats.length > 0
+        ) {
+          const objectOne = this.registrant.citizen.vaccination_stats[0];
+          const objectTwo = this.registrant.citizen.vaccination_stats[1];
+          this.date_1 = objectOne.vaccination_date
+            ? `${format(
+                parseISO(objectOne.vaccination_date),
+                "MMMM d, yyyy"
+              ).toUpperCase()}`
+            : `N/A`;
+          this.date_2 = objectTwo?.vaccination_date
+            ? `${format(
+                parseISO(objectTwo.vaccination_date),
+                "MMMM d, yyyy"
+              ).toUpperCase()}`
+            : `N/A`;
+          this.vaccination_site_1 = objectOne.site_name
+            ? `${objectOne.site_name.toUpperCase()}`
+            : `N/A`;
+          this.vaccination_site_2 = objectTwo?.site_name
+            ? `${objectTwo.site_name.toUpperCase()}`
+            : `N/A`;
+          this.vaccine_1 = objectOne.vaccine_name
+            ? `${objectOne.vaccine_name.toUpperCase()}`
+            : `N/A`;
+          this.vaccine_2 = objectTwo?.vaccine_name
+            ? `${objectTwo.vaccine_name.toUpperCase()}`
+            : `N/A`;
+          this.lot_number_1 = objectOne.lot_no
+            ? `${objectOne.lot_no.toUpperCase()}`
+            : ``;
+          this.lot_number_2 = objectTwo?.lot_no
+            ? `${objectTwo.lot_no.toUpperCase()}`
+            : ``;
         }
+
+        // Filler Information about the cardholder
         this.category = `${this.registrant.citizen.category.description}`;
         this.fullName = `${this.registrant.citizen.last_name.toUpperCase()}, ${this.registrant.citizen.first_name.toUpperCase()} ${
           this.registrant.citizen.middle_name
@@ -271,8 +263,8 @@ export default {
       // Load the card template image
       const backImg = new Image();
       if (
-        this.registrant.citizen.vaccination_stats[0] &&
-        this.registrant.citizen.vaccination_stats[1]
+        this.registrant.citizen.vaccination_stats &&
+        this.registrant.citizen.vaccination_stats.length > 0
       ) {
         backImg.src = require("@/assets/back.jpg");
       } else {
@@ -300,8 +292,8 @@ export default {
 
           // Draw the rest of the data
           if (
-            this.registrant.citizen.vaccination_stats[0] &&
-            this.registrant.citizen.vaccination_stats[1]
+            this.registrant.citizen.vaccination_stats &&
+            this.registrant.citizen.vaccination_stats.length > 0
           ) {
             context.font = "bold 65px Arial";
             context.fillText(this.date_1, 1105, 285, 1700);
@@ -419,15 +411,12 @@ export default {
       return disabled;
     },
   },
-  created() {
-    this.requestImages();
-  },
   watch: {
     registrant: {
       immediate: true,
-      handler(value) {
+      handler() {
         this.values();
-        console.log(value);
+        this.requestImages();
       },
     },
   },
