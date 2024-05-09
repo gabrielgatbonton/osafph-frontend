@@ -4,7 +4,7 @@ export default [
     name: "reroute",
     component: () =>
       import(
-        /* webpackChunkName: "reroute" */ "@/components/QR/ReroutePage.vue"
+        /* webpackChunkName: "reroute" */ "@/views/PublicPageView.vue"
       ),
     meta: { requiresAuth: false },
     beforeEnter: (to, from, next) => {

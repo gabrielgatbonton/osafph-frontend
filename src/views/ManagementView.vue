@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <SubmissionAlert :message="success.message" v-if="success.alert" />
     <ErrorAlert :message="failed.message" v-if="failed.alert" />
-    <v-container fluid style="max-width: 85vw;">
+    <v-container fluid style="max-width: 85vw">
       <div v-if="userPermissions.usersTable">
         <v-row no-gutters align="center">
           <v-col cols="auto">
@@ -53,6 +53,7 @@ export default {
   data: () => ({
     dialog: false,
     slot_activator_user: false,
+    rolesAllowed: ["ROOT", "ADMIN"],
   }),
   components: {
     UsersTable,
@@ -63,6 +64,11 @@ export default {
     submitFilter(filter) {
       this.fetchUsersIndex(filter);
     },
+    fetchData() {
+      if (this.rolesAllowed.includes(this.userRole)) {
+        this.fetchUsersIndex();
+      }
+    },
   },
   computed: {
     ...mapGetters("login", ["userRole"]),
@@ -71,16 +77,14 @@ export default {
     }),
     userPermissions() {
       let usersTable = false;
-      if (this.userRole === "ROOT" || this.userRole === "ADMIN") {
-        usersTable = true;
-      }
+      this.rolesAllowed.includes(this.userRole) && (usersTable = true);
       return {
         usersTable: usersTable,
       };
     },
   },
   created() {
-    this.fetchUsersIndex();
+    this.fetchData();
   },
 };
 </script>

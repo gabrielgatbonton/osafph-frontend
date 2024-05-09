@@ -6,7 +6,7 @@
           <v-img
             class="mx-auto mt-15 slide-down"
             width="300"
-            src="../../assets/OSAFPH LOGO.png"
+            :src="imgSrc"
             contain
           ></v-img>
         </v-col>
@@ -43,11 +43,14 @@
 </template>
 
 <script>
-import DataTabs from "./DataTabs.vue";
-import PrintQRJavaScript from "../Card/PrintQRJavaScript.vue";
+import DataTabs from "@/components/QR/DataTabs.vue";
+import PrintQRJavaScript from "@/components/Card/PrintQRJavaScript.vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "ReroutePage",
+  data: () => ({
+    imgSrc: require("@/assets/OSAFPH LOGO.png")
+  }),
   components: {
     DataTabs,
     PrintQRJavaScript,
