@@ -3,7 +3,7 @@
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
     <v-container fluid style="max-width: 85vw">
-      <div v-if="getAdminConsultations">
+      <div v-if="consultations">
         <v-row no-gutters>
           <v-col cols="auto">
             <p class="title">Completed Consultations</p>
@@ -14,7 +14,8 @@
         <v-divider></v-divider>
         <ConsultationsTable
           :route-name="routeName"
-          :consultations="getAdminConsultations"
+          :consultations="consultations"
+          @query_params="updateFetch"
         />
       </div>
       <div v-else>
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import ConsultationsTable from "@/components/Consultation/Consultations-Table.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 export default {
@@ -52,9 +53,14 @@ export default {
         this.fetchConsultations();
       });
     },
+    updateFetch(query_params) {
+      this.fetchConsultations(query_params);
+    },
   },
   computed: {
-    ...mapGetters("admin_consultations", ["getAdminConsultations"]),
+    ...mapState("admin_consultations", {
+      consultations: "consultations",
+    }),
   },
   created() {
     this.fetchConsultations();

@@ -1,15 +1,15 @@
 <template>
   <div>
-    <v-container fluid class="ma-1">
-      <v-row>
+    <v-container fluid style="max-width: 85vw">
+      <v-row dense>
         <v-col cols="auto">
-          <!-- <v-icon left>mdi-account-box-multiple</v-icon> -->
-          <span class="title">New Registrant</span>
+          <p class="title">New Registrant</p>
+        </v-col>
+        <v-col cols="12">
+          <FormFormat v-on:submitData="submit" :loading="loading" />
         </v-col>
       </v-row>
     </v-container>
-    <v-divider class="mx-3"></v-divider>
-    <FormFormat v-on:submitData="submit" :loading="loading" />
   </div>
 </template>
 
