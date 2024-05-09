@@ -20,10 +20,10 @@
                     <v-icon color="white"> mdi-message-processing </v-icon>
                   </v-avatar>
                   <div class="ml-3 text-h5 text-left white--text">
-                    <p class="text-h5 white--text pa-0 ma-0">
+                    <p class="white--text pa-0 ma-0" :class="{'text-h5': !$vuetify.breakpoint.xs, 'text-body-1': $vuetify.breakpoint.xs}"> 
                       {{ status.title }}
                     </p>
-                    <p class="text-subtitle-1 white--text pa-0 ma-0">
+                    <p class="white--text pa-0 ma-0" :class="{'text-subtitle-1': !$vuetify.breakpoint.xs, 'text-body-2': $vuetify.breakpoint.xs}">
                       {{ status.message }}
                     </p>
                   </div>
@@ -125,7 +125,7 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <v-container>
-                      <v-row>
+                      <v-row v-if="$vuetify.breakpoint.lg">
                         <v-col
                           cols="6"
                           v-for="(item, itemIndex) in info.dialysis_items"
@@ -136,6 +136,15 @@
                               {{ item }}
                             </li>
                           </ul>
+                        </v-col>
+                      </v-row>
+                      <v-row v-else>
+                        <v-col>
+                          <span
+                            v-for="(item, itemIndex) in info.dialysis_items"
+                            :key="itemIndex"
+                            >{{ item }}{{ itemIndex < info.dialysis_items.length - 1 ? ", " : ""}}</span
+                          >
                         </v-col>
                       </v-row>
                     </v-container>
@@ -169,9 +178,7 @@
                   <v-row
                     no-gutters
                     :class="{
-                      'mb-3':
-                        $vuetify.breakpoint.xs &&
-                        index < personal_informations.length - 1,
+                      'mb-3': $vuetify.breakpoint.xs,
                     }"
                   >
                     <v-col cols="12" md="6" sm="6">
@@ -180,13 +187,7 @@
                       >
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                      <v-card-text
-                        :class="{
-                          font: $vuetify.breakpoint.xs,
-                          'font-weight-bold': !$vuetify.breakpoint.xs,
-                        }"
-                        class="py-0"
-                      >
+                      <v-card-text class="py-0 font-weight-bold">
                         {{ serviceStatus.header_dialysis.sessions_available }}
                       </v-card-text>
                     </v-col>
@@ -197,13 +198,7 @@
                       </v-card-subtitle>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                      <v-card-text
-                        :class="{
-                          font: $vuetify.breakpoint.xs,
-                          'font-weight-bold': !$vuetify.breakpoint.xs,
-                        }"
-                        class="py-0"
-                      >
+                      <v-card-text class="py-0 font-weight-bold">
                         {{ serviceStatus.header_dialysis.time_value }}
                       </v-card-text>
                     </v-col>
@@ -214,13 +209,7 @@
                       </v-card-subtitle>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                      <v-card-text
-                        :class="{
-                          font: $vuetify.breakpoint.xs,
-                          'font-weight-bold': !$vuetify.breakpoint.xs,
-                        }"
-                        class="py-0"
-                      >
+                      <v-card-text class="py-0 font-weight-bold">
                         {{ serviceStatus.header_dialysis.machine_value }}
                       </v-card-text>
                     </v-col>
@@ -358,7 +347,6 @@ export default {
         } else {
           this.toggle_status = false;
         }
-        console.log(value);
       },
     },
     "serviceStatus.status": {
@@ -368,7 +356,7 @@ export default {
             this.serviceStatus.scheduledDate.content ===
             date.scheduled_date_session
           ) {
-            date.dialysis_session_status = newVal
+            date.dialysis_session_status = newVal;
           }
         });
       },

@@ -31,7 +31,9 @@
                 @blur="$v.payload.file.$touch()"
                 :error-messages="errorMessages.file"
               ></v-file-input>
-              <UploadArea v-on:file="handleFileUpload" />
+              <template v-if="!$vuetify.breakpoint.xs">
+                <UploadArea v-on:file="handleFileUpload"/>
+              </template>
             </v-col>
             <v-col cols="12">
               <div class="text-right">

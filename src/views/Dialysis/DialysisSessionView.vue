@@ -14,15 +14,25 @@
           @click="completeDialysisSession"
           class="mr-3"
         >
-          <v-btn dark outlined color="success">Complete Session</v-btn>
+          <v-btn dark outlined color="success" v-if="!$vuetify.breakpoint.xs">Complete Session</v-btn>
+          <v-btn dark icon color="success" v-else><v-icon>mdi-clock-check</v-icon></v-btn>
         </v-col>
         <v-col cols="auto" v-if="buttonPermissions.files">
           <v-btn
+          v-if="!$vuetify.breakpoint.xs"
             dark
             color="primary"
             class="mr-3"
             @click="proceedToFiles"
             >{{ buttonTitle ? "Uploaded Files" : "Upload Files" }}</v-btn
+          >
+          <v-btn
+          v-else
+            icon
+            color="primary"
+            class="mr-3"
+            @click="proceedToFiles"
+            ><v-icon>mdi-upload-circle</v-icon></v-btn
           >
         </v-col>
       </v-row>

@@ -27,8 +27,7 @@
           no-gutters
           :class="{
             'mb-3':
-              $vuetify.breakpoint.xs &&
-              index < personal_informations.length - 1,
+              $vuetify.breakpoint.xs,
           }"
         >
           <v-col cols="12" md="6" sm="6">
@@ -36,11 +35,7 @@
           </v-col>
           <v-col cols="12" md="6" sm="6">
             <v-card-text
-              :class="{
-                font: $vuetify.breakpoint.xs,
-                'font-weight-bold': !$vuetify.breakpoint.xs,
-              }"
-              class="py-0"
+              class="py-0 font-weight-bold"
               >{{ info.content }}</v-card-text
             >
           </v-col>

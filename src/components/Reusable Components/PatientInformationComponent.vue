@@ -26,21 +26,16 @@
           :key="index"
           no-gutters
           :class="{
-            'mb-3': $vuetify.breakpoint.xs && index < categories.length - 1,
+            'mb-3': $vuetify.breakpoint.xs,
           }"
         >
           <v-col cols="12" md="6" sm="6">
             <v-card-subtitle class="py-0">{{ info.title }}</v-card-subtitle>
           </v-col>
           <v-col cols="12" md="6" sm="6">
-            <v-card-text
-              :class="{
-                font: $vuetify.breakpoint.xs,
-                'font-weight-bold': !$vuetify.breakpoint.xs,
-              }"
-              class="py-0"
-              >{{ info.content }}</v-card-text
-            >
+            <v-card-text class="py-0 font-weight-bold">{{
+              info.content
+            }}</v-card-text>
           </v-col>
         </v-row>
         <v-divider class="ma-3"></v-divider>
@@ -50,21 +45,16 @@
           :key="'emergency' + index"
           no-gutters
           :class="{
-            'mb-3': $vuetify.breakpoint.xs && index < emergency.length - 1,
+            'mb-3': $vuetify.breakpoint.xs,
           }"
         >
           <v-col cols="12" md="6" sm="6">
             <v-card-subtitle class="py-0">{{ info.title }}</v-card-subtitle>
           </v-col>
           <v-col cols="12" md="6" sm="6">
-            <v-card-text
-              :class="{
-                font: $vuetify.breakpoint.xs,
-                'font-weight-bold': !$vuetify.breakpoint.xs,
-              }"
-              class="py-0"
-              >{{ info.content }}</v-card-text
-            >
+            <v-card-text class="py-0 font-weight-bold">{{
+              info.content
+            }}</v-card-text>
           </v-col>
         </v-row>
       </v-container>
@@ -93,6 +83,15 @@ export default {
             class: "rounded-lg pt-2",
           }
         : { src: this.patientInformation.image_url, style: "", class: "" };
+    },
+  },
+
+  watch: {
+    patientInformation: {
+      immediate: true,
+      handler(value) {
+        console.log("patientInformation", value);
+      },
     },
   },
 };
