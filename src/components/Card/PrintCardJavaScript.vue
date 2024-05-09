@@ -14,7 +14,8 @@
       </template>
       <v-card>
         <v-card-title class="primary pb-4 white--text"
-          ><v-icon dark left>mdi-card-account-details</v-icon>ID Card Generator</v-card-title
+          ><v-icon dark left>mdi-card-account-details</v-icon>ID Card
+          Generator</v-card-title
         >
         <div class="text-center mx-4 mt-4 scroll-overflow">
           <canvas
@@ -90,67 +91,70 @@ export default {
   methods: {
     ...mapActions("card", ["fetchImage", "fetchSignature", "fetchBiometrics"]),
     values() {
+      console.log(this.registrant);
       if (this.registrant) {
         if (
-          this.registrant.citizen.vaccination_stat[0] &&
-          this.registrant.citizen.vaccination_stat[1]
+          this.registrant.citizen.vaccination_stats[0] &&
+          this.registrant.citizen.vaccination_stats[1]
         ) {
           if (
-            this.registrant.citizen.vaccination_stat[0].vaccine_name ===
+            this.registrant.citizen.vaccination_stats[0].vaccine_name ===
             "JANSSEN"
           ) {
             this.date_1 = `-`;
             this.date_2 = `${format(
               parseISO(
-                this.registrant.citizen.vaccination_stat[0].vaccination_date
+                this.registrant.citizen.vaccination_stats[0].vaccination_date
               ),
               "MMMM d, yyyy"
             ).toUpperCase()}`;
             this.vaccination_site_1 = `-`;
-            this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
+            this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stats[0].site_name.toUpperCase()}`;
             this.vaccine_1 = `-`;
-            this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
+            this.vaccine_2 = `${this.registrant.citizen.vaccination_stats[0].vaccine_name.toUpperCase()}`;
             this.lot_number_1 = `-`;
-            this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
+            this.lot_number_2 = `${this.registrant.citizen.vaccination_stats[0].lot_no.toUpperCase()}`;
           } else if (
-            this.registrant.citizen.vaccination_stat[0].vaccine_name !== null &&
-            this.registrant.citizen.vaccination_stat[1].vaccine_name === null
+            this.registrant.citizen.vaccination_stats[0].vaccine_name !==
+              null &&
+            this.registrant.citizen.vaccination_stats[1].vaccine_name === null
           ) {
             this.date_1 = `${format(
               parseISO(
-                this.registrant.citizen.vaccination_stat[0].vaccination_date
+                this.registrant.citizen.vaccination_stats[0].vaccination_date
               ),
               "MMMM d, yyyy"
             ).toUpperCase()}`;
             this.date_2 = `-`;
-            this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
+            this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stats[0].site_name.toUpperCase()}`;
             this.vaccination_site_2 = `-`;
-            this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
+            this.vaccine_1 = `${this.registrant.citizen.vaccination_stats[0].vaccine_name.toUpperCase()}`;
             this.vaccine_2 = `-`;
-            this.lot_number_1 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
+            this.lot_number_1 = `${this.registrant.citizen.vaccination_stats[0].lot_no.toUpperCase()}`;
             this.lot_number_2 = `-`;
           } else if (
-            this.registrant.citizen.vaccination_stat[0].vaccine_name !== null &&
-            this.registrant.citizen.vaccination_stat[1].vaccine_name !== null
+            this.registrant.citizen.vaccination_stats[0].vaccine_name !==
+              null &&
+            this.registrant.citizen.vaccination_stats[1].vaccine_name !== null
           ) {
             this.date_1 = `${format(
               parseISO(
-                this.registrant.citizen.vaccination_stat[0].vaccination_date
+                this.registrant.citizen.vaccination_stats[0].vaccination_date
               ),
               "MMMM d, yyyy"
             ).toUpperCase()}`;
             this.date_2 = `${format(
               parseISO(
-                this.registrant.citizen.vaccination_stat[1].vaccination_date
+                this.registrant.citizen.vaccination_stats[1].vaccination_date
               ),
               "MMMM d, yyyy"
             ).toUpperCase()}`;
-            this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stat[0].site_name.toUpperCase()}`;
-            this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stat[1].site_name.toUpperCase()}`;
-            this.vaccine_1 = `${this.registrant.citizen.vaccination_stat[0].vaccine_name.toUpperCase()}`;
-            this.vaccine_2 = `${this.registrant.citizen.vaccination_stat[1].vaccine_name.toUpperCase()}`;
-            this.lot_number_1 = `${this.registrant.citizen.vaccination_stat[0].lot_no.toUpperCase()}`;
-            this.lot_number_2 = `${this.registrant.citizen.vaccination_stat[1].lot_no.toUpperCase()}`;
+            this.vaccination_site_1 = `${this.registrant.citizen.vaccination_stats[0].site_name.toUpperCase()}`;
+            this.vaccination_site_2 = `${this.registrant.citizen.vaccination_stats[1].site_name.toUpperCase()}`;
+            this.vaccine_1 = `${this.registrant.citizen.vaccination_stats[0].vaccine_name.toUpperCase()}`;
+            this.vaccine_2 = `${this.registrant.citizen.vaccination_stats[1].vaccine_name.toUpperCase()}`;
+            this.lot_number_1 = `${this.registrant.citizen.vaccination_stats[0].lot_no.toUpperCase()}`;
+            this.lot_number_2 = `${this.registrant.citizen.vaccination_stats[1].lot_no.toUpperCase()}`;
           }
         }
         this.category = `${this.registrant.citizen.category.description}`;
@@ -212,6 +216,21 @@ export default {
         const portraitImg = new Image();
         portraitImg.src = this.getImage;
         portraitImg.onload = () => {
+          // Define the position and dimensions to draw the image
+          const x = 125; // X position to draw the image
+          const y = 600; // Y position to draw the image
+          const width = portraitImg.width;
+          const height = portraitImg.height;
+
+          // Apply transformation to flip image horizontally
+          context.save(); // Save the current state
+          context.translate(x + width, y); // Move to the mirror point
+          context.scale(-1, 1); // Apply scale to flip the image
+
+          context.drawImage(portraitImg, 0, 0, width, height);
+
+          context.restore(); // Restore the original state after drawing the image
+
           const signatureImg = new Image();
           //Conditional to check the availability of signature, then otherwise.
           if (this.getSignature !== null) {
@@ -223,8 +242,6 @@ export default {
           }
 
           signatureImg.onload = () => {
-            // Draw portrait image after it's loaded
-            context.drawImage(portraitImg, 125, 600);
             // // Draw signature image after it's loaded
             if (this.getBiometrics !== null) {
               context.drawImage(
@@ -254,8 +271,8 @@ export default {
       // Load the card template image
       const backImg = new Image();
       if (
-        this.registrant.citizen.vaccination_stat[0] &&
-        this.registrant.citizen.vaccination_stat[1]
+        this.registrant.citizen.vaccination_stats[0] &&
+        this.registrant.citizen.vaccination_stats[1]
       ) {
         backImg.src = require("@/assets/back.jpg");
       } else {
@@ -283,8 +300,8 @@ export default {
 
           // Draw the rest of the data
           if (
-            this.registrant.citizen.vaccination_stat[0] &&
-            this.registrant.citizen.vaccination_stat[1]
+            this.registrant.citizen.vaccination_stats[0] &&
+            this.registrant.citizen.vaccination_stats[1]
           ) {
             context.font = "bold 65px Arial";
             context.fillText(this.date_1, 1105, 285, 1700);
@@ -408,10 +425,11 @@ export default {
   watch: {
     registrant: {
       immediate: true,
-      handler() {
+      handler(value) {
         this.values();
-      }
-    }
+        console.log(value);
+      },
+    },
   },
   updated() {
     this.drawOnCanvasFront();
