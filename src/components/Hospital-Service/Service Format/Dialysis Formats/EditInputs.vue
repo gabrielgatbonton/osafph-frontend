@@ -258,7 +258,7 @@ export default {
   watch: {
     hospitalService: {
       handler(newVal) {
-        console.log(newVal);
+        // console.log(newVal);
         if (newVal) {
           this.checkEditData();
         }

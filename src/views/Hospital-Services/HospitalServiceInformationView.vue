@@ -123,11 +123,11 @@ export default {
     this.fetchDialysisSessions();
   },
   watch: {
-    service: {
-      handler(value){
-        console.log("service", value)
-      }
-    }
+    // service: {
+    //   handler(value){
+    //     console.log("service", value)
+    //   }
+    // }
   },
   computed: {
     ...mapState("registrants", {

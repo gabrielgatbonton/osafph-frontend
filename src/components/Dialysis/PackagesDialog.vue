@@ -232,12 +232,12 @@ export default {
     //     this.initPackages(newVal);
     //   },
     // },
-    dialysis_packages: {
-      immediate: true,
-      handler(value){
-        console.log(value)
-      }
-    },
+    // dialysis_packages: {
+    //   immediate: true,
+    //   handler(value){
+    //     console.log(value)
+    //   }
+    // },
     "dialysis_packages.dialysis_session_status":{
       handler() {
         if(this.dialysis_packages.dialysis_session_status === 'COMPLETED'){

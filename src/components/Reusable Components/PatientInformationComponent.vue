@@ -87,12 +87,12 @@ export default {
   },
 
   watch: {
-    patientInformation: {
-      immediate: true,
-      handler(value) {
-        console.log("patientInformation", value);
-      },
-    },
+    // patientInformation: {
+    //   immediate: true,
+    //   handler(value) {
+    //     console.log("patientInformation", value);
+    //   },
+    // },
   },
 };
 </script>
