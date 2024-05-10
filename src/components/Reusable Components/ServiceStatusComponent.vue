@@ -20,10 +20,22 @@
                     <v-icon color="white"> mdi-message-processing </v-icon>
                   </v-avatar>
                   <div class="ml-3 text-h5 text-left white--text">
-                    <p class="white--text pa-0 ma-0" :class="{'text-h5': !$vuetify.breakpoint.xs, 'text-body-1': $vuetify.breakpoint.xs}"> 
+                    <p
+                      class="white--text pa-0 ma-0"
+                      :class="{
+                        'text-h5': !$vuetify.breakpoint.xs,
+                        'text-body-1': $vuetify.breakpoint.xs,
+                      }"
+                    >
                       {{ status.title }}
                     </p>
-                    <p class="white--text pa-0 ma-0" :class="{'text-subtitle-1': !$vuetify.breakpoint.xs, 'text-body-2': $vuetify.breakpoint.xs}">
+                    <p
+                      class="white--text pa-0 ma-0"
+                      :class="{
+                        'text-subtitle-1': !$vuetify.breakpoint.xs,
+                        'text-body-2': $vuetify.breakpoint.xs,
+                      }"
+                    >
                       {{ status.message }}
                     </p>
                   </div>
@@ -143,7 +155,12 @@
                           <span
                             v-for="(item, itemIndex) in info.dialysis_items"
                             :key="itemIndex"
-                            >{{ item }}{{ itemIndex < info.dialysis_items.length - 1 ? ", " : ""}}</span
+                            >{{ item
+                            }}{{
+                              itemIndex < info.dialysis_items.length - 1
+                                ? ", "
+                                : ""
+                            }}</span
                           >
                         </v-col>
                       </v-row>
@@ -335,7 +352,10 @@ export default {
       return iconColor;
     },
     showDialysisPackages() {
-      return this.serviceStatus.dialysis_session_packages;
+      return {
+        dialysis_packages: this.serviceStatus.dialysis_session_packages,
+        dialysis_session_status: this.serviceStatus.status
+      }
     },
   },
   watch: {

@@ -5,7 +5,7 @@
         v-slot:activator="{ on, attrs }"
         v-if="userRole === 'DIALYSIS_ENCODER'"
       >
-        <v-btn v-bind="attrs" v-on="on" icon @click="initPackages">
+        <v-btn v-bind="attrs" v-on="on" icon @click="initPackages" :disabled="disable">
           <v-icon color="primary">mdi-pencil</v-icon>
         </v-btn>
       </template>
@@ -112,6 +112,7 @@ export default {
     },
     delete_packages: [],
     loading: false,
+    disable: false,
   }),
   validations: {
     payload: {
@@ -139,7 +140,7 @@ export default {
       if (this.payload.dialysis_packages.length > 0) {
         this.$v.$touch();
 
-        let dialysis_session_id = this.dialysis_packages.dialysis_session_id;
+        let dialysis_session_id = this.dialysis_packages.dialysis_packages.dialysis_session_id;
 
         if (!this.$v.$invalid) {
           this.loading = true;
@@ -191,7 +192,7 @@ export default {
     },
     initPackages() {
       this.payload.dialysis_packages =
-        this.dialysis_packages.dialysis_packages.map((item) => ({
+        this.dialysis_packages.dialysis_packages.dialysis_packages.map((item) => ({
           name: item.name,
           funder: item.funder,
           id: item.id,
@@ -231,12 +232,21 @@ export default {
     //     this.initPackages(newVal);
     //   },
     // },
-    // dialysis_packages: {
-    //   immediate: true,
-    //   handler(value){
-    //     console.log(value)
-    //   }
-    // },
+    dialysis_packages: {
+      immediate: true,
+      handler(value){
+        console.log(value)
+      }
+    },
+    "dialysis_packages.dialysis_session_status":{
+      handler() {
+        if(this.dialysis_packages.dialysis_session_status === 'COMPLETED'){
+          this.disable = true
+        } else {
+          this.disable = false
+        }
+      }
+    }
     // delete_packages: {
     //   handler(value) {
     //     console.log("delete_packages: ", value);
