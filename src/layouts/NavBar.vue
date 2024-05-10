@@ -10,10 +10,18 @@
         <v-img eager :src="logoUrl" width="120" height="60" contain></v-img>
       </div>
       <v-spacer></v-spacer>
-      <div class="subtitle font-weight-bold py-1 mr-3">{{ userName }}</div>
+      <div v-if="!$vuetify.breakpoint.xs" class="subtitle font-weight-bold py-1 mr-3">{{ userName }}</div>
+      <div v-else class="subtitle font-weight-bold py-1 mr-3">{{ nameInitials.nameInitials }}</div>
       <v-menu bottom :offset-y="offset" class>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on" class="mr-1" dark :loading="loading">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+            class="mr-1"
+            dark
+            :loading="loading"
+          >
             <v-icon color="white" dark large>mdi-menu-down</v-icon>
           </v-btn>
         </template>
@@ -98,6 +106,26 @@ export default {
     ...mapState("login", {
       userName: (state) => state.user.loggedInUser,
     }),
+    nameInitials() {
+      let lastName = this.userName.split(", ").slice(0, -1).join(" ");
+      let firstName = this.userName.split(", ").slice(-1).join(" ");
+      let allFirstName = firstName.split(" ");
+      let allFirstInitials = []
+
+      allFirstName.forEach((firstName) => {
+        allFirstInitials.push(firstName[0] + ".")
+      })
+
+      let nameInitials = `${lastName}, `
+
+      allFirstInitials.forEach((firstInitials) => {
+        nameInitials = nameInitials + firstInitials;
+      })
+
+      return {
+        nameInitials: nameInitials
+      };
+    },
   },
 };
 </script>
