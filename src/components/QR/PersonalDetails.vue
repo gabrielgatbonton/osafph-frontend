@@ -386,7 +386,7 @@ export default {
     },
     boosterUnlock() {
       return (
-        this.data.citizen.vaccination_stat.length > 2 ||
+        this.data.citizen.vaccination_stat.length > 1 ||
         this.data.citizen.vaccination_stat[0]?.vaccine_name === "JANSSEN"
       );
     },
