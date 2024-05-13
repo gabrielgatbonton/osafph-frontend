@@ -244,7 +244,6 @@ export default {
     },
     hospitalService(value) {
       if (value) {
-        console.log(value);
         this.citizen_id = value.data.citizen_id;
         this.hospital_service_id = value.data.id;
         this.payload.service_type = value.data.service_type;
