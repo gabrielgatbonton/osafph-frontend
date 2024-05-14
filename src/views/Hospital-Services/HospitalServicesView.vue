@@ -12,7 +12,7 @@
           <v-col cols="auto">
             <v-btn
               v-if="!$vuetify.breakpoint.xs"
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               dark
               @click="activator"
@@ -21,10 +21,11 @@
             </v-btn>
             <v-btn
               v-else
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               dark
               icon
+              outlined
               @click="activator"
               ><v-icon> mdi-plus </v-icon></v-btn
             >

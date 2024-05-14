@@ -12,9 +12,10 @@
           <v-col cols="auto">
             <v-btn
               v-if="isIcon"
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               icon
+              outlined
               @click="activator"
             >
               <v-icon>mdi-plus</v-icon></v-btn
@@ -22,7 +23,7 @@
             <v-btn
               v-else
               dark
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               @click="activator"
             >

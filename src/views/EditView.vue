@@ -24,6 +24,7 @@
 import FormFormat from "@/components/Registration Form/FormFormat.vue";
 import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
+  name: "EditView",
   data: () => ({
     routeID: null,
     loading: false,

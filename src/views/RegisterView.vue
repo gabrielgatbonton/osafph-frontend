@@ -20,6 +20,7 @@ import FormFormat from "@/components/Registration Form/FormFormat.vue";
 import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 import { mapActions } from "vuex";
 export default {
+  name: "RegisterView",
   data: () => ({
     loading: false,
   }),
