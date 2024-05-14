@@ -12,7 +12,6 @@ export default {
   },
   watch: {
     size: {
-      immediate: true,
       deep: true,
       immediate: true,
       handler: function (newVal) {
