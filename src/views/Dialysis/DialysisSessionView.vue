@@ -2,7 +2,7 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid class="mx-auto" style="max-width: 85vw" v-if="session">
+    <v-container fluid class="mx-auto" :style="`max-width: ${breakpointVal};`" v-if="session">
       <v-row>
         <v-col cols="auto">
           <span class="title">Dialysis Center</span>
@@ -120,9 +120,10 @@ import PatientServiceComponent from "@/components/Reusable Components/PatientSer
 import PatientInformationComponent from "@/components/Reusable Components/PatientInformationComponent.vue";
 import ServiceStatusComponent from "@/components/Reusable Components/ServiceStatusComponent.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "DialysisSessionView",
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, ContainerBreakpoint],
   data: () => ({
     session: null,
   }),

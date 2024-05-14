@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="consultations">
         <div class="d-flex justify-start align-center">
           <p class="title">Consultations</p>
@@ -23,11 +23,13 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import ConsultationsTable from "@/components/Consultation/Consultations-Table.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "RequestedConsultationsView",
   data: () => ({
     routeName: "consultation-view",
   }),
+  mixins: [ContainerBreakpoint],
   components: {
     ConsultationsTable,
   },

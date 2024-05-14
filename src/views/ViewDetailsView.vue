@@ -5,7 +5,7 @@
     <v-container
       fluid
       class="mx-auto"
-      style="max-width: 85vw"
+      :style="`max-width: ${breakpointVal};`"
       v-if="registrant"
     >
       <v-row>
@@ -299,8 +299,9 @@ import DeleteDialogMixin from "@/mixins/Biometrics & Signature/DeleteDialog";
 import CategoryCard from "@/components/Registrant Details/CategoryCard.vue";
 import PersonalInformationCard from "@/components/Registrant Details/PersonalInformationCard.vue";
 import AddressCard from "@/components/Registrant Details/AddressCard.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
-  mixins: [ErrorAlertsLogic, DeleteDialogMixin],
+  mixins: [ErrorAlertsLogic, DeleteDialogMixin, ContainerBreakpoint],
   data: () => ({
     loading: false,
   }),

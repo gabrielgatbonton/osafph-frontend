@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="dialysis_sessions">
         <p class="text-h6">Acquired Dialysis</p>
         <v-divider></v-divider>
@@ -19,10 +19,12 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import DialysisTable from "@/components/Dialysis/Dialysis-Table.vue";
+import DialysisTable from "@/components/Dialysis/Dialysis-Table.vue"
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "DialysisView",
   data: () => ({}),
+  mixins: [ContainerBreakpoint],
   components: {
     DialysisTable,
   },

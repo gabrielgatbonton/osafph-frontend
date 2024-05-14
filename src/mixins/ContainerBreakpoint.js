@@ -12,6 +12,7 @@ export default {
   },
   watch: {
     size: {
+      immediate: true,
       deep: true,
       handler: function (newVal) {
         if (newVal.xs || newVal.sm) {

@@ -2,7 +2,7 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="files">
         <!-- Header -->
         <v-row no-gutters>
@@ -38,9 +38,10 @@ import { mapActions, mapGetters } from "vuex";
 import FilesTable from "@/components/File Viewer/Files-Table.vue";
 import UploadDialog from "../../components/Upload/UploadDialog.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "DialysisFiles",
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, ContainerBreakpoint],
   data: () => ({
     payload: null,
     dialog: false,

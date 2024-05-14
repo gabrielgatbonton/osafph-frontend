@@ -2,6 +2,7 @@
   <v-container
     style="height: 100%;"
     class="d-flex justify-center align-center"
+    :style="`max-width: ${breakpointVal};`"
   >
     <v-row>
       <v-col cols="12">
@@ -61,6 +62,7 @@
 </template>
 
 <script>
+import ContainerBreakpoint from '@/mixins/ContainerBreakpoint';
 export default {
   name: "PageConstruction",
   data: () => ({
@@ -68,6 +70,7 @@ export default {
     isSmAndDown: false,
     styleImage: "",
   }),
+  mixins: [ContainerBreakpoint],
   computed: {
     size() {
       return this.$vuetify.breakpoint;

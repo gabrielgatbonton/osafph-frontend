@@ -2,7 +2,7 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="consultations">
         <v-row no-gutters>
           <v-col cols="auto">
@@ -29,12 +29,13 @@
 import { mapActions, mapState } from "vuex";
 import ConsultationsTable from "@/components/Consultation/Consultations-Table.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "ConsultationIndexView",
   data: () => ({
     routeName: "citizens-consultations-view",
   }),
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, ContainerBreakpoint],
   components: {
     ConsultationsTable,
   },

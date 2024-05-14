@@ -9,7 +9,7 @@
       </v-row>
     </v-container>
     <v-divider class="mx-3"></v-divider> -->
-    <v-container fluid>
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="queuingDialysisList">
         <v-row no-gutters>
           <v-col cols="12">
@@ -45,12 +45,14 @@
 
 <script>
 import QueuingTable from "@/components/Dialysis/Queuing-Table.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "DialysisQueuingView",
   data: () => ({
     dialog: false,
   }),
+  mixins: [ContainerBreakpoint],
   components: {
     QueuingTable,
   },
