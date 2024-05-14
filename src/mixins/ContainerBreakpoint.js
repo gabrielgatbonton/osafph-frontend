@@ -13,6 +13,7 @@ export default {
   watch: {
     size: {
       deep: true,
+      immediate: true,
       handler: function (newVal) {
         if (newVal.xs || newVal.sm) {
           this.breakpointVal = "95vw";

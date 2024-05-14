@@ -2,7 +2,7 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="dialysis_items">
         <v-row no-gutters align="center">
           <v-col cols="auto">
@@ -12,16 +12,17 @@
           <v-col cols="auto">
             <v-btn
               v-if="isIcon"
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               icon
+              outlined
               @click="activator"
             >
               <v-icon>mdi-plus</v-icon></v-btn
             >
             <v-btn
               v-else
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               dark
               @click="activator"
@@ -52,9 +53,10 @@ import { mapState, mapActions } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import ItemsTable from "@/components/Enums/Dialysis Items/Items-Table.vue";
 import ItemDialog from "@/components/Enums/Dialysis Items/ItemDialog.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "DialysisItemsView",
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, ContainerBreakpoint],
   data: () => ({
     dialog: false,
     payload: {},

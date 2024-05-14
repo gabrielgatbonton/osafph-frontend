@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <SubmissionAlert :message="success.message" v-if="success.alert" />
     <ErrorAlert :message="failed.message" v-if="failed.alert" />
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="userPermissions.usersTable">
         <v-row no-gutters align="center">
           <v-col cols="auto">
@@ -13,7 +13,7 @@
             <v-btn
               v-if="!$vuetify.breakpoint.xs"
               color="primary"
-              class="mr-3 mb-4"
+              class="mb-4"
               dark
               @click="dialog = !dialog"
               >Add User</v-btn
@@ -21,9 +21,10 @@
             <v-btn
               v-else
               dark
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               icon
+              outlined
               @click="dialog = !dialog"
               ><v-icon>mdi-plus</v-icon></v-btn
             >
@@ -50,9 +51,10 @@ import UsersTable from "@/components/Management/Users-Table.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import PageConstruction from "@/components/PageConstruction.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "ManagementView",
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, ContainerBreakpoint],
   data: () => ({
     dialog: false,
     slot_activator_user: false,

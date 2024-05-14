@@ -5,7 +5,7 @@
     <v-container
       fluid
       class="mx-auto"
-      style="max-width: 85vw"
+      :style="`max-width: ${breakpointVal};`"
       v-if="consultation"
     >
       <v-row no-gutters>
@@ -164,9 +164,10 @@ import ServiceStatusComponent from "@/components/Reusable Components/ServiceStat
 import PatientInformationComponent from "@/components/Reusable Components/PatientInformationComponent.vue";
 import PatientServiceComponent from "@/components/Reusable Components/PatientServiceComponent.vue";
 import PreviousConsultationsComponent from "@/components/Reusable Components/PreviousConsultationsComponent.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "ConsultationInformationView",
-  mixins: [DeleteDialog, ErrorAlertsLogic],
+  mixins: [DeleteDialog, ErrorAlertsLogic, ContainerBreakpoint],
   data: () => ({
     routeID: null,
     loading: false,

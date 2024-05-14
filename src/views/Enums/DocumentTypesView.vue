@@ -3,7 +3,7 @@
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
 
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="file_type_enum">
         <v-row no-gutters align="center">
           <v-col cols="auto">
@@ -13,9 +13,10 @@
           <v-col cols="auto">
             <v-btn
               v-if="isIcon"
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               icon
+              outlined
               @click="activator"
             >
               <v-icon>mdi-plus</v-icon></v-btn
@@ -23,7 +24,7 @@
             <v-btn
               v-else
               dark
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               @click="activator"
             >
@@ -49,9 +50,10 @@
 import { mapActions, mapState } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import DocumentTypesTable from "@/components/Enums/Document Types/DocumentTypes-Table.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "DocumentTypesView",
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, ContainerBreakpoint],
   data: () => ({
     dialog: false,
     isIcon: false,

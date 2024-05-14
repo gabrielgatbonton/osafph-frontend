@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid class="mx-auto" style="max-width: 85vw">
+    <v-container fluid class="mx-auto" :style="`max-width: ${breakpointVal};`">
       <v-row dense>
         <v-col cols="12">
           <p class="text-h6">Edit Registrant</p>
@@ -22,11 +22,14 @@
 // import format from "date-fns/format";
 // import parseISO from "date-fns/parseISO";
 import FormFormat from "@/components/Registration Form/FormFormat.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
+  name: "EditView",
   data: () => ({
     routeID: null,
     loading: false,
   }),
+  mixins: [ContainerBreakpoint],
   components: {
     FormFormat,
   },
