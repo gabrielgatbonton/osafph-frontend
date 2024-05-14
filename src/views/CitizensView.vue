@@ -2,7 +2,7 @@
   <div>
     <SubmissionAlert :message="success.message" v-if="success.alert" />
     <ErrorAlert :message="failed.message" v-if="failed.alert" />
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="registrants">
         <v-row no-gutters align="center">
           <v-col cols="auto">
@@ -42,10 +42,11 @@
 <script>
 import DataTable from "@/components/Data-Table.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
+import TableBreakpoint from "@/mixins/Tables/TableBreakpoint";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "CitizensView",
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, TableBreakpoint],
   components: {
     DataTable,
   },
@@ -82,14 +83,6 @@ export default {
     ...mapState("registrants", {
       registrants: "registrants",
     }),
-    mobileBreakpoint() {
-      return {
-        filter: {
-          value: this.$vuetify.breakpoint.xs ? "mdi-magnify" : "Filter",
-          icon: true,
-        },
-      };
-    },
   },
   created() {
     this.fetchData();

@@ -10,8 +10,7 @@
         <v-img eager :src="logoUrl" width="120" height="60" contain></v-img>
       </div>
       <v-spacer></v-spacer>
-      <div v-if="!$vuetify.breakpoint.xs" class="subtitle font-weight-bold py-1 mr-3">{{ userName }}</div>
-      <div v-else class="subtitle font-weight-bold py-1 mr-3">{{ nameInitials.nameInitials }}</div>
+      <div class="subtitle font-weight-bold py-1 mr-3">{{ nameInitials }}</div>
       <v-menu bottom :offset-y="offset" class>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -106,6 +105,9 @@ export default {
     ...mapState("login", {
       userName: (state) => state.user.loggedInUser,
     }),
+    size() {
+      return this.$vuetify.breakpoint;
+    },
     nameInitials() {
       let lastName = this.userName.split(", ").slice(0, -1).join(" ");
       let firstName = this.userName.split(", ").slice(-1).join(" ");
@@ -122,9 +124,11 @@ export default {
         nameInitials = nameInitials + firstInitials;
       })
 
-      return {
-        nameInitials: nameInitials
-      };
+      if (this.size.xs) {
+        return nameInitials
+      } 
+      return this.userName;
+
     },
   },
 };

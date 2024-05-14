@@ -85,15 +85,6 @@ export default {
         : { src: this.patientInformation.image_url, style: "", class: "" };
     },
   },
-
-  watch: {
-    patientInformation: {
-      immediate: true,
-      handler(value) {
-        console.log("patientInformation", value);
-      },
-    },
-  },
 };
 </script>
 

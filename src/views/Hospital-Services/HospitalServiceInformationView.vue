@@ -122,13 +122,6 @@ export default {
     this.fetchRegistrant();
     this.fetchDialysisSessions();
   },
-  watch: {
-    service: {
-      handler(value){
-        console.log("service", value)
-      }
-    }
-  },
   computed: {
     ...mapState("registrants", {
       registrant: "registrant",

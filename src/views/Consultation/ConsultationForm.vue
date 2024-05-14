@@ -111,7 +111,11 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="4" sm="4" xl="4">
-                    <v-text-field readonly label="Specialty" v-model="localBasicDetails.specialty"></v-text-field>
+                    <v-text-field
+                      readonly
+                      label="Specialty"
+                      v-model="localBasicDetails.specialty"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </div>
@@ -293,7 +297,11 @@
         </v-row>
         <v-row class="ma-2">
           <v-col cols="12">
-            <v-card flat outlined :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'">
+            <v-card
+              flat
+              outlined
+              :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'"
+            >
               <div class="ma-5">
                 <v-row>
                   <v-col cols="12">
@@ -302,45 +310,56 @@
                   <v-col cols="12" sm="3" md="2">
                     <v-text-field
                       v-model="data.blood_pressure"
-                      label="BP"
+                      label="Blood Pressure"
+                      hint="Use BP Format 120/80"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="3" md="2">
                     <v-text-field
+                      type="number"
                       v-model="data.heart_rate"
-                      label="HR"
+                      label="Heart Rate"
+                      hint="Use Number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="3" md="2">
                     <v-text-field
+                      type="number"
                       v-model="data.respiratory_rate"
-                      label="RR"
+                      label="Respiratory Rate"
+                      hint="Use Number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="3" md="2">
                     <v-text-field
+                      type="number"
                       v-model="data.temperature"
                       label="Temperature"
+                      hint="Use Celsius"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="4" md="2">
                     <v-text-field
+                      type="number"
                       v-model="data.oxygen_saturation"
                       label="O2 Saturation"
+                      hint="Use Number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="4" md="2">
                     <v-text-field
                       v-model="data.weight"
-                      label="Weight (kg)"
+                      label="Weight"
                       type="number"
+                      hint="Use Number in Kilograms (kg)"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="4" md="2">
                     <v-text-field
                       v-model="data.height"
-                      label="Height (m)"
+                      label="Height"
                       type="number"
+                      hint="Use Number in Meters (m)"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="12" md="8">
@@ -356,9 +375,7 @@
           <v-col></v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn @click="toContinuation" dark class="primary"
-              >Proceed</v-btn
-            >
+            <v-btn @click="toContinuation" dark class="primary">Proceed</v-btn>
           </v-col>
         </v-row>
       </v-card>
