@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <v-container fluid class="mx-auto" style="max-width: 85vw" v-if="dashData">
+    <v-container fluid class="mx-auto" :style="`max-width: ${breakpointVal};`" v-if="dashData">
       <p class="text-h6">Dashboard</p>
       <v-divider />
 
@@ -259,11 +259,13 @@ import RootContent from "@/components/Dashboard/RootContent.vue";
 import AdminContent from "@/components/Dashboard/AdminContent.vue";
 import DoctorContent from "@/components/Dashboard/DoctorContent.vue";
 // import EncoderContent from "@/components/Dashboard/EncoderContent.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "DashboardView",
   data: () => ({
     allowedRoles: ["DOCTOR", "ADMIN", "ROOT"],
   }),
+  mixins: [ContainerBreakpoint],
   components: {
     RootContent,
     AdminContent,

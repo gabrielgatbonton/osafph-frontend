@@ -2,7 +2,7 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid style="max-width: 85vw">
+    <v-container fluid :style="`max-width: ${breakpointVal};`">
       <div v-if="dialysis_packages">
         <v-row no-gutters align="center">
           <v-col cols="auto">
@@ -50,10 +50,11 @@
 import PackagesTable from "@/components/Enums/Dialysis Packages/Packages-Table.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import PackageDialog from "@/components/Enums/Dialysis Packages/PackageDialog.vue";
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "DialysisPackagesView",
-  mixins: [ErrorAlertsLogic],
+  mixins: [ErrorAlertsLogic, ContainerBreakpoint],
   data: () => ({
     payload: {},
     dialog: false,

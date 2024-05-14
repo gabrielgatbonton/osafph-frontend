@@ -13,7 +13,7 @@
             <v-btn
               v-if="!$vuetify.breakpoint.xs"
               dark
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               @click="toRegister"
               >Register</v-btn
@@ -21,9 +21,10 @@
             <v-btn
               v-else
               dark
-              class="mr-3 mb-4"
+              class="mb-4"
               color="primary"
               @click="toRegister"
+              outlined
               icon
               ><v-icon>mdi-plus</v-icon></v-btn
             >
@@ -42,7 +43,7 @@
 <script>
 import DataTable from "@/components/Data-Table.vue";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
-import TableBreakpoint from "@/mixins/Tables/TableBreakpoint";
+import TableBreakpoint from "@/mixins/ContainerBreakpoint";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "CitizensView",

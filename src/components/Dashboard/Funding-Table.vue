@@ -52,6 +52,7 @@
                 class="mr-3"
                 color="primary"
                 icon
+                outlined
                 @click="openDialog(null, 'CREATE')"
                 ><v-icon>mdi-plus</v-icon></v-btn
               >
