@@ -24,7 +24,7 @@ export const dialysis_calendar = {
           Object.keys(sessions).forEach((sessionType) => {
             const dialysisMachines = sessions[sessionType];
 
-            dialysisMachines.forEach(() => {
+            Object.keys(dialysisMachines).forEach(() => {
               const existingDate = events.find((item) => item === sessionDate);
               if (existingDate) {
                 if (!existingDate.includes(sessionDate)) {

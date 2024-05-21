@@ -94,7 +94,7 @@ import parseISO from "date-fns/parseISO";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import ServiceDialog from "./ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 import DeleteServiceMixin from "@/mixins/Hospital-Service/DeleteService";
 import TablePaginationMixin from "@/mixins/Tables/TablePagination";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
@@ -130,9 +130,6 @@ export default {
   },
   computed: {
     ...mapGetters("login", ["userRole"]),
-    ...mapState("services", {
-      services: "hospitalServices",
-    }),
     headers() {
       return [
         {
