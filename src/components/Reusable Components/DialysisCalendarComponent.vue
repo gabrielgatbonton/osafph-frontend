@@ -27,7 +27,7 @@
       <v-col cols="12">
         <div class="text-h6">Reserved Machines</div>
       </v-col>
-      <v-col cols="6" v-for="(session, index) in machine_sessions" :key="index">
+      <v-col cols="12" md="6" v-for="(session, index) in machine_sessions" :key="index">
         <v-card elevation="1">
           <div class="d-flex justify-space-between pa-3">
             <div>{{ session.machine }}</div>

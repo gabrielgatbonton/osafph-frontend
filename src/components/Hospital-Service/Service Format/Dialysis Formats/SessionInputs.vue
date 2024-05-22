@@ -81,7 +81,7 @@
           </v-col>
         </v-row>
         <v-row class="my-0">
-          <v-col cols="8">
+          <v-col cols="12" md="8">
             <v-text-field
               type="number"
               v-model="payload.total_sessions"
@@ -92,7 +92,7 @@
               oninput="if(this.value < 1) this.value = 0;"
             ></v-text-field>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-text-field type="number" label="Threshold Number"></v-text-field>
           </v-col>
         </v-row>
