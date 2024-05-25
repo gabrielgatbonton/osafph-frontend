@@ -27,7 +27,9 @@
               contain
             ></v-img>
           </div>
-          <div class="text-body-1 white--text">LION’S GLOBAL TECHNOLOGIES INC.</div>
+          <div class="text-body-1 white--text">
+            LION’S GLOBAL TECHNOLOGIES INC.
+          </div>
         </div>
       </v-col>
       <v-col cols="12" md="7">
@@ -175,10 +177,10 @@ export default {
   watch: {
     size: {
       handler: function (newVal) {
-        if (newVal.xs) {
+        if (newVal.xs || newVal.sm) {
           this.maxWidth = 250;
         } else {
-          this.maxWidth = 400;
+          this.maxWidth = "60%";
         }
       },
       deep: true,
@@ -190,7 +192,7 @@ export default {
 
 <style scoped lang="scss">
 #container {
-  width: 100%;
+  max-width: 100%;
   height: 100%;
   background: #fff;
   background: url("../assets/TestSVG.svg") no-repeat center center/cover;
@@ -198,7 +200,7 @@ export default {
 
   .card-container {
     background: #fff;
-    max-width: 75%;
+    max-width: 70%;
     margin: 0 auto;
   }
 }
@@ -213,6 +215,7 @@ export default {
     );
     .card-container {
       padding: 2rem;
+      max-width: 100%;
       border-radius: 40px;
     }
   }
