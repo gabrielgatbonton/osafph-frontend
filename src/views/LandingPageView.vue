@@ -16,22 +16,25 @@
   </v-container> -->
   <v-container fluid id="container">
     <v-row align="center" align-content="center" style="height: 100%">
-      <v-col cols="12" md="6">
-        <div class="text-container">
-          <v-img
-            eager
-            class="mx-auto d-block"
-            id="image"
-            :src="imageUrl"
-            :max-width="maxWidth"
-            contain
-          ></v-img>
+      <v-col cols="12" md="5">
+        <div class="d-flex flex-column justify-center text-center">
+          <div>
+            <v-img
+              class="d-inline-block"
+              eager
+              :src="imageUrl"
+              :max-width="maxWidth"
+              contain
+            ></v-img>
+          </div>
+          <div class="text-body-1 white--text">LION’S GLOBAL TECHNOLOGIES INC.</div>
         </div>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="7">
         <div class="card-container">
           <div class="headline text-center mb-4">
-            CITIZEN'S HEALTH INFORMATION <br> AND MANAGEMENT SYSTEM
+            CITIZEN'S HEALTH INFORMATION <br />
+            AND MANAGEMENT SYSTEM
           </div>
           <v-text-field
             solo
@@ -175,7 +178,7 @@ export default {
         if (newVal.xs) {
           this.maxWidth = 250;
         } else {
-          this.maxWidth = 350;
+          this.maxWidth = 400;
         }
       },
       deep: true,
@@ -195,7 +198,7 @@ export default {
 
   .card-container {
     background: #fff;
-    max-width: 600px;
+    max-width: 75%;
     margin: 0 auto;
   }
 }

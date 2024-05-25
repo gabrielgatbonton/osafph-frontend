@@ -6,8 +6,9 @@
         @click="toggleDrawer"
         color="white"
       ></v-app-bar-nav-icon>
-      <div>
-        <v-img eager :src="logoUrl" width="120" height="60" contain></v-img>
+      <div class="font-weight-bold">
+        CHIMS
+        <!-- <v-img eager :src="logoUrl" width="120" height="60" contain></v-img> -->
       </div>
       <v-spacer></v-spacer>
       <div class="subtitle font-weight-bold py-1 mr-3">{{ nameInitials }}</div>
