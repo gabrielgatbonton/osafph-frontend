@@ -15,67 +15,67 @@
     </v-row>
   </v-container> -->
   <v-container fluid id="container">
-    <v-row align="center" align-content="center" style="height: 100%">
-      <v-col cols="12" md="5">
-        <div class="d-flex flex-column justify-center text-center">
-          <div>
-            <v-img
-              class="d-inline-block"
-              eager
-              :src="imageUrl"
-              :max-width="maxWidth"
-              contain
-            ></v-img>
+    <v-form @submit.prevent="handleLogin">
+      <v-row align="center" align-content="center" style="height: 100%">
+        <v-col cols="12" md="5">
+          <div class="d-flex flex-column justify-center text-center">
+            <div>
+              <v-img
+                class="d-inline-block"
+                eager
+                :src="imageUrl"
+                :max-width="maxWidth"
+                contain
+              ></v-img>
+            </div>
+            <div class="text-body-1 white--text">
+              LION’S GLOBAL TECHNOLOGIES INC.
+            </div>
           </div>
-          <div class="text-body-1 white--text">
-            LION’S GLOBAL TECHNOLOGIES INC.
+        </v-col>
+        <v-col cols="12" md="7">
+          <div class="card-container">
+            <div class="headline text-center mb-4">
+              CITIZEN'S HEALTH INFORMATION <br />
+              AND MANAGEMENT SYSTEM
+            </div>
+            <v-text-field
+              solo
+              rounded
+              height="50"
+              v-model="username"
+              :error-messages="usernameErrors"
+              @blur="$v.username.$touch()"
+              :success="!$v.username.$invalid && $v.username.$dirty"
+              label="Username"
+            ></v-text-field>
+            <v-text-field
+              solo
+              height="50"
+              rounded
+              v-model="password"
+              :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+              @blur="$v.password.$touch()"
+              :error-messages="passwordErrors"
+              :success="!$v.password.$invalid && $v.password.$dirty"
+              :type="show ? 'text' : 'password'"
+              @click:append="show = !show"
+              label="Password"
+            ></v-text-field>
+            <v-btn
+              x-large
+              rounded
+              color="primary"
+              block
+              dark
+              :loading="loading"
+              type="submit"
+              >Login</v-btn
+            >
           </div>
-        </div>
-      </v-col>
-      <v-col cols="12" md="7">
-        <div class="card-container">
-          <div class="headline text-center mb-4">
-            CITIZEN'S HEALTH INFORMATION <br />
-            AND MANAGEMENT SYSTEM
-          </div>
-          <v-text-field
-            solo
-            rounded
-            height="50"
-            v-model="username"
-            :error-messages="usernameErrors"
-            @blur="$v.username.$touch()"
-            :success="!$v.username.$invalid && $v.username.$dirty"
-            label="Username"
-            @keyup.enter="handleLogin"
-          ></v-text-field>
-          <v-text-field
-            solo
-            height="50"
-            rounded
-            v-model="password"
-            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-            @blur="$v.password.$touch()"
-            :error-messages="passwordErrors"
-            :success="!$v.password.$invalid && $v.password.$dirty"
-            :type="show ? 'text' : 'password'"
-            @click:append="show = !show"
-            @keyup.enter="handleLogin"
-            label="Password"
-          ></v-text-field>
-          <v-btn
-            x-large
-            rounded
-            color="primary"
-            block
-            dark
-            :loading="loading"
-            @click="handleLogin"
-            >Login</v-btn
-          >
-        </div>
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </v-form>
   </v-container>
 </template>
 
