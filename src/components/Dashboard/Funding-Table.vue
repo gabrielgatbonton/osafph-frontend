@@ -349,6 +349,8 @@ export default {
             initial_contribution: item.initial_contribution,
             created_at: item.created_at,
             contribution_left: this.formattedNumber(item.contribution_left),
+            office: item.office,
+            type: item.type,
           }));
           this.total_items = value.tableContent.total;
         }

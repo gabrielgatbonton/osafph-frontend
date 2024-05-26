@@ -429,7 +429,9 @@ export default {
       ) {
         disable = false;
       } else {
-        card.description = "Incomplete necessary images";
+        this.size.lgAndDown
+          ? (card.description = "Incomplete Images")
+          : (card.description = "Incomplete necessary images");
       }
       return {
         card: card,
@@ -439,6 +441,9 @@ export default {
     routeID() {
       const id = this.$route.params.id;
       return id;
+    },
+    size() {
+      return this.$vuetify.breakpoint;
     },
   },
 };

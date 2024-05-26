@@ -1,6 +1,7 @@
 import Pusher from "pusher-js";
 
-Pusher.logToConsole = true;
+// Debug mode
+// Pusher.logToConsole = true;
 const pusherInstance = new Pusher(process.env.VUE_APP_PUSHER_JS_KEY, {
   cluster: process.env.VUE_APP_PUSHER_JS_CLUSTER,
 });
