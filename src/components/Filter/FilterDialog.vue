@@ -180,16 +180,22 @@ export default {
             this.category.length > 0
               ? (this.payload.category_ids = this.category)
               : (this.payload.category_ids = null);
+          } else {
+            this.payload.category_ids = null;
           }
           if (element === "SEX") {
             this.sex
               ? (this.payload.sexes = this.sex)
               : (this.payload.sexes = null);
+          } else {
+            this.payload.sexes = null;
           }
           if (element === "BARANGAY") {
             this.barangay.length > 0
               ? (this.payload.barangay_ids = this.barangay)
               : (this.payload.barangay_ids = null);
+          } else {
+            this.payload.barangay_ids = null;
           }
         });
       } else if (this.type_of_filter === "DIALYSIS INDEX") {

@@ -59,7 +59,7 @@
           </v-col>
           <v-col cols="auto" v-if="iconPermissions.toggle" align-self="center">
             <v-icon
-              color="primary"
+              :color="item.is_active ? 'primary' : 'grey'"
               large
               @click="togglePackage(item.id)"
               class="ml-1"
