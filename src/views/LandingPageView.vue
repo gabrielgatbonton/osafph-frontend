@@ -14,8 +14,8 @@
       </v-col>
     </v-row>
   </v-container> -->
-  <v-container fluid id="container">
-    <v-form @submit.prevent="handleLogin">
+  <v-form @submit.prevent="handleLogin" class="height-stretch">
+    <v-container fluid id="container">
       <v-row align="center" align-content="center" style="height: 100%">
         <v-col cols="12" md="5">
           <div class="d-flex flex-column justify-center text-center">
@@ -75,8 +75,8 @@
           </div>
         </v-col>
       </v-row>
-    </v-form>
-  </v-container>
+    </v-container>
+  </v-form>
 </template>
 
 <script>
@@ -219,6 +219,10 @@ export default {
       border-radius: 40px;
     }
   }
+}
+
+.height-stretch {
+  height: 100%;
 }
 
 /* .container-height {
