@@ -7,6 +7,7 @@
           label="Username"
           @blur="$v.credentials_payload.username.$touch()"
           :error-messages="errorMessages.credentials_payload.username"
+          hint="Username must be at least 4 characters"
         ></v-text-field>
       </v-col>
       <v-col cols="12">
@@ -18,6 +19,7 @@
           @click:append="show_1 = !show_1"
           @blur="$v.credentials_payload.password.$touch()"
           :error-messages="errorMessages.credentials_payload.password"
+          hint="Password must be at least 6 characters"
         ></v-text-field>
       </v-col>
       <v-col cols="12">

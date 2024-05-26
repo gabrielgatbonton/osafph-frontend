@@ -168,8 +168,9 @@
                     </v-row>
                   </v-col>
                   <v-col v-else cols="12">
-                    <p class="subtitle-2 text-center grey--text">No Pending or Walk-in Services Available</p>
-                   
+                    <p class="subtitle-2 text-center grey--text">
+                      No Pending or Walk-in Services Available
+                    </p>
                   </v-col>
                 </v-row>
                 <v-pagination
@@ -239,7 +240,9 @@ export default {
           },
           {
             title: "Serviceable Availed",
-            content: item.serviceable_type_name,
+            content: item.serviceable_type_name
+              ? item.serviceable_type_name
+              : "N/A",
           },
         ],
         dates: [
@@ -252,7 +255,10 @@ export default {
           },
           {
             title: "Doctor in Charge",
-            content: `${item.doctor_last_name}, ${item.doctor_first_name}`,
+            content:
+              item.doctor_last_name && item.doctor_first_name
+                ? `${item.doctor_last_name}, ${item.doctor_first_name}`
+                : "N/A",
           },
           {
             title: "Doctor Specialty",

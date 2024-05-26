@@ -26,7 +26,7 @@
                 <v-card-title class="text-h5 font-weight-bold mb-1">{{
                   item.count
                 }}</v-card-title>
-                <v-card-subtitle class="text-subtitle-1">{{
+                <v-card-subtitle class="text-subtitle-1 text-center">{{
                   item.package
                 }}</v-card-subtitle>
               </v-card>
