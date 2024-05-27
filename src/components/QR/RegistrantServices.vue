@@ -18,18 +18,18 @@
                   </v-col>
                   <v-col cols="auto" class="pt-2">
                     <div class="text-subtitle-2 font-weight-bold">
-                      REGISTRANT'S HOSPITAL SERVICES
+                      HOSPITAL SERVICES
                     </div>
                     <div class="text-caption grey--text">Services Availed</div>
                   </v-col>
                 </v-row>
                 <v-row dense class="ma-2">
-                  <v-col cols="12" class="px-5">
+                  <v-col cols="12">
                     <div class="d-flex justify-space-between align-center">
                       <v-text-field
                         label="Search"
                         prepend-icon="mdi-magnify"
-                        class="mx-4"
+                        class="mr-4"
                         v-model="search"
                       ></v-text-field>
                       <v-btn
@@ -66,7 +66,7 @@
                         :key="index"
                       >
                         <template>
-                          <v-expansion-panels popout class="my-3">
+                          <v-expansion-panels class="mb-1">
                             <v-expansion-panel>
                               <v-expansion-panel-header>
                                 <v-container class="py-1">
@@ -135,7 +135,9 @@
                                       <div class="text-subtitle-2 grey--text">
                                         {{ detail.title }}
                                       </div>
-                                      <div class="text-h5">
+                                      <div
+                                        class="text-h6 text-sm-h5 font-weight-regular"
+                                      >
                                         {{ detail.content }}
                                       </div>
                                     </div>
@@ -154,7 +156,9 @@
                                       <div class="text-subtitle-2 grey--text">
                                         {{ detail.title }}
                                       </div>
-                                      <div class="text-h5">
+                                      <div
+                                        class="text-h6 text-sm-h5 font-weight-regular"
+                                      >
                                         {{ detail.content }}
                                       </div>
                                     </div>

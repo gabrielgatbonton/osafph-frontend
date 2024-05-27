@@ -5,18 +5,18 @@
         <v-col cols="12">
           <v-img
             class="mx-auto mt-15 slide-down"
-            width="300"
+            :width="imgWidth"
             :src="imgSrc"
             contain
           ></v-img>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" class="d-none d-md-block">
           <div class="text-center text-subtitle-1 slide-down">
             Office of the Special Adviser for Flagship Programs for Health
           </div>
         </v-col>
         <v-col cols="12">
-          <div class="text-center text-h3 slide-down">
+          <div class="text-center text-h4 text-sm-h3 slide-down">
             Official COVID-19 Vaccination Record
           </div>
         </v-col>
@@ -49,7 +49,8 @@ import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "ReroutePage",
   data: () => ({
-    imgSrc: require("@/assets/OSAFPH LOGO.png")
+    imgSrc: require("@/assets/OSAFPH LOGO.png"),
+    imgWidth: "300",
   }),
   components: {
     DataTabs,
@@ -89,6 +90,9 @@ export default {
     ...mapState("public_files", {
       public_files: "public_files",
     }),
+    size() {
+      return this.$vuetify.breakpoint;
+    },
   },
   created() {
     this.fetchData();
@@ -114,6 +118,17 @@ export default {
             citizen_id: citizen_id,
             queryParams: query_params,
           });
+        }
+      },
+    },
+    size: {
+      deep: true,
+      immediate: true,
+      handler: function (newVal) {
+        if (newVal.xs) {
+          this.imgWidth = "250";
+        } else {
+          this.imgWidth = "300";
         }
       },
     },

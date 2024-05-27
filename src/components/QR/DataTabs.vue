@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center" v-if="data">
-    <v-col cols="12">
+    <v-col>
       <v-tabs centered>
         <v-tab>Personal Details</v-tab>
         <v-tab>Services Availed</v-tab>
