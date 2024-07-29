@@ -66,10 +66,10 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+// Constantly update the HTML title per route change
 router.afterEach((to) => {
-  console.log(to.meta);
   Vue.nextTick(() => {
-    document.title = `CHIMS | ${to.meta.routeName}`;
+    document.title = `${to.meta.routeName} | CHIMS`;
   });
 });
 
