@@ -66,4 +66,11 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+router.afterEach((to) => {
+  console.log(to.meta);
+  Vue.nextTick(() => {
+    document.title = `CHIMS | ${to.meta.routeName}`;
+  });
+});
+
 export default router;

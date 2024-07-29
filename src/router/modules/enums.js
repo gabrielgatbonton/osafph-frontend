@@ -8,7 +8,11 @@ export default [
         /* webpackChunkName: "admin-enums" */ "@/views/Enums/DialysisPackagesView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Dialysis Packages" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Dialysis Packages",
+      routeName: "Dialysis Packages",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -19,7 +23,11 @@ export default [
         /* webpackChunkName: "admin-enums" */ "@/views/Enums/DialysisItemsView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Dialysis Items" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Dialysis Items",
+      routeName: "Dialysis Items",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -30,7 +38,11 @@ export default [
         /* webpackChunkName: "admin-enums" */ "@/views/Enums/DocumentTypesView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Documents" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Documents",
+      routeName: "Document Types",
+    },
     beforeEnter: checkLoggedIn,
   },
 ];

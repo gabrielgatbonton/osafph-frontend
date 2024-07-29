@@ -8,7 +8,11 @@ export default [
         /* webpackChunkName: "doctor-consultations" */ "@/views/Consultation/Doctor/RequestedConsultationsView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Consultations" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Consultations",
+      routeName: "Consultations",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -19,7 +23,11 @@ export default [
         /* webpackChunkName: "doctor-consultations" */ "@/views/Consultation/ConsultationInformationView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Consultations" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Consultations",
+      routeName: "Consultation Details",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -30,7 +38,11 @@ export default [
         /* webpackChunkName: "doctor-consultations" */ "@/views/Consultation/Doctor/AddConsultationForm.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Consultations" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Consultations",
+      routeName: "Add Consultation Form",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -41,7 +53,11 @@ export default [
         /* webpackChunkName: "doctor-consultations" */ "@/views/Consultation/ConsultationFormContinuation.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Consultations" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Consultations",
+      routeName: "Add Consultation Form",
+    },
     beforeEnter: checkLoggedIn,
   },
   // {
@@ -74,7 +90,11 @@ export default [
         /* webpackChunkName: "doctor-consultations" */ "@/views/Consultation/ConsultationFiles.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Consultations" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Consultations",
+      routeName: "Consultation Files",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -85,7 +105,11 @@ export default [
         /* webpackChunkName: "doctor-consultations" */ "@/views/FileView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Consultations" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Consultations",
+      routeName: "Consultation Files",
+    },
     beforeEnter: checkLoggedIn,
   },
 ];

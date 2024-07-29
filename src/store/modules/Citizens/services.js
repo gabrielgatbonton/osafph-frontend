@@ -10,7 +10,7 @@ export const services = {
     hospitalServices: null,
     hospitalService: null,
     publicHospitalServices: [],
-    service_types: []
+    service_types: [],
   }),
   getters: {
     getPendingServices: (state) => {
@@ -109,8 +109,9 @@ export const services = {
       return this.$axios
         .post(url, data)
         .then((response) => {
-          dispatch("fetchServicesById", id);
+          dispatch("fetchServicesById", { id });
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          return response;
         })
         .catch((error) => {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
@@ -122,7 +123,7 @@ export const services = {
       return this.$axios
         .put(url, data)
         .then((response) => {
-          dispatch("fetchServicesById", id);
+          dispatch("fetchServicesById", { id });
           dispatch("fetchHospitalServiceById", {
             id: id,
             hospital_service_id: hospital_service_id,
@@ -139,7 +140,7 @@ export const services = {
       return this.$axios
         .delete(url)
         .then((response) => {
-          dispatch("fetchServicesById", id);
+          dispatch("fetchServicesById", { id });
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
         })
         .catch((error) => {
@@ -168,6 +169,5 @@ export const services = {
           console.error("Error requesting public services: ", error);
         });
     },
-
   },
 };

@@ -8,7 +8,7 @@ export default [
         /* webpackChunkName: "dialysis" */ "@/views/Dialysis/DialysisView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Dialysis" },
+    meta: { requiresAuth: true, activeIcon: "Dialysis", routeName: "Dialysis" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -19,7 +19,11 @@ export default [
         /* webpackChunkName: "dialysis" */ "@/views/Dialysis/DialysisSessionView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Dialysis" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Dialysis",
+      routeName: "Dialysis Session",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -30,7 +34,11 @@ export default [
         /* webpackChunkName: "dialysis" */ "@/views/Dialysis/DialysisFiles.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Dialysis" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Dialysis",
+      routeName: "Dialysis Files",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -39,7 +47,11 @@ export default [
     component: () =>
       import(/* webpackChunkName: "dialysis" */ "@/views/FileView.vue"),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Dialysis" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Dialysis",
+      routeName: "Dialysis Files",
+    },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -50,7 +62,11 @@ export default [
         /* webpackChunkName: "dialysis-admin" */ "@/views/Dialysis/DialysisQueuingView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true, activeIcon: "Dialysis Queuing" },
+    meta: {
+      requiresAuth: true,
+      activeIcon: "Dialysis Queuing",
+      routeName: "Dialysis Queue",
+    },
     beforeEnter: checkLoggedIn,
   },
 ];
