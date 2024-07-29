@@ -5,7 +5,7 @@ export default [
     name: "citizens",
     component: () =>
       import(/* webpackChunkName: "citizens" */ "@/views/CitizensView.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Citizens" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -13,7 +13,7 @@ export default [
     name: "register",
     component: () =>
       import(/* webpackChunkName: "citizens" */ "@/views/RegisterView.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Citizens" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -22,7 +22,7 @@ export default [
     component: () =>
       import(/* webpackChunkName: "citizens" */ "@/views/EditView.vue"),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Citizens" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -31,7 +31,7 @@ export default [
     component: () =>
       import(/* webpackChunkName: "citizens" */ "@/views/ViewDetailsView.vue"),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Citizens" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -42,7 +42,7 @@ export default [
         /* webpackChunkName: "citizen-admin" */ "@/views/Consultation/Admin/CompletedConsultationsView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Consultations" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -53,7 +53,7 @@ export default [
         /* webpackChunkName: "citizen-admin" */ "@/views/Consultation/ConsultationInformationView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Consultations" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -64,7 +64,7 @@ export default [
         /* webpackChunkName: "citizen-admin" */ "@/views/Consultation/Admin/EditConsultationForm.vue"
       ),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Consultations" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -75,7 +75,7 @@ export default [
         /* webpackChunkName: "citizen-admin" */ "@/views/Consultation/ConsultationFormContinuation.vue"
       ),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Consultations" },
     beforeEnter: checkLoggedIn,
   },
 ];

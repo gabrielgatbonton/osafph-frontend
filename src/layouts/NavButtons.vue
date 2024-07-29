@@ -129,10 +129,24 @@ export default {
     isMiniVariant() {
       return this.isMini;
     },
+    routeActiveIcon: function () {
+      return this.$route.meta.activeIcon;
+    }
   },
   methods: {
     toggleActiveState: function (btnName) {
       this.activeBtn = btnName;
+    },
+    onRefresh: function (newVal) {
+      this.activeBtn = this.activeBtn ? this.activeBtn : newVal;
+    },
+  },
+  watch: {
+    routeActiveIcon: {
+      immediate: true,
+      handler: function (newVal) {
+        this.onRefresh(newVal);
+      },
     },
   },
 };

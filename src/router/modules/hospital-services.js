@@ -6,7 +6,7 @@ export default [
     component: () =>
       import(/* webpackChunkName: "hospital-service" */ "@/views/Hospital-Services/HospitalServicesView.vue"),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Citizens" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -15,7 +15,7 @@ export default [
     component: () =>
       import(/* webpackChunkName: "hospital-service" */ "@/views/Hospital-Services/HospitalServiceInformationView.vue"),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Citizens" },
     beforeEnter: checkLoggedIn,
   },
 ];

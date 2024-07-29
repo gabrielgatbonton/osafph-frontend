@@ -5,7 +5,7 @@ export default [
     name: "management",
     component: () =>
       import(/* webpackChunkName: "management" */ "@/views/ManagementView.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "User Management" },
     beforeEnter: checkLoggedIn,
   },
 ];

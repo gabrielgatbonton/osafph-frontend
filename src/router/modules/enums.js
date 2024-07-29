@@ -8,7 +8,7 @@ export default [
         /* webpackChunkName: "admin-enums" */ "@/views/Enums/DialysisPackagesView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Dialysis Packages" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -19,7 +19,7 @@ export default [
         /* webpackChunkName: "admin-enums" */ "@/views/Enums/DialysisItemsView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Dialysis Items" },
     beforeEnter: checkLoggedIn,
   },
   {
@@ -30,7 +30,7 @@ export default [
         /* webpackChunkName: "admin-enums" */ "@/views/Enums/DocumentTypesView.vue"
       ),
     props: true,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, activeIcon: "Documents" },
     beforeEnter: checkLoggedIn,
   },
 ];
