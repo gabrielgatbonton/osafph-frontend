@@ -181,7 +181,6 @@ export default {
       boosterInformation: "boosterDetails",
     }),
     boosterUnlock() {
-      console.log(this.vaccinationInformation)
       return (
         this.vaccinationInformation.length > 1 ||
         this.vaccinationInformation[0]?.vaccine_name === "JANSSEN"

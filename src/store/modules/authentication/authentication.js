@@ -36,10 +36,12 @@ export const authentication = {
           if (response) {
             commit("SET_CURRENT_USER", null);
           }
+          return response;
         })
         .catch((error) => {
           console.error("Error logging out:", error);
           commit("SET_CURRENT_USER", null);
+          throw error;
         });
     },
     logoutAndClearToken({ commit }) {

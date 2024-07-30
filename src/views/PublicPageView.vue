@@ -62,24 +62,11 @@ export default {
     ...mapActions("public_files", ["fetchPublicFiles", "resetPublicFiles"]),
     fetchData() {
       const storedId = sessionStorage.getItem("hub_registrant_id");
-      this.fetchPublicCitizenRecord(storedId)
-        .catch((error) => {
-          console.error(
-            "Error fetching Public Citizen Record @ Reroute:",
-            error
-          );
-        })
-        .finally(() => {
-          // // Remove the parameter from the URL without navigation
-          // const route = { ...this.$route }; // Create a copy of the route object
-          // delete route.params.hub_registrant_id; // Remove the parameter
-          // this.$router.replace(route); // Replace the route
-        });
+      this.fetchPublicCitizenRecord(storedId);
     },
-
     updateFetch(query_params) {
       this.fetchPublicServicesById({
-        id: this.getPublicData.citizen.id,
+        id: this.getPublicData.citizen.hashed_id,
         queryParams: query_params,
       });
     },
@@ -100,7 +87,7 @@ export default {
   watch: {
     getPublicData(value) {
       if (value.citizen.hub_registrant_id) {
-        this.fetchPublicServicesById({ id: value.citizen.id });
+        this.fetchPublicServicesById({ id: value.citizen.hashed_id });
       }
     },
     getPublicHospitalServices: {
@@ -110,7 +97,7 @@ export default {
           hospital_service_ids: [],
         };
         if (value.data.length > 0) {
-          let citizen_id = value.data[0].citizen_id;
+          let citizen_id = sessionStorage.getItem("hub_registrant_id");
           value.data.forEach((item) => {
             query_params.hospital_service_ids.push(item.id);
           });
