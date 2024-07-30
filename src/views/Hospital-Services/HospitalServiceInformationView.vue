@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { format, parseISO } from "date-fns";
 import ServiceDialog from "@/components/Hospital-Service/ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
@@ -129,10 +129,12 @@ export default {
     ...mapState("services", {
       service: "hospitalService",
     }),
-    ...mapGetters("login", ["userRole"]),
     ...mapState("dialysis_sessions", {
       dialysis_sessions: "dialysis_sessions",
     }),
+    userRole: function () {
+      return this.$auth.role();
+    },
     editButtonProperties() {
       let edit = false;
       if (this.userRole === "ADMIN" || this.userRole === "ENCODER") {
@@ -397,21 +399,20 @@ export default {
           }
         });
       }
-        header_dialysis = {
-          header_title: "DIALYSIS",
-          date: "Date Scheduled",
-          status: "Status",
-          icon: "mdi-iv-bag",
-          time: "Time",
-          time_value: this.service.data.session,
-          sessions_available:
-            scheduled_dialysis_sessions.length > 1
-              ? `${scheduled_dialysis_sessions.length} sessions available`
-              : `${scheduled_dialysis_sessions.length} session available`,
-          machine_num: "Machine No",
-          machine_value: machine_value,
-        };
-        
+      header_dialysis = {
+        header_title: "DIALYSIS",
+        date: "Date Scheduled",
+        status: "Status",
+        icon: "mdi-iv-bag",
+        time: "Time",
+        time_value: this.service.data.session,
+        sessions_available:
+          scheduled_dialysis_sessions.length > 1
+            ? `${scheduled_dialysis_sessions.length} sessions available`
+            : `${scheduled_dialysis_sessions.length} session available`,
+        machine_num: "Machine No",
+        machine_value: machine_value,
+      };
 
       return {
         status: this.service.data.status,

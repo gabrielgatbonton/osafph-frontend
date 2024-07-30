@@ -1,6 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
-import store from "../../";
+import store from "../..";
 
 Vue.use(Vuex);
 
@@ -169,7 +169,6 @@ export const public_files = {
     ) {
       const url = `citizens/${citizen_id}/public/hospital-services/${hospital_service_id}/files/${hospital_service_file_id}`;
       return this.$axios.get(url, { responseType: "blob" }).then((response) => {
-        
         const contentType = response.headers["content-type"];
         let file_type = null;
 

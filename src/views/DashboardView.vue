@@ -1,6 +1,11 @@
 <template>
   <div class="background">
-    <v-container fluid class="mx-auto" :style="`max-width: ${breakpointVal};`" v-if="dashData">
+    <v-container
+      fluid
+      class="mx-auto"
+      :style="`max-width: ${breakpointVal};`"
+      v-if="dashData"
+    >
       <p class="text-h6">Dashboard</p>
       <v-divider />
 
@@ -254,7 +259,7 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import RootContent from "@/components/Dashboard/RootContent.vue";
 import AdminContent from "@/components/Dashboard/AdminContent.vue";
 import DoctorContent from "@/components/Dashboard/DoctorContent.vue";
@@ -304,7 +309,9 @@ export default {
       dashData: "dashboard_data",
       dashRoot: "dashboard_root_data",
     }),
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     dashboardValues() {
       let registrations = [];
       let sexVacLoc = [];

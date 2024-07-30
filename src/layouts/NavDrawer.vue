@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import NavButtons from "./NavButtons.vue";
 export default {
   props: ["drawer"],
@@ -49,7 +48,9 @@ export default {
     NavButtons,
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     localDrawer: {
       get() {
         return this.drawer;

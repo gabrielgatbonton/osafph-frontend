@@ -119,7 +119,7 @@
           />
         </v-expand-transition>
         <v-date-picker
-        v-if="!$vuetify.breakpoint.xs"
+          v-if="!$vuetify.breakpoint.xs"
           multiple
           v-model="selectedDates"
           :min="minDate"
@@ -136,7 +136,7 @@
           >
         </v-date-picker>
         <v-date-picker
-        v-else
+          v-else
           multiple
           v-model="selectedDates"
           :min="minDate"
@@ -297,7 +297,7 @@
 <script>
 import { format, parseISO } from "date-fns";
 import SessionInputsMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/SessionInputs";
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import DialysisCalendarComponent from "@/components/Reusable Components/DialysisCalendarComponent.vue";
 export default {
   name: "SessionInputs",
@@ -522,7 +522,9 @@ export default {
     ...mapState("dialysis_calendar", {
       dialysis_calendar: "dialysis_calendar",
     }),
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     formattedDates() {
       return this.payload.schedule.map((session) => {
         return session.date

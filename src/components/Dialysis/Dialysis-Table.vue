@@ -29,13 +29,7 @@
           @click="activator"
           >Filter</v-btn
         >
-        <v-btn
-          v-else
-          dark
-          class="mr-3"
-          color="primary"
-          icon
-          @click="activator"
+        <v-btn v-else dark class="mr-3" color="primary" icon @click="activator"
           ><v-icon>mdi-filter-multiple</v-icon></v-btn
         >
       </div>
@@ -82,7 +76,6 @@ import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
 import TablePaginationMixin from "@/mixins/Tables/TablePagination";
-import { mapGetters } from "vuex";
 export default {
   name: "Dialysis-Table",
   props: ["dialysis"],
@@ -117,7 +110,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.auth.role();
+    },
     headers() {
       return [
         {

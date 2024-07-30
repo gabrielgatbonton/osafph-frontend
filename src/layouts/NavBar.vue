@@ -45,7 +45,7 @@
 
 <script>
 import NavDrawer from "../layouts/NavDrawer.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 export default {
   data: () => ({
     offset: true,
@@ -57,7 +57,7 @@ export default {
     NavDrawer,
   },
   methods: {
-    ...mapActions("login", ["logout"]),
+    ...mapActions("authentication", ["logout"]),
     toggleDrawer() {
       this.drawer = !this.drawer;
     },
@@ -103,9 +103,10 @@ export default {
     },
   },
   computed: {
-    ...mapState("login", {
-      userName: (state) => state.user.loggedInUser,
-    }),
+    userName: function () {
+      const userData = this.$auth.user();
+      return `${userData.user.last_name}, ${userData.user.first_name}`;
+    },
     size() {
       return this.$vuetify.breakpoint;
     },
@@ -113,23 +114,22 @@ export default {
       let lastName = this.userName.split(", ").slice(0, -1).join(" ");
       let firstName = this.userName.split(", ").slice(-1).join(" ");
       let allFirstName = firstName.split(" ");
-      let allFirstInitials = []
+      let allFirstInitials = [];
 
       allFirstName.forEach((firstName) => {
-        allFirstInitials.push(firstName[0] + ".")
-      })
+        allFirstInitials.push(firstName[0] + ".");
+      });
 
-      let nameInitials = `${lastName}, `
+      let nameInitials = `${lastName}, `;
 
       allFirstInitials.forEach((firstInitials) => {
         nameInitials = nameInitials + firstInitials;
-      })
+      });
 
       if (this.size.xs) {
-        return nameInitials
-      } 
+        return nameInitials;
+      }
       return this.userName;
-
     },
   },
 };

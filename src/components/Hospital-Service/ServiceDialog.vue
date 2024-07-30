@@ -85,7 +85,7 @@
 
 <script>
 // import { format, parse } from "date-fns";
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import GeneralFormat from "./Service Format/GeneralFormat.vue";
 import DialysisFormat from "./Service Format/DialysisFormat.vue";
 import ServiceDialogMixin from "../../mixins/Validation/ServiceRequestValidation/ServiceDialog";
@@ -190,7 +190,9 @@ export default {
       "hospitals",
       "crowd_fundings",
     ]),
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     disabledValue() {
       let status = false;
       if (

@@ -157,7 +157,6 @@
 <script>
 import EditInputsMixin from "@/mixins/Validation/ServiceRequestValidation/Dialysis Formats/EditInputs";
 import { format, parseISO } from "date-fns";
-import { mapGetters } from "vuex";
 export default {
   name: "EditInputs",
   mixins: [EditInputsMixin],
@@ -235,7 +234,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     formattedDate_1() {
       return this.payload.scheduled_date
         ? format(parseISO(this.payload.scheduled_date), "MMMM d, yyyy")

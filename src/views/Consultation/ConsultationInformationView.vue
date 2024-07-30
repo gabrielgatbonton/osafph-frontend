@@ -299,7 +299,6 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
     ...mapGetters("consultations", [
       "getConsultation",
       "getConsultationForm",
@@ -311,6 +310,9 @@ export default {
       "getAdminPreviousConsultations",
     ]),
     ...mapGetters("files", ["getFiles"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     patientNameHeader() {
       if (!this.consultation) return;
 

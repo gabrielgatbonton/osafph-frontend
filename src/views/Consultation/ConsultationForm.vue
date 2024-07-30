@@ -385,7 +385,7 @@
 
 <script>
 import { format, parseISO } from "date-fns";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "ConsultationForm",
   props: {
@@ -616,7 +616,9 @@ export default {
       past_medical_history_enum: "past_medical_histories",
       family_medical_history_enum: "family_medical_histories",
     }),
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     formattedDate() {
       return this.present_date
         ? format(parseISO(this.present_date), "MMMM dd, yyyy")

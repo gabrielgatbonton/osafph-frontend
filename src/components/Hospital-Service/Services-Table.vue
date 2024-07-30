@@ -94,7 +94,6 @@ import parseISO from "date-fns/parseISO";
 import ReusableDeleteDialog from "../ReusableDeleteDialog.vue";
 import ServiceDialog from "./ServiceDialog.vue";
 import EditServiceMixin from "@/mixins/Hospital-Service/EditService";
-import { mapGetters } from "vuex";
 import DeleteServiceMixin from "@/mixins/Hospital-Service/DeleteService";
 import TablePaginationMixin from "@/mixins/Tables/TablePagination";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
@@ -129,7 +128,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     headers() {
       return [
         {
@@ -157,7 +158,7 @@ export default {
           text: "ACTIONS",
           value: "actions",
           sortable: false,
-          align: "center"
+          align: "center",
         },
       ];
     },

@@ -48,7 +48,7 @@
 </template>
 <script>
 import UsersTable from "@/components/Management/Users-Table.vue";
-import { mapGetters, mapActions, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import ErrorAlertsLogic from "@/mixins/Alerts & Errors/ErrorAlertsLogic";
 import PageConstruction from "@/components/PageConstruction.vue";
 import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
@@ -93,10 +93,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
     ...mapState("accounts", {
       users_index: "users_index",
     }),
+    userRole: function () {
+      return this.$auth.role();
+    },
     userPermissions() {
       let usersTable = false;
       this.rolesAllowed.includes(this.userRole) && (usersTable = true);

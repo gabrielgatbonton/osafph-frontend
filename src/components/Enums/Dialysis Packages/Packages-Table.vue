@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import ReusableDeleteDialog from "@/components/ReusableDeleteDialog.vue";
 import DeletePackage from "@/mixins/Admin/Enums/Dialysis/DeletePackage";
 import PackageDialog from "./PackageDialog.vue";
@@ -106,7 +105,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     headers() {
       return [
         {

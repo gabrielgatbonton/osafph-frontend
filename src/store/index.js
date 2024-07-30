@@ -1,36 +1,44 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { registrants, registrant_vaccines } from "./modules/Citizens/registrants";
-import { login } from "./modules/Citizens/login";
-import { categories } from "./modules/Enums/categories";
-import { philippines } from "./modules/Enums/philippines";
-import { card } from "./modules/Citizens/card";
-import { services } from "./modules/Citizens/services";
+import createPersistedState from "vuex-persistedstate";
+
+import { registrants, registrant_vaccines } from "./modules/citizens/citizens";
+import { authentication } from "./modules/authentication/authentication";
+import { categories } from "./modules/enums/categories";
+import { philippines } from "./modules/enums/philippines";
+import { card } from "./modules/card/card";
+import { services } from "./modules/hospital-services/services";
 import { alerts } from "./modules/alerts";
-import { services_choices } from "./modules/Enums/services-choices";
-import { consultations } from "./modules/Doctor/consultations";
-import { consultation_enum } from "./modules/Enums/consultation-enum";
-import { admin_consultations } from "./modules/Admin/admin-consultations";
-import { identification_cards } from "./modules/Enums/identification-cards";
-import { professions } from "./modules/Enums/professions";
-import { consultation_form } from "./modules/Encoder/consultation-form";
-import { file_types, file_types_actions } from "./modules/Enums/file-types";
-import { dialysis, dialysis_items_actions } from "./modules/Enums/dialysis";
-import { dialysis_sessions, dialysis_sessions_packages } from "./modules/Encoder/dialysis_sessions";
-import { files, public_files } from "./modules/General/files";
-import { dialysis_calendar } from "./modules/Encoder/dialysis_calendar";
-import { dashboard, funders_actions } from "./modules/General/dashboard";
-import { accounts } from "./modules/Management/accounts";
-import { management } from "./modules/Enums/management";
-import { dialysis_general } from "./modules/General/dialysis_general";
+import { services_choices } from "./modules/enums/services-choices";
+import { consultations } from "./modules/consultations/consultations";
+import { consultation_enum } from "./modules/enums/consultation-enum";
+import { admin_consultations } from "./modules/admin-consultations/admin-consultations";
+import { identification_cards } from "./modules/enums/identification-cards";
+import { professions } from "./modules/enums/professions";
+import { consultation_form } from "./modules/consultation-form/consultation-form";
+import { file_types, file_types_actions } from "./modules/enums/file-types";
+import { dialysis, dialysis_items_actions } from "./modules/enums/dialysis";
+import {
+  dialysis_sessions,
+  dialysis_sessions_packages,
+} from "./modules/dialysis-sessions/dialysis_sessions";
+import { files, public_files } from "./modules/files/files";
+import { dialysis_calendar } from "./modules/dialysis-calendar/dialysis_calendar";
+import { dashboard, funders_actions } from "./modules/dashboard/dashboard";
+import { accounts } from "./modules/accounts/accounts";
+import { management } from "./modules/enums/management";
+import { dialysis_general } from "./modules/dialysis-general/dialysis_general";
 // import { funding } from "./modules/Admin/funding";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
+    // Authentication
+    authentication,
+
+    // Citizens
     registrants,
-    login,
     card,
     services,
     alerts,
@@ -70,4 +78,9 @@ export default new Vuex.Store({
     //Management
     accounts,
   },
+  plugins: [
+    createPersistedState({
+      paths: ["authentication.currentUser"],
+    }),
+  ],
 });

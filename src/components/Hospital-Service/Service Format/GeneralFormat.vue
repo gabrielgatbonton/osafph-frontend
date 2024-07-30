@@ -124,7 +124,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import { format, parseISO } from "date-fns";
 import GeneralFormatMixin from "@/mixins/Validation/ServiceRequestValidation/GeneralFormat";
 export default {
@@ -240,7 +239,9 @@ export default {
     // },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     statuses() {
       let statuses = [];
       if (this.disabled) {

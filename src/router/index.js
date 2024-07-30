@@ -23,6 +23,9 @@ const routes = [
     name: "login",
     component: () =>
       import(/* webpackChunkName: "login" */ "@/views/LandingPageView.vue"),
+    meta: {
+      routeName: "Login",
+    },
   },
   // {
   //   path: "/test",

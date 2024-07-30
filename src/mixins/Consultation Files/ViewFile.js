@@ -1,4 +1,5 @@
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
+import { auth } from "@/utils/auth";
 export default {
   data: () => ({
     data: {
@@ -81,10 +82,12 @@ export default {
   },
   computed: {
     ...mapGetters("files", ["getFile"]),
-    ...mapGetters("login", ["userRole"]),
     ...mapState("public_files", {
-      public_file: "public_file"
-    })
+      public_file: "public_file",
+    }),
+    userRole: function () {
+      return auth.role();
+    }
   },
   watch: {
     getFile(value) {
@@ -95,8 +98,8 @@ export default {
       handler(value) {
         this.data.base64 = value.file;
         this.data.file_type = value.file_type;
-      }
-    }
+      },
+    },
   },
   // resetActivator(data) {
   //   this.deleteDialog = data;

@@ -262,7 +262,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import UserManagementMixin from "../../mixins/Validation/ManagementValidation/UserManagement";
 import InformationStepper from "./Steppers/InformationStepper.vue";
 import CredentailsStepper from "./Steppers/CredentailsStepper.vue";
@@ -378,13 +378,15 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
     ...mapState("management", {
       user_roles_enum: "user_roles",
     }),
     ...mapState("services_choices", {
       specialties_enum: "specialties",
     }),
+    userRole: function () {
+      return this.$auth.role();
+    },
     headers() {
       return [
         {

@@ -64,7 +64,11 @@
         </v-row>
         <v-row class="ma-2">
           <v-col cols="12">
-            <v-card flat outlined :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'">
+            <v-card
+              flat
+              outlined
+              :class="$vuetify.breakpoint.xs ? 'mx-0' : 'mx-2'"
+            >
               <div class="ma-5">
                 <v-row>
                   <v-col cols="12">
@@ -207,7 +211,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { format, parseISO } from "date-fns";
 export default {
   name: "ConsultationFormContinuation",
@@ -334,7 +338,9 @@ export default {
       diagnosis_enum: "diagnosis",
       diagnostics_enum: "diagnostics",
     }),
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     formattedDate1() {
       return this.data.follow_up_date
         ? format(parseISO(this.data.follow_up_date), "MMMM d, yyyy")

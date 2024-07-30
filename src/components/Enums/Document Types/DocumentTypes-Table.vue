@@ -35,9 +35,7 @@
               </v-col>
               <v-col cols="12">
                 <div class="text-right">
-                  <v-btn dark class="primary" @click="submitForm"
-                    >Submit</v-btn
-                  >
+                  <v-btn dark class="primary" @click="submitForm">Submit</v-btn>
                 </div>
               </v-col>
             </v-row>
@@ -49,10 +47,7 @@
       <v-container class="pa-0">
         <v-row no-gutters :justify="isJustify">
           <v-col cols="auto" v-if="iconPermissions.delete" align-self="center">
-            <v-icon
-              color="error"
-              dense
-              @click="deleteActivator(item.item_id)"
+            <v-icon color="error" dense @click="deleteActivator(item.item_id)"
               >mdi-trash-can</v-icon
             >
           </v-col>
@@ -63,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import ReusableDeleteDialog from "../../ReusableDeleteDialog.vue";
 import DeleteType from "@/mixins/Admin/Enums/DeleteType";
 import FileTypeDialogMixin from "@/mixins/Validation/EnumsValidation/FileTypeDialog";
@@ -112,7 +107,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     headers() {
       return [
         {

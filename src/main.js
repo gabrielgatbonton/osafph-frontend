@@ -7,6 +7,7 @@ import vuetify from "./plugins/vuetify";
 import Vuelidate from "vuelidate";
 import axiosInstance from "./services/axiosInstance";
 import pusherInstance from "./services/pusherInstance";
+import { auth } from "./utils/auth";
 
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
@@ -18,17 +19,21 @@ const baseURL = process.env.VUE_APP_BACKEND_URL;
 const networkURL = process.env.VUE_APP_SERVER_URL;
 
 Vue.prototype.$axios = axiosInstance;
-Vuex.Store.prototype.$axios = axiosInstance;
 Vue.prototype.$url = baseURL;
 Vue.prototype.$network = networkURL;
 Vue.prototype.$pusher = pusherInstance;
+Vue.prototype.$auth = auth;
+
+Vuex.Store.prototype.$axios = axiosInstance;
+Vuex.Store.prototype.$router = router;
+Vuex.Store.prototype.$auth = auth;
 
 function handleBeforeUnload(event) {
   // Check if the tab or window is being closed intentionally
   if (!event.currentTarget.performance.navigation.type === 1) {
     // If it's not a refresh (type === 1), it's an actual close event
     // Clear the token and other data here as needed
-    store.dispatch("login/logoutAndClearToken");
+    store.dispatch("authentication/logoutAndClearToken");
   } else {
     // If it's a refresh, store a flag in sessionStorage to remember it
     sessionStorage.setItem("isRefresh", "true");
@@ -46,7 +51,7 @@ if (isRefresh) {
   sessionStorage.removeItem("isRefresh");
 } else {
   // If it's not a refresh, clear the token and other data on initial load
-  store.dispatch("login/logoutAndClearToken");
+  store.dispatch("authentication/logoutAndClearToken");
 }
 
 new Vue({

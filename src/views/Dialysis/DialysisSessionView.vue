@@ -2,7 +2,12 @@
   <div>
     <SubmissionAlert v-if="success.alert" :message="success.message" />
     <ErrorAlert v-if="failed.alert" :message="failed.message" />
-    <v-container fluid class="mx-auto" :style="`max-width: ${breakpointVal};`" v-if="session">
+    <v-container
+      fluid
+      class="mx-auto"
+      :style="`max-width: ${breakpointVal};`"
+      v-if="session"
+    >
       <v-row>
         <v-col cols="auto">
           <span class="title">Dialysis Center</span>
@@ -14,12 +19,16 @@
           @click="completeDialysisSession"
           class="mr-3"
         >
-          <v-btn dark outlined color="success" v-if="!$vuetify.breakpoint.xs">Complete Session</v-btn>
-          <v-btn dark icon color="success" v-else><v-icon>mdi-clock-check</v-icon></v-btn>
+          <v-btn dark outlined color="success" v-if="!$vuetify.breakpoint.xs"
+            >Complete Session</v-btn
+          >
+          <v-btn dark icon color="success" v-else
+            ><v-icon>mdi-clock-check</v-icon></v-btn
+          >
         </v-col>
         <v-col cols="auto" v-if="buttonPermissions.files">
           <v-btn
-          v-if="!$vuetify.breakpoint.xs"
+            v-if="!$vuetify.breakpoint.xs"
             dark
             color="primary"
             class="mr-3"
@@ -27,7 +36,7 @@
             >{{ buttonTitle ? "Uploaded Files" : "Upload Files" }}</v-btn
           >
           <v-btn
-          v-else
+            v-else
             icon
             color="primary"
             class="mr-3"
@@ -178,11 +187,13 @@ export default {
   },
   computed: {
     ...mapGetters("dialysis_sessions", ["getDialysisSession"]),
-    ...mapGetters("login", ["userRole"]),
     ...mapGetters("files", ["getFiles"]),
     ...mapState("dialysis_sessions", {
       dialysis_sessions: "dialysis_sessions",
     }),
+    userRole: function () {
+      return this.$auth.role();
+    },
     patientNameHeader() {
       if (!this.session) return;
 

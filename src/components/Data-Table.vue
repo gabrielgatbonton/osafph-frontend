@@ -31,12 +31,7 @@
             icon
             ><v-icon>mdi-filter-multiple</v-icon></v-btn
           >
-          <v-btn
-            v-else
-            dark
-            class="mr-3"
-            color="primary"
-            @click="activator"
+          <v-btn v-else dark class="mr-3" color="primary" @click="activator"
             >Filter</v-btn
           >
         </div>
@@ -117,7 +112,6 @@ import ReusableDeleteDialog from "./ReusableDeleteDialog.vue";
 import DeleteRegistrantMixin from "@/mixins/Registrant/DeleteRegistrant";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
 import TablePaginationMixin from "@/mixins/Tables/TablePagination";
-import { mapGetters } from "vuex";
 export default {
   mixins: [DeleteRegistrantMixin, TablePaginationMixin],
   props: ["registrants"],
@@ -178,7 +172,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     headers() {
       return [
         {

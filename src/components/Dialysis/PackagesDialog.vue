@@ -5,7 +5,13 @@
         v-slot:activator="{ on, attrs }"
         v-if="userRole === 'DIALYSIS_ENCODER'"
       >
-        <v-btn v-bind="attrs" v-on="on" icon @click="initPackages" :disabled="disable">
+        <v-btn
+          v-bind="attrs"
+          v-on="on"
+          icon
+          @click="initPackages"
+          :disabled="disable"
+        >
           <v-icon color="primary">mdi-pencil</v-icon>
         </v-btn>
       </template>
@@ -88,7 +94,12 @@
           </v-col>
           <v-col cols="12">
             <div class="text-right my-n5">
-              <v-btn dark class="primary" block :loading="loading" @click="submitForm"
+              <v-btn
+                dark
+                class="primary"
+                block
+                :loading="loading"
+                @click="submitForm"
                 >Submit</v-btn
               >
             </div>
@@ -100,7 +111,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { required } from "vuelidate/lib/validators";
 export default {
   name: "PackagesDialog",
@@ -140,7 +151,8 @@ export default {
       if (this.payload.dialysis_packages.length > 0) {
         this.$v.$touch();
 
-        let dialysis_session_id = this.dialysis_packages.dialysis_packages.dialysis_session_id;
+        let dialysis_session_id =
+          this.dialysis_packages.dialysis_packages.dialysis_session_id;
 
         if (!this.$v.$invalid) {
           this.loading = true;
@@ -192,11 +204,13 @@ export default {
     },
     initPackages() {
       this.payload.dialysis_packages =
-        this.dialysis_packages.dialysis_packages.dialysis_packages.map((item) => ({
-          name: item.name,
-          funder: item.funder,
-          id: item.id,
-        }));
+        this.dialysis_packages.dialysis_packages.dialysis_packages.map(
+          (item) => ({
+            name: item.name,
+            funder: item.funder,
+            id: item.id,
+          })
+        );
     },
   },
   computed: {
@@ -206,7 +220,9 @@ export default {
     ...mapState("services_choices", {
       funders_enum: "crowd_fundings",
     }),
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     errorMessages() {
       const errors = {};
       errors.dialysis_package_name = this.payload.dialysis_packages.map(
@@ -238,15 +254,15 @@ export default {
     //     console.log(value)
     //   }
     // },
-    "dialysis_packages.dialysis_session_status":{
+    "dialysis_packages.dialysis_session_status": {
       handler() {
-        if(this.dialysis_packages.dialysis_session_status === 'COMPLETED'){
-          this.disable = true
+        if (this.dialysis_packages.dialysis_session_status === "COMPLETED") {
+          this.disable = true;
         } else {
-          this.disable = false
+          this.disable = false;
         }
-      }
-    }
+      },
+    },
     // delete_packages: {
     //   handler(value) {
     //     console.log("delete_packages: ", value);

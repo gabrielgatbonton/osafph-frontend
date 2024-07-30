@@ -81,6 +81,7 @@
 
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 export default {
   data: () => ({
     username: "",
@@ -102,6 +103,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("authentication", ["login"]),
     handleLogin() {
       // Validate the form before proceeding with login
       this.$v.$touch();
@@ -116,8 +118,7 @@ export default {
         this.loading = true;
         this.loginError = null;
 
-        this.$store
-          .dispatch("login/login", credentials)
+        this.login(credentials)
           .then(() => {
             // Redirect to the dashboard component
             this.$router.replace({ name: "dashboard" });
@@ -141,6 +142,32 @@ export default {
             // Reset loading state after login request is completed (whether successful or not)
             this.loading = false;
           });
+
+        // this.$store
+        //   .dispatch("login/login", credentials)
+        //   .then(() => {
+        //     // Redirect to the dashboard component
+        //     this.$router.replace({ name: "dashboard" });
+        //   })
+        //   .catch((error) => {
+        //     // Handle login error
+        //     console.error("Login error:", error);
+
+        //     if (error.response && error.response.status === 404) {
+        //       // Status code 404 indicates user not found
+        //       this.loginError = error.response.data.message;
+        //     } else if (error.response && error.response.status === 401) {
+        //       // Status code 401 indicates unauthorized login (incorrect credentials)
+        //       this.loginError = error.response.data.message;
+        //     } else {
+        //       // Other error, display a generic error message
+        //       this.loginError = "An error occurred during login";
+        //     }
+        //   })
+        //   .finally(() => {
+        //     // Reset loading state after login request is completed (whether successful or not)
+        //     this.loading = false;
+        //   });
       }
     },
   },

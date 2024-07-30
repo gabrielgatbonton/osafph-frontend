@@ -287,7 +287,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import PackagesDialog from "../Dialysis/PackagesDialog.vue";
 export default {
   name: "ServiceStatusComponent",
@@ -309,7 +308,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("login", ["userRole"]),
+    userRole: function () {
+      return this.$auth.role();
+    },
     status() {
       let status = null;
       let message = null;
@@ -354,8 +355,8 @@ export default {
     showDialysisPackages() {
       return {
         dialysis_packages: this.serviceStatus.dialysis_session_packages,
-        dialysis_session_status: this.serviceStatus.status
-      }
+        dialysis_session_status: this.serviceStatus.status,
+      };
     },
   },
   watch: {

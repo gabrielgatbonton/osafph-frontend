@@ -1,9 +1,9 @@
 // auth-guard.js
-import store from "@/store";
+import { auth } from "@/utils/auth";
 
 export function checkLoggedIn(to, from, next) {
-  const isLoggedIn = store.getters["login/isLoggedIn"];
-  const userRole = store.getters["login/userRole"];
+  const isLoggedIn = auth.user();
+  const userRole = auth.role();
 
   if (to.name === "login" && isLoggedIn) {
     // If the user is already logged in and tries to access the login page,
@@ -92,7 +92,13 @@ function isAllowedRoutes(routeName, userRole) {
   }
 
   //Allow all roles to use these routes:
-  allowedRoutes.push("reroute","public-file-view", "management", "dashboard", "test");
+  allowedRoutes.push(
+    "reroute",
+    "public-file-view",
+    "management",
+    "dashboard",
+    "test"
+  );
 
   // Check if the provided routeName is in the restrictedRoutes array
   return allowedRoutes.includes(routeName);
