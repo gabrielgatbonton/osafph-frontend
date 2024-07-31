@@ -1,34 +1,45 @@
 <template>
   <v-dialog v-model="showCameraDialog" max-width="400px">
     <template v-slot:activator="{ on, attrs }">
-      <v-file-input
+      <!-- <v-file-input
         label="Choose file"
         v-bind="attrs"
         v-on="{ ...on, click: onClickFileInput }"
         :append-icon="capturedImage ? 'mdi-check' : 'mdi-upload'"
         :append-icon-cb="() => (capturedImage = '')"
-      ></v-file-input>
+      ></v-file-input> -->
+      <v-btn block color="primary" v-on="on" v-bind="attrs"
+        >Capture Photo</v-btn
+      >
     </template>
     <v-card rounded="lg">
       <v-card-title class="primary pb-4 white--text"
         ><v-icon left dark>mdi-camera</v-icon>Camera</v-card-title
       >
-      <div class="text-center">
-        <v-card-text class="my-5">
-          <video ref="cameraVideo" v-if="!pictureTaken" autoplay></video>
-        </v-card-text>
-      </div>
+      <div class="pa-4">
+        <div class="text-center">
+          <v-card-text class="mb-5">
+            <video ref="cameraVideo" v-if="!pictureTaken" autoplay></video>
+          </v-card-text>
+        </div>
 
-      <v-card-actions>
-        <v-btn block dark color="primary" @click="takePicture">
-          Take Picture
-        </v-btn>
-      </v-card-actions>
-      <v-card-actions>
-        <v-btn dark outlined color="error" block @click="closeCameraDialog">
-          Back
-        </v-btn>
-      </v-card-actions>
+        <v-card-actions class="pa-0 d-flex flex-column">
+          <v-btn block dark color="primary" @click="takePicture">
+            Take Picture
+          </v-btn>
+
+          <v-btn
+            class="ml-0 mt-2"
+            dark
+            outlined
+            color="error"
+            block
+            @click="closeCameraDialog"
+          >
+            Back
+          </v-btn>
+        </v-card-actions>
+      </div>
     </v-card>
   </v-dialog>
 </template>

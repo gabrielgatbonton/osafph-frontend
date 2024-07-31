@@ -159,6 +159,19 @@
                           :image="registrant.citizen.citizen_file.image_url"
                           v-on:picture-taken="handleImageUpload"
                         />
+                        <div
+                          class="text-caption grey--text text--darken-2 text-center my-2"
+                        >
+                          or
+                        </div>
+                        <v-file-input
+                          hide-details="auto"
+                          dense
+                          outlined
+                          accept="image/*"
+                          label="Upload Image"
+                          @change="handleImageUpload"
+                        ></v-file-input>
                       </v-col>
                     </v-row>
                   </v-container>
