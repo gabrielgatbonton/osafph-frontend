@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="route-container">
     <marketing-component />
   </div>
 </template>
@@ -15,4 +15,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.route-container {
+  height: 100%;
+}
+</style>
