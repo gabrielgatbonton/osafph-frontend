@@ -21,23 +21,32 @@ export default {
   },
   methods: {
     fetchQuery() {
+      // Assign Queries
       const file_id = JSON.parse(this.$route.query.file_id);
       const hospital_service_id = JSON.parse(
         this.$route.query.hospital_service_id
       );
-      const citizen_id = JSON.parse(this.$route.query.citizen_id);
+      const unique_id = JSON.parse(this.$route.query.citizen_id);
+
+      // Citizen Id to be used
+      let citizen_id = null;
+
+      if (unique_id === "public-viewing") {
+        citizen_id = sessionStorage.getItem("hub_registrant_id");
+      } else {
+        citizen_id = unique_id;
+      }
+
       if (citizen_id) {
         this.fetchPublicFile({
           citizen_id: citizen_id,
           hospital_service_id: hospital_service_id,
           hospital_service_file_id: file_id,
-        })
+        });
       } else {
         this.fetchFile({
           hospital_service_id: hospital_service_id,
           file_id: file_id,
-        }).catch((error) => {
-          console.error("Error Fetching Consultation File: ", error);
         });
       }
     },
@@ -50,6 +59,7 @@ export default {
 
 <style scoped>
 .background {
-  background: #525659 no-repeat center center;
+  background: #525659;
+  height: 100%;
 }
 </style>

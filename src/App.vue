@@ -1,12 +1,6 @@
 <template>
   <v-app>
-    <NavComponents
-      v-if="
-        this.$route.name === 'login' || this.$route.name === 'reroute'
-          ? false
-          : true
-      "
-    />
+    <NavComponents v-if="!noNavBarRoutes.includes($route.name)" />
     <v-main>
       <!-- <SubmissionAlert v-if="success.alert" :message="success.message" />
       <ErrorAlert v-if="failed.alert" :message="failed.message" /> -->
@@ -24,7 +18,7 @@ export default {
   name: "App",
   // mixins: [ErrorAlertsLogic],
   data: () => ({
-    //
+    noNavBarRoutes: ["login", "reroute", "public-file-view"],
   }),
   components: {
     NavComponents,

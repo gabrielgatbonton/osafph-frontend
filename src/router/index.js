@@ -60,7 +60,8 @@ router.beforeEach(checkLoggedIn);
 
 // Check if the route changes and must delete the sessionStorage on reroute.js
 router.beforeEach((to, from, next) => {
-  if (to.name !== "reroute") {
+  const publicRoutes = ["reroute", "public-file-view"];
+  if (!publicRoutes.includes(to.name)) {
     // Remove the sessionStorage item whenever a route change occurs
     sessionStorage.removeItem("hub_registrant_id");
     next(); // Continue with the navigation

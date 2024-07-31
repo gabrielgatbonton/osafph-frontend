@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex flex-column">
     <NavbarComponent
       v-on:print="handlePrinting"
       v-on:download="handleDownloading"
@@ -7,7 +7,7 @@
       v-on:printImage="handleImagePrint"
       :type="data.file_type"
     />
-    <v-container fluid class="background-scroll">
+    <v-container fluid class="background-scroll flex-grow-1">
       <v-row justify="center" v-if="data.file_type === 'PDF'">
         <v-col cols="auto">
           <vue-pdf-embed
@@ -173,7 +173,6 @@ export default {
 }
 
 .background-scroll {
-  height: 85vh;
   overflow-y: auto;
 }
 

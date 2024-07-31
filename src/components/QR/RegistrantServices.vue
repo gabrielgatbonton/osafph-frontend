@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters v-if="data" class="mt-3">
+  <v-row no-gutters v-if="services" class="mt-3">
     <v-col cols="12">
       <v-container>
         <v-row>
@@ -57,12 +57,12 @@
                       :slot_activator="slot_activator"
                     />
                   </v-col>
-                  <v-col cols="12" v-if="services.length > 0">
+                  <v-col cols="12" v-if="mappedServices.length > 0">
                     <v-row>
                       <v-col
                         cols="12"
                         class="py-0"
-                        v-for="(service, index) in services"
+                        v-for="(service, index) in mappedServices"
                         :key="index"
                       >
                         <template>
@@ -112,7 +112,6 @@
                                         class="mr-2"
                                         @click="
                                           proceedToFileView(
-                                            service.citizen_id,
                                             service.hospital_service_id,
                                             chip.id
                                           )
@@ -178,10 +177,11 @@
                   </v-col>
                 </v-row>
                 <v-pagination
-                  :length="pageComputer(data)"
+                  :length="pageComputer(services)"
                   v-model="page"
                   prev-icon="mdi-menu-left"
                   next-icon="mdi-menu-right"
+                  class="mt-4"
                 ></v-pagination>
               </v-container>
             </v-card>
@@ -198,7 +198,7 @@ import parseISO from "date-fns/parseISO";
 import FilterDialog from "@/components/Filter/FilterDialog.vue";
 import ViewFileMixin from "../../mixins/Consultation Files/ViewFile";
 export default {
-  props: ["data", "public_files"],
+  props: ["services", "public_files"],
   mixins: [ViewFileMixin],
   data: () => ({
     page: 1,
@@ -214,12 +214,12 @@ export default {
     FilterDialog,
   },
   computed: {
-    services() {
-      if (!this.data && !Array.isArray(this.data.data)) {
+    mappedServices() {
+      if (!this.services && !Array.isArray(this.services.data)) {
         return []; // Return an empty array if data is not available or not an array
       }
 
-      return this.data.data.map((item) => ({
+      return this.services.data.map((item) => ({
         citizen_id: item.citizen_id,
         hospital_service_id: item.id,
         service_type: item.service_type,
@@ -325,12 +325,12 @@ export default {
       }
       this.$emit("query_params", this.query_params);
     },
-    proceedToFileView(citizen_id, hospital_service_id, file_id) {
+    proceedToFileView(hospital_service_id, file_id) {
       this.$router
         .push({
           name: "public-file-view",
           query: {
-            citizen_id: JSON.stringify(citizen_id),
+            citizen_id: JSON.stringify("public-viewing"),
             file_id: JSON.stringify(file_id),
             hospital_service_id: JSON.stringify(hospital_service_id),
           },

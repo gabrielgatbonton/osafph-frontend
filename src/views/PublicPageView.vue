@@ -97,12 +97,14 @@ export default {
           hospital_service_ids: [],
         };
         if (value.data.length > 0) {
-          let citizen_id = sessionStorage.getItem("hub_registrant_id");
+          // Assign Hashed ID
+          const hashed_id = sessionStorage.getItem("hub_registrant_id");
+          
           value.data.forEach((item) => {
             query_params.hospital_service_ids.push(item.id);
           });
           this.fetchPublicFiles({
-            citizen_id: citizen_id,
+            citizen_id: hashed_id,
             queryParams: query_params,
           });
         }

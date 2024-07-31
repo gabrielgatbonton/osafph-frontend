@@ -10,7 +10,7 @@
         <v-tab-item>
           <RegistrantServices
             @query_params="(params) => $emit('query_params', params)"
-            :data="services"
+            :services="services"
             :public_files="public_files"
           />
         </v-tab-item>

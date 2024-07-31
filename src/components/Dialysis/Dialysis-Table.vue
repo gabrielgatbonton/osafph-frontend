@@ -111,7 +111,7 @@ export default {
   },
   computed: {
     userRole: function () {
-      return this.auth.role();
+      return this.$auth.role();
     },
     headers() {
       return [
