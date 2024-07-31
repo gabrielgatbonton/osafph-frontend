@@ -5,6 +5,8 @@ export function checkLoggedIn(to, from, next) {
   const isLoggedIn = auth.user();
   const userRole = auth.role();
 
+  console.log("Test");
+
   if (to.name === "login" && isLoggedIn) {
     // If the user is already logged in and tries to access the login page,
     // redirect to the dashboard
@@ -97,7 +99,7 @@ function isAllowedRoutes(routeName, userRole) {
     "public-file-view",
     "management",
     "dashboard",
-    "test"
+    "Minalin Dialysis Center"
   );
 
   // Check if the provided routeName is in the restrictedRoutes array

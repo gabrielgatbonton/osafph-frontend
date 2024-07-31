@@ -1,4 +1,3 @@
-import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/dialysis-packages",
@@ -13,7 +12,6 @@ export default [
       activeIcon: "Dialysis Packages",
       routeName: "Dialysis Packages",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/dialysis-items",
@@ -28,7 +26,6 @@ export default [
       activeIcon: "Dialysis Items",
       routeName: "Dialysis Items",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/document-types",
@@ -43,6 +40,5 @@ export default [
       activeIcon: "Documents",
       routeName: "Document Types",
     },
-    beforeEnter: checkLoggedIn,
   },
 ];

@@ -18,7 +18,12 @@ export default {
   name: "App",
   // mixins: [ErrorAlertsLogic],
   data: () => ({
-    noNavBarRoutes: ["login", "reroute", "public-file-view"],
+    noNavBarRoutes: [
+      "login",
+      "reroute",
+      "public-file-view",
+      "Minalin Dialysis Center",
+    ],
   }),
   components: {
     NavComponents,

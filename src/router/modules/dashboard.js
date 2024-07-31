@@ -1,4 +1,3 @@
-import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/dashboard",
@@ -14,6 +13,5 @@ export default [
       activeIcon: "Dashboard",
       routeName: "Dashboard",
     },
-    beforeEnter: checkLoggedIn,
   },
 ];

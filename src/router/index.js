@@ -5,7 +5,7 @@ import dashboardRoute from "./modules/dashboard";
 import citizensRoute from "./modules/citizens";
 import managementRoute from "./modules/management";
 import { checkLoggedIn } from "./modules/auth-guard";
-import ReroutePage from "./modules/reroute";
+import publicRoutes from "./modules/public-routes";
 // import html2pdfPage from "../components/File Viewer/FileViewer.vue"
 import hospitalServicesRoute from "./modules/hospital-services";
 import doctorRoute from "./modules/doctor";
@@ -27,15 +27,10 @@ const routes = [
       routeName: "Login",
     },
   },
-  // {
-  //   path: "/test",
-  //   name: "test",
-  //   component: html2pdfPage,
-  // },
   ...dashboardRoute,
   ...citizensRoute,
   ...managementRoute,
-  ...ReroutePage,
+  ...publicRoutes,
   ...hospitalServicesRoute,
   ...doctorRoute,
   ...dialysisRoute,

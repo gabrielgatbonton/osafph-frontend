@@ -1,4 +1,3 @@
-import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/citizens",
@@ -6,7 +5,6 @@ export default [
     component: () =>
       import(/* webpackChunkName: "citizens" */ "@/views/CitizensView.vue"),
     meta: { requiresAuth: true, activeIcon: "Citizens", routeName: "Citizens" },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens/register",
@@ -14,7 +12,6 @@ export default [
     component: () =>
       import(/* webpackChunkName: "citizens" */ "@/views/RegisterView.vue"),
     meta: { requiresAuth: true, activeIcon: "Citizens", routeName: "Register" },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens/edit/:id",
@@ -27,7 +24,6 @@ export default [
       activeIcon: "Citizens",
       routeName: "Edit Citizen",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens/details/:id",
@@ -40,7 +36,6 @@ export default [
       activeIcon: "Citizens",
       routeName: "Citizen Details",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens-consultations",
@@ -55,7 +50,6 @@ export default [
       activeIcon: "Consultations",
       routeName: "Citizen Consultations",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens-consultations/:consultation_id/view/:hospital_service_id",
@@ -70,7 +64,6 @@ export default [
       activeIcon: "Consultations",
       routeName: "Citizen Consultation Details",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens-consultations/:consultation_id/view/:hospital_service_id/form",
@@ -85,7 +78,6 @@ export default [
       activeIcon: "Consultations",
       routeName: "Edit Consultation Form",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/citizens-consultations/:consultation_id/view/:hospital_service_id/form/2",
@@ -100,6 +92,5 @@ export default [
       activeIcon: "Consultations",
       routeName: "Edit Consultation Form",
     },
-    beforeEnter: checkLoggedIn,
   },
 ];

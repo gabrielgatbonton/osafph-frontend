@@ -1,4 +1,3 @@
-import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/dialysis",
@@ -9,7 +8,6 @@ export default [
       ),
     props: true,
     meta: { requiresAuth: true, activeIcon: "Dialysis", routeName: "Dialysis" },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/dialysis/session/:id",
@@ -24,7 +22,6 @@ export default [
       activeIcon: "Dialysis",
       routeName: "Dialysis Session",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/dialysis/session/:id/files/:hospital_service_id",
@@ -39,7 +36,6 @@ export default [
       activeIcon: "Dialysis",
       routeName: "Dialysis Files",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/dialysis/session/:id/files/:hospital_service_id/viewer",
@@ -52,7 +48,6 @@ export default [
       activeIcon: "Dialysis",
       routeName: "Dialysis Files",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/dialysis-queuing",
@@ -67,6 +62,5 @@ export default [
       activeIcon: "Dialysis Queuing",
       routeName: "Dialysis Queue",
     },
-    beforeEnter: checkLoggedIn,
   },
 ];

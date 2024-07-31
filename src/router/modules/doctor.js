@@ -1,4 +1,3 @@
-import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/consultations",
@@ -13,7 +12,6 @@ export default [
       activeIcon: "Consultations",
       routeName: "Consultations",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id",
@@ -28,7 +26,6 @@ export default [
       activeIcon: "Consultations",
       routeName: "Consultation Details",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/form",
@@ -43,7 +40,6 @@ export default [
       activeIcon: "Consultations",
       routeName: "Add Consultation Form",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/form/2",
@@ -58,7 +54,6 @@ export default [
       activeIcon: "Consultations",
       routeName: "Add Consultation Form",
     },
-    beforeEnter: checkLoggedIn,
   },
   // {
   //   path: "/consultations/:consultation_id/view/:hospital_service_id/edit-form",
@@ -95,7 +90,6 @@ export default [
       activeIcon: "Consultations",
       routeName: "Consultation Files",
     },
-    beforeEnter: checkLoggedIn,
   },
   {
     path: "/consultations/:consultation_id/view/:hospital_service_id/files/viewer",
@@ -110,6 +104,5 @@ export default [
       activeIcon: "Consultations",
       routeName: "Consultation Files",
     },
-    beforeEnter: checkLoggedIn,
   },
 ];

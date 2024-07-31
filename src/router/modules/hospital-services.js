@@ -1,4 +1,3 @@
-import { checkLoggedIn } from "./auth-guard";
 export default [
   {
     path: "/citizens/hospital-services/:id",
@@ -13,7 +12,7 @@ export default [
       activeIcon: "Citizens",
       routeName: "Hospital Services",
     },
-    beforeEnter: checkLoggedIn,
+
   },
   {
     path: "/citizens/hospital-services/:id/view/:hospital_service_id",
@@ -28,6 +27,6 @@ export default [
       activeIcon: "Citizens",
       routeName: "Hospital Service Details",
     },
-    beforeEnter: checkLoggedIn,
+
   },
 ];
