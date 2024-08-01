@@ -33,7 +33,7 @@
           </p>
 
           <!-- Button -->
-          <a href="#" class="booking-button">Book an appointment</a>
+          <a @click="redirect" class="booking-button">Book an appointment</a>
         </div>
         <div class="pr-8">
           <v-img :src="minalinLogo" max-height="350" max-width="350"></v-img>
@@ -50,6 +50,11 @@ export default {
     buttonTypes: ["Home", "Services", "Doctors", "About us", "Contact us"],
     minalinLogo: require("@/assets/minalin-logo.png"),
   }),
+  methods: {
+    redirect: function () {
+      return this.$router.push({ name: "login" });
+    },
+  },
 };
 </script>
 
@@ -79,11 +84,13 @@ a {
   color: white;
   border-radius: 13px;
   text-align: center;
-  box-shadow: 0 4px 33px 6px rgba(66, 00, 255, .16)
+  box-shadow: 0 4px 33px 6px rgba(66, 00, 255, 0.16);
 }
 
 .image-background {
   width: 100%;
+  min-height: 800px;
+  max-height: 1000px;
   padding: 6rem 0 3rem 0;
   background: linear-gradient(
       to bottom,
