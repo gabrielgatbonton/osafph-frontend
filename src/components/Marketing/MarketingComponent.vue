@@ -1,11 +1,11 @@
 <template>
   <div class="component-flex">
-    <header-component />
+    <header-component id="home" />
 
-    <SectionOne />
+    <SectionOne id="services" />
     <SectionTwo />
 
-    <footer-component />
+    <footer-component id="footer" />
   </div>
 </template>
 

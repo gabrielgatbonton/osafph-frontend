@@ -9,18 +9,20 @@
 
         <div class="d-flex align-center">
           <a
-            href="#"
+            :href="`#${i.id}`"
             class="anchor-buttons"
-            :class="i === 'Home' ? 'dialysis-red--text' : 'black--text'"
+            :class="i.name === 'Home' ? 'dialysis-red--text' : 'black--text'"
             v-for="i in buttonTypes"
-            :key="i"
-            >{{ i }}</a
+            :key="i.name"
+            >{{ i.name }}</a
           >
         </div>
       </nav>
 
       <!-- Main -->
-      <div class="d-flex align-center flex-grow-1 justify-space-between flex-gap">
+      <div
+        class="d-flex align-center flex-grow-1 justify-space-between flex-gap"
+      >
         <div class="flex-grow-1">
           <div class="text-h3 font-weight-medium mb-4">
             <span class="dialysis-red--text">We care</span><br />
@@ -47,7 +49,28 @@
 export default {
   name: "HeaderComponent",
   data: () => ({
-    buttonTypes: ["Home", "Services", "Doctors", "About us", "Contact us"],
+    buttonTypes: [
+      {
+        name: "Home",
+        id: "home",
+      },
+      {
+        name: "Services",
+        id: "services",
+      },
+      {
+        name: "Doctors",
+        id: "",
+      },
+      {
+        name: "About us",
+        id: "footer",
+      },
+      {
+        name: "Contact us",
+        id: "footer",
+      },
+    ],
     minalinLogo: require("@/assets/minalin-logo.png"),
   }),
   methods: {
