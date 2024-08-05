@@ -53,6 +53,7 @@
               :hospitalService="hospitalService"
               :medical_sites="hospitals"
               :disabled="disabledValue"
+              :dialogLoading="dialogLoading"
               v-on:payload="assignPayload"
               v-on:validationSuccess="checkValidation"
               @submitForm="submitForm"
@@ -72,6 +73,7 @@
                 block
                 color="primary"
                 :class="{ 'disabled-button': disabledValue }"
+                :loading="dialogLoading"
                 @click="submitForm"
                 >Submit</v-btn
               >
@@ -104,6 +106,7 @@ export default {
       type: Object,
       required: false,
     },
+    dialogLoading: Boolean
   },
   data: () => ({
     dialog: false,
@@ -222,7 +225,9 @@ export default {
     //Reset for Adding
     reset(value) {
       this.payload = value;
-      this.selects.serviceable_type = null;
+      if (this.selects) {
+        this.selects.serviceable_type = null;
+      }
     },
     dialog(value) {
       if (value === false) {

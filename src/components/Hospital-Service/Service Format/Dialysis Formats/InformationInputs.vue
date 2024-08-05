@@ -54,7 +54,7 @@
           block
           dark
           color="primary"
-          :loading="loading"
+          :loading="dialogLoading"
           @click="submitForm"
           >Submit</v-btn
         >
@@ -74,6 +74,7 @@ export default {
       type: Object,
       required: true,
     },
+    dialogLoading: Boolean
   },
   data: () => ({
     loading: false,
@@ -92,7 +93,6 @@ export default {
       });
     },
     submitForm() {
-      this.loading = true;
       this.touchValidations()
         .then(() => {
           this.$emit("submitForm");
@@ -100,9 +100,6 @@ export default {
         .catch((error) => {
           console.error("Error Submitting Dialysis Add", error);
         })
-        .finally(() => {
-          this.loading = false;
-        });
     },
     resetValidations() {
       this.$v.$reset();

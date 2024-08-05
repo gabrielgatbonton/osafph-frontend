@@ -42,6 +42,7 @@
       v-on:dialogResponse="resetActivator"
       v-on:submitForm="submitForm"
       :activator="dialog"
+      :dialogLoading="dialogLoading"
       :reset="payload"
     />
   </div>

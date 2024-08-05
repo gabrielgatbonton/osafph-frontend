@@ -39,6 +39,9 @@
           type="number"
           label="Employer Contact Number"
           counter="11"
+          @blur="$v.data.employer_contact_number.$touch()"
+          :error-messages="errorMessages.employer_contact_number"
+          hide-spin-buttons
         />
       </v-col>
       <v-col cols="12" md="6" class="mt-n5">
@@ -96,6 +99,8 @@
           label="Philhealth ID Number"
           v-model="data.philhealth_id_number"
           outlined
+          type="number"
+          hide-spin-buttons
         />
       </v-col>
 
@@ -141,14 +146,18 @@ export default {
   }),
   methods: {
     continueForm() {
-      // console.log(this.data)
+      this.$v.$touch();
+
       if (
         this.editData &&
         this.editData.philhealth_id_number === this.data.philhealth_id_number
       ) {
         delete this.data.philhealth_id_number;
       }
-      this.$emit("data", this.data);
+
+      if (!this.$v.$invalid) {
+        this.$emit("data", this.data);
+      }
     },
     findProfessionOnEdit() {
       if (this.editData) {

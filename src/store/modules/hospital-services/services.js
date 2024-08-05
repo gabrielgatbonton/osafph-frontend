@@ -11,6 +11,7 @@ export const services = {
     hospitalService: null,
     publicHospitalServices: [],
     service_types: [],
+    dialogLoading: false,
   }),
   getters: {
     getPendingServices: (state) => {
@@ -68,8 +69,12 @@ export const services = {
     SET_SERVICE_TYPES(state, service_types) {
       state.service_types = service_types;
     },
+    SET_DIALOG_LOADING: (state, data) => (state.dialogLoading = data),
   },
   actions: {
+    triggerDialogLoading: function ({ commit }, value) {
+      commit("SET_DIALOG_LOADING", value);
+    },
     fetchServicesById({ commit }, { id, queryParams = {} }) {
       // Construct the query string from the queryParams object
       let queryString = Object.keys(queryParams)
@@ -111,11 +116,13 @@ export const services = {
         .then((response) => {
           dispatch("fetchServicesById", { id });
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("triggerDialogLoading", false);
           return response;
         })
         .catch((error) => {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error adding services: ", error);
+          dispatch("triggerDialogLoading", false);
         });
     },
     updateHospitalService({ dispatch }, { id, hospital_service_id, data }) {
@@ -129,10 +136,12 @@ export const services = {
             hospital_service_id: hospital_service_id,
           });
           store.commit("alerts/SET_SHOW_ALERT", response.data.message);
+          dispatch("triggerDialogLoading", false);
         })
         .catch((error) => {
           store.commit("alerts/SET_SHOW_ERROR", error.response.data.message);
           console.error("Error Updating Hospital Service: ", error);
+          dispatch("triggerDialogLoading", false);
         });
     },
     deleteHospitalService({ dispatch }, { id, hospital_service_id }) {

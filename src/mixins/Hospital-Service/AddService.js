@@ -1,11 +1,11 @@
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
     payload: null,
     dialog: false,
   }),
   methods: {
-    ...mapActions("services", ["addHospitalService"]),
+    ...mapActions("services", ["addHospitalService", "triggerDialogLoading"]),
     activator() {
       this.dialog = !this.dialog;
     },
@@ -15,6 +15,7 @@ export default {
     submitForm(payload) {
       const id = this.$route.params.id;
       let data = {};
+      this.triggerDialogLoading(true);
       if (payload.service_type === "CONSULTATION") {
         data = {
           hospital: payload.hospital,
@@ -85,4 +86,9 @@ export default {
         .finally(() => (this.dialog = false));
     },
   },
+  computed: {
+    ...mapState("services", {
+      dialogLoading: "dialogLoading"
+    })
+  }
 };

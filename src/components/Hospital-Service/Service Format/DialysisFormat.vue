@@ -43,6 +43,7 @@
             <v-stepper-content step="2" class="px-0">
               <InformationInputs
                 :data="payload"
+                :dialogLoading="dialogLoading"
                 ref="informationInputs"
                 @validationSuccess="checkValidationInformation"
                 @payload="assignPayload"
@@ -120,7 +121,8 @@ export default {
     disabled: {
       type: Boolean,
       required: true,
-    }
+    },
+    dialogLoading: Boolean
   },
   components: {
     EditInputs,

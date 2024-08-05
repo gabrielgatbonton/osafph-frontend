@@ -123,6 +123,7 @@
           :error-messages="errorMessages.contact_number"
           outlined
           counter="11"
+          hide-spin-buttons
         />
       </v-col>
       <v-col cols="12" md="6" class="mt-n5">
@@ -157,7 +158,9 @@
           @blur="$v.data.tin_number.$touch()"
           :error-messages="errorMessages.tin_number"
           outlined
-          :counter="11"
+          type="number"
+          hide-spin-buttons
+          :counter="12"
         />
       </v-col>
       <v-col cols="12" md="6" class="mt-n5">

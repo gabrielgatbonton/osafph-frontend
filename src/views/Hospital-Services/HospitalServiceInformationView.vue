@@ -67,6 +67,7 @@
     <ServiceDialog
       :activator="dialog"
       :hospitalService="service"
+      :dialogLoading="dialogLoading"
       v-on:dialogResponse="resetEditActivator"
       v-on:updateService="submitForm"
     />

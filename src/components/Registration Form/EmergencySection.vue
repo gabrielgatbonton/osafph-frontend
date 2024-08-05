@@ -27,10 +27,11 @@
           v-model="data.emergency_number"
           label="Contact Person's Number"
           type="number"
-          @blur="$v.data.emergency_number.$touch()"
           outlined
           :error-messages="errorMessages.emergency_number"
+          hide-spin-buttons
           counter="11"
+          @blur="$v.data.emergency_number.$touch()"
         ></v-text-field>
       </v-col>
 

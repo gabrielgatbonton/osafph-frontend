@@ -1,4 +1,4 @@
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   data: () => ({
     dialog: false,
@@ -7,6 +7,7 @@ export default {
     ...mapActions("services", [
       "fetchHospitalServiceById",
       "updateHospitalService",
+      "triggerDialogLoading",
     ]),
     activator(citizen_id, hospital_service_id) {
       this.dialog = !this.dialog;
@@ -25,6 +26,7 @@ export default {
       this.dialog = data;
     },
     submitForm(payload, citizen_id, hospital_service_id) {
+      this.triggerDialogLoading(true);
       let data = {};
       if (payload.service_type === "CONSULTATION") {
         data = {
@@ -85,5 +87,8 @@ export default {
   },
   computed: {
     ...mapGetters("services", ["getHospitalService"]),
+    ...mapState("services", {
+      dialogLoading: "dialogLoading",
+    }),
   },
 };

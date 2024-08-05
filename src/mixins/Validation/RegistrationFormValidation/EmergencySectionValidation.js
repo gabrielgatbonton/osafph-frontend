@@ -1,4 +1,4 @@
-import { required, minLength } from "vuelidate/lib/validators";
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
 
 // const notSameAsContactNumber = (value, vm) => {
 //   return value !== vm.data.contact_number;
@@ -11,6 +11,7 @@ export default {
       emergency_number: {
         required,
         minLength: minLength(11),
+        maxLength: maxLength(11),
       },
     },
   },
@@ -33,6 +34,8 @@ export default {
           errors.emergency_number.push(
             "A minimun number of 11 digits is required"
           );
+        !this.$v.data.emergency_number.maxLength &&
+          errors.emergency_number.push("Maximun length exceeded");
         // !this.$v.data.emergency_number.notSameAsContactNumber &&
         //   errors.emergency_number.push("Contact Number must not match");
       }
