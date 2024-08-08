@@ -193,7 +193,7 @@ export default {
 
       // Load the card template image
       const frontImg = new Image();
-      frontImg.src = require("@/assets/front.jpg");
+      frontImg.src = require("@/assets/card/front.jpg");
       frontImg.onload = () => {
         // Draw the card template image on the canvas
         canvas.width = frontImg.width;
@@ -266,9 +266,9 @@ export default {
         this.registrant.citizen.vaccination_stats &&
         this.registrant.citizen.vaccination_stats.length > 0
       ) {
-        backImg.src = require("@/assets/back.jpg");
+        backImg.src = require("@/assets/card/back.jpg");
       } else {
-        backImg.src = require("@/assets/unvaccinated.jpg");
+        backImg.src = require("@/assets/card/unvaccinated.jpg");
       }
       backImg.onload = () => {
         // Draw the card template image on the canvas

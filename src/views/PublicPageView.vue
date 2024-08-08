@@ -49,7 +49,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "ReroutePage",
   data: () => ({
-    imgSrc: require("@/assets/OSAFPH LOGO.png"),
+    imgSrc: require("@/assets/logo/OSAFPH LOGO.png"),
     imgWidth: "300",
   }),
   components: {

@@ -69,7 +69,7 @@ export default {
   data: () => ({
     dialog: false,
     loading: false,
-    imgSrc: require("@/assets/delete-1.svg"),
+    imgSrc: require("@/assets/delete-logo.svg"),
   }),
   methods: {
     deleteItem() {

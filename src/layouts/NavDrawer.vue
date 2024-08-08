@@ -24,7 +24,9 @@
           </v-col>
           <v-col cols="auto">
             <p class="subtitle-2 white--text pa-0 ma-0">OSAFPH</p>
-            <p class="caption white--text pa-0 ma-0">Mabalacat City, Pampanga</p>
+            <p class="caption white--text pa-0 ma-0">
+              Mabalacat City, Pampanga
+            </p>
           </v-col>
         </v-row>
       </v-container>
@@ -39,7 +41,7 @@ import NavButtons from "./NavButtons.vue";
 export default {
   props: ["drawer"],
   data: () => ({
-    logoUrl: require("@/assets/OSAFPH LOGO.png"),
+    logoUrl: require("@/assets/logo/OSAFPH LOGO.png"),
     miniVariant: false,
     drawerWidth: "200",
     isPermanent: false,

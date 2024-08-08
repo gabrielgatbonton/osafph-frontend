@@ -62,7 +62,7 @@
 export default {
   name: "FooterComponent",
   data: () => ({
-    minalinLogo: require("@/assets/minalin-logo-2.png"),
+    minalinLogo: require("@/assets/marketing/minalin-logo-2.png"),
     socialMediaIcons: ["mdi-facebook", "mdi-twitter", "mdi-instagram"],
   }),
 };

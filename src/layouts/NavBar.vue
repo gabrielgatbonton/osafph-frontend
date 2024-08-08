@@ -51,7 +51,7 @@ export default {
     offset: true,
     drawer: true,
     loading: false,
-    logoUrl: require("../assets/MCG.png"),
+    logoUrl: require("@/assets/logo/MCG.png"),
   }),
   components: {
     NavDrawer,

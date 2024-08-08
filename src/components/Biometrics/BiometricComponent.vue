@@ -69,7 +69,7 @@ export default {
     disabled: true,
     imageDataURL: null,
     sdk: null,
-    defaultImageSrc: require("@/assets/fingerprint-svgrepo-com.svg"),
+    defaultImageSrc: require("@/assets/placeholder/fingerprint-placeholder.svg"),
   }),
   mounted() {
     //Scripts loaded first then instance is initialized to a local property.

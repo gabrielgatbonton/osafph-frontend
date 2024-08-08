@@ -88,7 +88,7 @@ export default {
       quality: 1,
       width: 930,
     },
-    logoSrc: require("@/assets/MCG.png"),
+    logoSrc: require("@/assets/logo/MCG.png"),
     date: new Date().toLocaleString(),
     name: null,
     address: null,
@@ -105,7 +105,7 @@ export default {
     async generateAndPrintID() {
       try {
         const image = this.qrDataURL;
-        const logoUrl = require("@/assets/MCG.png");
+        const logoUrl = this.logoSrc;
         const name = this.name;
         const address = this.address;
         const birthday = this.birthday;
@@ -251,7 +251,9 @@ export default {
       immediate: true,
       handler(value) {
         if (value.citizen) {
-          this.name = `${value.citizen.last_name}, ${value.citizen.first_name} ${value.citizen.middle_name ? value.citizen.middle_name : ""}`;
+          this.name = `${value.citizen.last_name}, ${
+            value.citizen.first_name
+          } ${value.citizen.middle_name ? value.citizen.middle_name : ""}`;
           this.address = `${value.citizen.barangay}, ${value.citizen.province}`;
           this.birthday = this.formattedDate(value.citizen.date_of_birth);
         }

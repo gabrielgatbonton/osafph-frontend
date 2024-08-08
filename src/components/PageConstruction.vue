@@ -1,6 +1,6 @@
 <template>
   <v-container
-    style="height: 100%;"
+    style="height: 100%"
     class="d-flex justify-center align-center"
     :style="`max-width: ${breakpointVal};`"
   >
@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import ContainerBreakpoint from '@/mixins/ContainerBreakpoint';
+import ContainerBreakpoint from "@/mixins/ContainerBreakpoint";
 export default {
   name: "PageConstruction",
   data: () => ({
-    imgSource: require("@/assets/ConstructionWorker.jpg"),
+    imgSource: require("@/assets/fallback-image.jpg"),
     isSmAndDown: false,
     styleImage: "",
   }),

@@ -72,7 +72,7 @@ export default {
     },
   },
   data: () => ({
-    placeholderImageSrc: require("@/assets/blank-avatar.png"),
+    placeholderImageSrc: require("@/assets/placeholder/avatar-placeholder.png"),
   }),
   computed: {
     imageSrc() {

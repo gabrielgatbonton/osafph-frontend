@@ -14,27 +14,27 @@
       </v-col>
     </v-row>
   </v-container> -->
-  <v-form @submit.prevent="handleLogin" class="height-stretch">
-    <v-container fluid id="container">
-      <v-row align="center" align-content="center" style="height: 100%">
-        <v-col cols="12" md="5">
-          <div class="d-flex flex-column justify-center text-center">
-            <div>
-              <v-img
-                class="d-inline-block"
-                eager
-                :src="imageUrl"
-                :max-width="maxWidth"
-                contain
-              ></v-img>
-            </div>
-            <div class="text-body-1 white--text">
-              LION’S GLOBAL TECHNOLOGIES INC.
-            </div>
+  <v-container fluid id="container">
+    <v-row align="center" align-content="center" style="height: 100%">
+      <v-col cols="12" md="5">
+        <div class="d-flex flex-column justify-center text-center">
+          <div>
+            <v-img
+              class="d-inline-block"
+              eager
+              :src="imageUrl"
+              :max-width="maxWidth"
+              contain
+            ></v-img>
           </div>
-        </v-col>
-        <v-col cols="12" md="7">
-          <div class="card-container">
+          <!-- <div class="text-body-1 white--text">
+            LION’S GLOBAL TECHNOLOGIES INC.
+          </div> -->
+        </div>
+      </v-col>
+      <v-col cols="12" md="7">
+        <div class="card-container">
+          <v-form @submit.prevent="handleLogin" class="height-stretch">
             <div class="headline text-center mb-4">
               CITIZEN'S HEALTH INFORMATION <br />
               AND MANAGEMENT SYSTEM
@@ -44,9 +44,8 @@
               rounded
               height="50"
               v-model="username"
-              :error-messages="usernameErrors"
+              :error-messages="errorMessages.username"
               @blur="$v.username.$touch()"
-              :success="!$v.username.$invalid && $v.username.$dirty"
               label="Username"
             ></v-text-field>
             <v-text-field
@@ -56,8 +55,7 @@
               v-model="password"
               :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
               @blur="$v.password.$touch()"
-              :error-messages="passwordErrors"
-              :success="!$v.password.$invalid && $v.password.$dirty"
+              :error-messages="errorMessages.password"
               :type="show ? 'text' : 'password'"
               @click:append="show = !show"
               label="Password"
@@ -72,11 +70,11 @@
               type="submit"
               >Login</v-btn
             >
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form>
+          </v-form>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -89,7 +87,7 @@ export default {
     loading: false,
     loginError: null,
     show: false,
-    imageUrl: require("@/assets/Jose (1).png"),
+    imageUrl: require("@/assets/login/minalin-dialysis-logo.png"),
     maxWidth: null,
   }),
   validations: {
@@ -127,14 +125,9 @@ export default {
             // Handle login error
             console.error("Login error:", error);
 
-            if (error.response && error.response.status === 404) {
-              // Status code 404 indicates user not found
-              this.loginError = error.response.data.message;
-            } else if (error.response && error.response.status === 401) {
-              // Status code 401 indicates unauthorized login (incorrect credentials)
+            if (error) {
               this.loginError = error.response.data.message;
             } else {
-              // Other error, display a generic error message
               this.loginError = "An error occurred during login";
             }
           })
@@ -146,29 +139,32 @@ export default {
     },
   },
   computed: {
-    usernameErrors() {
-      const errors = [];
-      if (!this.$v.username.$dirty) return errors;
-      !this.$v.username.required && errors.push("Username is required");
-      !this.$v.username.minLength &&
-        errors.push("Username must be at least 4 characters long");
+    errorMessages: function () {
+      const errors = {
+        username: [],
+        password: [],
+      };
+
+      if (this.$v.username.$dirty) {
+        !this.$v.username.required &&
+          errors.username.push("Username is required");
+        !this.$v.username.minLength &&
+          errors.username.push("Username must be at least 4 characters long");
+      }
+
+      if (this.$v.password.$dirty) {
+        !this.$v.password.required &&
+          errors.password.push("Password is required");
+        !this.$v.password.minLength &&
+          errors.password.push("Password must be at least 4 characters long");
+      }
+
       // Add loginError message to errors if it exists
       if (this.loginError) {
-        errors.push(this.loginError);
+        errors.username.push(this.loginError);
+        errors.password.push(this.loginError);
       }
 
-      return errors;
-    },
-    passwordErrors() {
-      const errors = [];
-      if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.required && errors.push("Password is required");
-      !this.$v.password.minLength &&
-        errors.push("Password must be at least 4 characters long");
-
-      if (this.loginError) {
-        errors.push(this.loginError);
-      }
       return errors;
     },
     size() {
@@ -196,7 +192,7 @@ export default {
   max-width: 100%;
   height: 100%;
   background: #fff;
-  background: url("../assets/TestSVG.svg") no-repeat center center/cover;
+  background: url("@/assets/login/loginBg.svg") no-repeat center center/cover;
   transition: transform 0.3s ease; /* Add transition for smooth rotation */
 
   .card-container {

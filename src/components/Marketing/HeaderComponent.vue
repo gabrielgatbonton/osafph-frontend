@@ -71,7 +71,7 @@ export default {
         id: "footer",
       },
     ],
-    minalinLogo: require("@/assets/minalin-logo.png"),
+    minalinLogo: require("@/assets/marketing/minalin-logo.png"),
   }),
   methods: {
     redirect: function () {
@@ -120,6 +120,7 @@ a {
       rgba(255, 255, 255, 0.6) 20%,
       rgba(255, 255, 255, 1)
     ),
-    url(../../assets/minalin-dialysis-center.png) no-repeat center/cover;
+    url(../../assets/marketing/minalin-dialysis-center.png) no-repeat
+      center/cover;
 }
 </style>

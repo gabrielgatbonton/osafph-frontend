@@ -49,7 +49,7 @@
 export default {
   name: "FooterComponent",
   data: () => ({
-    imageUrl: require("@/assets/ICTDU.jpg"),
+    imageUrl: require("@/assets/footer/ICTDU.jpg"),
     icons: [
       {
         icon: "mdi-facebook",
